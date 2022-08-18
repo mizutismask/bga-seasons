@@ -1,4 +1,5 @@
 <?php
+
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -13,7 +14,10 @@
  * SeasonsSK game states description
  *
  */
-
+if (!defined('ST_END_SCORE')) {
+    define('ST_END_SCORE', 90);
+    define('ST_END_GAME', 99);
+}
 /*
    Game state machine is a tool used to facilitate game developpement by doing common stuff that can be set up
    in a very easy way from this configuration file.
@@ -49,7 +53,7 @@
 
 //    !! It is not a good idea to modify this file when a game is running !!
 
- 
+
 $machinestates = array(
 
     // The initial state. Please do not modify.
@@ -58,21 +62,21 @@ $machinestates = array(
         "description" => "",
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array( "" => 2 )
+        "transitions" => array("" => 2)
     ),
-    
+
     // Note: ID=2 => your first state
 
     2 => array(
-    		"name" => "playerTurn",
-    		"description" => clienttranslate('${actplayer} must play a card or pass'),
-    		"descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
-    		"type" => "activeplayer",
-    		"possibleactions" => array( "playCard", "pass" ),
-    		"transitions" => array( "playCard" => 2, "pass" => 2 )
+        "name" => "playerTurn",
+        "description" => clienttranslate('${actplayer} must play a card or pass'),
+        "descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
+        "type" => "activeplayer",
+        "possibleactions" => array("playCard", "pass"),
+        "transitions" => array("playCard" => 2, "pass" => 2,"score" => ST_END_SCORE)
     ),
-    
-/*
+
+    /*
     Examples:
     
     2 => array(
@@ -93,8 +97,18 @@ $machinestates = array(
         "transitions" => array( "playCard" => 2, "pass" => 2 )
     ), 
 
-*/    
-   
+*/
+    ST_END_SCORE => [
+        "name" => "endScore",
+        "description" => "",
+        "type" => "game",
+        "action" => "stEndScore",
+        "transitions" => [
+            "endGame" => ST_END_GAME,
+            "playerTurn" => 2//to remove
+        ],
+    ],
+
     // Final state.
     // Please do not modify (and do not overload action/args methods).
     99 => array(
@@ -106,6 +120,3 @@ $machinestates = array(
     )
 
 );
-
-
-

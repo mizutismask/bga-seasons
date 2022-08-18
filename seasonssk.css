@@ -42,31 +42,61 @@
            Consequently, don't hesitate to put as many comments as necessary.
 */
 
-
 /* Note: you must not use any @import directive */
 
-
 /********* You can start writing your CSS below this line: **********/
+:root {
+	--scoreColor: #2373a1;
+	--scoreSecondaryColor: #fc6f03;
+    --scoreShadowColor: white;
+}
 
-
-/*
-    Example of CSS sprites (a black token and a white token, 20x20px each, embedded in the same "tokens.png" 40x20px image):
-
-    .white_token {
-        background-image: url('img/tokens.png');
-        background-position: 0px 0px;
-    }
-    .black_token {
-        background-image: url('img/tokens.png');
-        background-position: -20px 0px;
-    }
-    .token {
-        width: 20px;
-        height: 20px;
-        background-repeat: none;
-    }
-*/
-
-
-
-
+#score {
+	display: none;
+	justify-content: center;
+}
+#score #tabble-wrapper {
+	padding: 40px;
+	/*background: url("img/score-background.png");*/
+	background-size: 100% 100%;
+}
+#score #tabble-wrapper table tbody tr {
+	border-top: 1px solid var(--scoreSecondaryColor);
+}
+#score #tabble-wrapper table td:not(:first-child),
+#score #tabble-wrapper table th:not(:first-child) {
+	border-left: 1px solid var(--scoreSecondaryColor);
+}
+#score #tabble-wrapper table tr {
+	height: 40px;
+}
+#score #tabble-wrapper table tr th {
+	text-align: center;
+	color: var(--scoreColor);
+	text-shadow: 0px 0px 1px var(--scoreShadowColor),
+		0px 0px 2px var(--scoreShadowColor),
+		0px 0px 3px var(--scoreShadowColor);
+	padding: 8px;
+}
+#score #tabble-wrapper table tr td {
+	width: 100px;
+	text-align: center;
+}
+#score #tabble-wrapper table tr td:not(:first-child) {
+	font-size: 150%;
+	color: var(--scoreColor);
+	text-shadow: 0px 0px 1px var(--scoreShadowColor),
+		0px 0px 2px var(--scoreShadowColor),
+		0px 0px 3px var(--scoreShadowColor);
+}
+#score #tabble-wrapper table tr td.player-name {
+	width: 181px;
+	font-weight: bold;
+	text-shadow: 0px 0px 1px var(--scoreShadowColor), 0px 0px 2px var(--scoreShadowColor),
+		0px 0px 3px var(--scoreShadowColor);
+	word-break: break-all;
+	font-size: 120%;
+}
+#score #tabble-wrapper table tr td.total {
+	font-weight: bold;
+}
