@@ -3,7 +3,7 @@
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * SeasonsSK implementation : © <Your name here> <Your email address here>
+ * SeasonsSK implementation : Grégory Isabelli <gisabelli@gmail.com>
  *
  * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -52,44 +52,72 @@ $stats_type = array(
     // Statistics global to table
     "table" => array(
 
-        "turns_number" => array("id"=> 10,
-                    "name" => totranslate("Number of turns"),
-                    "type" => "int" ),
+        "turn_number" => array(
+            "id" => 10,
+            "name" => totranslate("Number of turns"),
+            "type" => "int"
+        ),
 
-/*
-        Examples:
-
-
-        "table_teststat1" => array(   "id"=> 10,
-                                "name" => totranslate("table test stat 1"), 
-                                "type" => "int" ),
-                                
-        "table_teststat2" => array(   "id"=> 11,
-                                "name" => totranslate("table test stat 2"), 
-                                "type" => "float" )
-*/  
     ),
-    
+
     // Statistics existing for each player
     "player" => array(
 
-        "turns_number" => array("id"=> 10,
-                    "name" => totranslate("Number of turns"),
-                    "type" => "int" ),
-    
-/*
-        Examples:    
-        
-        
-        "player_teststat1" => array(   "id"=> 10,
-                                "name" => totranslate("player test stat 1"), 
-                                "type" => "int" ),
-                                
-        "player_teststat2" => array(   "id"=> 11,
-                                "name" => totranslate("player test stat 2"), 
-                                "type" => "float" )
+        "points_crystals" => array(
+            "id" => 10,
+            "name" => totranslate("Points: crystals at the end of the game"),
+            "type" => "int"
+        ),
 
-*/    
+        "points_cards_on_tableau" => array(
+            "id" => 11,
+            "name" => totranslate("Points: cards on tableau"),
+            "type" => "int"
+        ),
+
+        "points_remaining_cards" => array(
+            "id" => 12,
+            "name" => totranslate("Points: remaining cards in hand"),
+            "type" => "int"
+        ),
+
+        "points_bonus" => array(
+            "id" => 13,
+            "name" => totranslate("Points: bonus used"),
+            "type" => "int"
+        ),
+        "crystal_transmutations" => array(
+            "id" => 14,
+            "name" => totranslate("Crystals gains with transmutation"),
+            "type" => "int"
+        ),
+        "cards_drawn" => array(
+            "id" => 15,
+            "name" => totranslate("Cards drawn"),
+            "type" => "int"
+        ),
+        "cards_summoned" => array(
+            "id" => 16,
+            "name" => totranslate("Cards played"),
+            "type" => "int"
+        ),
+        "cards_activated" => array(
+            "id" => 17,
+            "name" => totranslate("Cards activation"),
+            "type" => "int"
+        ),
+        "final_summoning" => array(
+            "id" => 18,
+            "name" => totranslate("Final summoning gauge"),
+            "type" => "int"
+        ),
+        "final_tableau_size" => array(
+            "id" => 19,
+            "name" => totranslate("Final number of card in tableau"),
+            "type" => "int"
+        )
+
+
     )
 
 );
