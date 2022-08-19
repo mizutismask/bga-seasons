@@ -1,54 +1,304 @@
-/**
- *------
- * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * SeasonsSK implementation : © <Your name here> <Your email address here>
- *
- * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
- * See http://en.boardgamearena.com/#!doc/Studio for more information.
- * -----
- *
- * seasonssk.css
- *
- * SeasonsSK stylesheet
- *
- */
+/* Testlayout stylesheet */
 
-/*
-    This is the CSS stylesheet of your game User Interface.
-    
-    Styles defined on this file will be applied to the HTML elements you define in your
-    HTML template (seasonssk_seasonssk.tpl), and to HTML elements you create dynamically
-    (in seasonssk.js).
-    
-    Usually, you are using CSS to:
-    
-    1°) define the overall layout of your game
-        (ex: place the board on the top left, place player's hand beside, place the deck on the right, ...).
+@import url(../../../css/csslayer.css);
 
-    2°) create your CSS-sprites:
-        All images of your games should be gathered into a small number of image files. Then, using
-        background-image and background-position CSS properties, you create HTML blocks that can 
-        display these images correctly (see example below).
-    
-    3°) ... anything else:
-        It is really easy to add and remove CSS classes dynamically from your Javascript with
-        dojo.addClass and dojo.removeClass. It is also easy to check if an element has a class
-        (dojo.hasClass) or to get all elements with a specific class (dojo.query). This is why,
-        very often, using CSS classes for the logic of your user interface allow you to do complex
-        thing easily.
-        
-        
-     Note: on the production platform, this file will be compressed and comments will be removed.
-           Consequently, don't hesitate to put as many comments as necessary.
-*/
 
-/* Note: you must not use any @import directive */
-
-/********* You can start writing your CSS below this line: **********/
 :root {
 	--scoreColor: #2373a1;
 	--scoreSecondaryColor: #fc6f03;
     --scoreShadowColor: white;
+}
+
+/* main board */
+
+#board {
+    width: 400px;
+    height: 400px;
+    background-image: url('img/board.png');
+    float: left;
+    position: relative;
+}
+#season_library_choice {
+    width: 410px;
+    float: left;
+    position: relative;
+    left: -10px;
+    top: -10px;
+}
+
+.seasons_rightpanel {
+    margin-left: 410px;
+}
+
+.monthplace {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+}
+#monthplace_1 { left: 230px; top: 10px; }
+#monthplace_2 { left: 315px; top: 55px; }
+#monthplace_3 { left: 360px; top: 140px; }
+#monthplace_4 { left: 360px; top: 230px; }
+#monthplace_5 { left: 315px; top: 315px; }
+#monthplace_6 { left: 230px; top: 360px; }
+#monthplace_7 { left: 140px; top: 360px; }
+#monthplace_8 { left: 55px; top: 315px; }
+#monthplace_9 { left: 10px; top: 230px; }
+#monthplace_10 { left: 10px; top: 140px; }
+#monthplace_11 { left: 55px; top: 55px; }
+#monthplace_12 { left: 140px; top: 10px; }
+
+#current_month {
+    width: 30px;
+    height: 30px;
+    background-image: url('img/icons.png');
+    position: absolute;
+    background-position: -0px -25px;
+    left: 185px;
+    top: 185px;
+}
+
+.yearplace {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+}
+#yearplace_1 {    left: 149px;    top: 183px;   }
+#yearplace_2 {    left: 181px;    top: 183px;   }
+#yearplace_3 {    left: 214px;    top: 183px;   }
+
+#current_year {
+    width: 36px;
+    height: 36px;
+    background-image: url('img/icons.png');
+    position: absolute;
+    background-position: -30px -25px;
+    left: 149px;
+    top: 183px;
+}
+
+.bonus {
+    position: absolute;
+    width: 43px;
+    height: 60px;
+    cursor: pointer;
+}
+#bonus1 {   left: 2px; top: 2px; }
+#bonus2 {   right: 2px; top: 2px; }
+#bonus3 {   left: 2px; bottom: 2px; }
+#bonus4 {   right: 2px; bottom: 2px; }
+
+/* card */
+
+.cardtitle {
+    position: absolute;
+    top: 5px;
+    left: 23px;
+    font-weight: bold;
+    font-size: 50%;
+    width: 80px;
+    text-align: center;
+}
+
+.cardtooltip {
+    text-align: center;
+    max-width: 300px;
+}
+.dietooltip {
+    max-width: 300px;
+}
+
+.all_die_faces {
+
+}
+.all_die_face {
+    background-image: url('img/dices.png');
+    width: 54px;
+    height: 54px;
+    margin: 5px;
+    display: inline-block;    
+}
+
+.cardactivated {
+    position: absolute;
+    left: 42px;
+    bottom: 12px;
+    background-image: url('img/icons.png');
+    background-position: -150px 0px;
+    width: 40px;
+    height: 40px;
+    display: none;
+}
+.activated .cardactivated {
+   display: block;
+}
+
+.cardenergies {
+    position: absolute;
+    left: 10px;
+    top: 20px;
+    width: 100px;
+    height: 100px;
+}
+.cardartwrap {
+}
+.cardart {
+    display: inline-block;
+    background-image: url('img/bigcards.jpg');
+    width: 248px;
+    height: 346px;
+    margin: 10px;
+}
+
+/* icons */
+
+.sicon {
+    display: inline-block;
+    background-image: url('img/icons.png');
+}
+
+.icon_play {
+    width: 12px;
+    height: 12px;
+    background-position: -130px 0px;
+}
+.icon_active {
+    width: 12px;
+    height: 12px;
+    background-position: -130px -20px;
+}
+.icon_permanent {
+    width: 12px;
+    height: 12px;
+    background-position: -100px -30px;
+}
+.energy0,.energy1,.energy2,.energy3,.energy4 {
+    width: 25px;
+    height: 25px;
+}
+.energy0 {  background-position: -120px -32px;   }
+.energy1 {  background-position: 0px 0px;   }
+.energy2 {  background-position: -25px 0px;   }
+.energy3 {  background-position: -50px 0px;   }
+.energy4 {  background-position: -75px 0px;   }
+
+.invocation_level {
+    background-position: -75px -25px; 
+    width: 25px;
+    height: 25px;
+}
+
+.deadlock {
+    position: absolute;
+    background-image: url('img/icons.png');
+    width: 100px;
+    height: 37px;
+    background-position: -0px -63px;
+    top: 130px;
+    left: 12px;
+}
+
+.trap {
+    position: absolute;
+    background-image: url('img/icons.png');
+    width: 100px;
+    height: 37px;
+    background-position: -100px -63px;
+    top: 10px;
+    left: 12px;
+}
+
+/* player die */
+
+.playerdie {
+    width: 54px;
+    height: 54px;
+    background-image: url('img/dices.png');
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.playerdie_wrap {
+    width: 54px;
+    height: 54px;
+    float: left;
+    position: relative;
+}
+.boardblock_seasons {
+    margin-left: 60px;
+}
+
+
+#player_hand .stockitem,
+#library_2 .stockitem,
+#library_3 .stockitem,
+.tableau .stockitem
+ {
+    border-radius: 8px;
+}
+
+
+/* player reserve */
+
+.energywrapper {
+    position: relative;
+    width: 170px;
+    min-height: 55px;
+}
+.energy_reserve {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 55px;
+    width: 170px;   
+}
+
+/* cards drawn */
+
+/* player panel */
+
+a.choose_player {
+    display: none;
+    margin: 10px;
+    margin-top: 15px;
+}
+
+#firstplayer    {   
+    top: 0px;
+    left: 0px;
+    width: 30px;
+    height: 30px;
+    background-image: url('img/icons.png');
+    position: absolute;
+    background-position: -0px -25px;    
+}
+.firstplayerplace { 
+    position: relative;
+    display: inline-block;  
+    top: 4px;
+    left: 0px;
+    width: 30px;
+    height: 30px;
+}
+
+.bonusused {
+    width: 25px;
+    height: 25px;
+}
+.bonusused0 {   background-position: -200px 0px;    }
+.bonusused1 {   background-position: -225px 0px;    }
+.bonusused2 {   background-position: -200px -25px;    }
+.bonusused3 {   background-position: -225px -25px;    }
+
+
+.seasons_no_art_cards .cardartwrap {  display: none;  }
+
+#otus_wrap  {   display: none;  }
+
+.library_build_wrap {
+    width: 600px;
 }
 
 #score {
@@ -99,4 +349,22 @@
 }
 #score #tabble-wrapper table tr td.total {
 	font-weight: bold;
+
+/******* Mobile version ****************/
+
+@media only screen and (max-width: 970px) {
+
+    #board {
+        float: none;
+        margin: auto;
+    }
+    #season_library_choice {
+        float: none;
+        margin: auto;
+        top: 0px;
+    }
+    .seasons_rightpanel {
+        margin-left: 0px;
+    }
+
 }

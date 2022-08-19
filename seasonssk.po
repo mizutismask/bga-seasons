@@ -1,0 +1,1553 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: bga 1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-11 00:42+0100\n"
+"PO-Revision-Date: 2013-06-11 00:44+0100\n"
+"Last-Translator: Emmanuel Colin <emmanuel.colin@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: /var/tournoi/www/game/translation/seasonssk\n"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:2
+msgid "Your cards for year II"
+msgstr "Vos cartes pour l'année II"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:3
+msgid "Your cards for year III"
+msgstr "Vos cartes pour l'année III"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:4
+msgid "Difficulty level"
+msgstr "Niveau de difficulté"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:5
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:6
+msgid "Apprentice Wizard"
+msgstr "Apprenti Magicien"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:7
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:8
+msgid "Magician Level"
+msgstr "Niveau Magicien"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:9
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:10
+msgid "Archmage Level"
+msgstr "Niveau Archimage"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:11
+msgid "Archmage Level + try 5 cards from Enchanted Kingdom expansion"
+msgstr "Niveau Archimage + essayez 5 cartes de l'extension Le Royaume Enchanté"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:12
+msgid "Archmage Level + Enchanted Kingdom"
+msgstr "Niveau Archimage + Le Royaume Enchanté"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:13
+msgid "Show cards art in tooltips"
+msgstr "Montrer l'image des cartes dans les bulles"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:14
+msgid "yes"
+msgstr "oui"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:15
+msgid "no"
+msgstr "non"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:16
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:115
+msgid "air"
+msgstr "air"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:17
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:116
+msgid "water"
+msgstr "eau"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:18
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:117
+msgid "fire"
+msgstr "feu"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:19
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:118
+msgid "earth"
+msgstr "terre"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:20
+msgid "Cards summoned"
+msgstr "Cartes invoquées"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:21
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:22
+msgid "To execute this action you need more: "
+msgstr "Pour réaliser cette action vous avez besoin de plus de:"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:23
+msgid "You must draw a power card before the end of your turn"
+msgstr "Vous devez piocher une carte pouvoir avant la fin de ce tour"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:24
+msgid "You cannot use more than 3 bonus by game"
+msgstr "Vous ne pouvez pas utiliser plus de 3 bonus par partie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:25
+msgid "You don't have enough energies"
+msgstr "Vous n'avez pas assez d'énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:26
+msgid "Your summoning gauge is already at its maximum (15)"
+msgstr "Votre jauge d'invocation est déjà à son maximum (15)"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:27
+msgid "You cannot use this bonus if there is no card symbol on your dice"
+msgstr "Vous ne pouvez pas utiliser ce bonus sans symbole carte sur votre dé"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:28
+msgid "You must discard 2 energies"
+msgstr "Vous devez défausser 2 énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:29
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:71
+#, php-format
+msgid "You must discard exactly %s energy tokens"
+msgstr "Vous devez défausser exactement %s énergie(s)"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:30
+msgid "You summoning gauge is not big enough to summon this new card"
+msgstr "Votre jauge d'invocation n'est pas suffisante pour invoquer cette carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:31
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:32
+msgid "No need to use following resource: "
+msgstr "Pas besoin d'utiliser l'énergie suivante:"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:33
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:34
+msgid "You don't have enough crystals to summon this card"
+msgstr "Vous n'avez pas assez de cristaux pour invoquer cette carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:35
+msgid "This card has been activated already during this turn"
+msgstr "Cette carte a déjà été activée durant ce tour"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:36
+msgid "This card has no activation effect"
+msgstr "Cette carte n'a pas de pouvoir d'activation"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:37
+msgid "You must choose identical energies"
+msgstr "Vous devez choisir des énergies identiques"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:38
+msgid "You must move the Season token forward or back 1 to 3 spaces"
+msgstr "Vous devez déplacer le marqueur Saison de 1 à 3 cases en avant ou en arrière"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:39
+msgid "You have not enough energies to summon this card"
+msgstr "Vous n'avez pas assez d'énergies pour invoquer cette carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:40
+msgid "You must choose a magical item"
+msgstr "Vous devez choisir un objet magique"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:41
+msgid "You don't have 3 identical resources"
+msgstr "Vous n'avez pas 3 ressources identiques"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:42
+msgid "You don't have 4 identical resources"
+msgstr "Vous n'avez pas 4 énergies identiques"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:43
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:44
+msgid "You must discard 3 identical energies"
+msgstr "Vous devez défausser trois ressources identiques"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:45
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:46
+msgid "You must discard 4 identical energies"
+msgstr "Vous devez défausser 4 énergies identiques"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:47
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:68
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:69
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:70
+msgid "You don't have enough energy token or crystals to do this action"
+msgstr "Vous n'avez pas assez d'énergies ou de cristaux pour réaliser cette action"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:48
+msgid "You must select 4 energy tokens to use for this action"
+msgstr "Vous devez sélectionner 4 énergies à utiliser pour cette action"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:49
+msgid "You don't have enough power cards in your tableau"
+msgstr "Vous n'avez pas assez de cartes pouvoir dans votre tableau"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:50
+msgid "You need at least one energy"
+msgstr "Vous avez besoin d'au moins une énergie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:51
+msgid "Wrong selected energy"
+msgstr "Mauvaise énergie sélectionnée"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:52
+msgid "You must use at least one energy"
+msgstr "Vous devez utilisez au moins une énergie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:53
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:58
+msgid "You don't have any energies"
+msgstr "Vous n'avez aucune énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:54
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:55
+msgid "You must choose exactly 1 energy token"
+msgstr "Vous devez choisir exactement une énergie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:56
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:57
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:59
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:60
+msgid "You must discard 1 energy"
+msgstr "Vous devez défausser 1 énergie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:61
+msgid "You don't have enough crystals to do this action"
+msgstr "Vous n'avez pas assez de cristaux pour effectuer cette action"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:62
+msgid "You don't have any familiar"
+msgstr "Vous n'avez pas de familiers"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:63
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:64
+msgid "You must choose a familiar"
+msgstr "Vous devez choisir un familier"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:65
+msgid "You must have at least one card in your hand"
+msgstr "Vous devez avoir au moins une carte en main"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:66
+msgid "You summoning gauge is not big enough to active this new card"
+msgstr "Votre jauge d'invocation n'est pas suffisante pour invoquer cette carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:67
+#, php-format
+msgid "You must take %s energies to %s"
+msgstr "Vous devez prendre %s énergies à %s"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:72
+msgid "You have no card in your hand"
+msgstr "Vous n'avez pas de cartes en main"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:73
+msgid "You must choose 3 cards"
+msgstr "Vous devez choisir 3 cartes"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:74
+msgid "Number of turns"
+msgstr "Nombre de tours"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:75
+msgid "Points: crystals at the end of the game"
+msgstr "Points: cristaux à la fin de la partie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:76
+msgid "Points: cards on tableau"
+msgstr "Points: cartes dans le tableau"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:77
+msgid "Points: remaining cards in hand"
+msgstr "Points: cartes restants en main"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:78
+msgid "Points: bonus used"
+msgstr "Points: bonus utilisés"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:79
+msgid "Crystals gains with transmutation"
+msgstr "Cristaux gagnés par cristalisation"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:80
+msgid "Cards drawn"
+msgstr "Cartes piochées"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:81
+msgid "Cards played"
+msgstr "Cartes jouées"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:82
+msgid "Cards activation"
+msgstr "Cartes activées"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:83
+msgid "Final summoning gauge"
+msgstr "Jauge d'invocation finale"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:84
+msgid "Final number of card in tableau"
+msgstr "Nombre final de cartes dans le tableau"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:85
+msgid "LB_seasonssk_DICES"
+msgstr "Dés de saisons"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:86
+msgid "LB_CARDS_DRAWN"
+msgstr "Cartes piochées"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:87
+msgid "LB_MY_HAND"
+msgstr "Ma main"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_serversidekeys.php:88
+msgid "LB_CHOOSE_THIS_PLAYER"
+msgstr "Choisir ce joueur"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:2
+msgid "Amulet of Air"
+msgstr "Amulette d’air"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:3
+msgid "Increase your summoning gauge by 2."
+msgstr "Augmentez votre jauge d’invocation de 2."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:4
+msgid "Amulet of Fire"
+msgstr "Amulette de feu"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:5
+msgid "Draw 4 power cards: add one to your hand and discard the rest."
+msgstr "Piochez 4 cartes pouvoir: placez-en une dans votre main et défaussez les cartes restantes."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:6
+msgid "Amulet of Earth"
+msgstr "Amulette de terre"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:7
+msgid "Gain 9 crystals."
+msgstr "Recevez 9 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:8
+msgid "Amulet of Water"
+msgstr "Amulette d’eau"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:9
+msgid "Gain 4 energy tokens and place them on the amulet of water. You can use these tokens during the game."
+msgstr "Recevez et placez 4 énergies sur l’amulette d’eau. Vous pouvez utiliser ces énergies au cours de la partie."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:10
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:111
+msgid "Balance of Ishtar"
+msgstr "Balance d’Ishtar"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:11
+msgid "**, Discard 4 identical energy tokens. Gain 12 crystals."
+msgstr "**, Défaussez 4 énergies identiques: cristallisez-les en 12 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:12
+msgid "Staff of Spring"
+msgstr "Bâton du printemps"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:13
+msgid "Gain 3 crystals whenever you summon a power card."
+msgstr "Lorsque vous invoquez une carte pouvoir, recevez 3 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:14
+msgid "Temporal Boots"
+msgstr "Bottes temporelles"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:15
+msgid "Move the season token forward or back 1 to 3 spaces."
+msgstr "Avancez ou reculez le marqueur saisons d’1 à 3 cases."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:16
+msgid "Purse of Io"
+msgstr "Bourse d’Io"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:17
+msgid "Gain 1 extra crystal for each energy you transmute."
+msgstr "Recevez 1 cristal supplémentaire pour chaque énergie que vous cristallisez."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:18
+msgid "Divine Chalice"
+msgstr "Calice divin"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:19
+msgid "Draw 4 power cards; summon one for free. Discard the other cards."
+msgstr "Piochez 4 cartes pouvoir: invoquez-en une gratuitement. Défaussez les cartes restantes."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:20
+msgid "Syllas the Faithful"
+msgstr "Syllas le fidèle"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:21
+msgid "Each of your opponents sacrifices a power card."
+msgstr "Chaque adversaire sacrifie une carte pouvoir."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:22
+msgid "Figrim the Avaricious"
+msgstr "Figrim l’avaricieux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:23
+msgid "Each change of season, each of your opponents must give you 1 crystal."
+msgstr "A chaque changement de saison, vos adversaires doivent vous donner 1 cristal."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:24
+msgid "Naria the Prophetess"
+msgstr "Naria la prophétesse"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:25
+msgid "Draw as many power cards as there are players. Put one of them in your hand and give the rest out to every other player."
+msgstr "Piochez autant de cartes pouvoir que de joueurs. Placez-en une dans votre main et donnez-en une à chaque adversaire."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:26
+msgid "Wondrous Chest"
+msgstr "Coffret merveilleux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:27
+msgid "If you have 4 or more energy tokens in your reserve at the end of a round, gain 3 crystals."
+msgstr "Si vous avez quatre énergies ou plus dans votre réserve à la fin de la manche, recevez 3 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:28
+msgid "Beggar’s Horn"
+msgstr "Corne du mendiant"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:29
+msgid "If you have 1 energy token or less in your reserve at the end of a round, gain 1 energy token."
+msgstr "Si vous avez une énergie ou moins dans votre réserve à la fin de la manche, recevez une énergie."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:30
+msgid "Die of Malice"
+msgstr "Dé de la malice"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:31
+msgid "**, instead of performing the action(s) of your season die, reroll it; perform the new action(s) of the die roll and gain 2 crystals."
+msgstr "**, au lieu d’effectuer les actions de votre dé des saisons, relancez-le : effectuez les nouvelles actions de ce dé et recevez 2 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:32
+msgid "Kairn the Destroyer"
+msgstr "Kairn le destructeur"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:33
+msgid "**, Discard 1 energy: each of your opponents loses 4 crystals."
+msgstr "**, défaussez une énergie : chaque adversaire perd 4 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:34
+msgid "Amsug Longneck"
+msgstr "Amsug Longcoup"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:35
+msgid "Each player (you included) takes 1 of their magic items in play back into their hand."
+msgstr "Chaque joueur renvoie dans sa main un objet magique."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:36
+msgid "Bespelled Grimoire"
+msgstr "Grimoire ensorcelé"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:37
+msgid "§§ Gain 2 energy tokens. øø You can now store up to 10 energy tokens. The extra energy is stored on the Bespelled Grimoire and are considered to be part of your reserve."
+msgstr "§§ Recevez 2 énergies. øø Vous pouvez désormais stocker jusqu'à 10 énergies. Les énergies supplémentaires sont placées sur le grimoire ensorcelé et considérées comme faisant partie de votre réserve."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:38
+msgid "Ragfield’s Helm"
+msgstr "Heaume de Ragfield"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:39
+msgid "At the end of the game, if you have more power cards in play than each of your opponents, gain 20 additional crystals."
+msgstr "A la fin de la partie, si vous possédez strictement plus de cartes pouvoir en jeu que vos adversaires, recevez 20 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:40
+msgid "Hand of Fortune"
+msgstr "Main de la fortune"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:41
+msgid "The summoning cost of your power cards is reduced by 1 energy from now on (not to be reduced below 1 energy)."
+msgstr "Le coût d’invocation de vos prochaines cartes pouvoir est réduit de 1 énergie. Ces prochaines cartes ne pourront néanmoins avoir un coût d’invocation inférieur à 1 énergie."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:42
+msgid "Lewis Greyface"
+msgstr "Lewis Grisemine"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:43
+msgid "Choose 1 of your opponents: gain exactly the same amount and type of energy tokens as that opponent has in their reserve."
+msgstr "Choisissez un adversaire : recevez exactement le même nombre et le même type d’énergies que cet adversaire a dans sa réserve."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:44
+msgid "Runic Cube of Eolis"
+msgstr "Cube runique d’Eolis"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:45
+msgid "Potion of Power"
+msgstr "Potion de puissance"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:46
+msgid "**, Sacrifice the Potion of Power to draw 1 power card and increase your summoning gauge by 2."
+msgstr "**, sacrifiez la potion de puissance : piochez 1 carte pouvoir et augmentez votre jauge d’invocation de 2."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:47
+msgid "Potion of Dreams"
+msgstr "Potion de rêves"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:48
+msgid "**, Sacrifice the Potion of Dreams and discard all of your energy to summon a power card for free."
+msgstr "**, sacrifiez la Potion de rêves et défaussez toutes vos énergies : invoquez gratuitement une carte pouvoir."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:49
+msgid "Potion of Knowledge"
+msgstr "Potion de savoir"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:50
+msgid "**, Sacrifice the Potion of Knowledge to gain 5 energy."
+msgstr "**, sacrifiez la Potion de savoir : recevez 5 énergies."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:51
+msgid "Potion of Life"
+msgstr "Potion de vie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:52
+msgid "**, Sacrifice the Potion of Life to transmute each of the energy tokens in your reserve into 4 crystals."
+msgstr "**, sacrifiez la Potion de vie : cristallisez chacune des énergies de votre réserve en 4 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:53
+msgid "Hourglass of Time"
+msgstr "Sablier du temps"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:54
+msgid "Each time the season changes, gain 1 energy token of your choice."
+msgstr "A chaque changement de saison, recevez 1 énergie."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:55
+msgid "Scepter of Greatness"
+msgstr "Sceptre de grandeur"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:56
+msgid "Gain 3 crystals for each magic item you have in play, with the exception of the Scepter of Greatness."
+msgstr "Recevez 3 cristaux pour chacun de vos objets magiques en jeu, sceptre de grandeur excepté."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:57
+msgid "Olaf’s Blessed Statue"
+msgstr "Statue bénie d’Olaf"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:58
+msgid "Gain 20 crystals."
+msgstr "Recevez 20 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:59
+msgid "Yjang’s Forgotten Vase"
+msgstr "Vase oublié d’Yjang"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:60
+msgid "When you summon a power card, gain 1 energy token."
+msgstr "Lorsque vous invoquez une carte pouvoir, recevez une énergie."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:61
+msgid "Elemental Amulet"
+msgstr "Amulette élémentaire"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:62
+msgid "If you've used this type of energy: Water: Gain 2 energy tokens. Earth: Gain 5 crystals. Fire: Draw a power card. Air: Increase your summoning gauge by 1."
+msgstr "Si vous avez utilisé une énergie: Eau: recevez 2 énergies. Terre: recevez 5 cristaux. Feu: piochez une carte pouvoir. Air: jauge d’invocation +1."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:63
+msgid "Tree of Light"
+msgstr "Arbre de lumière"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:64
+msgid "**, Discard 3 crystals and gain 1 energy token. **, Discard 1 energy token and you can transmute this round."
+msgstr "**, défaussez 3 cristaux : recevez 1 énergie. **, défaussez 1 énergie : vous pouvez cristalliser durant ce tour."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:65
+msgid "Arcano Leech"
+msgstr "Arcano Sangsue"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:66
+msgid "In order to summon a power card, your opponents must give you 1 crystal first."
+msgstr "Pour invoquer une carte pouvoir, vos adversaires doivent vous donner 1 cristal au préalable."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:67
+msgid "Crystal Orb"
+msgstr "Orbe de Cristal"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:68
+msgid "**, Look at the first card of the draw pile: discard 4 energy tokens to summon it for free or put it back on top of the draw pile. **, Discard 3 crystals to put the first card of the draw pile into the discard pile."
+msgstr "**, Regardez la première carte de la pioche : reposez-la ou défaussez 4 énergies pour l’invoquer gratuitement. **, défaussez 3 cristaux : mettez la première carte de la pioche à la défausse."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:69
+msgid "Glutton Cauldron"
+msgstr "Chaudron glouton"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:70
+msgid "**, Place 1 energy token from your reserve on the Glutton Cauldron. **, Sacrifice the Glutton Cauldron when it contains 7 energy tokens: put these 7 energy tokens into your reserve and gain 15 crystals."
+msgstr "**, placez une énergie de votre réserve sur le Chaudron glouton. **, sacrifiez le Chaudron glouton quand ce dernier cumule 7 énergies : placez ces 7 énergies dans votre réserve et recevez 15 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:71
+msgid "Vampiric Crown"
+msgstr "Couronne vampirique"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:72
+msgid "Discard or draw a power card: gain as many energy tokens as the number of prestige points of the discarded or drawn card."
+msgstr "Défaussez ou piochez une carte pouvoir : recevez autant d'énergies que le nombre de points de prestige de la carte défaussée ou piochée."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:73
+msgid "Dragon Skull"
+msgstr "Crâne de Dragon"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:74
+msgid "**, Sacrifice 3 power cards to gain 15 crystals."
+msgstr "**, sacrifiez 3 cartes pouvoir : recevez 15 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:75
+msgid "Demon of Argos"
+msgstr "Démon d’Argos"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:76
+msgid "Reduce the summoning gauge of all your opponents by 1. Each of your opponents draws 1 power card."
+msgstr "Diminuez de 1 la jauge d'invocation de tous vos adversaires. Chaque adversaire pioche une carte pouvoir."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:77
+msgid "Titus Deepgaze"
+msgstr "Titus Beauregard"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:78
+msgid "At the end of the round, your opponents must give you 1 crystal. If an opponent doesn't have any crystals left to give you, sacrifice Titus Deepgaze."
+msgstr "A la fin de la manche, vos adversaires doivent vous donner 1 cristal. Si un adversaire n’a plus de cristaux pour vous en donner, sacrifiez Titus Beauregard."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:79
+msgid "Air Elemental"
+msgstr "Elémentaire d’air"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:80
+msgid "All the energy tokens present in the reserves of your opponents become air energy tokens."
+msgstr "Toutes les énergies présentes dans les réserves de vos adversaires deviennent des énergies d’air."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:81
+msgid "Thieving Fairies"
+msgstr "Fées chapardeuses"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:82
+msgid "Each time an opponent activates (**) one of their power cards, they must give you 1 crystal. Gain an extra 1 crystal at that moment."
+msgstr "A chaque fois qu’un adversaire active (** ) l’une de ses cartes pouvoir, il doit vous donner 1 cristal. A cette occasion, recevez 1 cristal supplémentaire."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:83
+msgid "Cursed Treatise of Arus"
+msgstr "Traité maudit d’Arus"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:84
+msgid "Gain 2 energy tokens and 10 crystals. Increase your summoning gauge by 1. If the Cursed Treatise of Arus is sacrificed, discard all the energy tokens in your reserve."
+msgstr "Recevez 2 énergies et 10 cristaux. Augmentez votre jauge d’invocation de 1. Si le traité maudit d’Arus est sacrifié, défaussez toutes les énergies de votre réserve."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:85
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:113
+msgid "Idol of the Familiar"
+msgstr "Idole du familier"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:86
+msgid "**, Gain 1 crystal for each of your familiars in play."
+msgstr "**, recevez 1 cristal pour chacun de vos familiers en jeu."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:87
+msgid "Necrotic Kriss"
+msgstr "Kriss nécrotique"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:88
+msgid "**, Discard or sacrifice one of your familiars to gain 4 energy tokens."
+msgstr "**, défaussez ou sacrifiez l’un de vos familiers : recevez 4 énergies."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:89
+msgid "Lantern of Xidit"
+msgstr "Lanterne de Xidit"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:90
+msgid "At the end of the game, each energy token in your reserve earns you 3 additional crystals."
+msgstr "A la fin de la partie, chaque énergie dans votre réserve vous rapporte 3 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:91
+msgid "Sealed Chest of Urm"
+msgstr "Coffre scellé d’Urm"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:92
+msgid "At the end of the game, if you only have magic items in play, gain 20 crystals."
+msgstr "A la fin de la partie, si vous n'avez en jeu que des objets magiques, recevez 20 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:93
+msgid "Mirror of the seasonssk"
+msgstr "Miroir des saisons"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:94
+msgid "**, Discard X crystals: transform X identical energy tokens from your reserve into X identical energy tokens of another type."
+msgstr "**, défaussez X cristaux : transformez X énergies identiques de votre réserve en X énergies identiques d’un autre type."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:95
+msgid "Pendant of Ragnor"
+msgstr "Pendentif de Ragnor"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:96
+msgid "Gain 1 energy for each of your magic items in play, except for the Pendant of Ragnor."
+msgstr "Recevez une énergie pour chacun de vos objets magiques en jeu, excepté le Pendentif de Ragnor."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:97
+msgid "Sid Nightshade"
+msgstr "Sid Ombrenuit"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:98
+msgid "If you are the player with the most crystals, each opponent must give you 5 additional crystals."
+msgstr "Si vous êtes le joueur possédant strictement le plus de cristaux, chaque adversaire doit vous donner 5 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:99
+msgid "Damned Soul of Onys"
+msgstr "Âme damnée d’Onys"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:100
+msgid "§§, Gain 10 crystals and 1 water energy. **, Discard a Water: Straighten the Damned Soul of Onys and pass it to the player on your left. øø, At the end of the round, lose 3 crystals."
+msgstr "§§, Recevez 10 cristaux et 1 énergie d’eau. **, défaussez : passez l’Âme damnée d’Onys redressée à votre voisin de gauche. øø, A la fin de la manche, perdez 3 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:101
+msgid "Heart of Argos"
+msgstr "Coeur d’Argos"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:102
+msgid "Once per turn, if you activate (**) one of your Power cards, place a Earth energy token on the Heart of Argos. At the end of the round, place this energy in your reserve."
+msgstr "Une fois par tour, si vous activez (**) l'une de vos cartes Pouvoir, placez une énergie de Terre sur le Coeur d'Argos. A la fin de la manche, placez cette énergie dans votre réserve."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:103
+msgid "Horn of Plenty"
+msgstr "Corne d'Abondance"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:104
+msgid "Discard 1 energy token at the end of the round: receive 5 crystals if the discarded energy is Earth."
+msgstr "A la fin de la manche, défaussez une énergie: si l'énergie défaussée est une Terre, recevez 5 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:105
+msgid "Familiar Catcher"
+msgstr "Filet à Familier"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:106
+msgid "Reveal the cards in the draw pile until you reveal a familiar. Either add the card to your hand or discard it. If you discard it, you may repeat the effect of this card once, but only once."
+msgstr "Révélez les cartes de la pioche jusqu'à révéler un familier. Mettez-le dans votre main ou défaussez-le. Si vous choisissez de le défausser, répétez une, et une seule fois, l'effet de cette carte."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:107
+msgid "Amulet of Time"
+msgstr "Amulette du temps"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:108
+msgid "Collect 2 energy tokens. Discard X Power cards and draw X Power cards."
+msgstr "Recevez 2 énergies. Défaussez X cartes Pouvoir: piochez X cartes Pouvoir."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:109
+msgid "Ratty Nightshade"
+msgstr "Rattus Ombrenuit"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:110
+msgid "Collect up to 2 energy tokens of your choice from each opponent's energy reserve, and place them in your own reserve."
+msgstr "Prenez jusqu'à 2 énergies de votre choix dans la réserve de chaque adversaire, puis placez-les dans la vôtre."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:112
+msgid "**, Discard 3 identical energy tokens: transmute them into 9 crystals."
+msgstr "**, Défaussez 3 énergies identiques: cristallisez les en 9 cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:114
+msgid "§§, Gain 10 crystals. **, Gain 1 crystal for each of your familiars in play."
+msgstr "§§, Recevez 10 cristaux. **, recevez 1 cristal pour chacun de vos familiers en jeu."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:119
+msgid "winter"
+msgstr "Hiver"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:120
+msgid "spring"
+msgstr "Printemps"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:121
+msgid "summer"
+msgstr "Eté"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:122
+msgid "fall"
+msgstr "Automne"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:123
+msgid "Everyone draw cards from his library"
+msgstr "Tout le monde pioche des cartes de sa bibliothèque"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:124
+msgid "No more cards in deck ! The discard pile is shuffled back into the draw pile"
+msgstr "Plus de cartes à piocher ! La défausse est remélangée dans la pioche."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:125
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:126
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:127
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:139
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:167
+msgid "${card_name}: ${player_name} gains ${points} point(s)"
+msgstr "${card_name}: ${player_name} gagne ${points} cristaux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:128
+msgid "${player_name} places 3 cards in his library"
+msgstr "${player_name} place 3 cartes dans sa bibliothèque"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:129
+msgid "${player_name} chooses a die"
+msgstr "${player_name} choisit un dé"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:130
+msgid "Exchange 2 energies"
+msgstr "Echanger 2 énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:131
+msgid "Transmute (+1)"
+msgstr "Cristalisation (+1)"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:132
+msgid "Increase summoning gauge"
+msgstr "Augmentez votre jauge d’invocation."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:133
+msgid "Choose power card"
+msgstr "Choisir une carte pouvoir"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:134
+msgid "${player_name} uses a bonus: ${bonus_name}"
+msgstr "${player_name} utilise un bonus: ${bonus_name}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:135
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:177
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:186
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:195
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:213
+msgid "${card_name}: ${player_name} increases his summoning gauge by ${nbr}"
+msgstr "${card_name}: ${player_name} augmente sa jauge d'invocation de ${nbr}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:136
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:149
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:160
+msgid "Bonus"
+msgstr "Bonus"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:137
+msgid "${player_name} transmutes ${nbr} ${energy_type} for ${points} point(s)"
+msgstr "${player_name} cristallise ${nbr} ${energy_type} pour ${points} cristaux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:138
+msgid "${card_name}: ${player_name} transmutes ${nbr} ${energy_type} for ${points} point(s)"
+msgstr "${card_name}: ${player_name} cristalise ${nbr} ${energy_type} pour ${points} cristaux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:140
+msgid "${player_name} draw a power card"
+msgstr "${player_name} pioche une carte pouvoir"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:141
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:156
+msgid "${player_name} discards ${nbr} energies"
+msgstr "${player_name} défausser ${nbr} énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:142
+msgid "free"
+msgstr "(gratuit)"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:143
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:168
+msgid "${card_name}: ${player_name} gives 1 crystal to ${player_name2}"
+msgstr "${card_name}: ${player_name} donne 1 cristal à ${player_name2}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:144
+msgid "${player_name} summons a ${card_name} for ${cost}"
+msgstr "${player_name} invoque ${card_name} pour ${cost}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:145
+msgid "${player_name} actives ${card_name}"
+msgstr "${player_name} active ${card_name}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:146
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:187
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:188
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:193
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:203
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:204
+msgid "${card_name}: ${player_name} gets ${points} crystals"
+msgstr "${card_name}: ${player_name} gagne ${points} cristaux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:147
+msgid "${card_name}: ${player_name} gives 1 crystal to ${player_name2} and gets 1 more crystal"
+msgstr "${card_name}: ${player_name} donne 1 cristal à ${player_name2} et gagne 1 autre cristal"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:148
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:150
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:202
+msgid "${player_name} places a ${energy} on ${card_name}"
+msgstr "${player_name} place un ${energy} sur ${card_name}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:151
+msgid "${card_name}: ${player_name} gets a ${energy}"
+msgstr "${card_name}: ${player_name} gagne un ${energy}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:152
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:169
+msgid "${card_name}: ${player_name} sacrifices ${sacrified}"
+msgstr "${card_name}: ${player_name} sacrifie ${sacrified}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:153
+msgid "${card_name}: ${player_name} discards all his energy tokens"
+msgstr "${card_name}: ${player_name} défausse toutes ses énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:154
+msgid "${card_name}: ${player_name} takes back ${sacrified}"
+msgstr "${card_name}: ${player_name} reprend en main ${sacrified}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:155
+msgid "${card_name}: ${player_name} discards ${discarded}"
+msgstr "${card_name}: ${player_name} défausse ${discarded}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:157
+msgid "${player_name} keeps his power card"
+msgstr "${player_name} conserve sa carte pouvoir"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:158
+msgid "${player_name} discards his power card"
+msgstr "${player_name} défausse sa carte pouvoir"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:159
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:179
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:209
+msgid "${card_name}: ${player_name} choosed a power card"
+msgstr "${card_name}: ${player_name} choisit une carte pouvoir"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:161
+msgid "${card_name}: ${player_name} moves the season token"
+msgstr "${card_name}: ${player_name} déplace le marqueur saison"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:162
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:163
+msgid "bonus"
+msgstr "bonus"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:164
+msgid "for free"
+msgstr "gratuitement"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:165
+msgid "${player_name} gains ${points} points with his dice"
+msgstr "${player_name} gagne ${points} cristaux avec son dé"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:166
+msgid "${player_name} increases his summoning gauge by one with his dice"
+msgstr "${player_name} augmente sa jauge d'invocation de un grâce à son dé"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:170
+msgid "${card_name}: ${player_name} looses ${points_disp} crystals"
+msgstr "${card_name}: ${player_name} perd ${points_disp} cristaux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:171
+msgid "${player_name} is now first player"
+msgstr "${player_name} est maintenant premier joueur"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:172
+msgid "The season token moves ${step} spaces forward"
+msgstr "Le marqueur saison avance de ${step} case(s)"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:173
+msgid "Cards played: ${player_name} gains ${points} points"
+msgstr "Cartes jouées: ${player_name} gagne ${points} points"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:174
+msgid "Remaining cards in hands: ${player_name} looses ${points_disp} points for ${nbr} cards"
+msgstr "Cartes restants en main: ${player_name} perd ${points_disp} points (${nbr} cartes)"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:175
+msgid "Bonus used: ${player_name} looses ${points_disp} points for ${nbr} bonus"
+msgstr "Bonus utilisés: ${player_name} perd ${points_disp} points (${nbr} bonus)"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:176
+msgid "${card_name}: All energies of ${player_name}`s opponents become air"
+msgstr "${card_name}: Toutes les énergies des adversaires de ${player_name} deviennent de l'Air"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:178
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:181
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:182
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:197
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:205
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:211
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:214
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:216
+msgid "${card_name}: ${player_name} gets ${points} points"
+msgstr "${card_name}: ${player_name} gagne ${points} cristaux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:180
+msgid "${player_name} discards ${nbr} card(s) and pick ${nbr} card(s)"
+msgstr "${player_name} défausse ${nbr} carte(s) et pioche ${nbr} carte(s)"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:183
+msgid "${card_name}: ${player_name} can now store up to 10 energies"
+msgstr "${card_name}: ${player_name} peut maintenant stocker jusqu'à 10 énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:184
+msgid "${card_name}: the first card of the draw pile is discarded"
+msgstr "${card_name}: la première carte de la pioche est défaussée"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:185
+msgid "${card_name}: ${player_name} replaces the card on the top of the deck"
+msgstr "${card_name}: ${player_name} replace la carte au sommet de la pioche"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:189
+msgid "${player_name} pass ${card_name} to ${player_name2}"
+msgstr "${player_name} passe ${card_name} à ${player_name2}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:190
+msgid "${card_name}: opponents of ${player_name} decreases their summoning gauge and draw a card"
+msgstr "${card_name}: les adversaires de ${player_name} diminuent leurs jauges d'invocation et piochent une carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:191
+msgid "${card_name}: ${player_name} reroll his dice and gets ${points} crystals"
+msgstr "${card_name}: ${player_name} relance son dé et gagne ${points} cristaux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:192
+msgid "${card_name}: summoning gauge is not big enough"
+msgstr "${card_name}: la jauge d'invocation n'est pas assez grande"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:194
+msgid "${card_name}: ${player_name} uses a ${energy}"
+msgstr "${card_name}: ${player_name} utilise un ${energy}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:196
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:212
+msgid "${card_name}: ${player_name} draw a power card"
+msgstr "${card_name}: ${player_name} pioche une carte pouvoir"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:198
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:199
+msgid "${card_name}: ${player_name} places ${card_name2} in his hand"
+msgstr "${card_name}: ${player_name} place ${card_name2} dans sa main"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:200
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:215
+msgid "${card_name}: ${player_name} steals ${points} points."
+msgstr "${card_name}: ${player_name} vole ${points} cristaux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:201
+msgid "${card_name}: ${player_name} placed 7 energies on Glutton Cauldron and gets ${points} crystals."
+msgstr "${card_name}: ${player_name} a placé 7 énergies sur le Chaudron Glouton et gagne ${points} cristaux."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:206
+msgid "${card_name}: ${player_name} opponents lose 4 points"
+msgstr "${card_name}: les adversaires de ${player_name} perdent 4 cristaux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:207
+msgid "${card_name}: ${player_name} gains all energy tokens that ${player_name2} has in reserve"
+msgstr "${card_name}: ${player_name} gagne toutes les énergies que ${player_name2} a en réserve"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:208
+msgid "${card_name}: ${player_name} gets ${nbr} ${energy}"
+msgstr "${card_name}: ${player_name} gagne ${nbr} ${energy}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:210
+msgid "${card_name}: ${player_name} gives a power card to ${player_name2}"
+msgstr "${card_name}: ${player_name} donne une carte pouvoir à ${player_name2}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:217
+msgid "${card_name}: ${player_name} draw a power card (${draw_card_name}) and gets ${points} energy tokens"
+msgstr "${card_name}: ${player_name} pioche une carte pouvoir (${draw_card_name}) et gagne ${points} énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:218
+msgid "Game setup"
+msgstr "Attente des autres joueurs ..."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:219
+msgid "End of game"
+msgstr "Fin de la partie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:220
+msgid "Everyone must choose a card to keep from the set"
+msgstr "Tout le monde doit choisir une carte à conserver parmis celle proposées"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:221
+msgid "${you} must choose a card to keep from the set"
+msgstr "${you} devez choisir une carte à conserver parmis celle proposées"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:222
+msgid "Everyone must choose 3 cards to be taken at the beginning of the 3rd year."
+msgstr "Tout le monde doit choisir 3 cartes qui seront récupérées au début de la 3ème année de jeu."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:223
+msgid "${you} must choose 3 cards to be taken at the beginning of the 3rd year."
+msgstr "${you} devez choisir 3 cartes qui seront récupérées au début de la 3ème année de jeu."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:224
+msgid "Everyone must choose 3 cards to be taken at the beginning of the 2nd year."
+msgstr "Tout le monde doit choisir 3 cartes qui seront récupérées au début de la 2ème année de jeu."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:225
+msgid "${you} must choose 3 cards to be taken at the beginning of the 2nd year."
+msgstr "${you} devez choisir 3 cartes qui seront récupérées au début de la 2ème année de jeu."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:226
+msgid "${actplayer} must choose a die"
+msgstr "${actplayer} doit choisir un dé"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:227
+msgid "${you} must choose a die"
+msgstr "${you} devez choisir un dé"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:228
+msgid "${actplayer} can use Die of Malice"
+msgstr "${actplayer} peut utiliser le Dé de la malice"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:229
+msgid "${you} can use Die of Malice to reroll your die"
+msgstr "${you} pouvez utiliser le Dé de la malice pour relancer votre dé"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:230
+msgid "${actplayer} can take some actions"
+msgstr "${actplayer} peut effectuer des actions"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:231
+msgid "${you} can take some actions"
+msgstr "${you} pouvez effectuer des actions"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:232
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:244
+msgid "${actplayer} can keep only ${keep} energies"
+msgstr "${actplayer} peut conserver seulement ${keep} énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:233
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:245
+msgid "${you} must discard ${trash} energies"
+msgstr "${you} devez défausser ${trash} énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:234
+msgid "${actplayer} can keep of discard his card"
+msgstr "${actplayer} peut conserver ou défausser sa carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:235
+msgid "${you} must choose to keep or discard ${card_name}"
+msgstr "${you} dois choisir de conserver ou défausser ${card_name}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:236
+msgid "${actplayer} must choose how to pay the cost of ${card_name}"
+msgstr "${actplayer} doit dire comment payer le coût de ${card_name}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:237
+msgid "${you} must choose how to pay the cost of ${card_name}:"
+msgstr "${you} devez choisir comment payer le coût de ${card_name}:"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:238
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:272
+msgid "${card_name}: ${actplayer} must add one card to his hand"
+msgstr "${card_name}: ${actplayer} doit ajouter une carte à sa main"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:239
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:273
+msgid "${card_name}: ${you} must add one card to your hand"
+msgstr "${card_name}: ${you} devez ajouter une carte à votre main"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:240
+msgid "Bonus: ${actplayer} must discard 2 energy tokens"
+msgstr "Bonus: ${actplayer} doit défausser 2 énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:241
+msgid "Bonus: ${you} must discard 2 energy tokens"
+msgstr "Bonus: ${you} doit défausser 2 énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:242
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:246
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:270
+msgid "${card_name}: ${actplayer} must choose which energy to get (x${nbr})"
+msgstr "${card_name}: ${actplayer} doit choisir quelle énergie gagner (x${nbr})"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:243
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:247
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:271
+msgid "${card_name}: ${you} must choose which energy to get (x${nbr})"
+msgstr "${card_name}: ${you} devez choisir quelle énergie gagner(x${nbr})"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:248
+msgid "${card_name}: ${actplayer} must discard 4 identical energies"
+msgstr "${card_name}: ${actplayer} doit défausser 4 énergies identiques"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:249
+msgid "${card_name}: ${you} must discard 4 identical energies"
+msgstr "${card_name}: ${you} devez défausser 4 énergies identiques"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:250
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:262
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:300
+msgid "${card_name}: ${actplayer} must discard an energy"
+msgstr "${card_name}: ${actplayer} doit défausser une énergie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:251
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:263
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:301
+msgid "${card_name}: ${you} must discard an energy"
+msgstr "${card_name}: ${you} devez défausser une énergie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:252
+msgid "${card_name}: ${actplayer} must discard or sacrifice a familiar"
+msgstr "${card_name}: ${actplayer} doit défausser ou sacrifier un familier"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:253
+msgid "${card_name}: ${you} must discard or sacrifice a familiar"
+msgstr "${card_name}: ${you} devez défausser ou sacrifier un familier"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:254
+msgid "${card_name}: ${actplayer} must choose X identical energies"
+msgstr "${card_name}: ${actplayer} doit choisir X énergies identiques"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:255
+msgid "${card_name}: ${you} must choose X identical energies"
+msgstr "${card_name}: ${you} devez choisir X énergies identiques"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:256
+msgid "${card_name}: ${actplayer} must choose a type of energy"
+msgstr "${card_name}: ${actplayer} doit choisir un type d'énergie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:257
+msgid "${card_name}: ${you} must choose to get ${nbr}:"
+msgstr "${card_name}: ${you} devez choisir de gagner ${nbr}:"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:258
+msgid "${card_name}: ${actplayer} must choose to use one energy${forfree}"
+msgstr "${card_name}: ${actplayer} doit choisir d'utiliser une énergie${forfree}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:259
+msgid "${card_name}: ${you} must choose to use one energy${forfree}"
+msgstr "${card_name}: ${you} doit choisir d'utiliser une énergie${forfree}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:260
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:294
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:302
+msgid "${card_name}: ${actplayer} must make a choice"
+msgstr "${card_name}: ${actplayer} doit faire un choix"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:261
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:295
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:303
+msgid "${card_name}: ${you} must choose:"
+msgstr "${card_name}: ${you} devez choisir:"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:264
+msgid "${card_name}: ${actplayer} must place an energy on the Cauldron"
+msgstr "${card_name}: ${actplayer} doit placer une énergie sur le Chaudron"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:265
+msgid "${card_name}: ${you} must place an energy on the Cauldron"
+msgstr "${card_name}: ${you} devez placer une énergie sur le Chaudron"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:266
+msgid "${card_name}: ${actplayer} must choose to draw or discard a card"
+msgstr "${card_name}: ${actplayer} doit choisir de piocher ou défausser une carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:267
+msgid "${card_name}: ${you} must choose to draw or discard a card"
+msgstr "${card_name}: ${you} devez choisir de piocher ou défausser une carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:268
+msgid "${card_name}: ${actplayer} must discard a card"
+msgstr "${card_name}: ${actplayer} doit défausser une carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:269
+msgid "${card_name}: ${you} must discard a card"
+msgstr "${card_name}: ${you} devez défausser une carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:274
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:276
+msgid "${card_name}: ${actplayer} must choose a card to summon for free"
+msgstr "${card_name}: ${actplayer} doit choisir une carte à invoquer gratuitement"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:275
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:277
+msgid "${card_name}: ${you} must choose a card to summon for free"
+msgstr "${card_name}: ${you} devez choisir une carte à invoquer gratuitement"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:278
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:280
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:282
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:286
+msgid "${card_name}: ${actplayer} must sacrifice a card"
+msgstr "${card_name}: ${actplayer} doit sacrifier une carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:279
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:281
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:283
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:287
+msgid "${card_name}: ${you} must sacrifice a card"
+msgstr "${card_name}: ${you} devez sacrifier une carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:284
+msgid "${card_name}: ${actplayer} must move the season token back or forward"
+msgstr "${card_name}: ${actplayer} doit déplacer le marqueur saison en avant ou en arrière"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:285
+msgid "${card_name}: ${you} must move the season token back or forward"
+msgstr "${card_name}: ${you} devez déplacer le marqueur saison en avant ou en arrière"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:288
+msgid "${card_name}: ${actplayer} must choose a card for ${target}"
+msgstr "${card_name}: ${actplayer} doit choisir une carte pour ${target}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:289
+msgid "${card_name}: ${you} must choose a card for ${target}"
+msgstr "${card_name}: ${you} devez choisir une carte pour ${target}"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:290
+msgid "${card_name}: ${actplayer} must take back a magical item"
+msgstr "${card_name}: ${actplayer} doit reprendre en main un objet magique"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:291
+msgid "${card_name}: ${you} must take back a magical item"
+msgstr "${card_name}: ${you} devez reprendre en main un objet magique"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:292
+msgid "${card_name}: ${actplayer} must choose an opponent"
+msgstr "${card_name}: ${actplayer} doit choisir un adversaire"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:293
+msgid "${card_name}: ${you} must choose an opponent"
+msgstr "${card_name}: ${you} devez choisir un adversaire"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:296
+msgid "${card_name}: ${actplayer} must choose to summon or replace a card"
+msgstr "${card_name}: ${actplayer} doit choisir d'invoquer ou de reposer une carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:297
+msgid "${card_name}: ${you} must choose to summon or replace this card"
+msgstr "${card_name}: ${you} devez choisir d'invoquer ou de reposer cette carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:298
+msgid "${card_name}: ${actplayer} must discard 3 identical energies"
+msgstr "${card_name}: ${actplayer} doit défausser 3 énergies identiques"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:299
+msgid "${card_name}: ${you} must discard 3 identical energies"
+msgstr "${card_name}: ${you} devez défausser 3 énergies identiques"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:304
+msgid "${card_name}: ${actplayer} must discard X power cards to draw X power cards"
+msgstr "${card_name}: ${actplayer} doit défausser X cartes pouvoir pour piocher X cartes pouvoir"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:305
+msgid "${card_name}: ${you} must discard X power cards to draw X power cards"
+msgstr "${card_name}: ${you} devez défausser X cartes pouvoir pour piocher X cartes pouvoir"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:306
+msgid "${card_name}: ${actplayer} must collect up to 2 energy token from each opponent`s energy reserve"
+msgstr "${card_name}: ${actplayer} doit prendre jusqu'à 2 jetons énergie dans chacune des réserves de ses adversaires"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:307
+msgid "${card_name}: ${you} must collect up to 2 energy token from each opponent`s energy reserve"
+msgstr "${card_name}: ${you} devez prendre jusqu'à 2 jetons énergie dans chacune des réserves de vos adversaires"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:308
+msgid "All faces of this die"
+msgstr "Toutes les faces de ce dé"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:309
+msgid "You must select at least 1 energy to transmute"
+msgstr "Vous devez choisir au moins 1 énergie à cristalliser"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:310
+msgid "You must select at least 1 energy to discard"
+msgstr "Vous devez choisir au moins 1 énergie à défausser"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:311
+msgid "Note: You cannot continue to transmute after having activated Potion of Life"
+msgstr "Note: Vous ne pouvez pas continuer à cristalliser après avoir activé la Potion de Vie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:312
+msgid "Summoning gauge: maximum number of card this player can have in play"
+msgstr "Jauge d'invocation: nombre maximum de cartes qu'un joueur peut avoir en jeu"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:313
+msgid "Number of power cards in hand"
+msgstr "Nombre de cartes en main"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:314
+msgid "Bonus used penalty: -5 points for 1 bonus, -12 points for 2 bonus, -20 points for 3 bonus."
+msgstr "Pénalités pour bonus utilisés: -5 pour 1 bonus, -12 pour 2 bonus, -20 pour 3 bonus."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:315
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:322
+msgid "First player"
+msgstr "Premier joueur"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:316
+msgid "Bonus: Trade 2 energy tokens for 2 energy tokens of your choice"
+msgstr "Bonus: Echanger 2 énergies contre 2 énergies de votre choix"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:317
+msgid "Bonus: You can transmute energies this turn"
+msgstr "Bonus: Vous pouvez cristalliser pendant ce tour"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:318
+msgid "Bonus: Increase your summoning gauge by one"
+msgstr "Bonus: augmenter votre jauge d'invocation de un"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:319
+msgid "Bonus: Instead of drawing 1 card this turn, draw 2 cards and keep one."
+msgstr "Bonus: au lieu de piocher 1 carte à ce tour, vous en piochez 2 et en gardez une."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:320
+msgid "Season token: indicate current time and season."
+msgstr "Marqueur de saison: indique l'instant présent et la saison."
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:321
+msgid "Year indicator (game end after the third year)"
+msgstr "Indicateur d'année (le jeu se termine après la troisième année)"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:323
+msgid "Gain energy:"
+msgstr "Gagner de l'énergie:"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:324
+msgid "You can transmute during this turn"
+msgstr "Vous pouvez cristalliser durant ce tour"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:325
+msgid "Gain ${points} crystals"
+msgstr "Gagner ${points} cristaux"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:326
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:336
+msgid "Draw a power card"
+msgstr "Piocher une carte pouvoir"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:327
+msgid "+1 to your summoning gauge"
+msgstr "+1 à votre jauge d'invocation"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:328
+msgid "If this die is not chosen, season token moves forward by ${spaces} spaces"
+msgstr "Si ce dé n'est pas choisi, le marqueur saison avance de ${spaces} cases"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:329
+msgid "Choose this die"
+msgstr "Choisir ce dé"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:330
+msgid "Familiar"
+msgstr "Familier"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:331
+msgid "Magic item"
+msgstr "Objet Magique"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:332
+msgid "Are you sure to use this bonus (points penalty at the end of the game) ?"
+msgstr "Etes-vous sûr d'utiliser ce bonus (pénalité de points à la fin de la partie) ?"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:333
+msgid "Choose selected cards"
+msgstr "Choisir les cartes sélectionnées"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:334
+msgid "Discard selected cards"
+msgstr "Défausser les cartes sélectionnées"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:335
+msgid "Transmute energies"
+msgstr "Cristalliser les énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:337
+msgid "End my turn"
+msgstr "Terminer mon tour"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:338
+msgid "Keep"
+msgstr "Conserver"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:339
+msgid "Discard"
+msgstr "Défausser"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:340
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:358
+msgid "Discard selected"
+msgstr "Défausser la sélection"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:341
+msgid "Done"
+msgstr "Terminer"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:342
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:357
+msgid "Choose selected energies"
+msgstr "Choisir les énergies sélectionnées"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:343
+msgid "Discard 3 crystals and gain 1 energy token"
+msgstr "Défausser 3 cristaux et gagner 1 énergie"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:344
+msgid "Discard 1 energy token and you can transmute this round"
+msgstr "Défausser 1 énergie et vous pouvez cristalliser à ce tour"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:345
+msgid "Draw a card"
+msgstr "Piocher une carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:346
+msgid "Discard a card"
+msgstr "Défausser une carte"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:347
+msgid "Cancel"
+msgstr "Annuler"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:348
+msgid "Reroll die"
+msgstr "Relancer le dé"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:349
+msgid "Do not reroll"
+msgstr "Ne pas relancer"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:350
+msgid "See first card on the draw pile"
+msgstr "Voir la première carte de la pioche"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:351
+msgid "Discard first card on the draw pile"
+msgstr "Défausser la première carte de la pioche"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:352
+msgid "Replace"
+msgstr "Replacer"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:353
+msgid "Summon for 4 energy tokens"
+msgstr "Invoquer pour 4 énergies"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:354
+msgid "Add this card to my hand"
+msgstr "Ajouter cette carte à ma main"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:355
+msgid "Add the next Familiar card to my hand"
+msgstr "Ajouter la prochaine carte Familier à ma main"
+
+#: /var/tournoi/www/game/translation/seasonssk/seasonssk_clientsidekeys.php:356
+msgid "Collect selected"
+msgstr "Récupérer la sélection"
+
+#~ msgid "Cards version"
+#~ msgstr "Version des cartes"
+#~ msgid "First edition"
+#~ msgstr "Première édition"
+#~ msgid "Second edition"
+#~ msgstr "Seconde édition"
+#~ msgid "§§, Gain 10 crystals"
+#~ msgstr "§§, Gagnez 10 cristaux"
+

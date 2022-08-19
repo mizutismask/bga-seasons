@@ -1,58 +1,41 @@
 <?php
 
-/**
- *------
- * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * SeasonsSK implementation : © <Your name here> <Your email address here>
- *
- * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
- * See http://en.boardgamearena.com/#!doc/Studio for more information.
- * -----
- *
- * gameoptions.inc.php
- *
- * SeasonsSK game options description
- * 
- * In this file, you can define your game options (= game variants).
- *   
- * Note: If your game has no variant, you don't have to modify this file.
- *
- * Note²: All options defined in this file should have a corresponding "game state labels"
- *        with the same ID (see "initGameStateLabels" in seasonssk.game.php)
- *
- * !! It is not a good idea to modify this file when a game is running !!
- *
- */
+/////////////////////////////////////////////////////////////////////
+///// Game options description
+/////
 
 $game_options = array(
 
-    /*
-    
-    // note: game variant ID should start at 100 (ie: 100, 101, 102, ...). The maximum is 199.
     100 => array(
-                'name' => totranslate('my game option'),    
+                'name' => totranslate('Difficulty level'),
                 'values' => array(
-
-                            // A simple value for this option:
-                            1 => array( 'name' => totranslate('option 1') )
-
-                            // A simple value for this option.
-                            // If this value is chosen, the value of "tmdisplay" is displayed in the game lobby
-                            2 => array( 'name' => totranslate('option 2'), 'tmdisplay' => totranslate('option 2') ),
-
-                            // Another value, with other options:
-                            //  description => this text will be displayed underneath the option when this value is selected to explain what it does
-                            //  beta=true => this option is in beta version right now (there will be a warning)
-                            //  alpha=true => this option is in alpha version right now (there will be a warning, and starting the game will be allowed only in training mode except for the developer)
-                            //  nobeginner=true  =>  this option is not recommended for beginners
-                            //  firstgameonly=true  =>  this option is recommended only for the first game (discovery option)
-                            3 => array( 'name' => totranslate('option 3'), 'description' => totranslate('this option does X'), 'beta' => true, 'nobeginner' => true )
-                        ),
-                'default' => 1
-            ),
-
-    */
-
+                            1 => array( 'name' => totranslate('Apprentice Wizard'), 'tmdisplay' => totranslate('Apprentice Wizard') ),
+                            2 => array( 'name' => totranslate('Magician Level'), 'tmdisplay' => totranslate('Magician Level'), 'nobeginner' => true ),
+                            3 => array( 'name' => totranslate('Archmage Level'), 'tmdisplay' => totranslate('Archmage Level'), 'nobeginner' => true ),
+                            4 => array( 'name' => totranslate('Archmage Level + Enchanted Kingdom expansion'), 'tmdisplay' => totranslate('Archmage Level + Enchanted Kingdom'), 'nobeginner' => true ),
+                            5 => array( 'name' => totranslate('Archmage Level + Path of Destiny expansion'), 'tmdisplay' => totranslate('Archmage Level + Path of Destiny'), 'nobeginner' => true ),
+                            6 => array( 'name' => totranslate('Archmage Level + Enchanted Kingdom & Path of Destiny expansions'), 'tmdisplay' => totranslate('Archmage Level + Enchanted Kingdom + Path of Destiny'), 'nobeginner' => true ),
+                            7 => array( 'name' => totranslate('Official Tournament authorized cards'), 'tmdisplay' => totranslate('Official Tournament authorized cards'), 'nobeginner' => true ),
+                            8 => array( 'name' => totranslate('Archmage Level + All expansions + Promo cards'), 'tmdisplay' => totranslate('Archmage Level + All expansions + Promo cards'), 'nobeginner' => true ),
+                            9 => array( 'name' => totranslate('Official 2022 Tournament authorized cards'), 'tmdisplay' => totranslate('Official 2022 Tournament authorized cards'), 'nobeginner' => true )
+                        )
+            )/*,
+    101 => array(
+                'name' => totranslate('Cards version'),
+                'values' => array(
+                            1 => array( 'name' => totranslate('Second edition') ),
+                            0 => array( 'name' => totranslate('First edition') )
+                        )
+            ),*/
 );
 
-
+$game_preferences = array(
+    '1' => array(
+			'name' => totranslate('Show cards art in tooltips'),
+			'needReload' => true,
+			'values' => array(
+					1 => array( 'name' => totranslate( 'yes' ) ),
+					2 => array( 'name' => totranslate( 'no' ), 'cssPref' => 'seasons_no_art_cards' )
+			)
+	),
+);

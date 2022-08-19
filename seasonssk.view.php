@@ -1,85 +1,53 @@
 <?php
+
 /**
- *------
- * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * SeasonsSK implementation : © <Your name here> <Your email address here>
+ * seasons.view.php
  *
- * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
- * See http://en.boardgamearena.com/#!doc/Studio for more information.
- * -----
+ * @author Grégory Isabelli <gisabelli@gmail.com>
+ * @copyright Grégory Isabelli <gisabelli@gmail.com>
+ * @package Game kernel
  *
- * seasonssk.view.php
  *
- * This is your "view" file.
- *
- * The method "build_page" below is called each time the game interface is displayed to a player, ie:
- * _ when the game starts
- * _ when a player refreshes the game page (F5)
- *
- * "build_page" method allows you to dynamically modify the HTML generated for the game interface. In
- * particular, you can set here the values of variables elements defined in seasonssk_seasonssk.tpl (elements
- * like {MY_VARIABLE_ELEMENT}), and insert HTML block elements (also defined in your HTML template file)
- *
- * Note: if the HTML of your game interface is always the same, you don't have to place anything here.
+ * seasons main static view construction
  *
  */
-  
-  require_once( APP_BASE_PATH."view/common/game.view.php" );
-  
-  class view_seasonssk_seasonssk extends game_view
-  {
+
+require_once(APP_BASE_PATH . "view/common/game.view.php");
+
+class view_seasonssk_seasonssk extends game_view {
     function getGameName() {
         return "seasonssk";
-    }    
-  	function build_page( $viewArgs )
-  	{		
-  	    // Get players & players number
+    }
+    function build_page($viewArgs) {
+        // Get players
         $players = $this->game->loadPlayersBasicInfos();
-        $players_nbr = count( $players );
+        self::watch("players", $players);
 
-        /*********** Place your code below:  ************/
+        $player_nbr = count($players);    // Note: number of players = number of rows
 
+        $this->page->begin_block("seasons_seasons", "player");
 
-        /*
-        
-        // Examples: set the value of some element defined in your tpl file like this: {MY_VARIABLE_ELEMENT}
+        global $g_user;
 
-        // Display a specific number / string
-        $this->tpl['MY_VARIABLE_ELEMENT'] = $number_to_display;
+        $this->tpl['CURRENT_PLAYER_ID'] = $g_user->get_id();
+        if (isset($players[$g_user->get_id()]))
+            $this->tpl['CURRENT_PLAYER_NAME'] = $players[$g_user->get_id()]['player_name'];
+        else
+            $this->tpl['CURRENT_PLAYER_NAME'] = '';
 
-        // Display a string to be translated in all languages: 
-        $this->tpl['MY_VARIABLE_ELEMENT'] = self::_("A string to be translated");
-
-        // Display some HTML content of your own:
-        $this->tpl['MY_VARIABLE_ELEMENT'] = self::raw( $some_html_code );
-        
-        */
-        
-        /*
-        
-        // Example: display a specific HTML block for each player in this game.
-        // (note: the block is defined in your .tpl file like this:
-        //      <!-- BEGIN myblock --> 
-        //          ... my HTML code ...
-        //      <!-- END myblock --> 
-        
-
-        $this->page->begin_block( "seasonssk_seasonssk", "myblock" );
-        foreach( $players as $player )
-        {
-            $this->page->insert_block( "myblock", array( 
-                                                    "PLAYER_NAME" => $player['player_name'],
-                                                    "SOME_VARIABLE" => $some_value
-                                                    ...
-                                                     ) );
+        foreach ($players as $player) {
+            if ($player['player_id'] != $g_user->get_id()) {
+                $this->page->insert_block("player", array(
+                    "PLAYER_ID" => $player['player_id'],
+                    "PLAYER_NAME" => $player['player_name']
+                ));
+            }
         }
-        
-        */
 
+        $this->tpl['CARDS_FOR_YEAR_2'] = self::_("Your cards for year II");
+        $this->tpl['CARDS_FOR_YEAR_3'] = self::_("Your cards for year III");
+        $this->tpl['OTUS_TITLE'] = self::_("Otus the Oracle");
 
-
-        /*********** Do not change anything below this line  ************/
-  	}
-  }
-  
-
+        $this->tpl['YEAR_I'] = self::_("Year I (your starting hand)");
+    }
+}
