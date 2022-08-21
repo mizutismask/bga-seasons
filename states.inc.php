@@ -17,6 +17,8 @@
 if (!defined('ST_END_SCORE')) {
     define('ST_END_SCORE', 90);
     define('ST_END_GAME', 99);
+    define('STATE_DEBUGGING_END', 100);
+    
 }
 /*
    Game state machine is a tool used to facilitate game developpement by doing common stuff that can be set up
@@ -61,21 +63,8 @@ $machinestates = array(
         "description" => clienttranslate("Game setup"),
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array("" => 2)
+        "transitions" => array("" => 98)
     ),
-
-    // Note: ID=2 => your first state
-
-    2 => array(
-        "name" => "playerTurn",
-        "description" => clienttranslate('${actplayer} must play a card or pass'),
-        "descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
-        "type" => "activeplayer",
-        "possibleactions" => array("playCard", "pass"),
-        "transitions" => array("playCard" => 2, "pass" => 2,"score" => ST_END_SCORE)
-    ),
-
-   
 
     /////////// Draft & deck building phase ////////////////
 
@@ -1063,25 +1052,22 @@ $machinestates = array(
 
     /////////// End of game ////////////////
 
+    STATE_DEBUGGING_END => [ // active player state for debugging end of game
+        "name" => "debuggingEnd",
+        "description" => clienttranslate('${actplayer} Game is Over'),
+        "descriptionmyturn" => clienttranslate('${you} Game is Over'),
+        "type" => "activeplayer",
+        "possibleactions" => ["endGame"],
+        "transitions" => ["next" => 99, "loopback" => STATE_DEBUGGING_END] // 
+    ],
+
     98 => array(
         "name" => "finalScoring",
         "description" => '',
         "type" => "game",
         "action" => "stFinalScoring",
-        "transitions" => array("" => 99)
+        "transitions" => array("debugEnd" => STATE_DEBUGGING_END,"realEnd" => 99)
     ),
-
-
-    ST_END_SCORE => [
-        "name" => "endScore",
-        "description" => "",
-        "type" => "game",
-        "action" => "stEndScore",
-        "transitions" => [
-            "endGame" => ST_END_GAME,
-            "playerTurn" => 2//to remove
-        ],
-    ],
 
     // Final state.
     // Please do not modify (and do not overload action/args methods).

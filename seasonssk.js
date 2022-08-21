@@ -43,12 +43,13 @@ define([
 
                 this.isDebug = window.location.host == 'studio.boardgamearena.com';
                 this.log = this.isDebug ? console.log.bind(window.console) : function () { };
-                this.ANIMATION_MS = 500;
-                this.SCORE_MS = 1500;
+                //this.animationDuration = 500;
+                this.scoreAnimationDuration = 1500;
             },
+
             setup: function (gamedatas) {
                 console.log("start creating player boards");
-                if (Number(gamedatas.gamestate.id) == 98 || Number(gamedatas.gamestate.id) == 98) { // score or end
+                if (Number(gamedatas.gamestate.id) == 98 || Number(gamedatas.gamestate.id) == 99 || Number(gamedatas.gamestate.id) == 100) { // score or end
                     this.onEnteringShowScore(true);
 
                 }
@@ -1323,7 +1324,7 @@ define([
                             }
                         }
                         break;
-                    case 'endScore':
+                    case 'finalScoring':
                         this.onEnteringShowScore();
                         break;
                 }
@@ -1660,25 +1661,19 @@ define([
                 }
 
                 const players = Object.values(this.gamedatas.players);
-                if (players.length == 1) {
-                    players.push(this.gamedatas.tom);
-                }
 
                 players.forEach(player => {
                     //if we are a reload of end state, we display values, else we wait for notifications
                     const playerScore = fromReload ? (player) : null;
-
-                    const bonusActionsScore = fromReload && Number(player.id) > 0 ? (this.fireflyCounters[player.id].getValue() >= this.companionCounters[player.id].getValue() ? 10 : 0) : undefined;
-                    const remainingCardsScore = fromReload ? this.footprintCounters[player.id].getValue() : undefined;
 
                     dojo.place(`<tr id="score${player.id}">
                     <td class="player-name" style="color: #${player.color}">${player.name}</td>
                     <td id="cristals-score${player.id}" class="score-number cristals-score">${playerScore?.cristalsScore !== undefined ? playerScore.cristalsScore : ''}</td>
                     <td id="raw-cards-score${player.id}" class="score-number raw-cards-score">${playerScore?.rawCardsScore !== undefined ? playerScore.rawCardsScore : ''}</td>
                     <td id="eog-cards-score${player.id}" class="score-number eog-cards-score">${playerScore?.eogCardsScore !== undefined ? playerScore.eogCardsScore : ''}</td>
-                    <td id="bonus-actions-score${player.id}" class="score-number bonus-actions-score">${bonusActionsScore !== undefined ? bonusActionsScore : ''}</td>
-                    <td id="remaining-cards-score${player.id}" class="score-number remaining-cards-score">${remainingCardsScore !== undefined ? remainingCardsScore : ''}</td>
-                    <td id="after-end-score${player.id}" class="score-number after-end-score total">${playerScore?.scoreAfterEnd !== undefined ? playerScore.scoreAfterEnd : ''}</td>
+                    <td id="bonus-actions-score${player.id}" class="score-number bonus-actions-score">${playerScore?.bonusActionsScore !== undefined ? playerScore.bonusActionsScore : ''}</td>
+                    <td id="remaining-cards-score${player.id}" class="score-number remaining-cards-score">${playerScore?.remainingCardsScore !== undefined ? playerScore.remainingCardsScore : ''}</td>
+                    <td id="after-end-score${player.id}" class="score-number after-end-score total">${playerScore?.score !== undefined ? playerScore.score : ''}</td>
                 </tr>`, 'score-table-body');
                 });
 
@@ -1746,12 +1741,12 @@ define([
 
                 var _this = this;
                 var notifs = [
-                    ['cristalsScore', this.SCORE_MS],
-                    ['rawCardsScore', this.SCORE_MS],
-                    ['eogCardsScore', this.SCORE_MS],
-                    ['scoreFireflies', this.SCORE_MS],
-                    ['scoreFootprints', this.SCORE_MS],
-                    ['scoreAfterEnd', this.SCORE_MS],
+                    ['cristalsScore', this.scoreAnimationDuration],
+                    ['rawCardsScore', this.scoreAnimationDuration],
+                    ['eogCardsScore', this.scoreAnimationDuration],
+                    ['scoreAdditionalActions', this.scoreAnimationDuration],
+                    ['scoreRemainingCards', this.scoreAnimationDuration],
+                    ['scoreAfterEnd', this.scoreAnimationDuration],
                 ];
                 notifs.forEach(function (notif) {
                     dojo.subscribe(notif[0], _this, "notif_" + notif[0]);
@@ -1775,19 +1770,19 @@ define([
                 this.log('notif_eogCardsScore', notif.args);
                 this.setScore(notif.args.playerId, 3, notif.args.points);
             },
-            notif_scoreFireflies: function (notif) {
-                this.log('notif_scoreFireflies', notif.args);
+            notif_scoreAdditionalActions: function (notif) {
+                this.log('notif_scoreAdditionalActions', notif.args);
                 this.setScore(notif.args.playerId, 4, notif.args.points);
             },
-            notif_scoreFootprints: function (notif) {
-                this.log('notif_scoreFootprints', notif.args);
+            notif_scoreRemainingCards: function (notif) {
+                this.log('notif_scoreRemainingCards', notif.args);
                 this.setScore(notif.args.playerId, 5, notif.args.points);
             },
             notif_scoreAfterEnd: function (notif) {
                 this.log('notif_scoreAfterEnd', notif.args);
                 this.setScore(notif.args.playerId, 6, notif.args.points);
             },
-            
+
             notif_updateCardCount: function (notif) {
                 for (var player_id in notif.args.count) {
                     $('handcount_' + player_id).innerHTML = notif.args.count[player_id];
