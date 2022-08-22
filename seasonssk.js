@@ -11,6 +11,9 @@
  *
  * SeasonsSK user interface script
  */
+const CURRENT_SEASON_OPACITY = 0.0;
+const OTHER_SEASON_OPACITY = 0.4;
+const SVG_SIZE = 400;
 
 define([
     "dojo", "dojo/_base/declare",
@@ -42,6 +45,9 @@ define([
                 this.nextInvocCardId = -1;
             },
             setup: function (gamedatas) {
+
+                this.setupSeasonHighlighter();
+
                 console.log("start creating player boards");
                 for (var player_id in gamedatas.players) {
                     var player = gamedatas.players[player_id];
@@ -291,6 +297,53 @@ define([
             ///////////////////////////////////////////////////
             //// Utilities
 
+            /**
+             * Creates four circle quarters with different opacities to highlight the current season.
+             */
+            setupSeasonHighlighter() {
+                const svgRoot = document.getElementById("seasonHighlighter");
+                const svgHighlightSeason = `<svg width="${SVG_SIZE}" height="${SVG_SIZE}">
+                    <path
+                        d="${this.getSectorPath(SVG_SIZE / 2, SVG_SIZE / 2, SVG_SIZE, 0, 90)}"
+                        fill-opacity="${CURRENT_SEASON_OPACITY}"
+                    />
+                    <path
+                        d="${this.getSectorPath(SVG_SIZE / 2, SVG_SIZE / 2, SVG_SIZE, 270, 0)}"
+                        fill-opacity="${CURRENT_SEASON_OPACITY}"
+                    />
+                     <path
+                        d="${this.getSectorPath(SVG_SIZE / 2, SVG_SIZE / 2, SVG_SIZE, 180, 270)}"
+                        fill-opacity="${CURRENT_SEASON_OPACITY}"
+                    />
+                    <path
+                        d="${this.getSectorPath(SVG_SIZE / 2, SVG_SIZE / 2, SVG_SIZE, 90, 180)}"
+                        fill-opacity="${CURRENT_SEASON_OPACITY}"
+                    />
+                </svg>`;
+                const svgNode = document.createRange().createContextualFragment(svgHighlightSeason);
+                svgRoot.appendChild(svgNode);
+            },
+
+            changeCurrentSeason(currentSeason) {
+                dojo.query(`#seasonHighlighter svg path`).forEach(quarter => {
+                    dojo.attr(quarter, "fill-opacity", OTHER_SEASON_OPACITY);
+                });
+                dojo.query(`#seasonHighlighter svg path:nth-child(${currentSeason})`).forEach(quarter => {
+                    dojo.attr(quarter, "fill-opacity", CURRENT_SEASON_OPACITY);
+                });
+            },
+
+            getSectorPath: function (x, y, outerDiameter, a1, a2) {
+                const degtorad = Math.PI / 180;
+                const cr = outerDiameter / 2;
+                const cx1 = Math.cos(degtorad * a2) * cr + x;
+                const cy1 = -Math.sin(degtorad * a2) * cr + y;
+                const cx2 = Math.cos(degtorad * a1) * cr + x;
+                const cy2 = -Math.sin(degtorad * a1) * cr + y;
+
+                return `M${x} ${y} ${cx1} ${cy1} A${cr} ${cr} 0 0 1 ${cx2} ${cy2}Z`;
+            },
+
             // Get card original type (see "Raven")
             ot: function (card_type_id) {
                 var sep = card_type_id.indexOf(';');
@@ -335,10 +388,18 @@ define([
             setSeasonDate: function (year, month) {
                 if (toint(year) == 0) { year = 1; }
                 if (toint(year) > 3) { year = 3; } this.slideToObject($('current_year'), 'yearplace_' + year, 1000).play();
-                this.slideToObject($('current_month'), 'monthplace_' + month, 1000).play();
+
+                var monthAnimation = this.slideToObject($('current_month'), 'monthplace_' + month, 1000);
+                dojo.connect(monthAnimation, 'onEnd', dojo.hitch(this, 'changeCurrentSeason', this.getCurrentSeasonFromMonth(month)));
+                monthAnimation.play();
 
                 if (toint(year) > 1) { dojo.style('library_2_wrap', 'display', 'none'); }
                 if (toint(year) > 2) { dojo.style('library_3_wrap', 'display', 'none'); }
+
+            },
+
+            getCurrentSeasonFromMonth: function (month) {
+                return Math.floor((month - 1) / 3) + 1;
             },
 
             setupNewDie: function (die_div, die_type_id, die_id) {

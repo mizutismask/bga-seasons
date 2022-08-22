@@ -1,6 +1,7 @@
 {OVERALL_GAME_HEADER}
 
 <div id="board">
+    <div id="seasonHighlighter"></div>
     <div class="monthplace" id="monthplace_1"></div>
     <div class="monthplace" id="monthplace_2"></div>
     <div class="monthplace" id="monthplace_3"></div>
