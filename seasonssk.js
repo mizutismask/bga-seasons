@@ -289,6 +289,10 @@ define([
                 this.addTooltip('current_month', _('Season token: indicate current time and season.'), '');
                 this.addTooltip('current_year', _('Year indicator (game end after the third year)'), '');
 
+                this.addTooltip('convertFor3', '', _('Transmute one token of this energy into 3 cristals'));
+                this.addTooltip('convertFor2', '', _('Transmute one token of this energy into 2 cristals'));
+                this.addTooltip('convertFor1', '', _('Transmute one of these energies into 1 cristal'));
+
                 this.ensureSpecificImageLoading(['../common/point.png']);
 
                 this.setupNotifications();
@@ -389,13 +393,39 @@ define([
                 if (toint(year) == 0) { year = 1; }
                 if (toint(year) > 3) { year = 3; } this.slideToObject($('current_year'), 'yearplace_' + year, 1000).play();
 
+                var currentSeason = this.getCurrentSeasonFromMonth(month);
                 var monthAnimation = this.slideToObject($('current_month'), 'monthplace_' + month, 1000);
-                dojo.connect(monthAnimation, 'onEnd', dojo.hitch(this, 'changeCurrentSeason', this.getCurrentSeasonFromMonth(month)));
+                dojo.connect(monthAnimation, 'onEnd', dojo.hitch(this, 'changeCurrentSeason', currentSeason));
                 monthAnimation.play();
+
+                dojo.query("#seasons_container").removeClass("season_1 season_2 season_3 season_4").addClass("season_" + currentSeason);
+
+                switch (currentSeason) {
+                    //red1 blue2 yellow3 green4
+                    case 1:
+                        this.updateConversionReminder(["energy4", "energy3", "energy2", "energy1"]);
+                        break;
+                    case 2:
+                        this.updateConversionReminder(["energy3", "energy1", "energy4", "energy2"]);
+                        break;
+                    case 3:
+                        this.updateConversionReminder(["energy1", "energy2", "energy3", "energy4"]);
+                        break;
+                    case 4:
+                        this.updateConversionReminder(["energy2", "energy4", "energy1", "energy3"]);
+                        break;
+                }
 
                 if (toint(year) > 1) { dojo.style('library_2_wrap', 'display', 'none'); }
                 if (toint(year) > 2) { dojo.style('library_3_wrap', 'display', 'none'); }
 
+            },
+
+            updateConversionReminder: function (energies) {
+                dojo.query("#convertFor3 .sicon:first-child").removeClass("energy4 energy1 energy2 energy3").addClass(energies[0]);
+                dojo.query("#convertFor2 .sicon:first-child").removeClass("energy4 energy1 energy2 energy3").addClass(energies[1]);
+                dojo.query("#convertFor1 #energyType1").removeClass("energy4 energy1 energy2 energy3").addClass(energies[2]);
+                dojo.query("#convertFor1 #energyType2").removeClass("energy4 energy1 energy2 energy3").addClass(energies[3]);
             },
 
             getCurrentSeasonFromMonth: function (month) {

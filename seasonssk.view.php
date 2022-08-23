@@ -49,5 +49,9 @@ class view_seasonssk_seasonssk extends game_view {
         $this->tpl['OTUS_TITLE'] = self::_("Otus the Oracle");
 
         $this->tpl['YEAR_I'] = self::_("Year I (your starting hand)");
+
+        $this->tpl['CONVERT3'] = self::_("Transmute this energy into 3 cristals");
+        $this->tpl['CONVERT2'] = self::_("Transmute this energy into 2 cristals");
+        $this->tpl['CONVERT1'] = self::_("Transmute one of these energies into 1 cristal");
     }
 }

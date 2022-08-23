@@ -1,98 +1,114 @@
 {OVERALL_GAME_HEADER}
-
-<div id="board">
-    <div id="seasonHighlighter"></div>
-    <div class="monthplace" id="monthplace_1"></div>
-    <div class="monthplace" id="monthplace_2"></div>
-    <div class="monthplace" id="monthplace_3"></div>
-    <div class="monthplace" id="monthplace_4"></div>
-    <div class="monthplace" id="monthplace_5"></div>
-    <div class="monthplace" id="monthplace_6"></div>
-    <div class="monthplace" id="monthplace_7"></div>
-    <div class="monthplace" id="monthplace_8"></div>
-    <div class="monthplace" id="monthplace_9"></div>
-    <div class="monthplace" id="monthplace_10"></div>
-    <div class="monthplace" id="monthplace_11"></div>
-    <div class="monthplace" id="monthplace_12"></div>
-    <div class="yearplace" id="yearplace_1"></div>
-    <div class="yearplace" id="yearplace_2"></div>
-    <div class="yearplace" id="yearplace_3"></div>
-    <div id="current_month"></div>
-    <div id="current_year"></div>
-    <div id="bonus1" class="bonus"></div>
-    <div id="bonus2" class="bonus"></div>
-    <div id="bonus3" class="bonus"></div>
-    <div id="bonus4" class="bonus"></div>
-</div>
-<div id="season_library_choice" style="display:none">
-    <div class="whiteblock">
-        <h3>{YEAR_I}</h3>
-        <div class="library_build_wrap">
-            <div id="library_build_1"></div>
+<div id="seasons_container">
+    <div id="board">
+        <div id="seasonHighlighter"></div>
+        <div class="monthplace" id="monthplace_1"></div>
+        <div class="monthplace" id="monthplace_2"></div>
+        <div class="monthplace" id="monthplace_3"></div>
+        <div class="monthplace" id="monthplace_4"></div>
+        <div class="monthplace" id="monthplace_5"></div>
+        <div class="monthplace" id="monthplace_6"></div>
+        <div class="monthplace" id="monthplace_7"></div>
+        <div class="monthplace" id="monthplace_8"></div>
+        <div class="monthplace" id="monthplace_9"></div>
+        <div class="monthplace" id="monthplace_10"></div>
+        <div class="monthplace" id="monthplace_11"></div>
+        <div class="monthplace" id="monthplace_12"></div>
+        <div class="yearplace" id="yearplace_1"></div>
+        <div class="yearplace" id="yearplace_2"></div>
+        <div class="yearplace" id="yearplace_3"></div>
+        <div id="current_month"></div>
+        <div id="current_year"></div>
+        <div id="bonus1" class="bonus"></div>
+        <div id="bonus2" class="bonus"></div>
+        <div id="bonus3" class="bonus"></div>
+        <div id="bonus4" class="bonus"></div>
+    </div>
+    <div id="season_library_choice" style="display:none">
+        <div class="whiteblock">
+            <h3>{YEAR_I}</h3>
+            <div class="library_build_wrap">
+                <div id="library_build_1"></div>
+            </div>
+        </div>
+        <div class="whiteblock">
+            <h3>{CARDS_FOR_YEAR_2}</h3>
+            <div class="library_build_wrap">
+                <div id="library_build_2"></div>
+            </div>
+        </div>
+        <div class="whiteblock">
+            <h3>{CARDS_FOR_YEAR_3}</h3>
+            <div class="library_build_wrap">
+                <div id="library_build_3"></div>
+            </div>
         </div>
     </div>
-    <div class="whiteblock">
-        <h3>{CARDS_FOR_YEAR_2}</h3>
-        <div class="library_build_wrap">
-            <div id="library_build_2"></div>
+
+
+    <div id="season_dices_wrap" class="whiteblock seasons_rightpanel">
+        <h3>{LB_SEASONS_DICES}</h3>
+        <div id="seasons_dices"></div>
+        <div class="conversion_reminder">
+            <div id="convertFor3" class="reminder">
+                <div class="sicon"></div>
+                <div class="sicon icon_cristal">3</div>
+            </div>
+            <div class="sicon icon_separator"></div>
+             <div id="convertFor2" class="reminder">
+                <div class="sicon"></div>
+                <div class="sicon icon_cristal">2</div>
+            </div>
+             <div class="sicon icon_separator"></div>
+             <div id="convertFor1" class="reminder">
+                <div id="energyType1" class="sicon energy"></div>
+                <div id="energyType2" class="sicon energy"></div>
+                <div class="sicon icon_cristal">1</div>
+            </div>
         </div>
     </div>
-    <div class="whiteblock">
-        <h3>{CARDS_FOR_YEAR_3}</h3>
-        <div class="library_build_wrap">
-            <div id="library_build_3"></div>
+
+    <div id="choiceCards" class="whiteblock seasons_rightpanel">
+        <h3>{LB_CARDS_DRAWN}</h3>
+        <div id="choiceCardsStock">
         </div>
     </div>
-</div>
+
+    <div id="myhand" class="whiteblock seasons_rightpanel">
+        <h3>{LB_MY_HAND}</h3>
+        <div id="player_hand">
+        </div>
+    </div>
+
+    <br class="clear"/>
 
 
-<div id="season_dices_wrap" class="whiteblock seasons_rightpanel">
-    <h3>{LB_SEASONS_DICES}</h3>
-    <div id="seasons_dices">
+        <div class="whiteblock tableau" id="currentPlayerTablea">
+            <h3>{CURRENT_PLAYER_NAME}</h3>
+            <div id="player_tableau_{CURRENT_PLAYER_ID}"></div>
+        </div> 
+
+    <!-- BEGIN player -->
+        <div class="whiteblock tableau">
+            <h3>{PLAYER_NAME}</h3>
+            <div id="player_tableau_{PLAYER_ID}"></div>
+        </div>    
+    <!-- END player -->
+
+    <div class="whiteblock" id="otus_wrap">
+        <h3>{OTUS_TITLE}:</h3>
+        <div id="otus"></div>
+    </div>
+    
+    <div class="whiteblock" id="library_2_wrap">
+        <h3>{CARDS_FOR_YEAR_2}:</h3>
+        <div id="library_2"></div>
+    </div>
+    <div class="whiteblock" id="library_3_wrap">
+        <h3>{CARDS_FOR_YEAR_3}:</h3>
+        <div id="library_3"></div>
     </div>
 </div>
-
-<div id="choiceCards" class="whiteblock seasons_rightpanel">
-    <h3>{LB_CARDS_DRAWN}</h3>
-    <div id="choiceCardsStock">
-    </div>
-</div>
-
-<div id="myhand" class="whiteblock seasons_rightpanel">
-    <h3>{LB_MY_HAND}</h3>
-    <div id="player_hand">
-    </div>
-</div>
-
-<br class="clear"/>
-
-
-    <div class="whiteblock tableau" id="currentPlayerTablea">
-        <h3>{CURRENT_PLAYER_NAME}</h3>
-        <div id="player_tableau_{CURRENT_PLAYER_ID}"></div>
-    </div> 
-
-<!-- BEGIN player -->
-    <div class="whiteblock tableau">
-        <h3>{PLAYER_NAME}</h3>
-        <div id="player_tableau_{PLAYER_ID}"></div>
-    </div>    
-<!-- END player -->
-
-<div class="whiteblock" id="otus_wrap">
-    <h3>{OTUS_TITLE}:</h3>
-    <div id="otus"></div>
-</div>
-  
-<div class="whiteblock" id="library_2_wrap">
-    <h3>{CARDS_FOR_YEAR_2}:</h3>
-    <div id="library_2"></div>
-</div>
-<div class="whiteblock" id="library_3_wrap">
-    <h3>{CARDS_FOR_YEAR_3}:</h3>
-    <div id="library_3"></div>
-</div>
-
 <script type="text/javascript">
 
 // Templates
