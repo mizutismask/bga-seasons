@@ -57,6 +57,9 @@ define([
                     else { player.choose_opponent = ''; }
 
                     dojo.place(this.format_block('jstpl_player_board', player), player_board_div);
+                    dojo.query("#bonusUsedCube_" + player_id).addClass('bonusUsed' + player.nb_bonus);
+
+                    this.disableBonusActions(player_id, toint(player.nb_bonus) == 3);
 
                     $('invocation_level_' + player_id).innerHTML = player.invocation;
                     if (gamedatas.handcount[player_id]) { $('handcount_' + player_id).innerHTML = gamedatas.handcount[player_id]; }
@@ -94,6 +97,7 @@ define([
                     this.setReserveSize(player_id, player.reserve_size);
 
                     this.playerTableau[player_id] = new ebg.stock();
+                    //console.log("************", player_id, this.playerTableau);
                     this.playerTableau[player_id].create(this, $('player_tableau_' + player_id), 124, 173);
                     this.playerTableau[player_id].image_items_per_row = 10;
                     this.playerTableau[player_id].extraClasses = 'thickness';
@@ -107,7 +111,7 @@ define([
                     else {
                         dojo.connect(this.playerTableau[player_id], 'onChangeSelection', this, 'onPowerCardActivation');
                     }
-
+                    dojo.attr("left_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 92));
                 }
 
                 this.addTooltipToClass('tinvocationlevel', _('Summoning gauge: maximum number of cards this player can have in play (maximum value: 15)'), '');
@@ -281,11 +285,6 @@ define([
 
                 dojo.query('.bonus').connect('onclick', this, 'onUseBonus');
 
-                this.addTooltip('bonus1', '', _('Bonus: Trade 2 energy tokens for 2 energy tokens of your choice'));
-                this.addTooltip('bonus2', '', _('Bonus: You can transmute energies this turn'));
-                this.addTooltip('bonus3', '', _('Bonus: Increase your summoning gauge by one'));
-                this.addTooltip('bonus4', '', _('Bonus: Instead of drawing 1 card this turn, draw 2 cards and keep one.'));
-
                 this.addTooltip('current_month', _('Season token: indicate current time and season.'), '');
                 this.addTooltip('current_year', _('Year indicator (game end after the third year)'), '');
 
@@ -300,7 +299,18 @@ define([
 
             ///////////////////////////////////////////////////
             //// Utilities
+            getPlayerAvatar(pId) {
+                //console.log("uuuuuuuuuuu", pId, $('avatar_' + pId));
+                return $('avatar_' + pId)
+                    ? dojo.attr('avatar_' + pId, 'src')
+                    : 'https://en.studio.boardgamearena.com:8083/data/avatar/noimage.png';
+            },
 
+            /** 184, 92, 50, 32 are valid sizes. */
+            getPlayerAvatarWithSize(pId, size) {
+                let url = this.getPlayerAvatar(pId);
+                return url.replace(/_[0-9]{2}./, "_" + size+".");
+            },
             /**
              * Creates four circle quarters with different opacities to highlight the current season.
              */
@@ -346,6 +356,16 @@ define([
                 const cy2 = -Math.sin(degtorad * a1) * cr + y;
 
                 return `M${x} ${y} ${cx1} ${cy1} A${cr} ${cr} 0 0 1 ${cx2} ${cy2}Z`;
+            },
+
+            queryFirst: function (query) {
+                return document.querySelector(query);
+            },
+
+            queryFirstId: function (query, defaultValue) {
+                var res = document.querySelector(query);
+                if (!res) return defaultValue;
+                return res.id;
             },
 
             // Get card original type (see "Raven")
@@ -618,10 +638,15 @@ define([
                 var backy = 54 * (toint(face) - 1);
                 dojo.style('playerdie_' + dice_player, 'display', 'block');
                 dojo.style('playerdie_' + dice_player, 'backgroundPosition', '-' + backx + 'px -' + backy + 'px');
-
                 this.placeOnObject('playerdie_' + dice_player, 'seasons_dices_item_' + dice);
                 this.slideToObject('playerdie_' + dice_player, 'playerdie_wrap_' + dice_player).play();
                 this.addTooltipHtml('playerdie_' + dice_player, this.getDieTooltip(dice_type), _('Chosen die'));
+
+                dojo.style('playerdie_left_' + dice_player, 'display', 'block');
+                dojo.style('playerdie_left_' + dice_player, 'backgroundPosition', '-' + backx + 'px -' + backy + 'px');
+                this.placeOnObject('playerdie_left_' + dice_player, 'seasons_dices_item_' + dice);
+                this.slideToObject('playerdie_left_' + dice_player, 'playerdie_wrap_left_' + dice_player).play();
+                this.addTooltipHtml('playerdie_left_' + dice_player, this.getDieTooltip(dice_type), _('Chosen die'));
 
                 this.seasonDices.removeFromStockById(dice);
             },
@@ -1965,6 +1990,30 @@ define([
                 var oldnbr = toint(notif.args.bonus_used) - 1;
                 dojo.removeClass('bonusused_' + notif.args.player_id, 'bonusused' + oldnbr);
                 dojo.addClass('bonusused_' + notif.args.player_id, 'bonusused' + notif.args.bonus_used);
+                dojo.query("#bonusUsedCube_" + notif.args.player_id).removeClass('bonusUsed' + oldnbr).addClass('bonusUsed' + notif.args.bonus_used);
+                this.disableBonusActions(notif.args.player_id, toint(notif.args.bonus_used) == 3);
+            },
+
+            disableBonusActions: function (player_id, disable) {
+                let bonusesQuery = "#leftPlayerBoard_" + player_id + " .bonus";
+                if (disable) {
+                    dojo.query(bonusesQuery).removeClass("enabled").forEach(element => {
+                        this.addTooltip(element.id, '', _("You've already used your 3 possible bonus actions"));
+                    });
+                }
+                else {
+                    dojo.query(bonusesQuery).addClass("enabled");
+                    this.addTooltip('bonus1_' + player_id, '', _('Bonus: Trade 2 energy tokens for 2 energy tokens of your choice'));
+                    this.addTooltip('bonus2_' + player_id, '', _('Bonus: You can transmute energies this turn'));
+                    this.addTooltip('bonus3_' + player_id, '', _('Bonus: Increase your summoning gauge by one'));
+                    this.addTooltip('bonus_4' + player_id, '', _('Bonus: Instead of drawing 1 card this turn, draw 2 cards and keep one.'));
+                }
+
+                /* console.log("+++++", dojo.query("#leftPlayerBoard_" + player_id + " .bonus1").);
+                 this.addTooltip(this.queryFirst("#leftPlayerBoard_" + player_id + " .bonus1"), '', _("You've already used your 3 possible bonus actions"));
+                 this.addTooltip('bonus2', '', _("You've already used your 3 possible bonus actions"));
+                 this.addTooltip('bonus3', '', _("You've already used your 3 possible bonus actions"));
+                 this.addTooltip('bonus4', '', _("You've already used your 3 possible bonus actions"));*/
             },
             notif_bonusBack: function (notif) {
                 console.log('notif_bonusBack');

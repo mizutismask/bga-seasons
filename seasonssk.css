@@ -10,7 +10,8 @@
 	background-image: url("img/board.png");
 	float: left;
 	position: relative;
-    /*box-shadow: 0px 0px 7px 8px #e9b415;*/
+	box-shadow: 0px 0px 10px 4px #e9b415;
+    border-radius: 210px;
 }
 #season_library_choice {
 	width: 410px;
@@ -21,16 +22,16 @@
 }
 
 .season_1 #season_dices_wrap {
-	border: 2px solid teal;
+	border: 2px solid #008080;
 }
 .season_2 #season_dices_wrap {
-	border: 2px solid rgb(97, 172, 27);
+	border: 2px solid #61ac1b;
 }
 .season_3 #season_dices_wrap {
-	border: 2px solid rgb(248, 234, 38);
+	border: 2px solid #f8ea26;
 }
 .season_4 #season_dices_wrap {
-	border: 2px solid rgb(252, 55, 55);
+	border: 2px solid #fc3737;
 }
 
 .seasons_rightpanel {
@@ -130,27 +131,42 @@
 	top: 183px;
 }
 
+.bonus_actions {
+	display: grid;
+	grid-template-columns: 40px 40px;
+	grid-template-rows: 56px 56px;
+	grid-column-gap: 5px;
+	grid-row-gap: 5px;
+}
+
 .bonus {
-	position: absolute;
-	width: 43px;
-	height: 60px;
 	cursor: pointer;
+	background-image: url("img/bonuses.png");
+	border-radius: 6px;
 }
-#bonus1 {
-	left: 2px;
-	top: 2px;
+.bonus1 {
+	width: 39px;
+	height: 55px;
+	background-position: -47px -3px;
 }
-#bonus2 {
-	right: 2px;
-	top: 2px;
+.bonus2 {
+	width: 39px;
+	height: 55px;
+	background-position: -92px -3px;
 }
-#bonus3 {
-	left: 2px;
-	bottom: 2px;
+.bonus3 {
+	width: 38px;
+	height: 55px;
+	background-position: -3px -3px;
 }
-#bonus4 {
-	right: 2px;
-	bottom: 2px;
+.bonus4 {
+	width: 39px;
+	height: 55px;
+	background-position: -137px -3px;
+}
+
+.enabled {
+	box-shadow: 0px 0px 1px 2px #f0ec18;
 }
 
 #season_dices_wrap {
@@ -160,7 +176,7 @@
 }
 
 #season_dices_wrap > *:not(.conversion_reminder) {
-    grid-column: 1;
+	grid-column: 1;
 }
 
 .conversion_reminder {
@@ -183,6 +199,40 @@
 	margin: 0px 3px 0px 3px;
 }
 
+/*Player board on the left*/
+.leftPlayerBoard {
+	border: 2px solid #9d7e7e;
+	border-radius: 60px;
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 5px 5px 25px 5px;
+}
+.ssn-avatar {
+	width: 80px;
+	height: 80px;
+	border: 2px solid;
+	border-radius: 40px;
+	margin-top: -38px;
+	border-color: inherit;
+}
+
+.bonus_actions_used {
+	margin-bottom: 5px;
+}
+
+.bonus_actions_used div:first-child,
+.bonus_actions_used div:last-child {
+	margin-bottom: -4px;
+}
+
+.leftPlayerBoard .icon_cristal {
+	margin-left: -105px;
+}
+.leftPlayerBoard .icon_play {
+	margin-right: -105px;
+}
 /* card */
 
 .cardtitle {
@@ -271,6 +321,29 @@
 	height: 30px;
 	background-position: -119px -35px;
 }
+.icon_black_cube {
+	width: 30px;
+	height: 30px;
+	background-position: -0px -25px;
+}
+
+.bonusUsedCube.bonusUsed0 {
+	margin-left: -87px;
+	margin-bottom: -7px;
+}
+.bonusUsedCube.bonusUsed1 {
+	margin-left: -28px;
+	margin-bottom: -4px;
+}
+.bonusUsedCube.bonusUsed2 {
+	margin-left: 28px;
+	margin-bottom: -4px;
+}
+.bonusUsedCube.bonusUsed3 {
+	margin-left: 87px;
+	margin-bottom: -7px;
+}
+
 /*todo trouver l'icone*/
 .icon_separator {
 	width: 12px;

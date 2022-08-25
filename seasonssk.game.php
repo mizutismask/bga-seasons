@@ -58,7 +58,8 @@ class SeasonsSK extends Table {
         self::DbQuery($sql);
 
         // Create players
-        $default_color = array("ff0000", "008000", "0000ff", "ffa500");
+        $default_color = array("b4df4d", "f79a06", "9147a3", "817566");
+        //$default_color = array("ff0000", "008000", "0000ff", "ffa500");
         $sql = "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar) VALUES ";
         $values = array();
         foreach ($players as $player_id => $player) {
@@ -67,7 +68,7 @@ class SeasonsSK extends Table {
         }
         $sql .= implode($values, ',');
         self::DbQuery($sql);
-        self::reattributeColorsBasedOnPreferences($players, array("ff0000", "008000", "0000ff", "ffa500"));
+        self::reattributeColorsBasedOnPreferences($players, $default_color);
         self::reloadPlayersBasicInfos();
 
         $players_count = count($players);
