@@ -19,10 +19,7 @@
         <div class="yearplace" id="yearplace_3"></div>
         <div id="current_month"></div>
         <div id="current_year"></div>
-        <div id="bonus1" class="bonus"></div>
-        <div id="bonus2" class="bonus"></div>
-        <div id="bonus3" class="bonus"></div>
-        <div id="bonus4" class="bonus"></div>
+        
     </div>
     <div id="season_library_choice" style="display:none">
         <div class="whiteblock">
@@ -52,18 +49,18 @@
         <div class="conversion_reminder">
             <div id="convertFor3" class="reminder">
                 <div class="sicon"></div>
-                <div class="sicon icon_cristal">3</div>
+                <div class="sicon icon_cristal counter">3</div>
             </div>
             <div class="sicon icon_separator"></div>
              <div id="convertFor2" class="reminder">
                 <div class="sicon"></div>
-                <div class="sicon icon_cristal">2</div>
+                <div class="sicon icon_cristal counter">2</div>
             </div>
              <div class="sicon icon_separator"></div>
              <div id="convertFor1" class="reminder">
                 <div id="energyType1" class="sicon energy"></div>
                 <div id="energyType2" class="sicon energy"></div>
-                <div class="sicon icon_cristal">1</div>
+                <div class="sicon icon_cristal counter">1</div>
             </div>
         </div>
     </div>
@@ -83,16 +80,58 @@
     <br class="clear"/>
 
 
-        <div class="whiteblock tableau" id="currentPlayerTablea">
+    <div class="whiteblock tableau" id="currentPlayerTablea">
+        <div id="leftPlayerBoard_{CURRENT_PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{CURRENT_PLAYER_COLOR}">
+            <div id="cristals_counter_{CURRENT_PLAYER_ID}" class="sicon icon_cristal counter"></div>
+            <div id="cards_points_counter_{CURRENT_PLAYER_ID}" class="sicon icon_play counter"></div>
+            <img id="left_avatar_{CURRENT_PLAYER_ID}" alt="" class="ssn-avatar" />
+            <div class="playerdie_wrap" id="playerdie_wrap_left_{CURRENT_PLAYER_ID}">
+                <div class="playerdie" id="playerdie_left_{CURRENT_PLAYER_ID}"></div>
+            </div>
             <h3>{CURRENT_PLAYER_NAME}</h3>
-            <div id="player_tableau_{CURRENT_PLAYER_ID}"></div>
-        </div> 
+            <div id="bonusUsedCube_{CURRENT_PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
+            <div class="bonus_actions_used">
+                <div id="bonusUsed1_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused0 ttbonusused"></div>
+                <div id="bonusUsed2_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused1 ttbonusused"></div>
+                <div id="bonusUsed3_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused2 ttbonusused"></div>
+                <div id="bonusUsed4_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused3 ttbonusused"></div>
+            </div>
+            <div class="bonus_actions">
+                <div id="bonus1_{CURRENT_PLAYER_ID}" class="bonus bonus1"></div>
+                <div id="bonus2_{CURRENT_PLAYER_ID}" class="bonus bonus2"></div>
+                <div id="bonus3_{CURRENT_PLAYER_ID}" class="bonus bonus3"></div>
+                <div id="bonus4_{CURRENT_PLAYER_ID}" class="bonus bonus4"></div>
+            </div>
+        </div>
+        <div id="player_tableau_{CURRENT_PLAYER_ID}"></div>
+    </div> 
 
     <!-- BEGIN player -->
-        <div class="whiteblock tableau">
+    <div class="whiteblock tableau">
+        <div id="leftPlayerBoard_{PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{PLAYER_COLOR}">
+            <div id="cristals_counter_{PLAYER_ID}" class="sicon icon_cristal counter"></div>
+            <div id="cards_points_counter_{PLAYER_ID}" class="sicon icon_play counter"></div>
+            <img id="left_avatar_{PLAYER_ID}" alt="" class="ssn-avatar" />
+            <div class="playerdie_wrap" id="playerdie_wrap_left_{PLAYER_ID}">
+                <div class="playerdie" id="playerdie_left_{PLAYER_ID}"></div>
+            </div>
             <h3>{PLAYER_NAME}</h3>
+            <div id="bonusUsedCube_{PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
+            <div class="bonus_actions_used">
+                <div id="bonusUsed1_{PLAYER_ID}" class="sicon bonusused bonusused0 ttbonusused"></div>
+                <div id="bonusUsed2_{PLAYER_ID}" class="sicon bonusused bonusused1 ttbonusused"></div>
+                <div id="bonusUsed3_{PLAYER_ID}" class="sicon bonusused bonusused2 ttbonusused"></div>
+                <div id="bonusUsed4_{PLAYER_ID}" class="sicon bonusused bonusused3 ttbonusused"></div>
+            </div>
+            <div class="bonus_actions">
+                <div id="bonus1_{PLAYER_ID}" class="bonus bonus1"></div>
+                <div id="bonus2_{PLAYER_ID}" class="bonus bonus2"></div>
+                <div id="bonus3_{PLAYER_ID}" class="bonus bonus3"></div>
+                <div id="bonus4_{PLAYER_ID}" class="bonus bonus4"></div>
+            </div>
             <div id="player_tableau_{PLAYER_ID}"></div>
-        </div>    
+        </div>
+    </div>
     <!-- END player -->
 
     <div class="whiteblock" id="otus_wrap">
