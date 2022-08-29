@@ -48,7 +48,7 @@ define([
 
                 this.setupSeasonHighlighter();
 
-                console.log("start creating player boards");
+                console.log("start creating player boards", gamedatas);
                 for (var player_id in gamedatas.players) {
                     var player = gamedatas.players[player_id];
                     var player_board_div = $('player_board_' + player_id);
@@ -112,7 +112,12 @@ define([
                         dojo.connect(this.playerTableau[player_id], 'onChangeSelection', this, 'onPowerCardActivation');
                     }
                     dojo.attr("left_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 92));
+
+                    this.leftPlayerBoardsCristalCounters = [];
+                    this.leftPlayerBoardsCristalCounters[player_id] = new ebg.counter();
+                    this.leftPlayerBoardsCristalCounters[player_id].create('cristals_counter_' + player_id);
                 }
+                this.updateCounters(gamedatas.counters);
 
                 this.addTooltipToClass('tinvocationlevel', _('Summoning gauge: maximum number of cards this player can have in play (maximum value: 15)'), '');
                 this.addTooltipToClass('tthand', _('Number of power cards in hand'), '');
@@ -1836,6 +1841,7 @@ define([
             },
             notif_score: function (notif) {
                 this.scoreCtrl[notif.args.player_id].incValue(notif.args.points);
+                this.leftPlayerBoardsCristalCounters[notif.args.player_id].toValue(notif.args.points);
             },
             notif_resourceStockUpdate: function (notif) {
                 for (var ress_id in notif.args.delta) {
@@ -1886,6 +1892,7 @@ define([
             notif_updateScores: function (notif) {
                 for (var player_id in notif.args.scores) {
                     this.scoreCtrl[player_id].toValue(notif.args.scores[player_id]);
+                    this.leftPlayerBoardsCristalCounters[player_id].toValue(notif.args.scores[player_id]);
                 }
             },
             notif_summon: function (notif) {

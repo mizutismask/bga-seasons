@@ -11,7 +11,7 @@
 	float: left;
 	position: relative;
 	box-shadow: 0px 0px 10px 4px #e9b415;
-    border-radius: 210px;
+	border-radius: 210px;
 }
 #season_library_choice {
 	width: 410px;
@@ -180,17 +180,10 @@
 }
 
 .conversion_reminder {
-	color: white;
-	font-weight: bold;
 	display: flex;
 	grid-column: 2;
 }
 
-.conversion_reminder .icon_cristal {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
 .reminder {
 	display: flex;
 }
@@ -232,6 +225,17 @@
 }
 .leftPlayerBoard .icon_play {
 	margin-right: -105px;
+
+	/*todo replace with position: relative;
+    top: -18px;
+    right: -56px;*/
+}
+.counter {
+	color: white;
+	font-weight: bold;
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
 }
 /* card */
 

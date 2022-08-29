@@ -251,7 +251,6 @@ class SeasonsSK extends Table {
         global $g_user;
         $result = array('players' => array());
 
-        // Add players coloretto specific infos
         $sql = "SELECT player_id id, player_score score, player_nb_bonus_used nb_bonus, player_invocation invocation, player_reserve_size reserve_size ";
         $sql .= "FROM player ";
         $sql .= "WHERE 1 ";
@@ -299,7 +298,7 @@ class SeasonsSK extends Table {
             2 => $this->cards->getCardsInLocation('library2', $g_user->get_id()),
             3 => $this->cards->getCardsInLocation('library3', $g_user->get_id())
         );
-
+        $result['counters'] = $this->argCounters();
         return $result;
     }
 
@@ -361,6 +360,15 @@ class SeasonsSK extends Table {
                 'scores' => self::getCollectionFromDB("SELECT player_id, player_score FROM player", true)
             ));
         }
+    }
+
+    function argCounters() {
+        $players = self::getCollectionFromDB("SELECT player_id, player_score, player_invocation FROM player", false);
+        $counters = array();
+        foreach ($players as $player_id => $player) {
+            $counters['cristals_counter_' . $player_id] = array('counter_name' => 'cristals_counter_' . $player_id, 'counter_value' => $player['player_score']);
+        }
+        return $counters;
     }
 
     // Count cards in game: card in hands

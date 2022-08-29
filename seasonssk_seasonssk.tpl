@@ -49,18 +49,18 @@
         <div class="conversion_reminder">
             <div id="convertFor3" class="reminder">
                 <div class="sicon"></div>
-                <div class="sicon icon_cristal">3</div>
+                <div class="sicon icon_cristal counter">3</div>
             </div>
             <div class="sicon icon_separator"></div>
              <div id="convertFor2" class="reminder">
                 <div class="sicon"></div>
-                <div class="sicon icon_cristal">2</div>
+                <div class="sicon icon_cristal counter">2</div>
             </div>
              <div class="sicon icon_separator"></div>
              <div id="convertFor1" class="reminder">
                 <div id="energyType1" class="sicon energy"></div>
                 <div id="energyType2" class="sicon energy"></div>
-                <div class="sicon icon_cristal">1</div>
+                <div class="sicon icon_cristal counter">1</div>
             </div>
         </div>
     </div>
@@ -82,8 +82,8 @@
 
     <div class="whiteblock tableau" id="currentPlayerTablea">
         <div id="leftPlayerBoard_{CURRENT_PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{CURRENT_PLAYER_COLOR}">
-            <div id="cristals_counter_{CURRENT_PLAYER_ID}" class="sicon icon_cristal"></div>
-            <div id="cards_points_counter_{CURRENT_PLAYER_ID}" class="sicon icon_play"></div>
+            <div id="cristals_counter_{CURRENT_PLAYER_ID}" class="sicon icon_cristal counter"></div>
+            <div id="cards_points_counter_{CURRENT_PLAYER_ID}" class="sicon icon_play counter"></div>
             <img id="left_avatar_{CURRENT_PLAYER_ID}" alt="" class="ssn-avatar" />
             <div class="playerdie_wrap" id="playerdie_wrap_left_{CURRENT_PLAYER_ID}">
                 <div class="playerdie" id="playerdie_left_{CURRENT_PLAYER_ID}"></div>
@@ -109,8 +109,8 @@
     <!-- BEGIN player -->
     <div class="whiteblock tableau">
         <div id="leftPlayerBoard_{PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{PLAYER_COLOR}">
-            <div id="cristals_counter_{PLAYER_ID}" class="sicon icon_cristal"></div>
-            <div id="cards_points_counter_{PLAYER_ID}" class="sicon icon_play"></div>
+            <div id="cristals_counter_{PLAYER_ID}" class="sicon icon_cristal counter"></div>
+            <div id="cards_points_counter_{PLAYER_ID}" class="sicon icon_play counter"></div>
             <img id="left_avatar_{PLAYER_ID}" alt="" class="ssn-avatar" />
             <div class="playerdie_wrap" id="playerdie_wrap_left_{PLAYER_ID}">
                 <div class="playerdie" id="playerdie_left_{PLAYER_ID}"></div>
