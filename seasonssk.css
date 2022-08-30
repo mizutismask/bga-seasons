@@ -237,6 +237,23 @@
 	justify-content: center;
 	align-items: center;
 }
+
+.ages {
+	display: flex;
+	column-gap: 3px;
+}
+.age {
+	width: 35px;
+	height: 35px;
+}
+
+.age2 {
+	background-color: teal;
+}
+.age3 {
+	background-color: greenyellow;
+}
+
 /* card */
 
 .cardtitle {

@@ -111,6 +111,9 @@ define([
                     else {
                         dojo.connect(this.playerTableau[player_id], 'onChangeSelection', this, 'onPowerCardActivation');
                     }
+                    dojo.query('.age2').connect('onclick', this, 'onShowAgeCards');
+                    dojo.query('.age3').connect('onclick', this, 'onShowAgeCards');
+
                     dojo.attr("left_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 92));
 
                     this.leftPlayerBoardsCristalCounters = [];
@@ -124,23 +127,24 @@ define([
                 this.addTooltipToClass('ttbonusused', _('Bonus used penalty: -5 points for 1 bonus, -12 points for 2 bonus, -20 points for 3 bonus.'), '');
 
                 // Libraries
-                this.library[2] = new ebg.stock();
-                this.library[2].create(this, $('library_2'), 124, 173);
-                this.library[2].image_items_per_row = 10;
-                this.library[2].extraClasses = 'thickness';
-                this.library[2].onItemCreate = dojo.hitch(this, 'setupNewCard');
-                this.library[2].setSelectionMode(0);
-                this.library[3] = new ebg.stock();
-                this.library[3].create(this, $('library_3'), 124, 173);
-                this.library[3].image_items_per_row = 10;
-                this.library[3].extraClasses = 'thickness';
-                this.library[3].onItemCreate = dojo.hitch(this, 'setupNewCard');
-                this.library[3].setSelectionMode(0);
+                this.agePopins = [];
+                for (var i = 2; i <= 3; i++) {
+                    this.createYearCardsPopin(i);
+                    this.library[i] = new ebg.stock();
+                    this.library[i].create(this, $('library_'+i), 124, 173);
+                    this.library[i].image_items_per_row = 10;
+                    this.library[i].extraClasses = 'thickness';
+                    this.library[i].onItemCreate = dojo.hitch(this, 'setupNewCard');
+                    this.library[i].setSelectionMode(0);
+                    this.library[i].autowidth = true;
+                }
+
                 for (var card_id in this.gamedatas.card_types) {
                     var card = this.gamedatas.card_types[card_id];
                     this.library[2].addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
                     this.library[3].addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
                 }
+                
                 for (var i in this.gamedatas.libraries[2]) {
                     var card = this.gamedatas.libraries[2][i];
                     this.library[2].addToStockWithId(card.type, card.id);
@@ -304,8 +308,21 @@ define([
 
             ///////////////////////////////////////////////////
             //// Utilities
+            createYearCardsPopin(age) {
+                this.agePopins[age] = new ebg.popindialog();
+                this.agePopins[age].create('age' + age + 'Popin');
+                this.agePopins[age].setTitle(age == 2 ? _("<h3>Your cards for year II</h3>") : _("<h3>Your cards for year III</h3>"));
+                var html = this.format_block('jstpl_year' + age, {});
+                this.agePopins[age].setContent(html);
+                // allows to reopen the popin several times
+                this.agePopins[age].replaceCloseCallback(() => this.agePopins[age].hide() );
+            },
+
+            showAgeCardsPopin(age) {
+                this.agePopins[age].show();
+            },
+
             getPlayerAvatar(pId) {
-                //console.log("uuuuuuuuuuu", pId, $('avatar_' + pId));
                 return $('avatar_' + pId)
                     ? dojo.attr('avatar_' + pId, 'src')
                     : 'https://en.studio.boardgamearena.com:8083/data/avatar/noimage.png';
@@ -314,7 +331,7 @@ define([
             /** 184, 92, 50, 32 are valid sizes. */
             getPlayerAvatarWithSize(pId, size) {
                 let url = this.getPlayerAvatar(pId);
-                return url.replace(/_[0-9]{2}./, "_" + size+".");
+                return url.replace(/_[0-9]{2}./, "_" + size + ".");
             },
             /**
              * Creates four circle quarters with different opacities to highlight the current season.
@@ -717,6 +734,11 @@ define([
 
             ///////////////////////////////////////////////////
             //// UI actions
+
+            onShowAgeCards: function (evt) {
+                let year = dojo.attr(evt.target, "data-year");
+                this.showAgeCardsPopin(year);
+            },
 
             onDiceSelectionChanged: function (evt) {
                 console.log('onDiceSelectionChanged');

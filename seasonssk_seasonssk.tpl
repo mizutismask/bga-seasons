@@ -103,6 +103,10 @@
                 <div id="bonus4_{CURRENT_PLAYER_ID}" class="bonus bonus4"></div>
             </div>
         </div>
+        <div class="ages">
+            <div class="age age2" data-year="2"></div>
+            <div class="age age3" data-year="3"></div>
+        </div>
         <div id="player_tableau_{CURRENT_PLAYER_ID}"></div>
     </div> 
 
@@ -129,8 +133,8 @@
                 <div id="bonus3_{PLAYER_ID}" class="bonus bonus3"></div>
                 <div id="bonus4_{PLAYER_ID}" class="bonus bonus4"></div>
             </div>
-            <div id="player_tableau_{PLAYER_ID}"></div>
         </div>
+        <div id="player_tableau_{PLAYER_ID}"></div>
     </div>
     <!-- END player -->
 
@@ -139,14 +143,7 @@
         <div id="otus"></div>
     </div>
     
-    <div class="whiteblock" id="library_2_wrap">
-        <h3>{CARDS_FOR_YEAR_2}:</h3>
-        <div id="library_2"></div>
-    </div>
-    <div class="whiteblock" id="library_3_wrap">
-        <h3>{CARDS_FOR_YEAR_3}:</h3>
-        <div id="library_3"></div>
-    </div>
+    
 </div>
 <script type="text/javascript">
 
@@ -210,6 +207,12 @@ var jstpl_firstplayer = '<div id="firstplayer" class="sicon"></div>';
 var jstpl_deadlock = '<div id="deadlock_${id}" class="deadlock"></div>';
 var jstpl_trap = '<div id="trap_${id}" class="trap"></div>';
 
+var jstpl_year2= '<div class="whiteblock" id="library_2_wrap">\
+        <div id="library_2"></div>\
+    </div>'
+var jstpl_year3= '<div class="whiteblock" id="library_3_wrap">\
+        <div id="library_3"></div>\
+    </div>'
 </script>  
 
 {OVERALL_GAME_FOOTER}
