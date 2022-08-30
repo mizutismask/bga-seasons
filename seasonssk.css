@@ -254,6 +254,19 @@
 	background-color: greenyellow;
 }
 
+.tableau {
+	/*todo remplacer par vraie image. */
+	/*margin: 50px 8%;*/
+	border: 60px solid transparent;
+	border-image-source: url("https://image.shutterstock.com/image-illustration/old-paper-scroll-ancient-parchment-600w-720299497.jpg");
+	border-image-slice: 186;
+	/*background: url("https://image.shutterstock.com/image-illustration/old-paper-scroll-ancient-parchment-600w-720299497.jpg")
+		no-repeat;*/
+	background-position: 43% 70%;
+	background-size: 316%;
+	/*border-image-repeat: round;*/
+}
+
 /* card */
 
 .cardtitle {
