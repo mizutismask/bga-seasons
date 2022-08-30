@@ -240,7 +240,9 @@
 
 .ages {
 	display: flex;
-	column-gap: 3px;
+	column-gap: 6px;
+	justify-content:center;
+	margin-top: 10px;
 }
 .age {
 	width: 35px;
@@ -255,6 +257,10 @@
 }
 
 .tableau {
+	display: grid;
+	grid-template-columns: max-content auto;
+	column-gap: 7px;
+	
 	/*todo remplacer par vraie image. */
 	/*margin: 50px 8%;*/
 	border: 60px solid transparent;
