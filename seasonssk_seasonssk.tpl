@@ -149,22 +149,22 @@
 
 // Templates
 var jstpl_player_board = '<div class="clear">\
-        <div class="playerdie_wrap" id="playerdie_wrap_${id}">\
-            <div class="playerdie" id="playerdie_${id}"></div>\
+        <div class="playerdie_wrap" id="playerdie_wrap_${player.id}">\
+            <div class="playerdie" id="playerdie_${player.id}"></div>\
         </div>\
         <div class="boardblock_seasons">\
             <div class="energywrapper">\
-                <div id="energy_reserve_${id}" class="energy_reserve"></div>\
-                <div id="energies_${id}" class="energies"></div>\
+                <div id="energy_reserve_${player.id}" class="energy_reserve"></div>\
+                <div id="energies_${player.id}" class="energies"></div>\
             </div>\
         </div>\
         <div class="boardblock_seasons">\
-            <div id="tinvocationlevel_${id}" class="sicon invocation_level imgtext tinvocationlevel" ></div><span id="invocation_level_${id}" class="tinvocationlevel">0</span>\
-            <div id="handcounticon_${id}" class="icon16 icon16_hand tthand"></div><span id="handcount_${id}" class="tthand">0</span>\
-            <div id="bonusused_${id}" class="sicon bonusused bonusused${nb_bonus} imgtext ttbonusused"></div>\
-            <div class="firstplayerplace" id="firstplayer_${id}"></div>\
+            <div id="tinvocationlevel_${player.id}" class="sicon invocation_level imgtext tinvocationlevel" ></div><span id="invocation_level_${player.id}" class="tinvocationlevel">0</span><span class="ssn-info">${maxInfo}</span>\
+            <div id="handcounticon_${player.id}" class="icon16 icon16_hand tthand"></div><span id="handcount_${player.id}" class="tthand">0</span>\
+            <div id="bonusused_${player.id}" class="sicon bonusused bonusused${player.nb_bonus} imgtext ttbonusused"></div>\
+            <div class="firstplayerplace" id="firstplayer_${player.id}"></div>\
         </div>\
-        <div><a href="#" id="choose_player_${id}"  class="choose_player button ${choose_opponent}"><span>{LB_CHOOSE_THIS_PLAYER}</span></a></div>\
+        <div><a href="#" id="choose_player_${player.id}"  class="choose_player button ${player.choose_opponent}"><span>{LB_CHOOSE_THIS_PLAYER}</span></a></div>\
     </div>';
 
 var jstpl_card_content = '<div class="cardcontent cardtype_${type} thickness" id="cardcontent_${id}">\

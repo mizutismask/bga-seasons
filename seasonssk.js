@@ -56,10 +56,12 @@ define([
                     if (player_id != this.player_id) { player.choose_opponent = 'choose_opponent'; }
                     else { player.choose_opponent = ''; }
 
-                    dojo.place(this.format_block('jstpl_player_board', player), player_board_div);
-                    dojo.query("#bonusUsedCube_" + player_id).addClass('bonusUsed' + player.nb_bonus);
+                    dojo.place(this.format_block('jstpl_player_board', {
+                        player: player,
+                        maxInfo: _(" (15 max)"),
+                    }), player_board_div);
 
-                    this.disableBonusActions(player_id, toint(player.nb_bonus) == 3);
+
 
                     $('invocation_level_' + player_id).innerHTML = player.invocation;
                     if (gamedatas.handcount[player_id]) { $('handcount_' + player_id).innerHTML = gamedatas.handcount[player_id]; }
@@ -73,6 +75,9 @@ define([
                     for (var ress_id = 1; ress_id <= 4; ress_id++) {
                         this.energies[player_id].addItemType(ress_id, ress_id, g_gamethemeurl + 'img/icons.png', ress_id - 1);
                     }
+
+                    dojo.place("bonusused_" + player_id, "icon_point_" + player_id, "after");
+                    if (toint(player.nb_bonus) == 0) { dojo.addClass("bonusused_" + player_id, "invisible"); }
 
                     this.energies_reserve[player_id] = new ebg.stock();
                     this.energies_reserve[player_id].create(this, $('energy_reserve_' + player_id), 25, 25);
@@ -111,6 +116,11 @@ define([
                     else {
                         dojo.connect(this.playerTableau[player_id], 'onChangeSelection', this, 'onPowerCardActivation');
                     }
+
+                    //left player board
+                    dojo.query("#bonusUsedCube_" + player_id).addClass('bonusUsed' + player.nb_bonus);
+                    this.disableBonusActions(player_id, toint(player.nb_bonus) == 3);
+
                     dojo.query('.age2').connect('onclick', this, 'onShowAgeCards');
                     dojo.query('.age3').connect('onclick', this, 'onShowAgeCards');
 
@@ -303,7 +313,7 @@ define([
 
                 this.ensureSpecificImageLoading(['../common/point.png']);
 
-                dojo.query(".fa-star").removeClass("fa fa-star").addClass("sicon icon_cristal").style("vertical-align","middle");
+                dojo.query(".fa-star").removeClass("fa fa-star").addClass("sicon icon_cristal").style("vertical-align", "middle");
 
                 this.setupNotifications();
             },
@@ -2019,7 +2029,7 @@ define([
                 console.log('notif_bonusUsed');
                 console.log(notif);
                 var oldnbr = toint(notif.args.bonus_used) - 1;
-                dojo.removeClass('bonusused_' + notif.args.player_id, 'bonusused' + oldnbr);
+                dojo.removeClass('bonusused_' + notif.args.player_id, 'bonusused' + oldnbr + " invisible");
                 dojo.addClass('bonusused_' + notif.args.player_id, 'bonusused' + notif.args.bonus_used);
                 dojo.query("#bonusUsedCube_" + notif.args.player_id).removeClass('bonusUsed' + oldnbr).addClass('bonusUsed' + notif.args.bonus_used);
                 this.disableBonusActions(notif.args.player_id, toint(notif.args.bonus_used) == 3);

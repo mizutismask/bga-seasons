@@ -165,6 +165,10 @@
 	background-position: -137px -3px;
 }
 
+.ssn-info {
+	font-size: smaller;
+}
+
 .enabled {
 	box-shadow: 0px 0px 1px 2px #f0ec18;
 }
@@ -241,7 +245,7 @@
 .ages {
 	display: flex;
 	column-gap: 6px;
-	justify-content:center;
+	justify-content: center;
 	margin-top: 10px;
 }
 .age {
@@ -260,7 +264,7 @@
 	display: grid;
 	grid-template-columns: max-content auto;
 	column-gap: 7px;
-	
+
 	/*todo remplacer par vraie image. */
 	/*margin: 50px 8%;*/
 	border: 60px solid transparent;
@@ -382,6 +386,10 @@
 .bonusUsedCube.bonusUsed3 {
 	margin-left: 87px;
 	margin-bottom: -7px;
+}
+
+.player_score .bonusused{
+	vertical-align: text-bottom;
 }
 
 /*todo trouver l'icone*/
