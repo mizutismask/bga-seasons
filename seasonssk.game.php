@@ -423,7 +423,7 @@ class SeasonsSK extends Table {
                     $this->cards->moveAllCardsInLocation('library' . $year, 'hand', $player_id, $player_id);
 
                     // Notify
-                    self::notifyPlayer($player_id, "pickPowerCards", '', array("cards" => $cards_for_player));
+                    self::notifyPlayer($player_id, "pickPowerCards", '', array("cards" => $cards_for_player, "fromLibrary" => true));
                 }
             }
 
@@ -2972,6 +2972,12 @@ class SeasonsSK extends Table {
     //////////////////////////////////////////////////////////////////////////////
     //////////// Game state arguments
     ////////////
+
+    function argStartYear() {
+        return array(
+            'currentYear' => self::getGameStateValue('year'),
+        );
+    }
 
     function argCheckEnergy() {
         $player_id = self::getActivePlayerId();

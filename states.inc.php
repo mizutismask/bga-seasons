@@ -113,6 +113,7 @@ $machinestates = array(
         "description" => '',
         "type" => "game",
         "action" => "stStartYear",
+        "args" => "argStartYear",
         "transitions" => array("newyear" => 21, "endGame" => 98)
     ),
 

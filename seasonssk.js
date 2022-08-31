@@ -66,7 +66,7 @@ define([
                     dojo.addClass('overall_player_board_' + player_id, 'avatarBorder');
                     var nameDiv = "overall_player_board_" + player_id;
                     dojo.style(nameDiv, "border-color", '#' + player['color']);
-                    dojo.create('img', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit'}, nameDiv, 'last');
+                    dojo.create('img', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit' }, nameDiv, 'last');
                     dojo.attr("player_board_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 92));
 
                     $('invocation_level_' + player_id).innerHTML = player.invocation;
@@ -1399,7 +1399,7 @@ define([
             //// Game & client states
 
             onEnteringState: function (stateName, args) {
-                console.log('Entering state: ' + stateName);
+                console.log('Entering state: ' + stateName, args);
 
                 switch (stateName) {
                     case 'nextPlayerTurn':
@@ -1460,6 +1460,13 @@ define([
                         break;
 
                     case 'startYear':
+                        var year = args.args.currentYear;
+                        var msg = _("Année ${year}");
+                        dojo.place("<div id=\"new-year\"><span>" + msg.replace('${year}', '' + year) + "</span></div>", document.body);
+                        var div = document.getElementById("new-year");
+                        div.addEventListener('animationend', function () { return dojo.destroy(div); });
+                        div.classList.add('new-year-animation');
+                        //todo
                         dojo.style('season_dices_wrap', 'display', 'block')
                         break;
                     case 'rattyNightshade':
@@ -1808,6 +1815,7 @@ define([
                 dojo.subscribe('playerPickPowerCard', this, "notif_playerPickPowerCard");
                 dojo.subscribe('pickPowerCard', this, "notif_pickPowerCard");
                 dojo.subscribe('pickPowerCards', this, "notif_pickPowerCards");
+                this.notifqueue.setSynchronous('pickPowerCards', 300);
 
                 dojo.subscribe('winPoints', this, "notif_winPoints");
                 dojo.subscribe('summon', this, "notif_summon");
@@ -1893,7 +1901,7 @@ define([
             },
             notif_score: function (notif) {
                 this.scoreCtrl[notif.args.player_id].incValue(notif.args.points);
-                this.leftPlayerBoardsCristalCounters[notif.args.player_id].toValue(notif.args.points);
+                this.leftPlayerBoardsCristalCounters[notif.args.player_id.toString()].toValue(notif.args.points);
             },
             notif_resourceStockUpdate: function (notif) {
                 for (var ress_id in notif.args.delta) {
@@ -1934,9 +1942,13 @@ define([
                 }
             },
             notif_pickPowerCards: function (notif) {
+                var from;
+                if (notif.args.hasOwnProperty('fromLibrary')) {
+                    from = "ages";
+                }
                 for (var i in notif.args.cards) {
                     var card = notif.args.cards[i];
-                    this.playerHand.addToStockWithId(card.type, card.id);
+                    this.playerHand.addToStockWithId(card.type, card.id, from);
                 }
             },
             notif_winPoints: function (notif) {

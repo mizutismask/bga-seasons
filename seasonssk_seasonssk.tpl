@@ -104,7 +104,7 @@
             </div>
         </div>
         <div id="player_tableau_{CURRENT_PLAYER_ID}"></div>
-        <div class="ages">
+        <div id="ages" class="ages">
             <div class="age age2" data-year="2"></div>
             <div class="age age3" data-year="3"></div>
         </div>
