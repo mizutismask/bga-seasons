@@ -66,7 +66,7 @@ define([
                     dojo.addClass('overall_player_board_' + player_id, 'avatarBorder');
                     var nameDiv = "overall_player_board_" + player_id;
                     dojo.style(nameDiv, "border-color", '#' + player['color']);
-                    dojo.create('img', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit'}, nameDiv, 'last');
+                    dojo.create('img', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit' }, nameDiv, 'last');
                     dojo.attr("player_board_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 92));
 
                     $('invocation_level_' + player_id).innerHTML = player.invocation;
@@ -1399,7 +1399,7 @@ define([
             //// Game & client states
 
             onEnteringState: function (stateName, args) {
-                console.log('Entering state: ' + stateName);
+                console.log('Entering state: ' + stateName, args);
 
                 switch (stateName) {
                     case 'nextPlayerTurn':
@@ -1460,6 +1460,13 @@ define([
                         break;
 
                     case 'startYear':
+                        var year = args.args.currentYear;
+                        var msg = _("Année ${year}");
+                        dojo.place("<div id=\"new-year\"><span>" + msg.replace('${year}', '' + year) + "</span></div>", document.body);
+                        var div = document.getElementById("new-year");
+                        div.addEventListener('animationend', function () { return dojo.destroy(div); });
+                        div.classList.add('new-year-animation');
+                        //todo
                         dojo.style('season_dices_wrap', 'display', 'block')
                         break;
                     case 'rattyNightshade':

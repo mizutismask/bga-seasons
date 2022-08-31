@@ -2973,6 +2973,12 @@ class SeasonsSK extends Table {
     //////////// Game state arguments
     ////////////
 
+    function argStartYear() {
+        return array(
+            'currentYear' => self::getGameStateValue('year'),
+        );
+    }
+
     function argCheckEnergy() {
         $player_id = self::getActivePlayerId();
         $energy_count = self::countPlayerEnergies($player_id);
