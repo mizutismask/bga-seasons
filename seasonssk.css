@@ -392,6 +392,12 @@
 	vertical-align: text-bottom;
 }
 
+.playerOrderHelp{
+	display: inline-block;
+	padding-right: 3px;
+	padding-left: 3px;
+}
+
 /*todo trouver l'icone*/
 .icon_separator {
 	width: 12px;
