@@ -63,6 +63,12 @@ define([
 
                     this.setupPlayerOrderHints(player_id, gamedatas);
 
+                    dojo.addClass('overall_player_board_' + player_id, 'avatarBorder');
+                    var nameDiv = "overall_player_board_" + player_id;
+                    dojo.style(nameDiv, "border-color", '#' + player['color']);
+                    dojo.create('img', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit'}, nameDiv, 'last');
+                    dojo.attr("player_board_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 92));
+
                     $('invocation_level_' + player_id).innerHTML = player.invocation;
                     if (gamedatas.handcount[player_id]) { $('handcount_' + player_id).innerHTML = gamedatas.handcount[player_id]; }
                     else { $('handcount_' + player_id).innerHTML = 0; }
