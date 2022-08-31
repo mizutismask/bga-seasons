@@ -131,7 +131,7 @@ define([
                 for (var i = 2; i <= 3; i++) {
                     this.createYearCardsPopin(i);
                     this.library[i] = new ebg.stock();
-                    this.library[i].create(this, $('library_'+i), 124, 173);
+                    this.library[i].create(this, $('library_' + i), 124, 173);
                     this.library[i].image_items_per_row = 10;
                     this.library[i].extraClasses = 'thickness';
                     this.library[i].onItemCreate = dojo.hitch(this, 'setupNewCard');
@@ -144,7 +144,7 @@ define([
                     this.library[2].addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
                     this.library[3].addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
                 }
-                
+
                 for (var i in this.gamedatas.libraries[2]) {
                     var card = this.gamedatas.libraries[2][i];
                     this.library[2].addToStockWithId(card.type, card.id);
@@ -303,6 +303,8 @@ define([
 
                 this.ensureSpecificImageLoading(['../common/point.png']);
 
+                dojo.query(".fa-star").removeClass("fa fa-star").addClass("sicon icon_cristal").style("vertical-align","middle");
+
                 this.setupNotifications();
             },
 
@@ -315,7 +317,7 @@ define([
                 var html = this.format_block('jstpl_year' + age, {});
                 this.agePopins[age].setContent(html);
                 // allows to reopen the popin several times
-                this.agePopins[age].replaceCloseCallback(() => this.agePopins[age].hide() );
+                this.agePopins[age].replaceCloseCallback(() => this.agePopins[age].hide());
             },
 
             showAgeCardsPopin(age) {
