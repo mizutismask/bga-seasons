@@ -1718,6 +1718,11 @@ class SeasonsSK extends Table {
         }
     }
 
+    function getPossibleCards() {
+        $cards= [11];//todo
+        return $cards;
+    }
+
     function doDrawPowerCard() {
         $player_id = self::getActivePlayerId();
 
@@ -2993,7 +2998,7 @@ class SeasonsSK extends Table {
     function argPlayerTurn() {
         return array(
             'transmutationPossible' => self::getGameStateValue('transmutationPossible'),
-
+            'possibleCards' => $this->getPossibleCards(),
             'drawCardPossible' => self::getGameStateValue('mustDrawPowerCard'),
         );
     }

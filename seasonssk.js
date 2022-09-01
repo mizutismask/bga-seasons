@@ -34,7 +34,7 @@ define([
 
                 this.cardwidth = 124;
                 this.cardHeight = 173;
-                
+
                 this.energies = {};
                 this.energies_reserve = {};
                 this.energies_on_card = {};
@@ -45,7 +45,7 @@ define([
                 this.nextInvocCardId = -1;
             },
             setup: function (gamedatas) {
-                
+
                 this.setupSeasonHighlighter();
                 this.leftPlayerBoardsCristalCounters = [];
 
@@ -1563,6 +1563,10 @@ define([
                                     msg += ' (+' + bonus + ')';
                                 }
                                 this.addActionButton('transmute', msg, 'onTransmute');
+                            }
+                            //highlight cards that can be played
+                            if (args.possibleCards) {
+                                args.possibleCards.forEach(c => dojo.query("#player_hand_item_" + c).addClass("possibleCard"));
                             }
                             if (toint(args.drawCardPossible) === 1) {
                                 // Drawing a card is mandatory, so this is the only button

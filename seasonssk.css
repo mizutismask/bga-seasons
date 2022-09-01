@@ -16,7 +16,7 @@ html.season_4 {
 }
 
 h3 {
-color: white;
+	color: white;
 }
 /* main board */
 
@@ -191,6 +191,7 @@ color: white;
 
 #season_dices_wrap {
 	display: grid;
+	grid-template-columns: max-content auto;
 	justify-content: space-between;
 	align-items: center;
 }
@@ -313,6 +314,18 @@ color: white;
 .dietooltip {
 	max-width: 300px;
 }
+.possibleCard {
+	border-radius: 15px;
+	box-shadow: 0px 0px 2px 2px rgb(186 86 209 / 93%);
+	-moz-box-shadow: 0px 0px 2px 2px rgb(186 86 209 / 93%);
+	-webkit-box-shadow: 0px 0px 2px 2px rgb(186 86 209 / 93%);
+	cursor: default;
+}
+
+.stockitem:hover {
+	transform: scale(1.05);
+	z-index: 150 !important;
+}
 
 .all_die_faces {
 }
@@ -356,7 +369,7 @@ color: white;
 }
 
 #player_hand {
-	background-color:rgb(12 12 12 / 43%);
+	background-color: rgb(12 12 12 / 43%);
 	text-align: center;
 	border-radius: 10px;
 }
@@ -563,7 +576,7 @@ color: white;
 	position: relative;
 }
 
-.leftPlayerBoard .playerdie_wrap{
+.leftPlayerBoard .playerdie_wrap {
 	border: 1px dashed darkgray;
 	border-radius: 18px;
 }
