@@ -34,7 +34,7 @@ define([
 
                 this.cardwidth = 124;
                 this.cardHeight = 173;
-
+                
                 this.energies = {};
                 this.energies_reserve = {};
                 this.energies_on_card = {};
@@ -45,8 +45,9 @@ define([
                 this.nextInvocCardId = -1;
             },
             setup: function (gamedatas) {
-
+                
                 this.setupSeasonHighlighter();
+                this.leftPlayerBoardsCristalCounters = [];
 
                 console.log("start creating player boards", gamedatas);
                 for (var player_id in gamedatas.players) {
@@ -132,9 +133,8 @@ define([
 
                     dojo.attr("left_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 92));
 
-                    this.leftPlayerBoardsCristalCounters = [];
-                    this.leftPlayerBoardsCristalCounters[player_id] = new ebg.counter();
-                    this.leftPlayerBoardsCristalCounters[player_id].create('cristals_counter_' + player_id);
+                    this.leftPlayerBoardsCristalCounters[player_id.toString()] = new ebg.counter();
+                    this.leftPlayerBoardsCristalCounters[player_id.toString()].create('cristals_counter_' + player_id);
                 }
                 this.updateCounters(gamedatas.counters);
 
@@ -1900,8 +1900,10 @@ define([
                 this.showSeasonDices(notif.args.dices, true);
             },
             notif_score: function (notif) {
+                console.log(notif);
                 this.scoreCtrl[notif.args.player_id].incValue(notif.args.points);
-                this.leftPlayerBoardsCristalCounters[notif.args.player_id.toString()].toValue(notif.args.points);
+                console.log(this.leftPlayerBoardsCristalCounters);
+                this.leftPlayerBoardsCristalCounters[notif.args.player_id].toValue(notif.args.points);
             },
             notif_resourceStockUpdate: function (notif) {
                 for (var ress_id in notif.args.delta) {
