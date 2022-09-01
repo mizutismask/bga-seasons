@@ -2,6 +2,18 @@
 
 @import url(../../../css/csslayer.css);
 
+html.season_1 {
+	background: url("img/backgroundSeason1.jpg");
+}
+html.season_2 {
+	background: url("img/backgroundSeason2.jpg");
+}
+html.season_3 {
+	background: url("img/backgroundSeason3.jpg");
+}
+html.season_4 {
+	background: url("img/backgroundSeason4.jpg");
+}
 /* main board */
 
 #board {
@@ -388,11 +400,11 @@
 	margin-bottom: -7px;
 }
 
-.player_score .bonusused{
+.player_score .bonusused {
 	vertical-align: text-bottom;
 }
 
-.playerOrderHelp{
+.playerOrderHelp {
 	display: inline-block;
 	padding-right: 3px;
 	padding-left: 3px;

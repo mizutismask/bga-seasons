@@ -470,7 +470,7 @@ define([
                 dojo.connect(monthAnimation, 'onEnd', dojo.hitch(this, 'changeCurrentSeason', currentSeason));
                 monthAnimation.play();
 
-                dojo.query("#seasons_container").removeClass("season_1 season_2 season_3 season_4").addClass("season_" + currentSeason);
+                dojo.query("html").removeClass("season_1 season_2 season_3 season_4").addClass("season_" + currentSeason);
 
                 switch (currentSeason) {
                     //red1 blue2 yellow3 green4
