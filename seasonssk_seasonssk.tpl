@@ -45,6 +45,7 @@
 
     <div id="season_dices_wrap" class="whiteblock seasons_rightpanel">
         <h3>{LB_SEASONS_DICES}</h3>
+        <h3>{LB_TRANSMUTATION_RATE}</h3>
         <div id="seasons_dices"></div>
         <div class="conversion_reminder">
             <div id="convertFor3" class="reminder">

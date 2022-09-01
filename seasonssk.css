@@ -195,10 +195,6 @@ color: white;
 	align-items: center;
 }
 
-#season_dices_wrap > *:not(.conversion_reminder) {
-	grid-column: 1;
-}
-
 .conversion_reminder {
 	display: flex;
 	grid-column: 2;
@@ -565,6 +561,11 @@ color: white;
 	height: 54px;
 	float: left;
 	position: relative;
+}
+
+.leftPlayerBoard .playerdie_wrap{
+	border: 1px dashed darkgray;
+	border-radius: 18px;
 }
 .boardblock_seasons {
 	margin-left: 60px;
