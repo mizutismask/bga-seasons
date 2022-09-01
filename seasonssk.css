@@ -279,14 +279,19 @@ html.season_4 {
 
 	/*todo remplacer par vraie image. */
 	/*margin: 50px 8%;*/
+	/*border-image-repeat: round;*/
+	/*background: url("https://image.shutterstock.com/image-illustration/old-paper-scroll-ancient-parchment-600w-720299497.jpg")
+	no-repeat;*/
+
+	/*
 	border: 60px solid transparent;
 	border-image-source: url("https://image.shutterstock.com/image-illustration/old-paper-scroll-ancient-parchment-600w-720299497.jpg");
 	border-image-slice: 186;
-	/*background: url("https://image.shutterstock.com/image-illustration/old-paper-scroll-ancient-parchment-600w-720299497.jpg")
-		no-repeat;*/
 	background-position: 43% 70%;
-	background-size: 316%;
-	/*border-image-repeat: round;*/
+	background-size: 316%;*/
+	background: url("https://cdn.pixabay.com/photo/2017/09/28/08/38/paper-2794699_960_720.png")
+		no-repeat;
+	background-size: cover;
 }
 
 /* card */
@@ -414,6 +419,7 @@ html.season_4 {
 	border-radius: 8px 0 0 0px;
 	border-bottom-style: solid;
 	overflow: hidden;
+	background-color: #f3f1f1;
 }
 
 .avatarBorder {
