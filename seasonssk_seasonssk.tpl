@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    <div id="myhand" class="whiteblock seasons_rightpanel">
+    <div id="myhand" class="seasons_rightpanel">
         <h3>{LB_MY_HAND}</h3>
         <div id="player_hand">
         </div>
