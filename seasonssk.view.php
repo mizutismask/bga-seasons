@@ -25,7 +25,7 @@ class view_seasonssk_seasonssk extends game_view {
 
         $player_nbr = count($players);    // Note: number of players = number of rows
 
-        $this->page->begin_block("seasons_seasons", "player");
+        $this->page->begin_block("seasonssk_seasonssk", "player");
 
         global $g_user;
 
