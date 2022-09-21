@@ -109,10 +109,11 @@ define([
                     this.setReserveSize(player_id, player.reserve_size);
 
                     this.playerTableau[player_id] = new ebg.stock();
+                    this.playerTableau[player_id].item_margin = 25;
                     //console.log("************", player_id, this.playerTableau);
                     this.playerTableau[player_id].create(this, $('player_tableau_' + player_id), 124, 173);
                     this.playerTableau[player_id].image_items_per_row = 10;
-                    this.playerTableau[player_id].extraClasses = 'thickness';
+                    this.playerTableau[player_id].extraClasses = 'thickness ssn-loc-available';
 
                     this.playerTableau[player_id].onItemCreate = dojo.hitch(this, 'setupNewCard');
                     //                this.playerTableau[ player_id ].order_items = false;
