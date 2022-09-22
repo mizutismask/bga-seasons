@@ -118,6 +118,11 @@ define([
                     this.playerTableau[player_id].onItemCreate = dojo.hitch(this, 'setupNewCard');
                     //                this.playerTableau[ player_id ].order_items = false;
                     this.playerTableau[player_id].addItemType(0, 9999, g_gamethemeurl + 'img/voidcard.png', 0);
+                    for (let i = 0; i < 15; i++) {//insert empty slots
+                        this.playerTableau[player_id].addToStockWithId(0, this.nextInvocCardId);
+                        this.nextInvocCardId--;
+                    }
+
                     if (player_id != this.player_id) {
                         dojo.connect(this.playerTableau[player_id], 'onChangeSelection', this, 'onOpponentCardSelection');
                     }
@@ -615,6 +620,10 @@ define([
                 var original_card_type_id = this.ot(card_type_id);
                 var card_type_id = this.ct(card_type_id);
 
+
+                //remove blank
+                this.playerTableau[player_id].removeFromStock(0);
+
                 // Note: Cauldron and Amulet of water and Heart of Argos and jewel of the Ancients and monolith
                 if (toint(card_type_id) == 35 || toint(card_type_id) == 4 || toint(card_type_id) == 101
                     || toint(card_type_id) == 112 || toint(card_type_id) == 103 || toint(card_type_id) == 207) {
@@ -742,23 +751,16 @@ define([
             // Adapt the invocation target card of the specified player
             adaptInvocation: function (player_id) {
                 var invoc_level = toint($('invocation_level_' + player_id).innerHTML);
-                var nbr_cards = this.playerTableau[player_id].count();
+               
 
-                while (nbr_cards < invoc_level) {
-                    // Must add some invocation level cards
-                    this.playerTableau[player_id].addToStockWithId(0, this.nextInvocCardId);
-                    this.nextInvocCardId--;
-                    nbr_cards++;
-                }
-                while (nbr_cards > invoc_level) {
-                    // Must remove some invoc cards, if any.
-                    if (this.playerTableau[player_id].removeFromStock(0)) {
-                        // We found something to remove
-                        nbr_cards--;
-                    }
-                    else {
-                        // No more invocation card found
-                        return;
+                var cards = this.playerTableau[player_id].getAllItems();
+                var div;
+                for (var i in cards) {
+                    div = this.playerTableau[player_id].getItemDivId(cards[i].id);
+                    if (i < invoc_level) {
+                        dojo.addClass(div, "ssn-loc-available");
+                    } else {
+                        dojo.removeClass(div, "ssn-loc-available");
                     }
                 }
             },
