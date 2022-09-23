@@ -402,7 +402,7 @@ h3 {
 	border-radius: 13px;
 }
 
-.empty-slot{
+.empty-slot {
 	box-shadow: inset 1px 1px 4px 2px #5c4223;
 }
 
@@ -468,9 +468,20 @@ h3 {
 
 .player-board {
 	border-radius: 8px 0 0 0px;
-	border-bottom-style: solid;
 	overflow: hidden;
 	background-color: #f3f1f1;
+}
+
+.player-board:before {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 1px;
+	width: 66%;
+	border-bottom-style: solid;
+	border-color: inherit;
+	border-width: 6px;
 }
 
 .avatarBorder {
@@ -479,7 +490,6 @@ h3 {
 
 .player-board .ssn-avatar {
 	display: inline-block;
-
 	background-repeat: no-repeat;
 	background-image: url(img/spritesresponsive.png);
 	width: 100px;
