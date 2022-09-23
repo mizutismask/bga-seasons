@@ -113,7 +113,7 @@ define([
                     //console.log("************", player_id, this.playerTableau);
                     this.playerTableau[player_id].create(this, $('player_tableau_' + player_id), 124, 173);
                     this.playerTableau[player_id].image_items_per_row = 10;
-                    this.playerTableau[player_id].extraClasses = 'thickness ssn-loc-available';
+                    this.playerTableau[player_id].extraClasses = 'thickness empty-slot';
 
                     this.playerTableau[player_id].onItemCreate = dojo.hitch(this, 'setupNewCard');
                     //                this.playerTableau[ player_id ].order_items = false;
@@ -122,6 +122,7 @@ define([
                         this.playerTableau[player_id].addToStockWithId(0, this.nextInvocCardId);
                         this.nextInvocCardId--;
                     }
+                    this.playerTableau[player_id].extraClasses = 'thickness ssn-loc-available ';
 
                     if (player_id != this.player_id) {
                         dojo.connect(this.playerTableau[player_id], 'onChangeSelection', this, 'onOpponentCardSelection');
@@ -751,7 +752,7 @@ define([
             // Adapt the invocation target card of the specified player
             adaptInvocation: function (player_id) {
                 var invoc_level = toint($('invocation_level_' + player_id).innerHTML);
-               
+
 
                 var cards = this.playerTableau[player_id].getAllItems();
                 var div;
