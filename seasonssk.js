@@ -31,6 +31,7 @@ define([
                 this.cardChoice = null;
                 this.otusChoice = null;
                 this.playerTableau = {};
+                this.underlayerPlayerTableau = {};
 
                 this.cardwidth = 124;
                 this.cardHeight = 173;
@@ -108,21 +109,33 @@ define([
                     // Void items (reserve size)
                     this.setReserveSize(player_id, player.reserve_size);
 
-                    this.playerTableau[player_id] = new ebg.stock();
-                    this.playerTableau[player_id].item_margin = 25;
-                    //console.log("************", player_id, this.playerTableau);
-                    this.playerTableau[player_id].create(this, $('player_tableau_' + player_id), 124, 173);
-                    this.playerTableau[player_id].image_items_per_row = 10;
-                    this.playerTableau[player_id].extraClasses = 'thickness empty-slot';
-
-                    this.playerTableau[player_id].onItemCreate = dojo.hitch(this, 'setupNewCard');
-                    //                this.playerTableau[ player_id ].order_items = false;
-                    this.playerTableau[player_id].addItemType(0, 9999, g_gamethemeurl + 'img/voidcard.png', 0);
+                    //cards stocks
+                    var itemMargin = 25;
+                    var itemsPerRow = 10;
+                    //underlayer for empty slots
+                    this.underlayerPlayerTableau[player_id] = new ebg.stock();
+                    this.underlayerPlayerTableau[player_id].item_margin = itemMargin;
+                    this.underlayerPlayerTableau[player_id].create(this, $('underlayer_player_tableau_' + player_id), this.cardwidth, this.cardHeight);
+                    this.underlayerPlayerTableau[player_id].image_items_per_row = itemsPerRow;
+                    this.underlayerPlayerTableau[player_id].extraClasses = 'thickness empty-slot';
+                    this.underlayerPlayerTableau[player_id].onItemCreate = dojo.hitch(this, 'setupNewCard');
+                    this.underlayerPlayerTableau[player_id].setSelectionMode = 0;
+                    this.underlayerPlayerTableau[player_id].addItemType(0, 9999, g_gamethemeurl + 'img/voidcard.png', 0);
                     for (let i = 0; i < 15; i++) {//insert empty slots
-                        this.playerTableau[player_id].addToStockWithId(0, this.nextInvocCardId);
+                        this.underlayerPlayerTableau[player_id].addToStockWithId(0, this.nextInvocCardId);
                         this.nextInvocCardId--;
                     }
-                    this.playerTableau[player_id].extraClasses = 'thickness ssn-loc-available ';
+                    this.underlayerPlayerTableau[player_id].extraClasses = 'thickness ssn-loc-available ';
+
+
+                    this.playerTableau[player_id] = new ebg.stock();
+                    this.playerTableau[player_id].item_margin = itemMargin;
+                    //console.log("************", player_id, this.playerTableau);
+                    this.playerTableau[player_id].create(this, $('player_tableau_' + player_id), this.cardwidth, this.cardHeight);
+                    this.playerTableau[player_id].image_items_per_row = itemsPerRow;
+                    this.playerTableau[player_id].extraClasses = 'thickness';
+
+                    this.playerTableau[player_id].onItemCreate = dojo.hitch(this, 'setupNewCard');
 
                     if (player_id != this.player_id) {
                         dojo.connect(this.playerTableau[player_id], 'onChangeSelection', this, 'onOpponentCardSelection');
@@ -751,19 +764,8 @@ define([
 
             // Adapt the invocation target card of the specified player
             adaptInvocation: function (player_id) {
-                var invoc_level = toint($('invocation_level_' + player_id).innerHTML);
-
-
-                var cards = this.playerTableau[player_id].getAllItems();
-                var div;
-                for (var i in cards) {
-                    div = this.playerTableau[player_id].getItemDivId(cards[i].id);
-                    if (i < invoc_level) {
-                        dojo.addClass(div, "ssn-loc-available");
-                    } else {
-                        dojo.removeClass(div, "ssn-loc-available");
-                    }
-                }
+                var invoc_level = toint($('invocation_level_' + player_id).innerHTML)+1;
+                dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:not(:nth-child(1n+${invoc_level}))`).addClass("ssn-loc-available");
             },
 
             ///////////////////////////////////////////////////

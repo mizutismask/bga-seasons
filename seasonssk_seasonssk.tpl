@@ -104,7 +104,10 @@
                 <div id="bonus4_{CURRENT_PLAYER_ID}" class="bonus bonus4"></div>
             </div>
         </div>
-        <div id="player_tableau_{CURRENT_PLAYER_ID}"></div>
+        <div class="stock-wrapper">
+            <div id="underlayer_player_tableau_{CURRENT_PLAYER_ID}" class="underlayer-tableau"></div>
+            <div id="player_tableau_{CURRENT_PLAYER_ID}"></div>
+        </div>
         <div id="ages" class="ages">
             <div class="age age2" data-year="2"></div>
             <div class="age age3" data-year="3"></div>
@@ -135,7 +138,10 @@
                 <div id="bonus4_{PLAYER_ID}" class="bonus bonus4"></div>
             </div>
         </div>
-        <div id="player_tableau_{PLAYER_ID}"></div>
+        <div class="stock-wrapper">
+            <div id="underlayer_player_tableau_{PLAYER_ID}" class="underlayer-tableau"></div>
+            <div id="player_tableau_{PLAYER_ID}"></div>
+        </div>
     </div>
     <!-- END player -->
 
