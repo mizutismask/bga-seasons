@@ -625,7 +625,8 @@ define([
                     dojo.place(this.format_block('jstpl_card_content', {
                         id: card_id,
                         type: card_type_id,
-                        name: _(card.name)
+                        name: _(card.name),
+                        cardactivation: card.activation ? "cardactivation" : "",
                     }), card_div.id);
                 }
             },
@@ -764,7 +765,7 @@ define([
 
             // Adapt the invocation target card of the specified player
             adaptInvocation: function (player_id) {
-                var invoc_level = toint($('invocation_level_' + player_id).innerHTML)+1;
+                var invoc_level = toint($('invocation_level_' + player_id).innerHTML) + 1;
                 dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:not(:nth-child(1n+${invoc_level}))`).addClass("ssn-loc-available");
             },
 
@@ -1533,7 +1534,9 @@ define([
                         dojo.style('season_library_choice', 'display', 'none');
                         dojo.style('board', 'display', 'block');
                         break;
-
+                    case 'maliceDie':
+                        dojo.query('.cardtype_15 .cardactivation').removeClass('cardactivation');
+                        break;
 
                 }
             },

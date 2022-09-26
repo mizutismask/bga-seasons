@@ -176,7 +176,7 @@ var jstpl_player_board = '<div class="clear">\
 
 var jstpl_card_content = '<div class="cardcontent cardtype_${type} thickness" id="cardcontent_${id}">\
                             <div class="cardtitle">${name}</div>\
-                            <div class="cardactivated"></div>\
+                            <div class="${cardactivation}"></div>\
                             <div id="cardenergies_${id}" class="cardenergies"></div>\
                          </div>';
 
