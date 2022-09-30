@@ -37,6 +37,9 @@ h3 {
 	top: -10px;
 }
 
+#season_dices_wrap { display: none !important}
+.gamestate_playerTurn #season_dices_wrap { display: grid }
+
 .season_1 #season_dices_wrap {
 	border: 2px solid #008080;
 }
