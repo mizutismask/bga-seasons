@@ -14,6 +14,11 @@
 require_once(APP_GAMEMODULE_PATH . 'module/table/table.game.php');
 
 
+
+if (!defined('NOTIF_TOKEN_CHANGE')) {
+    define("NOTIF_TOKEN_CHANGE", "notif_token_change");
+}
+
 class SeasonsSK extends Table {
     function __construct() {
         parent::__construct();
@@ -33,6 +38,10 @@ class SeasonsSK extends Table {
         $this->cards->init("card");
         $this->cards->autoreshuffle = true;
         $this->cards->autoreshuffle_trigger = array('obj' => $this, 'method' => 'deckAutoReshuffle');
+
+        $this->tokensDeck = self::getNew("module.common.deck");
+        $this->tokensDeck->init("ability_token");
+
         $this->bUpdateCardCount = false;
         $this->bUpdateScores = false;
         $this->tie_breaker_description = self::_("Cards summoned");
@@ -244,11 +253,16 @@ class SeasonsSK extends Table {
                 $this->cards->pickCardsForLocation(9, 'deck', 'nextchoice', $player_id);
             }
         }
+
+        $this->setupAndDealTokens();
     }
 
     // Get all datas (complete reset request from client side)
     protected function getAllDatas() {
         global $g_user;
+
+        $players = self::loadPlayersBasicInfos();
+
         $result = array('players' => array());
 
         $sql = "SELECT player_id id, player_score score, player_nb_bonus_used nb_bonus, player_invocation invocation, player_reserve_size reserve_size ";
@@ -265,6 +279,7 @@ class SeasonsSK extends Table {
         // Material
         $result['dices'] = $this->dices;
         $result['card_types'] = self::getCardTypes();
+        $result['abilityTokens'] = $this->abilityTokens;
 
         $result['firstplayer'] = self::getGameStateValue('firstPlayer');
 
@@ -299,6 +314,13 @@ class SeasonsSK extends Table {
             3 => $this->cards->getCardsInLocation('library3', $g_user->get_id())
         );
         $result['counters'] = $this->argCounters();
+
+        if ($this->isPathOfDestiny() || $this->isEnchantedKingdom()) {
+            $result['tokens'] = [];
+            foreach ($players as $player_id => $player) {
+                $result['tokens'][$player_id] = $this->tokensDeck->getCardsInLocation('hand', $player_id);
+            }
+        }
         return $result;
     }
 
@@ -315,10 +337,59 @@ class SeasonsSK extends Table {
         return $progression;
     }
 
+    function setupAndDealTokens() {
+        if ($this->isPathOfDestiny() || $this->isEnchantedKingdom()) {
+            $tokens = [];
+            if ($this->isEnchantedKingdom()) {
+                foreach ($this->abilityTokens as $token_id => $token) {
+                    if ($token_id >= 1 && $token_id <= 12) {
+                        $tokens[] = array('type' => $token_id, 'type_arg' => 0, 'nbr' => 1);
+                    }
+                }
+            }
+            if ($this->isPathOfDestiny()) {
+                foreach ($this->abilityTokens as $token_id => $token) {
+                    if ($token_id >= 13 && $token_id <= 18) {
+                        $tokens[] = array('type' => $token_id, 'type_arg' => 0, 'nbr' => 1);
+                    }
+                }
+            }
+            $this->tokensDeck->createCards($tokens, 'deck');
+            $this->tokensDeck->shuffle("deck");
+            if (!$this->isEnchantedKingdom()) {
+                $this->dealTokenToAllPlayers(1);
+            } else {
+                $this->dealTokenToAllPlayers(3);
+            }
+        }
+    }
 
     //////////////////////////////////////////////////////////////////////////////
     //////////// Utility functions    (functions used everywhere)
-    ////////////    
+    ////////////  
+    function dealTokenToAllPlayers($number) {
+        $dealt = [];
+        $players = self::loadPlayersBasicInfos();
+        foreach ($players as $player_id => $player) {
+            $dealt[$player_id] = $this->pickTokens($number, $player_id);
+        }
+        self::notifyAllPlayers(NOTIF_TOKEN_CHANGE, '', array('added' => $dealt));
+    }
+
+    function pickTokens($nb, $player_id) {
+        $cards = $this->tokensDeck->pickCards($nb, 'deck', $player_id);
+        return $cards;
+    }
+
+    function isPathOfDestiny() {
+        $draftMode = self::getGameStateValue('draftmode');
+        return in_array($draftMode, [5, 6, 7, 8]);
+    }
+
+    function isEnchantedKingdom() {
+        $draftMode = self::getGameStateValue('draftmode');
+        return in_array($draftMode, [4, 6, 8]);
+    }
 
     function getCardTypes() {
         // Get card types, with player's number adaptations
@@ -1719,7 +1790,7 @@ class SeasonsSK extends Table {
     }
 
     function getPossibleCards() {
-        $cards= [11];//todo
+        $cards = [11]; //todo
         return $cards;
     }
 

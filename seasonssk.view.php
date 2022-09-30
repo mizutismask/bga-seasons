@@ -26,20 +26,24 @@ class view_seasonssk_seasonssk extends game_view {
         $player_nbr = count($players);    // Note: number of players = number of rows
 
         $this->page->begin_block("seasonssk_seasonssk", "player");
+        $this->page->begin_block("seasonssk_seasonssk", "tokens");
 
         global $g_user;
 
         $this->tpl['CURRENT_PLAYER_ID'] = $g_user->get_id();
-        if (isset($players[$g_user->get_id()])){
+        if (isset($players[$g_user->get_id()])) {
             $this->tpl['CURRENT_PLAYER_NAME'] = $players[$g_user->get_id()]['player_name'];
             $this->tpl['CURRENT_PLAYER_COLOR'] = $players[$g_user->get_id()]['player_color'];
-        }
-        else{
+        } else {
             $this->tpl['CURRENT_PLAYER_NAME'] = '';
             $this->tpl['CURRENT_PLAYER_COLOR'] = '';
         }
 
         foreach ($players as $player) {
+            $this->page->insert_block("tokens", array(
+                "PLAYER_ID" => $player['player_id'],
+                "PLAYER_NAME" => $player['player_name'],
+            ));
             if ($player['player_id'] != $g_user->get_id()) {
                 $this->page->insert_block("player", array(
                     "PLAYER_ID" => $player['player_id'],

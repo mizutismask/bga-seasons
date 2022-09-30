@@ -66,6 +66,18 @@
         </div>
     </div>
 
+    <div id="abilityTokens" class="whiteblock seasons_rightpanel">
+        <h3>{LB_ABILITY_TOKENS}</h3>
+        <div id="tokensStocks">
+            <!-- BEGIN tokens -->
+            <div class="token-stock">
+                <h3>{PLAYER_NAME}</h3>
+                <div id="tokens_{PLAYER_ID}"></div>
+            </div>
+            <!-- END tokens -->
+        </div>
+    </div>
+
     <div id="choiceCards" class="whiteblock seasons_rightpanel">
         <h3>{LB_CARDS_DRAWN}</h3>
         <div id="choiceCardsStock">

@@ -700,6 +700,11 @@ a.choose_player {
 	width: 600px;
 }
 
+/* Tokens */
+.token-stock{
+	display: inline-block;
+}
+
 /******* Mobile version ****************/
 
 @media only screen and (max-width: 970px) {

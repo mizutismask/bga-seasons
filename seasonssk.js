@@ -32,6 +32,7 @@ define([
                 this.otusChoice = null;
                 this.playerTableau = {};
                 this.underlayerPlayerTableau = {};
+                this.tokensStock = {};
 
                 this.cardwidth = 124;
                 this.cardHeight = 173;
@@ -50,7 +51,7 @@ define([
                 this.setupSeasonHighlighter();
                 this.leftPlayerBoardsCristalCounters = [];
 
-                console.log("start creating player boards", gamedatas);
+                console.log("gamedatas", gamedatas);
                 for (var player_id in gamedatas.players) {
                     var player = gamedatas.players[player_id];
                     var player_board_div = $('player_board_' + player_id);
@@ -155,6 +156,20 @@ define([
 
                     this.leftPlayerBoardsCristalCounters[player_id.toString()] = new ebg.counter();
                     this.leftPlayerBoardsCristalCounters[player_id.toString()].create('cristals_counter_' + player_id);
+
+                    //tokens
+                    this.tokensStock[player_id] = new ebg.stock();
+                    this.tokensStock[player_id].create(this, $('tokens_' + player_id), 230, 230);
+                    this.tokensStock[player_id].setSelectionMode(1);
+                    this.tokensStock[player_id].autowidth = true;
+
+                    for (var tokenType in this.gamedatas.abilityTokens) {
+                        console.log("tokenType", tokenType);
+                        this.tokensStock[player_id].addItemType(tokenType, tokenType, g_gamethemeurl + 'img/pathOfDestinyTokens.jpg', parseInt(tokenType) - 13);
+                    }
+                    for (const [tokenId, token] of Object.entries(this.gamedatas.tokens[player_id])) {
+                        this.tokensStock[player_id].addToStockWithId(token.type, tokenId);
+                    }
                 }
                 this.updateCounters(gamedatas.counters);
 
