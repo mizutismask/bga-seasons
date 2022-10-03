@@ -16,7 +16,6 @@ require_once(APP_GAMEMODULE_PATH . 'module/table/table.game.php');
 
 
 if (!defined('NOTIF_TOKEN_CHANGE')) {
-    define("NOTIF_TOKEN_CHANGE", "notif_token_change");
 }
 
 class SeasonsSK extends Table {
@@ -373,7 +372,6 @@ class SeasonsSK extends Table {
         foreach ($players as $player_id => $player) {
             $dealt[$player_id] = $this->pickTokens($number, $player_id);
         }
-        self::notifyAllPlayers(NOTIF_TOKEN_CHANGE, '', array('added' => $dealt));
     }
 
     function pickTokens($nb, $player_id) {
@@ -1392,7 +1390,8 @@ class SeasonsSK extends Table {
         self::notifyUpdateCardCount();
 
         // This player => no more active
-        $this->gamestate->setPlayerNonMultiactive($player_id, 'chooseLibrarynew');
+        $state = $this->isEnchantedKingdom() ? "chooseToken" : 'chooseLibrarynew';
+        $this->gamestate->setPlayerNonMultiactive($player_id, $state);
     }
 
     function chooseDie($die_id) {
@@ -2535,6 +2534,26 @@ class SeasonsSK extends Table {
         // Discard card effect
         $method_name = self::getCardEffectMethod($card_name, 'discard');
         $this->$method_name($card_id, self::ct($card['type']));
+    }
+
+    function chooseToken($tokenId) {
+        self::checkAction('chooseToken');
+        $player_id = self::getCurrentPlayerId();
+        $card = $this->tokensDeck->getCard($tokenId);
+
+        if (!$card)
+            throw new feException("Token not found");
+        if ($card['location'] != 'hand' || $card['location_arg'] != $player_id)
+            throw new feException("This token is not yours");
+
+        $this->tokensDeck->moveAllCardsInLocation('hand', 'discard', $player_id); //other tokens are discarded
+        $this->tokensDeck->moveCard($tokenId, 'hand',  $player_id);
+        $this->gamestate->setPlayerNonMultiactive($player_id, 'startYear');
+        
+        self::notifyAllPlayers('tokenChosen', '', array(
+            'token_id' => $tokenId,
+            'player_id' => $player_id,
+        ));
     }
 
     function chooseCardHand($card_id) {

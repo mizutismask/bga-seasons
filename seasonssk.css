@@ -37,8 +37,19 @@ h3 {
 	top: -10px;
 }
 
-#season_dices_wrap { display: none !important}
-.gamestate_playerTurn #season_dices_wrap { display: grid }
+#season_dices_wrap {
+	display: none;
+}
+.gamestate_playerTurn #season_dices_wrap {
+	display: grid;
+}
+
+#abilityTokens {
+	display: none;
+}
+.gamestate_chooseToken #abilityTokens, .gamestate_draftChoice #abilityTokens, .gamestate_draftTwist #abilityTokens, .gamestate_prepareBuildLibrary #abilityTokens, .gamestate_buildLibraryNew #abilityTokens {
+	display: block;
+}
 
 .season_1 #season_dices_wrap {
 	border: 2px solid #008080;
@@ -704,7 +715,7 @@ a.choose_player {
 }
 
 /* Tokens */
-.token-stock{
+.token-stock {
 	display: inline-block;
 }
 

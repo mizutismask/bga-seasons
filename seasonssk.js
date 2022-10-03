@@ -1067,6 +1067,20 @@ define([
                 }
             },
 
+            onChooseToken: function (evt) {
+                if (this.checkAction('chooseToken')) {
+                    var tokens = this.tokensStock[this.player_id].getSelectedItems();
+                    if (tokens.length == 1) {
+                        var token = tokens[0];
+                        this.ajaxcall("/seasonssk/seasonssk/chooseToken.html", { tokenId: token.id, lock: true }, this, function (result) {
+                        });
+                    }
+                    else {
+                        this.showMessage(_("You must select one of your tokens first"), 'error');
+                    }
+                }
+            },
+
             onLibraryBuildchange: function (library) {
                 this.checkAction('chooseLibrarynew');
 
@@ -1802,6 +1816,9 @@ define([
                                 this.addActionButton('dualChoice' + card[0], card[1], 'onDualChoice');
                             }
                             break;
+                        case 'chooseToken':
+                            this.addActionButton('chooseToken', _('Choose this token'), 'onChooseToken');
+                            break;
                     }
 
                     if (this.checkPossibleActions('placeenergyEffect')) {
@@ -1877,7 +1894,7 @@ define([
 
                 dojo.subscribe('updateScores', this, "notif_updateScores");
                 dojo.subscribe('potionOfLifeWarning', this, "notif_potionOfLifeWarning");
-
+                dojo.subscribe('tokenChosen', this, "notif_tokenChosen");
             },
 
             notif_updateCardCount: function (notif) {
@@ -1989,6 +2006,20 @@ define([
                     this.leftPlayerBoardsCristalCounters[player_id].toValue(notif.args.scores[player_id]);
                 }
             },
+
+            notif_tokenChosen: function (notif) {
+                var playerId = notif.args.player_id;
+                var tokenId = notif.args.token_id
+
+                var tokens = this.tokensStock[playerId].getAllItems();
+                tokens.forEach(token => {
+                    if (token.id != tokenId) {
+                        this.tokensStock[playerId].removeFromStockById(token.id);
+                    }
+                });
+                dojo.place("tokens_" + playerId, "left_avatar_" + playerId, "replace");
+            },
+
             notif_summon: function (notif) {
                 // Summon: card goes from player hand (if current player) or from player panel (=opponent) to player's tableau
                 if (notif.args.fromTableau) {

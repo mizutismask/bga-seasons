@@ -89,6 +89,16 @@ $machinestates = array(
         "transitions" => array("draftTwist" => 14)
     ),
 
+    13 => array(
+        "name" => "chooseToken",
+        "description" => clienttranslate('Everyone must choose his ability token'),
+        "descriptionmyturn" => clienttranslate('${you} must choose one ability token'),
+        "type" => "multipleactiveplayer",
+        "action"=> "stMakeEveryoneActive",
+        "possibleactions" => array("chooseToken"),
+        "transitions" => array("startYear" => 20)
+    ),
+
     14 => array(
         "name" => "prepareBuildLibrary",
         "description" => '',
@@ -104,7 +114,7 @@ $machinestates = array(
         "type" => "multipleactiveplayer",
         "action" => "stBuildLibraryNew",
         "possibleactions" => array("chooseLibrarynew"),
-        "transitions" => array("chooseLibrarynew" => 20)
+        "transitions" => array("chooseLibrarynew" => 20, "chooseToken" => 13)
     ),
 
     /////////// Main cycle ////////////////
