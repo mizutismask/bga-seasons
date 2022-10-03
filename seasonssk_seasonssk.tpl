@@ -186,6 +186,14 @@ var jstpl_player_board = '<div class="clear">\
         <div><a href="#" id="choose_player_${player.id}"  class="choose_player button ${player.choose_opponent}"><span>{LB_CHOOSE_THIS_PLAYER}</span></a></div>\
     </div>';
 
+var jstpl_token_tooltip = '<div class="tokentooltip">\
+                                ${text}\
+                                <br/><br/><hr/>\
+                                ${points} <img src="{THEMEURL}img/common/point.png" alt="points"/> \
+                                 <br/><br/>\
+                                <div class="tokenart" style="background-position: ${backPos}"></div>\
+                          </div>';
+
 var jstpl_card_content = '<div class="cardcontent cardtype_${type} thickness" id="cardcontent_${id}">\
                             <div class="cardtitle">${name}</div>\
                             <div class="${cardactivation}"></div>\

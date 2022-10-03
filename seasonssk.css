@@ -44,10 +44,26 @@ h3 {
 	display: grid;
 }
 
+.tokenart {
+	width: 230px;
+	height: 230px;
+	background: url("img/pathOfDestinyTokens.jpg");
+	display: inline-block;
+}
+
+.tokentooltip {
+	text-align: center;
+	max-width: 250px;
+}
+
 #abilityTokens {
 	display: none;
 }
-.gamestate_chooseToken #abilityTokens, .gamestate_draftChoice #abilityTokens, .gamestate_draftTwist #abilityTokens, .gamestate_prepareBuildLibrary #abilityTokens, .gamestate_buildLibraryNew #abilityTokens {
+.gamestate_chooseToken #abilityTokens,
+.gamestate_draftChoice #abilityTokens,
+.gamestate_draftTwist #abilityTokens,
+.gamestate_prepareBuildLibrary #abilityTokens,
+.gamestate_buildLibraryNew #abilityTokens {
 	display: block;
 }
 

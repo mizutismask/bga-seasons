@@ -162,6 +162,7 @@ define([
                     this.tokensStock[player_id].create(this, $('tokens_' + player_id), 230, 230);
                     this.tokensStock[player_id].setSelectionMode(1);
                     this.tokensStock[player_id].autowidth = true;
+                    this.tokensStock[player_id].onItemCreate = dojo.hitch(this, 'setupNewToken');
 
                     for (var tokenType in this.gamedatas.abilityTokens) {
                         console.log("tokenType", tokenType);
@@ -629,6 +630,30 @@ define([
 
                 return this.format_block('jstpl_card_tooltip', card);
             },
+
+            getTokenTooltip: function (card_div, card_id, card_type_id) {
+                var card = this.gamedatas.abilityTokens[card_type_id];
+                card.text = this.nl2br(_(card.desc), false);
+                card.text = card.text.replace(new RegExp("\\. ", 'g'), '.<br/><br/>');
+                card.text = card.text.replace(new RegExp(" -", 'g'), '<br/>-');
+
+                // Get the background position information 
+                backPos = dojo.style(card_div, 'backgroundPosition');
+
+                return this.format_block('jstpl_token_tooltip', {
+                    "text": card.text,
+                    "points": card.points,
+                    "backPos": backPos,
+                });
+            },
+
+            setupNewToken: function (card_div, card_type_id, card_id) {
+                if (card_type_id != 0) {
+                    var html = this.getTokenTooltip(card_div, card_id, card_type_id);
+                    this.addTooltipHtml(card_div.id, html, 100);
+                }
+            },
+
 
             setupNewCard: function (card_div, card_type_id, card_id) {
                 if (card_type_id != 0) {
