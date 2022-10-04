@@ -2035,7 +2035,8 @@ define([
             notif_tokenChosen: function (notif) {
                 var playerId = notif.args.player_id;
                 var tokenId = notif.args.token_id
-
+                
+                this.tokensStock[playerId].setSelectionMode(0);
                 var tokens = this.tokensStock[playerId].getAllItems();
                 tokens.forEach(token => {
                     if (token.id != tokenId) {
