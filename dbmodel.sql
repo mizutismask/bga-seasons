@@ -3,6 +3,11 @@
 ALTER TABLE  `player` ADD  `player_nb_bonus_used` TINYINT UNSIGNED NOT NULL DEFAULT  '0';
 ALTER TABLE `player` ADD `player_invocation` SMALLINT UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player` ADD `player_reserve_size` SMALLINT UNSIGNED NOT NULL DEFAULT '7';
+ALTER TABLE `player` ADD `player_score_cristals` int(10) NOT NULL DEFAULT '0';
+ALTER TABLE `player` ADD `player_score_raw_cards` int(10) NOT NULL DEFAULT '0';
+ALTER TABLE `player` ADD `player_score_eog_cards` int(10) NOT NULL DEFAULT '0';
+ALTER TABLE `player` ADD `player_score_bonus_actions` int(10) NOT NULL DEFAULT '0';
+ALTER TABLE `player` ADD `player_score_remaining_cards` int(10) NOT NULL DEFAULT '0';
 
 CREATE TABLE IF NOT EXISTS `card` (
   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,

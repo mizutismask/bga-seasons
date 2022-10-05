@@ -1,5 +1,16 @@
 {OVERALL_GAME_HEADER}
 <div id="seasons_container">
+    <div id="score">
+        <div id="tabble-wrapper">
+            <table>
+                <thead>
+                    <tr id="scoretr"></tr>
+                </thead>
+                <tbody id="score-table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
     <div id="board">
         <div id="seasonHighlighter"></div>
         <div class="monthplace" id="monthplace_1"></div>

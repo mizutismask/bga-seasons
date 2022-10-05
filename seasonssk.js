@@ -45,13 +45,23 @@ define([
                 this.libraryBuild = {};
 
                 this.nextInvocCardId = -1;
+
+                this.isDebug = window.location.host == 'studio.boardgamearena.com';
+                this.log = this.isDebug ? console.log.bind(window.console) : function () { };
+                //this.animationDuration = 500;
+                this.scoreAnimationDuration = 1500;
             },
+
             setup: function (gamedatas) {
 
                 this.setupSeasonHighlighter();
                 this.leftPlayerBoardsCristalCounters = [];
 
                 console.log("gamedatas", gamedatas);
+                if (Number(gamedatas.gamestate.id) == 98 || Number(gamedatas.gamestate.id) == 99 || Number(gamedatas.gamestate.id) == 100) { // score or end
+                    this.onEnteringShowScore(true);
+
+                }
                 for (var player_id in gamedatas.players) {
                     var player = gamedatas.players[player_id];
                     var player_board_div = $('player_board_' + player_id);
@@ -172,7 +182,7 @@ define([
                         this.tokensStock[player_id].addToStockWithId(token.type, tokenId);
                     }
 
-                    if (gamedatas.tokens) {
+                    if (gamedatas.tokens && gamedatas.tokens[player_id].length==1) {
                         dojo.place("tokens_" + player_id, "left_avatar_" + player_id, "replace");
                         if (player_id == this.player_id) {
                             dojo.query("#tokens_" + player_id + " .stockitem").connect('click', this, 'onPlayToken');
@@ -841,6 +851,21 @@ define([
                         this.seasonDices.unselectAll();
                     }
                 }
+            },
+
+            takeAction: function (action, data) {
+                data = data || {};
+                data.lock = true;
+                this.ajaxcall(`/seasonssk/seasonssk/${action}.html`, data, this, () => { });
+            },
+
+            takeNoLockAction: function (action, data) {
+                data = data || {};
+                this.ajaxcall(`/seasonssk/seasonssk/${action}.html`, data, this, () => { });
+            },
+
+            score: function () {
+                this.takeAction("score");
             },
 
             onEndTurn: function () {
@@ -1554,6 +1579,9 @@ define([
                             }
                         }
                         break;
+                    case 'finalScoring':
+                        this.onEnteringShowScore();
+                        break;
                     case 'chooseToken':
                         this.tokensStock[this.player_id].setSelectionMode(1);
                         break;
@@ -1884,6 +1912,48 @@ define([
                 }
             },
 
+            onEnteringShowScore: function (fromReload = false) {
+
+                document.getElementById('score').style.display = 'flex';
+
+                const headers = document.getElementById('scoretr');
+                if (!headers.childElementCount) {
+                    dojo.place(`
+                    <th></th>
+                    <th id="th-cristals-score" class="cristals-score">${_("Score at the end of year III")}</th>
+                    <th id="th-raw-cards-score" class="raw-cards-score">${_("Cards : raw score")}</th>
+                    <th id="th-eog-cards-score" class="eog-cards-score">${_("Cards : end of game effects")}</th>
+                    <th id="th-bonus-actions-score" class="bonus-actions-score">${_("Additional actions")}</th>
+                    <th id="th-remaining-cards-score" class="remaining-cards-score">${_("Cards in hand")}</th>
+                    <th id="th-after-end-score" class="after-end-score">${_("Final score")}</th>
+                `, headers);
+                }
+
+                const players = Object.values(this.gamedatas.players);
+
+                players.forEach(player => {
+                    //if we are a reload of end state, we display values, else we wait for notifications
+                    const playerScore = fromReload ? (player) : null;
+
+                    dojo.place(`<tr id="score${player.id}">
+                    <td class="player-name" style="color: #${player.color}">${player.name}</td>
+                    <td id="cristals-score${player.id}" class="score-number cristals-score">${playerScore?.cristalsScore !== undefined ? playerScore.cristalsScore : ''}</td>
+                    <td id="raw-cards-score${player.id}" class="score-number raw-cards-score">${playerScore?.rawCardsScore !== undefined ? playerScore.rawCardsScore : ''}</td>
+                    <td id="eog-cards-score${player.id}" class="score-number eog-cards-score">${playerScore?.eogCardsScore !== undefined ? playerScore.eogCardsScore : ''}</td>
+                    <td id="bonus-actions-score${player.id}" class="score-number bonus-actions-score">${playerScore?.bonusActionsScore !== undefined ? playerScore.bonusActionsScore : ''}</td>
+                    <td id="remaining-cards-score${player.id}" class="score-number remaining-cards-score">${playerScore?.remainingCardsScore !== undefined ? playerScore.remainingCardsScore : ''}</td>
+                    <td id="after-end-score${player.id}" class="score-number after-end-score total">${playerScore?.score !== undefined ? playerScore.score : ''}</td>
+                </tr>`, 'score-table-body');
+                });
+
+                this.addTooltipHtmlToClass('cristals-score', _("Score before the final count."));
+                this.addTooltipHtmlToClass('raw-cards-score', _("Total number of cristals visible on the left corner of the cards in play."));
+                this.addTooltipHtmlToClass('eog-cards-score', _("Number of cristals awarded by end of game effects on cards in play."));
+                this.addTooltipHtmlToClass('bonus-actions-score', _("Total number of malus for additional actions used"));
+                this.addTooltipHtmlToClass('remaining-cards-score', _("-5 cristals per card in hand."));
+
+            },
+
             cmp: function (a, b) {
                 return a[1].localeCompare(b[1]);
             },
@@ -1938,7 +2008,49 @@ define([
 
                 dojo.subscribe('updateScores', this, "notif_updateScores");
                 dojo.subscribe('potionOfLifeWarning', this, "notif_potionOfLifeWarning");
-                dojo.subscribe('tokenChosen', this, "notif_tokenChosen");
+
+                var _this = this;
+                var notifs = [
+                    ['cristalsScore', this.scoreAnimationDuration],
+                    ['rawCardsScore', this.scoreAnimationDuration],
+                    ['eogCardsScore', this.scoreAnimationDuration],
+                    ['scoreAdditionalActions', this.scoreAnimationDuration],
+                    ['scoreRemainingCards', this.scoreAnimationDuration],
+                    ['scoreAfterEnd', this.scoreAnimationDuration],
+                ];
+                notifs.forEach(function (notif) {
+                    dojo.subscribe(notif[0], _this, "notif_" + notif[0]);
+                    _this.notifqueue.setSynchronous(notif[0], notif[1]);
+                });
+            },
+
+            setScore: function (playerId, column, score) {
+                var cell = document.getElementById("score" + playerId).getElementsByTagName('td')[column];
+                cell.innerHTML = "" + score;
+            },
+            notif_cristalsScore: function (notif) {
+                this.log('notif_cristalsScore', notif.args);
+                this.setScore(notif.args.playerId, 1, notif.args.points);
+            },
+            notif_rawCardsScore: function (notif) {
+                this.log('notif_rawCardsScore', notif.args);
+                this.setScore(notif.args.playerId, 2, notif.args.points);
+            },
+            notif_eogCardsScore: function (notif) {
+                this.log('notif_eogCardsScore', notif.args);
+                this.setScore(notif.args.playerId, 3, notif.args.points);
+            },
+            notif_scoreAdditionalActions: function (notif) {
+                this.log('notif_scoreAdditionalActions', notif.args);
+                this.setScore(notif.args.playerId, 4, notif.args.points);
+            },
+            notif_scoreRemainingCards: function (notif) {
+                this.log('notif_scoreRemainingCards', notif.args);
+                this.setScore(notif.args.playerId, 5, notif.args.points);
+            },
+            notif_scoreAfterEnd: function (notif) {
+                this.log('notif_scoreAfterEnd', notif.args);
+                this.setScore(notif.args.playerId, 6, notif.args.points);
             },
 
             notif_updateCardCount: function (notif) {
@@ -2223,5 +2335,4 @@ define([
             }
         });
     });
-
 

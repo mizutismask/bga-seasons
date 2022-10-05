@@ -264,7 +264,7 @@ class SeasonsSK extends Table {
 
         $result = array('players' => array());
 
-        $sql = "SELECT player_id id, player_score score, player_nb_bonus_used nb_bonus, player_invocation invocation, player_reserve_size reserve_size ";
+        $sql = "SELECT player_id id, player_score score, player_nb_bonus_used nb_bonus, player_invocation invocation, player_reserve_size reserve_size, player_score_cristals cristalsScore, player_score_raw_cards rawCardsScore, player_score_eog_cards eogCardsScore, player_score_bonus_actions bonusActionsScore, player_score_remaining_cards remainingCardsScore ";
         $sql .= "FROM player ";
         $sql .= "WHERE 1 ";
         $dbres = self::DbQuery($sql);
@@ -366,6 +366,35 @@ class SeasonsSK extends Table {
     //////////////////////////////////////////////////////////////////////////////
     //////////// Utility functions    (functions used everywhere)
     ////////////  
+    function getPlayersIds() {
+        return array_keys($this->loadPlayersBasicInfos());
+    }
+
+    function getPlayerName(int $playerId) {
+        return $this->getUniqueValueFromDb("SELECT player_name FROM player WHERE player_id = $playerId");
+    }
+
+    function getPlayerScore(int $playerId) {
+        return intval($this->getUniqueValueFromDB("SELECT player_score FROM player where `player_id` = $playerId"));
+    }
+
+    function incPlayerScore(int $playerId, int $incScore, $message = '', $params = []) {
+
+        $this->DbQuery("UPDATE player SET player_score = player_score + $incScore WHERE player_id = $playerId");
+
+        $this->notifyAllPlayers('points', $message, $params + [
+            'playerId' => $playerId,
+            'player_name' => $this->getPlayerName($playerId),
+            'points' => $incScore,
+            'abspoints' => $incScore,
+            'newScore' => $this->getPlayerScore($playerId),
+        ]);
+    }
+
+    function updatePlayer(int $playerId, String $field, int $newValue) {
+        $this->DbQuery("UPDATE player SET $field = $newValue WHERE player_id = $playerId");
+    }
+
     function dealTokenToAllPlayers($number) {
         $dealt = [];
         $players = self::loadPlayersBasicInfos();
@@ -885,13 +914,13 @@ class SeasonsSK extends Table {
             46, // Sealed Chest of Urm
             112 // Jewel of the Ancients
         ));
-
-
-
-
-
+        $scores = [];
+        foreach ($players as $player_id => $player) {
+            $scores[$player_id] = 0;
+        }
         foreach ($cardWithPoints as $card_type_id => $theseplayers) {
             foreach ($theseplayers as $player_id => $cards) {
+                $totalPerPlayer = 0;
                 foreach ($cards as $i => $card_id) {
                     $card_count = count($cards);
 
@@ -902,7 +931,7 @@ class SeasonsSK extends Table {
                         if (count($players_with_maximum) == 1) {
                             if (reset($players_with_maximum) == $player_id) {
                                 $points = self::checkMinion(20, $player_id);
-
+                                $totalPerPlayer += $points;
                                 // => the owner of Ragfield’s Helm has more power cards in play => 20 pts
                                 self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ");
 
@@ -921,6 +950,7 @@ class SeasonsSK extends Table {
 
                         $energyNbr = self::countPlayerEnergies($player_id);
                         $points = self::checkMinion(3 * $energyNbr, $player_id);
+                        $totalPerPlayer += $points;
                         self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ");
 
                         self::notifyAllPlayers('winPoints', clienttranslate('${card_name}: ${player_name} gains ${points} point(s)'), array(
@@ -930,11 +960,6 @@ class SeasonsSK extends Table {
                             'points' => $points,
                             'card_name' => $this->card_types[45]['name']
                         ));
-
-
-
-
-
                         self::notifyUpdateScores();
                     } else if ($card_type_id == 46) {
                         // Sealed Chest of Urm: If only magic items in play => +20 points
@@ -943,6 +968,7 @@ class SeasonsSK extends Table {
 
                         if ($familiar_item_nbr == 0) {
                             $points = self::checkMinion(20, $player_id);
+                            $totalPerPlayer += $points;
                             self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ");
 
                             self::notifyAllPlayers('winPoints', clienttranslate('${card_name}: ${player_name} gains ${points} point(s)'), array(
@@ -964,6 +990,7 @@ class SeasonsSK extends Table {
 
                         if ($total_energy >= 3) {
                             $points = self::checkMinion(35, $player_id);
+                            $totalPerPlayer += $points;
                             self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ");
 
                             self::notifyAllPlayers('winPoints', clienttranslate('${card_name}: ${player_name} gains ${points} point(s)'), array(
@@ -976,6 +1003,7 @@ class SeasonsSK extends Table {
                             self::notifyUpdateScores();
                         } else {
                             $loose = 10;
+                            $totalPerPlayer -= $loose;
                             self::DbQuery("UPDATE player SET player_score=GREATEST( 0,player_score-$loose ) WHERE player_id='$player_id'");
                             self::notifyAllPlayers('winPoints', clienttranslate('${card_name}: ${player_name} looses ${points_disp} crystals'), array(
                                 'i18n' => array('card_name'),
@@ -989,7 +1017,16 @@ class SeasonsSK extends Table {
                         }
                     }
                 }
+                //check total
+                $this->updatePlayer($player_id, "player_score_eog_cards", $totalPerPlayer);
+                $scores[$player_id] = $totalPerPlayer;
             }
+        }
+        foreach ($players as $player_id => $player) {
+            $this->notifyAllPlayers('eogCardsScore', '', [
+                'playerId' => $player_id,
+                'points' => $scores[$player_id],
+            ]);
         }
     }
 
@@ -1225,6 +1262,9 @@ class SeasonsSK extends Table {
     //////////////////////////////////////////////////////////////////////////////
     //////////// Player actions
     //////////// 
+    function score() {
+        $this->gamestate->nextState('finalScoring');
+    }
 
     function draftChooseCard($card_id) {
         self::checkAction('draftChooseCard');
@@ -4206,11 +4246,11 @@ class SeasonsSK extends Table {
         $players = self::loadPlayersBasicInfos();
         $cards = $this->cards->getCardsInLocation('tableau');
         $player_to_score = array();
+        foreach ($players as $player_id => $player) {
+            $player_to_score[$player_id] = 0;
+        }
         foreach ($cards as $card) {
             $player_id = $card['location_arg'];
-            if (!isset($player_to_score[$player_id]))
-                $player_to_score[$player_id] = 0;
-
             $player_to_score[$player_id] += $this->card_types[self::ot($card['type'])]['points'];
         }
 
@@ -4222,6 +4262,13 @@ class SeasonsSK extends Table {
                 'player_name' => $players[$player_id]['player_name'],
                 'points' => $points
             ));
+
+            $this->updatePlayer($player_id, "player_score_raw_cards", $points);
+            $this->notifyAllPlayers('rawCardsScore', '', [
+                'playerId' => $player_id,
+                'points' => $points,
+            ]);
+
             self::notifyUpdateScores();
 
             self::incStat($points, 'points_cards_on_tableau', $player_id);
@@ -4243,6 +4290,13 @@ class SeasonsSK extends Table {
                 'points_disp' => abs($points),
                 'nbr' => $nbrCards
             ));
+
+            $this->updatePlayer($player_id, "player_score_remaining_cards", $points);
+            $this->notifyAllPlayers('scoreRemainingCards', '', [
+                'playerId' => $player_id,
+                'points' => $points,
+            ]);
+
             self::notifyUpdateScores();
 
             self::incStat($points, 'points_remaining_cards', $player_id);
@@ -4271,9 +4325,21 @@ class SeasonsSK extends Table {
                     'points_disp' => abs($points),
                     'nbr' => $nbrUsed
                 ));
+
+                $this->updatePlayer($player_id, "player_score_bonus_actions", $points);
+                $this->notifyAllPlayers('scoreAdditionalActions', '', [
+                    'playerId' => $player_id,
+                    'points' => $points,
+                ]);
+
                 self::notifyUpdateScores();
 
                 self::incStat($points, 'points_bonus', $player_id);
+            } else {
+                $this->notifyAllPlayers('scoreAdditionalActions', '', [
+                    'playerId' => $player_id,
+                    'points' => 0,
+                ]);
             }
         }
     }
@@ -4293,13 +4359,14 @@ class SeasonsSK extends Table {
     }
 
     function stFinalScoring() {
-        // "end of the game" points from cards effects
-        self::gainEndOfGameEffectsPoints();
-
         $finalSituation = self::getCollectionFromDB('SELECT player_id, player_score, player_invocation FROM player');
         foreach ($finalSituation as $player_id => $player) {
             self::setStat($player['player_score'], 'points_crystals', $player_id);
             self::setStat($player['player_invocation'], 'final_summoning', $player_id);
+            $this->notifyAllPlayers('cristalsScore', '', [
+                'playerId' => $player_id,
+                'points' => $player['player_score'],
+            ]);
         }
 
         $finalTableauSize = $this->cards->countCardsByLocationArgs('tableau');
@@ -4311,13 +4378,28 @@ class SeasonsSK extends Table {
         // Score points on power cards
         self::gainPointsOnPowerCards();
 
-        // Remaining cards in hands (-5pts)
-        self::looseRemainingCardsInHand();
+        // "end of the game" points from cards effects
+        self::gainEndOfGameEffectsPoints();
 
         // Bonus track penalties
         self::loosePointsBonus();
 
-        $this->gamestate->nextState('');
+        // Remaining cards in hands (-5pts)
+        self::looseRemainingCardsInHand();
+
+        //total
+        $finalSituation = self::getCollectionFromDB('SELECT player_id, player_score FROM player');
+        foreach ($finalSituation as $player_id => $player) {
+            $this->notifyAllPlayers('scoreAfterEnd', '', [
+                'playerId' => $player_id,
+                'points' => $player['player_score'],
+            ]);
+        }
+
+        if ($this->getBgaEnvironment() == 'studio')
+            $this->gamestate->nextState('debugEnd'); // debug end
+        else
+            $this->gamestate->nextState('realEnd'); // real end
     }
 
 

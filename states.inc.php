@@ -14,7 +14,12 @@
  * SeasonsSK game states description
  *
  */
-
+if (!defined('ST_END_SCORE')) {
+    define('ST_END_SCORE', 90);
+    define('ST_END_GAME', 99);
+    define('STATE_DEBUGGING_END', 100);
+    
+}
 /*
    Game state machine is a tool used to facilitate game developpement by doing common stuff that can be set up
    in a very easy way from this configuration file.
@@ -58,7 +63,7 @@ $machinestates = array(
         "description" => clienttranslate("Game setup"),
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array("" => 11)
+        "transitions" => array("" => 11)//98 for fake scoring
     ),
 
     /////////// Draft & deck building phase ////////////////
@@ -1058,12 +1063,21 @@ $machinestates = array(
 
     /////////// End of game ////////////////
 
+    STATE_DEBUGGING_END => [ // active player state for debugging end of game
+        "name" => "debuggingEnd",
+        "description" => clienttranslate('${actplayer} Game is Over'),
+        "descriptionmyturn" => clienttranslate('${you} Game is Over'),
+        "type" => "activeplayer",
+        "possibleactions" => ["endGame"],
+        "transitions" => ["next" => 99, "loopback" => STATE_DEBUGGING_END] // 
+    ],
+
     98 => array(
         "name" => "finalScoring",
         "description" => '',
         "type" => "game",
         "action" => "stFinalScoring",
-        "transitions" => array("" => 99)
+        "transitions" => array("debugEnd" => STATE_DEBUGGING_END,"realEnd" => 99)
     ),
 
     // Final state.

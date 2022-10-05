@@ -459,7 +459,12 @@ class action_seasonssk extends APP_GameAction {
         $this->game->chooseOpponentCard($card_id, $energy);
         self::ajaxResponse();
     }
-
+    public function score() {
+        self::setAjaxMode();
+        $this->game->score();
+        self::ajaxResponse();
+    }
+    
     public function chooseToken() {
         self::setAjaxMode();
         $card_id = self::getArg("tokenId", AT_posint, true);

@@ -18,6 +18,13 @@ html.season_4 {
 h3 {
 	color: white;
 }
+
+:root {
+	--scoreColor: #2373a1;
+	--scoreSecondaryColor: #325590;
+    --scoreShadowColor: white;
+}
+
 /* main board */
 
 #board {
@@ -728,6 +735,56 @@ a.choose_player {
 
 .library_build_wrap {
 	width: 600px;
+}
+
+#score {
+	display: none;
+	justify-content: center;
+}
+#score #tabble-wrapper {
+	padding: 40px;
+	/*background: url("img/score-background.png");*/
+	background-size: 100% 100%;
+}
+#score #tabble-wrapper table tbody tr {
+	border-top: 1px solid var(--scoreSecondaryColor);
+}
+#score #tabble-wrapper table td:not(:first-child),
+#score #tabble-wrapper table th:not(:first-child) {
+	border-left: 1px solid var(--scoreSecondaryColor);
+}
+#score #tabble-wrapper table tr {
+	height: 40px;
+}
+#score #tabble-wrapper table tr th {
+	text-align: center;
+	color: var(--scoreColor);
+	text-shadow: 0px 0px 1px var(--scoreShadowColor),
+		0px 0px 2px var(--scoreShadowColor),
+		0px 0px 3px var(--scoreShadowColor);
+	padding: 8px;
+}
+#score #tabble-wrapper table tr td {
+	width: 100px;
+	text-align: center;
+}
+#score #tabble-wrapper table tr td:not(:first-child) {
+	font-size: 150%;
+	color: var(--scoreColor);
+	text-shadow: 0px 0px 1px var(--scoreShadowColor),
+		0px 0px 2px var(--scoreShadowColor),
+		0px 0px 3px var(--scoreShadowColor);
+}
+#score #tabble-wrapper table tr td.player-name {
+	width: 181px;
+	font-weight: bold;
+	text-shadow: 0px 0px 1px var(--scoreShadowColor), 0px 0px 2px var(--scoreShadowColor),
+		0px 0px 3px var(--scoreShadowColor);
+	word-break: break-all;
+	font-size: 120%;
+}
+#score #tabble-wrapper table tr td.total {
+	font-weight: bold;
 }
 
 /* Tokens */
