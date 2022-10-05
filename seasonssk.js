@@ -159,17 +159,24 @@ define([
 
                     //tokens
                     this.tokensStock[player_id] = new ebg.stock();
-                    this.tokensStock[player_id].create(this, $('tokens_' + player_id), 230, 230);
-                    this.tokensStock[player_id].setSelectionMode(1);
+                    this.tokensStock[player_id].create(this, $('tokens_' + player_id), 100, 100);
+                    this.tokensStock[player_id].setSelectionMode(0);
                     this.tokensStock[player_id].autowidth = true;
                     this.tokensStock[player_id].onItemCreate = dojo.hitch(this, 'setupNewToken');
 
                     for (var tokenType in this.gamedatas.abilityTokens) {
                         console.log("tokenType", tokenType);
-                        this.tokensStock[player_id].addItemType(tokenType, tokenType, g_gamethemeurl + 'img/pathOfDestinyTokens.jpg', parseInt(tokenType) - 13);
+                        this.tokensStock[player_id].addItemType(tokenType, tokenType, g_gamethemeurl + 'img/pathOfDestinyTokens.png', parseInt(tokenType) - 13);
                     }
                     for (const [tokenId, token] of Object.entries(this.gamedatas.tokens[player_id])) {
                         this.tokensStock[player_id].addToStockWithId(token.type, tokenId);
+                    }
+
+                    if (gamedatas.tokens) {
+                        dojo.place("tokens_" + player_id, "left_avatar_" + player_id, "replace");
+                        if (player_id == this.player_id) {
+                            dojo.query("#tokens_" + player_id + " .stockitem").connect('click', this, 'onPlayToken');
+                        }
                     }
                 }
                 this.updateCounters(gamedatas.counters);
@@ -1106,6 +1113,13 @@ define([
                 }
             },
 
+            onPlayToken: function (evt) {
+                //no this.checkAction('playToken') here because many tokens have specific moments to be played
+                this.ajaxcall("/seasonssk/seasonssk/playToken.html", { lock: true }, this, function (result) {
+                });
+
+            },
+
             onLibraryBuildchange: function (library) {
                 this.checkAction('chooseLibrarynew');
 
@@ -1540,6 +1554,9 @@ define([
                             }
                         }
                         break;
+                    case 'chooseToken':
+                        this.tokensStock[this.player_id].setSelectionMode(1);
+                        break;
                 }
             },
             onLeavingState: function (stateName) {
@@ -1591,7 +1608,9 @@ define([
                     case 'maliceDie':
                         dojo.query('.cardtype_15 .cardactivation').removeClass('cardactivation');
                         break;
-
+                    case 'chooseToken':
+                        //this.tokensStock[this.player_id].setSelectionMode(0);
+                        break;
                 }
             },
 
@@ -2035,7 +2054,7 @@ define([
             notif_tokenChosen: function (notif) {
                 var playerId = notif.args.player_id;
                 var tokenId = notif.args.token_id
-                
+
                 this.tokensStock[playerId].setSelectionMode(0);
                 var tokens = this.tokensStock[playerId].getAllItems();
                 tokens.forEach(token => {
@@ -2044,6 +2063,7 @@ define([
                     }
                 });
                 dojo.place("tokens_" + playerId, "left_avatar_" + playerId, "replace");
+                dojo.query("tokens_" + playerId).connect('onclick', this, 'onPlayToken');
             },
 
             notif_summon: function (notif) {
@@ -2179,6 +2199,8 @@ define([
                 var oldnbr = toint(notif.args.bonus_used) + 1;
                 dojo.removeClass('bonusused_' + notif.args.player_id, 'bonusused' + oldnbr);
                 dojo.addClass('bonusused_' + notif.args.player_id, 'bonusused' + notif.args.bonus_used);
+                dojo.query("#bonusUsedCube_" + notif.args.player_id).removeClass('bonusUsed' + oldnbr).addClass('bonusUsed' + notif.args.bonus_used);
+                this.disableBonusActions(notif.args.player_id, toint(notif.args.bonus_used) == 3);
             },
             notif_potionOfLifeWarning: function (notif) {
                 console.log('notif_potionOfLifeWarning');

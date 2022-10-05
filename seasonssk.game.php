@@ -841,19 +841,21 @@ class SeasonsSK extends Table {
         return $bAtLeastOneEffect;
     }
 
-    function getStandardArgs() {
-        $currentEffect = self::getGameStateValue('currentEffect');
-        $card_type_id = self::ot(self::getUniqueValueFromDB("SELECT card_type
+    function getStandardArgs($withCardInfo = true) {
+        if ($withCardInfo) {
+            $currentEffect = self::getGameStateValue('currentEffect');
+            $card_type_id = self::ot(self::getUniqueValueFromDB("SELECT card_type
                                           FROM effect
                                           INNER JOIN card ON card_id=effect_card
                                           WHERE effect_id='$currentEffect'"));
 
-        $card_type = $this->card_types[$card_type_id];
+            $card_type = $this->card_types[$card_type_id];
+        }
         return array(
             'i18n' => array('card_name'),
             'player_id' => self::getActivePlayerId(),
             'player_name' => self::getActivePlayerName(),
-            'card_name' => $card_type['name']
+            'card_name' => $withCardInfo ? $card_type['name'] : _("Ability token")
         );
     }
 
@@ -2539,21 +2541,59 @@ class SeasonsSK extends Table {
     function chooseToken($tokenId) {
         self::checkAction('chooseToken');
         $player_id = self::getCurrentPlayerId();
+        $token = $this->checkTokenBelongsToPlayer($tokenId, $player_id);
+
+        $this->tokensDeck->moveAllCardsInLocation('hand', 'discard', $player_id); //other tokens are discarded
+        $this->tokensDeck->moveCard($tokenId, 'hand',  $player_id);
+        $this->gamestate->setPlayerNonMultiactive($player_id, 'startYear');
+
+        self::notifyAllPlayers('tokenChosen', '', array(
+            'token_id' => $tokenId,
+            'player_id' => $player_id,
+        ));
+    }
+
+    function playToken() {
+        //no self::checkAction('playToken'); here because many tokens have specific moments to be played
+        $player_id = self::getCurrentPlayerId();
+        $tokens = $this->tokensDeck->getCardsInLocation('hand', $player_id);
+        if (count($tokens) != 1) {
+            throw new feException("No token can be played at this point");
+        }
+        $token = array_pop($tokens);
+        $notifArgs = $this->getStandardArgs(false);
+
+        switch ($token["type"]) {
+            case 14:
+                //move back on bonus track
+                $nb_used = self::getUniqueValueFromDB("SELECT player_nb_bonus_used FROM player WHERE player_id='$player_id' ");
+                if ($nb_used > 0) {
+                    $this->decreaseBonusUsage($player_id, $nb_used, $notifArgs);
+                } else {
+                    throw new feException("You can not use this token now since you've never used a bonus action");
+                }
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        $this->tokensDeck->moveCard($token["id"], 'used',  $player_id);
+        self::notifyAllPlayers('tokenUsed', '', array(
+            'token_id' => $token["id"],
+            'player_id' => $player_id,
+        ));
+    }
+
+    function checkTokenBelongsToPlayer($tokenId, $player_id) {
         $card = $this->tokensDeck->getCard($tokenId);
 
         if (!$card)
             throw new feException("Token not found");
         if ($card['location'] != 'hand' || $card['location_arg'] != $player_id)
             throw new feException("This token is not yours");
-
-        $this->tokensDeck->moveAllCardsInLocation('hand', 'discard', $player_id); //other tokens are discarded
-        $this->tokensDeck->moveCard($tokenId, 'hand',  $player_id);
-        $this->gamestate->setPlayerNonMultiactive($player_id, 'startYear');
-        
-        self::notifyAllPlayers('tokenChosen', '', array(
-            'token_id' => $tokenId,
-            'player_id' => $player_id,
-        ));
+        return $card;
     }
 
     function chooseCardHand($card_id) {
@@ -7950,13 +7990,16 @@ class SeasonsSK extends Table {
         $nb_used = self::getUniqueValueFromDB("SELECT player_nb_bonus_used FROM player WHERE player_id='$player_id' ");
         if ($nb_used > 0) {
             // Okay, decrease bonus usage
-            self::DbQuery("UPDATE player SET player_nb_bonus_used=player_nb_bonus_used-1 WHERE player_id='$player_id' ");
-
-            $notifArgs['bonus_used'] = $nb_used - 1;
-            self::notifyAllPlayers("bonusBack", clienttranslate('${card_name}: ${player_name} move his Sorcerer token back one space on the bonus track.'), $notifArgs);
+            $this->decreaseBonusUsage($player_id, $nb_used, $notifArgs);
         }
 
         $this->gamestate->nextState("discard");
+    }
+
+    function decreaseBonusUsage($player_id, $nb_used, $notifArgs) {
+        self::DbQuery("UPDATE player SET player_nb_bonus_used=player_nb_bonus_used-1 WHERE player_id='$player_id' ");
+        $notifArgs['bonus_used'] = $nb_used - 1;
+        self::notifyAllPlayers("bonusBack", clienttranslate('${card_name}: ${player_name} move his Sorcerer token back one space on the bonus track.'), $notifArgs);
     }
 
     function throne_of_renewal_useZira($card_id, $card_name, $notifArgs, $bUseZira, $zira_card_id) {

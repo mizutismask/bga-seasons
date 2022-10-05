@@ -45,9 +45,9 @@ h3 {
 }
 
 .tokenart {
-	width: 230px;
-	height: 230px;
-	background: url("img/pathOfDestinyTokens.jpg");
+	width: 100px;
+	height: 100px;
+	background: url("img/pathOfDestinyTokens.png");
 	display: inline-block;
 }
 
