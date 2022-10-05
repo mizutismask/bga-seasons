@@ -1561,13 +1561,15 @@ define([
 
                     case 'startYear':
                         var year = args.args.currentYear;
-                        var msg = _("Année ${year}");
-                        dojo.place("<div id=\"new-year\"><span>" + msg.replace('${year}', '' + year) + "</span></div>", document.body);
-                        var div = document.getElementById("new-year");
-                        div.addEventListener('animationend', function () { return dojo.destroy(div); });
-                        div.classList.add('new-year-animation');
-                        //todo
-                        dojo.style('season_dices_wrap', 'display', 'block')
+                        if (year < 4) {//year 4 triggers the end of game, we do not want animation there
+                            var msg = _("Année ${year}");
+                            dojo.place("<div id=\"new-year\"><span>" + msg.replace('${year}', '' + year) + "</span></div>", document.body);
+                            var div = document.getElementById("new-year");
+                            div.addEventListener('animationend', function () { return dojo.destroy(div); });
+                            div.classList.add('new-year-animation');
+                            //todo
+                           // dojo.style('season_dices_wrap', 'display', 'block')
+                        }
                         break;
                     case 'rattyNightshade':
                         for (var player_id in this.energies) {
