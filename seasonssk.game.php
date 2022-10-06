@@ -264,7 +264,7 @@ class SeasonsSK extends Table {
 
         $result = array('players' => array());
 
-        $sql = "SELECT player_id id, player_score score, player_nb_bonus_used nb_bonus, player_invocation invocation, player_reserve_size reserve_size, player_score_cristals cristalsScore, player_score_raw_cards rawCardsScore, player_score_eog_cards eogCardsScore, player_score_bonus_actions bonusActionsScore, player_score_remaining_cards remainingCardsScore ";
+        $sql = "SELECT player_id id, player_score score, player_nb_bonus_used nb_bonus, player_invocation invocation, player_reserve_size reserve_size, player_score_cristals cristalsScore, player_score_raw_cards rawCardsScore, player_score_eog_cards eogCardsScore, player_score_bonus_actions bonusActionsScore, player_score_token tokenScore, player_score_remaining_cards remainingCardsScore ";
         $sql .= "FROM player ";
         $sql .= "WHERE 1 ";
         $dbres = self::DbQuery($sql);
@@ -4344,6 +4344,38 @@ class SeasonsSK extends Table {
         }
     }
 
+    function gainTokenPoints() {
+        $players = self::loadPlayersBasicInfos();
+        foreach ($players as $player_id => $player) {
+            $tokens = $this->tokensDeck->getCardsInLocation('used', $player_id);
+            $points = 0;
+            if (count($tokens) == 1) {
+
+                $token = array_pop($tokens);
+                $points = $this->abilityTokens[$token["type"]]['points'];
+                $msg= $points<0? clienttranslate('Token used: ${player_name} loses ${points_disp} points'): clienttranslate('Token used: ${player_name} gains ${points_disp} points');
+                self::notifyAllPlayers('winPoints', $msg, array(
+                    'player_id' => $player_id,
+                    'player_name' => $players[$player_id]['player_name'],
+                    'points' => $points,
+                    'points_disp' => abs($points),
+                ));
+
+                $this->updatePlayer($player_id, "player_score_token", $points);
+                self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ");
+            }
+            $this->notifyAllPlayers('tokenScore', '', [
+                'playerId' => $player_id,
+                'points' => $points,
+            ]);
+
+            self::notifyUpdateScores();
+
+            // self::incStat($points, 'points_bonus', $player_id);
+
+        }
+    }
+
     function stPotionSacrificeChoice() {
         $player_id = self::getActivePlayerId();
         $zira = self::getAllCardsOfTypeInTableau(array(
@@ -4387,6 +4419,8 @@ class SeasonsSK extends Table {
         // Remaining cards in hands (-5pts)
         self::looseRemainingCardsInHand();
 
+        self::gainTokenPoints();
+
         //total
         $finalSituation = self::getCollectionFromDB('SELECT player_id, player_score FROM player');
         foreach ($finalSituation as $player_id => $player) {
@@ -4396,10 +4430,10 @@ class SeasonsSK extends Table {
             ]);
         }
 
-        if ($this->getBgaEnvironment() == 'studio')
+       /* if ($this->getBgaEnvironment() == 'studio')
             $this->gamestate->nextState('debugEnd'); // debug end
         else
-            $this->gamestate->nextState('realEnd'); // real end
+            $this->gamestate->nextState('realEnd');*/ // real end
     }
 
 

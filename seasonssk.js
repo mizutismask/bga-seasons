@@ -1928,6 +1928,7 @@ define([
                     <th id="th-eog-cards-score" class="eog-cards-score">${_("Cards : end of game effects")}</th>
                     <th id="th-bonus-actions-score" class="bonus-actions-score">${_("Additional actions")}</th>
                     <th id="th-remaining-cards-score" class="remaining-cards-score">${_("Cards in hand")}</th>
+                    <th id="th-token-score" class="token-score">${_("Ability token")}</th>
                     <th id="th-after-end-score" class="after-end-score">${_("Final score")}</th>
                 `, headers);
                 }
@@ -1945,6 +1946,7 @@ define([
                     <td id="eog-cards-score${player.id}" class="score-number eog-cards-score">${playerScore?.eogCardsScore !== undefined ? playerScore.eogCardsScore : ''}</td>
                     <td id="bonus-actions-score${player.id}" class="score-number bonus-actions-score">${playerScore?.bonusActionsScore !== undefined ? playerScore.bonusActionsScore : ''}</td>
                     <td id="remaining-cards-score${player.id}" class="score-number remaining-cards-score">${playerScore?.remainingCardsScore !== undefined ? playerScore.remainingCardsScore : ''}</td>
+                    <td id="token-score${player.id}" class="score-number token-score">${playerScore?.tokenScore !== undefined ? playerScore.tokenScore : ''}</td>
                     <td id="after-end-score${player.id}" class="score-number after-end-score total">${playerScore?.score !== undefined ? playerScore.score : ''}</td>
                 </tr>`, 'score-table-body');
                 });
@@ -1954,6 +1956,7 @@ define([
                 this.addTooltipHtmlToClass('eog-cards-score', _("Number of cristals awarded by end of game effects on cards in play."));
                 this.addTooltipHtmlToClass('bonus-actions-score', _("Total number of malus for additional actions used"));
                 this.addTooltipHtmlToClass('remaining-cards-score', _("-5 cristals per card in hand."));
+                this.addTooltipHtmlToClass('token-score', _("Effect of the ability token if used."));
 
             },
 
@@ -2019,6 +2022,7 @@ define([
                     ['eogCardsScore', this.scoreAnimationDuration],
                     ['scoreAdditionalActions', this.scoreAnimationDuration],
                     ['scoreRemainingCards', this.scoreAnimationDuration],
+                    ['tokenScore', this.scoreAnimationDuration],
                     ['scoreAfterEnd', this.scoreAnimationDuration],
                 ];
                 notifs.forEach(function (notif) {
@@ -2051,9 +2055,13 @@ define([
                 this.log('notif_scoreRemainingCards', notif.args);
                 this.setScore(notif.args.playerId, 5, notif.args.points);
             },
+            notif_tokenScore: function (notif) {
+                this.log('notif_tokenScore', notif.args);
+                this.setScore(notif.args.playerId, 6, notif.args.points);
+            },
             notif_scoreAfterEnd: function (notif) {
                 this.log('notif_scoreAfterEnd', notif.args);
-                this.setScore(notif.args.playerId, 6, notif.args.points);
+                this.setScore(notif.args.playerId, 7, notif.args.points);
             },
 
             notif_updateCardCount: function (notif) {

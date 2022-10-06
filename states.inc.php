@@ -63,7 +63,7 @@ $machinestates = array(
         "description" => clienttranslate("Game setup"),
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array("" => 11)//98 for fake scoring
+        "transitions" => array("" => 11)//98 for fake scoring, 11 for real
     ),
 
     /////////// Draft & deck building phase ////////////////
