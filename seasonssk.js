@@ -174,18 +174,21 @@ define([
                     this.tokensStock[player_id].autowidth = true;
                     this.tokensStock[player_id].onItemCreate = dojo.hitch(this, 'setupNewToken');
 
-                    for (var tokenType in this.gamedatas.abilityTokens) {
-                        console.log("tokenType", tokenType);
-                        this.tokensStock[player_id].addItemType(tokenType, tokenType, g_gamethemeurl + 'img/pathOfDestinyTokens.png', parseInt(tokenType) - 13);
-                    }
-                    for (const [tokenId, token] of Object.entries(this.gamedatas.tokens[player_id])) {
-                        this.tokensStock[player_id].addToStockWithId(token.type, tokenId);
-                    }
+                    if (gamedatas.tokens) {
+                        for (var tokenType in this.gamedatas.abilityTokens) {
+                            console.log("tokenType", tokenType);
+                            this.tokensStock[player_id].addItemType(tokenType, tokenType, g_gamethemeurl + 'img/pathOfDestinyTokens.png', parseInt(tokenType) - 13);
+                        }
 
-                    if (gamedatas.tokens && gamedatas.tokens[player_id].length==1) {
-                        dojo.place("tokens_" + player_id, "left_avatar_" + player_id, "replace");
-                        if (player_id == this.player_id) {
-                            dojo.query("#tokens_" + player_id + " .stockitem").connect('click', this, 'onPlayToken');
+                        for (const [tokenId, token] of Object.entries(this.gamedatas.tokens[player_id])) {
+                            this.tokensStock[player_id].addToStockWithId(token.type, tokenId);
+                        }
+
+                        if (gamedatas.tokens[player_id].length == 1) {
+                            dojo.place("tokens_" + player_id, "left_avatar_" + player_id, "replace");
+                            if (player_id == this.player_id) {
+                                dojo.query("#tokens_" + player_id + " .stockitem").connect('click', this, 'onPlayToken');
+                            }
                         }
                     }
                 }
@@ -249,7 +252,7 @@ define([
                 this.seasonDices.create(this, $('seasons_dices'), 54, 54);
                 this.seasonDices.image_items_per_row = 20;
                 this.seasonDices.onItemCreate = dojo.hitch(this, 'setupNewDie');
-               // this.seasonDices.autowidth=true;//todo check
+                // this.seasonDices.autowidth=true;//todo check
                 for (var season_id in this.gamedatas.dices) {
                     for (var dice_id in this.gamedatas.dices[season_id]) {
                         for (var face_id = 1; face_id <= 6; face_id++) {
@@ -392,6 +395,17 @@ define([
 
             ///////////////////////////////////////////////////
             //// Utilities
+
+            /*
+            * Play a given sound that should be first added in the tpl file
+            */
+            playSound(sound, playNextMoveSound = true) {
+                if (soundManager.bMuteSound == false) {
+                    playSound(sound);
+                    playNextMoveSound && this.disableNextMoveSound();
+                }
+            },
+
             createYearCardsPopin(age) {
                 this.agePopins[age] = new ebg.popindialog();
                 this.agePopins[age].create('age' + age + 'Popin');
@@ -451,6 +465,7 @@ define([
                 dojo.query(`#seasonHighlighter svg path:nth-child(${currentSeason})`).forEach(quarter => {
                     dojo.attr(quarter, "fill-opacity", CURRENT_SEASON_OPACITY);
                 });
+                this.playSound("season_" + currentSeason, false);
             },
 
             getSectorPath: function (x, y, outerDiameter, a1, a2) {
@@ -519,7 +534,7 @@ define([
                 if (toint(year) == 0) { year = 1; }
                 if (toint(year) > 3) { year = 3; } this.slideToObject($('current_year'), 'yearplace_' + year, 1000).play();
 
-                var currentSeason = this.getCurrentSeasonFromMonth(month);
+                var currentSeason = this.getSeasonFromMonth(month);
                 var monthAnimation = this.slideToObject($('current_month'), 'monthplace_' + month, 1000);
                 dojo.connect(monthAnimation, 'onEnd', dojo.hitch(this, 'changeCurrentSeason', currentSeason));
                 monthAnimation.play();
@@ -554,7 +569,7 @@ define([
                 dojo.query("#convertFor1 #energyType2").removeClass("energy4 energy1 energy2 energy3").addClass(energies[3]);
             },
 
-            getCurrentSeasonFromMonth: function (month) {
+            getSeasonFromMonth: function (month) {
                 return Math.floor((month - 1) / 3) + 1;
             },
 
@@ -1569,7 +1584,7 @@ define([
                             div.addEventListener('animationend', function () { return dojo.destroy(div); });
                             div.classList.add('new-year-animation');
                             //todo
-                           // dojo.style('season_dices_wrap', 'display', 'block')
+                            // dojo.style('season_dices_wrap', 'display', 'block')
                         }
                         break;
                     case 'rattyNightshade':
@@ -2010,8 +2025,6 @@ define([
                 dojo.subscribe('rerollSeasonsDice', this, "notif_rerollSeasonsDice");
                 this.notifqueue.setSynchronous('rerollSeasonsDice', 1000);
 
-
-
                 dojo.subscribe('updateScores', this, "notif_updateScores");
                 dojo.subscribe('potionOfLifeWarning', this, "notif_potionOfLifeWarning");
 
@@ -2211,6 +2224,9 @@ define([
                 }
                 this.setupNewCardOnTableau(notif.args.card.type, notif.args.card.id, notif.args.player_id);
                 this.adaptInvocation(notif.args.player_id);
+                if (this.gamedatas.card_types[notif.args.card.type].category == "f") {
+                    this.playSound("familiar", false);
+                }
 
             },
             notif_active: function (notif) {

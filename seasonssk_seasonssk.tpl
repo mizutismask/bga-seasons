@@ -1,4 +1,17 @@
 {OVERALL_GAME_HEADER}
+
+<audio id="audiosrc_season_1" src="{GAMETHEMEURL}/img/season_1.mp3" autobuffer></audio>
+<audio id="audiosrc_season_2" src="{GAMETHEMEURL}/img/season_2.mp3" autobuffer></audio>
+<audio id="audiosrc_season_3" src="{GAMETHEMEURL}/img/season_3.mp3" autobuffer></audio>
+<audio id="audiosrc_season_3" src="{GAMETHEMEURL}/img/season_4.mp3" autobuffer></audio>
+<audio id="audiosrc_familiar" src="{GAMETHEMEURL}/img/familiar.mp3" autobuffer></audio>
+
+<audio id="audiosrc_o_season_1" src="{GAMETHEMEURL}/img/season_1.ogg" autobuffer></audio>
+<audio id="audiosrc_o_season_2" src="{GAMETHEMEURL}/img/season_2.ogg" autobuffer></audio>
+<audio id="audiosrc_o_season_3" src="{GAMETHEMEURL}/img/season_3.ogg" autobuffer></audio>
+<audio id="audiosrc_o_season_3" src="{GAMETHEMEURL}/img/season_4.ogg" autobuffer></audio>
+<audio id="audiosrc_o_familiar" src="{GAMETHEMEURL}/img/familiar.ogg" autobuffer></audio>
+
 <div id="seasons_container">
     <div id="score">
         <div id="tabble-wrapper">
