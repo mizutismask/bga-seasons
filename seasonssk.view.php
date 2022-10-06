@@ -40,11 +40,12 @@ class view_seasonssk_seasonssk extends game_view {
         }
 
         foreach ($players as $player) {
+            if ($player['player_id'] != $g_user->get_id()) {
             $this->page->insert_block("tokens", array(
                 "PLAYER_ID" => $player['player_id'],
                 "PLAYER_NAME" => $player['player_name'],
             ));
-            if ($player['player_id'] != $g_user->get_id()) {
+           
                 $this->page->insert_block("player", array(
                     "PLAYER_ID" => $player['player_id'],
                     "PLAYER_NAME" => $player['player_name'],

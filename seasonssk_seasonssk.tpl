@@ -77,12 +77,15 @@
         </div>
     </div>
 
-    <div id="abilityTokens" class="whiteblock seasons_rightpanel">
-        <h3>{LB_ABILITY_TOKENS}</h3>
+    <div id="abilityTokens" class="seasons_rightpanel">
         <div id="tokensStocks">
+            <div class="token-stock whiteblock">
+                <h3>{LB_ABILITY_TOKENS} {CURRENT_PLAYER_NAME}</h3>
+                <div id="tokens_{CURRENT_PLAYER_ID}"></div>
+            </div>
             <!-- BEGIN tokens -->
-            <div class="token-stock">
-                <h3>{PLAYER_NAME}</h3>
+            <div class="token-stock whiteblock">
+                <h3>{LB_ABILITY_TOKENS} {PLAYER_NAME}</h3>
                 <div id="tokens_{PLAYER_ID}"></div>
             </div>
             <!-- END tokens -->

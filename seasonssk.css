@@ -2,6 +2,12 @@
 
 @import url(../../../css/csslayer.css);
 
+:root {
+	--scoreColor: #2373a1;
+	--scoreSecondaryColor: #325590;
+	--scoreShadowColor: white;
+}
+
 html.season_1 {
 	background: url("img/backgroundSeason1.jpg");
 }
@@ -19,11 +25,10 @@ h3 {
 	color: white;
 }
 
-:root {
-	--scoreColor: #2373a1;
-	--scoreSecondaryColor: #325590;
-    --scoreShadowColor: white;
+.season_1 h3 {
+	color: var(--scoreColor);
 }
+
 
 /* main board */
 
@@ -42,13 +47,6 @@ h3 {
 	position: relative;
 	left: -10px;
 	top: -10px;
-}
-
-#season_dices_wrap {
-	display: none;
-}
-.gamestate_playerTurn #season_dices_wrap {
-	display: grid;
 }
 
 .tokenart {
@@ -227,6 +225,10 @@ h3 {
 }
 
 #season_dices_wrap {
+	display: none;
+}
+
+.gamestate_playerTurn #season_dices_wrap {
 	display: grid;
 	grid-template-columns: max-content auto;
 	justify-content: space-between;
@@ -514,7 +516,7 @@ h3 {
 	background-color: #f3f1f1;
 }
 
-.player-board:before {
+.player-board:not(#spectatorbox):before {
 	content: "";
 	position: absolute;
 	left: 0;
@@ -760,8 +762,7 @@ a.choose_player {
 	text-align: center;
 	color: var(--scoreColor);
 	text-shadow: 0px 0px 1px var(--scoreShadowColor),
-		0px 0px 2px var(--scoreShadowColor),
-		0px 0px 3px var(--scoreShadowColor);
+		0px 0px 2px var(--scoreShadowColor), 0px 0px 3px var(--scoreShadowColor);
 	padding: 8px;
 }
 #score #tabble-wrapper table tr td {
@@ -772,14 +773,13 @@ a.choose_player {
 	font-size: 150%;
 	color: var(--scoreColor);
 	text-shadow: 0px 0px 1px var(--scoreShadowColor),
-		0px 0px 2px var(--scoreShadowColor),
-		0px 0px 3px var(--scoreShadowColor);
+		0px 0px 2px var(--scoreShadowColor), 0px 0px 3px var(--scoreShadowColor);
 }
 #score #tabble-wrapper table tr td.player-name {
 	width: 181px;
 	font-weight: bold;
-	text-shadow: 0px 0px 1px var(--scoreShadowColor), 0px 0px 2px var(--scoreShadowColor),
-		0px 0px 3px var(--scoreShadowColor);
+	text-shadow: 0px 0px 1px var(--scoreShadowColor),
+		0px 0px 2px var(--scoreShadowColor), 0px 0px 3px var(--scoreShadowColor);
 	word-break: break-all;
 	font-size: 120%;
 }
@@ -790,6 +790,7 @@ a.choose_player {
 /* Tokens */
 .token-stock {
 	display: inline-block;
+	margin-right:10px
 }
 
 /******* Mobile version ****************/
