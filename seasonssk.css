@@ -29,7 +29,6 @@ h3 {
 	color: var(--scoreColor);
 }
 
-
 /* main board */
 
 #board {
@@ -225,14 +224,18 @@ h3 {
 }
 
 #season_dices_wrap {
-	display: none;
-}
-
-.gamestate_playerTurn #season_dices_wrap {
 	display: grid;
 	grid-template-columns: max-content auto;
 	justify-content: space-between;
 	align-items: center;
+}
+
+.gamestate_draftChoice #season_dices_wrap,
+.gamestate_continueDraftChoice #season_dices_wrap,
+.gamestate_draftTwist #season_dices_wrap,
+.gamestate_chooseToken #season_dices_wrap,
+.gamestate_buildLibraryNew #season_dices_wrap {
+	display: none;
 }
 
 .conversion_reminder {
@@ -790,7 +793,228 @@ a.choose_player {
 /* Tokens */
 .token-stock {
 	display: inline-block;
-	margin-right:10px
+	margin-right: 10px;
+}
+
+/* Die animation */
+.die {
+	display: inline-block;
+	/*position: relative;*/
+	margin: 3px;
+	border-radius: 38%;
+	transform: translateZ(20px);
+	transform-style: preserve-3d;
+	box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.5);
+}
+.die.rolled {
+	animation: rolled-die 1s forwards;
+	transform: translateY(-40vh);
+}
+.die.selectable {
+	cursor: pointer;
+}
+.die.selectable.selected {
+	box-shadow: 0 0 4px 4px black;
+}
+.die.used {
+	filter: grayscale(1);
+}
+.die:not(.rolled).forbidden::after {
+	content: "";
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	bottom: -6px;
+	right: -6px;
+	background-image: url("img/icons.png");
+	background-size: auto 100%;
+	background-position: 30.7692307692% 100%;
+	z-index: 1;
+	transform: translateZ(20px);
+}
+
+@keyframes selected-dice-animation {
+	100% {
+		box-shadow: 0 0 8px 4px red;
+	}
+}
+.highlight {
+	animation: highlight-animation 0.75s alternate 2;
+}
+
+@keyframes rolled-die {
+	100% {
+		transform: initial;
+	}
+}
+
+/* die faces */
+.die-list {
+	pointer-events: none;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+	height: 100%;
+	list-style-type: none;
+	width: 100%;
+	transform-style: preserve-3d;
+}
+
+/* die face */
+.die-item {
+	pointer-events: none;
+	display: grid;
+	grid-column: 1;
+	grid-row: 1;
+	border-radius: 38%;
+	border-style: outset;
+	border-width: 1px;
+	box-sizing: border-box;
+
+	background-image: url("img/dices.png");
+	width: 56px;/*54+2 for borders*/
+	height: 56px;
+}
+
+[data-roll-type="even"] {
+	transition: transform 0.9s ease-out;
+}
+
+[data-roll-type="odd"] {
+	transition: transform 1.1s ease-out;
+}
+
+[data-roll-type="-"] {
+	transition: transform 0;
+}
+
+[data-roll-type="change"] {
+	transition: transform 0.5s ease-in-out;
+}
+
+[data-roll-type="even"][data-roll="1"] {
+	transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg);
+}
+
+[data-roll-type="even"][data-roll="2"] {
+	transform: rotateX(450deg) rotateY(720deg) rotateZ(360deg);
+}
+
+[data-roll-type="even"][data-roll="3"] {
+	transform: rotateX(360deg) rotateY(630deg) rotateZ(360deg);
+}
+
+[data-roll-type="even"][data-roll="4"] {
+	transform: rotateX(360deg) rotateY(810deg) rotateZ(360deg);
+}
+
+[data-roll-type="even"][data-roll="5"] {
+	transform: rotateX(270deg) rotateY(720deg) rotateZ(360deg);
+}
+
+[data-roll-type="even"][data-roll="6"] {
+	transform: rotateX(360deg) rotateY(900deg) rotateZ(540deg);
+}
+
+[data-roll-type="odd"][data-roll="1"] {
+	transform: rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);
+}
+
+[data-roll-type="odd"][data-roll="2"] {
+	transform: rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);
+}
+
+[data-roll-type="odd"][data-roll="3"] {
+	transform: rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);
+}
+
+[data-roll-type="odd"][data-roll="4"] {
+	transform: rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg);
+}
+
+[data-roll-type="odd"][data-roll="5"] {
+	transform: rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg);
+}
+
+[data-roll-type="odd"][data-roll="6"] {
+	transform: rotateX(-360deg) rotateY(-900deg) rotateZ(-540deg);
+}
+
+[data-roll-type="-"][data-roll="1"] {
+	transform: rotateX(0deg) rotateY(720deg) rotateZ(0deg);
+}
+
+[data-roll-type="-"][data-roll="2"] {
+	transform: rotateX(90deg) rotateY(0deg) rotateZ(0deg);
+}
+
+[data-roll-type="-"][data-roll="3"] {
+	transform: rotateX(0deg) rotateY(270deg) rotateZ(0deg);
+}
+
+[data-roll-type="-"][data-roll="4"] {
+	transform: rotateX(0deg) rotateY(90deg) rotateZ(0deg);
+}
+
+[data-roll-type="-"][data-roll="5"] {
+	transform: rotateX(270deg) rotateY(0deg) rotateZ(0deg);
+}
+
+[data-roll-type="-"][data-roll="6"] {
+	transform: rotateX(0deg) rotateY(180deg) rotateZ(180deg);
+}
+
+[data-roll-type="change"][data-roll="1"] {
+	transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg);
+}
+
+[data-roll-type="change"][data-roll="2"] {
+	transform: rotateX(450deg) rotateY(720deg) rotateZ(360deg);
+}
+
+[data-roll-type="change"][data-roll="3"] {
+	transform: rotateX(360deg) rotateY(630deg) rotateZ(360deg);
+}
+
+[data-roll-type="change"][data-roll="4"] {
+	transform: rotateX(360deg) rotateY(810deg) rotateZ(360deg);
+}
+
+[data-roll-type="change"][data-roll="5"] {
+	transform: rotateX(270deg) rotateY(720deg) rotateZ(360deg);
+}
+
+[data-roll-type="change"][data-roll="6"] {
+	transform: rotateX(360deg) rotateY(900deg) rotateZ(540deg);
+}
+
+[data-side="1"] {
+	transform: rotate3d(0, 0, 0, 90deg) translateZ(1rem);
+}
+
+[data-side="2"] {
+	transform: rotate3d(-1, 0, 0, 90deg) translateZ(1rem);
+}
+
+[data-side="3"] {
+	transform: rotate3d(0, 1, 0, 90deg) translateZ(1rem);
+}
+
+[data-side="4"] {
+	transform: rotate3d(0, -1, 0, 90deg) translateZ(1rem);
+}
+
+[data-side="5"] {
+	transform: rotate3d(1, 0, 0, 90deg) translateZ(1rem);
+}
+
+[data-side="6"] {
+	transform: rotate3d(1, 0, 0, 180deg) translateZ(1rem);
+}
+
+#generalactions .die-item {
+	width: 36px;
+	height: 36px;
 }
 
 /******* Mobile version ****************/
