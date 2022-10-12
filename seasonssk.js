@@ -252,6 +252,7 @@ define([
                 this.seasonDices.create(this, $('seasons_dices'), 54, 54);
                 this.seasonDices.image_items_per_row = 20;
                 this.seasonDices.onItemCreate = dojo.hitch(this, 'setupNewDie');
+                this.seasonDices.extraClasses = 'die';
                 // this.seasonDices.autowidth=true;//todo check
                 for (var season_id in this.gamedatas.dices) {
                     for (var dice_id in this.gamedatas.dices[season_id]) {
@@ -574,7 +575,30 @@ define([
             },
 
             setupNewDie: function (die_div, die_type_id, die_id) {
+                //adds die faces to make die roll animation
+                let face = die_type_id[2];
+                dojo.attr(die_div, "data-die-face", face);
+                let html = `<ol class="die-list" data-roll="${face}">`;
+                for (let dieFace = 1; dieFace <= 6; dieFace++) {
+                    html += `<li class="die-item" data-side="${dieFace}" style="background-position:${this.getBackgroundPosition(die_type_id, dieFace)}"></li>`;
+                }
+                html += `   </ol>
+                        </div>`;
+                dojo.place(html, die_div);
+
                 this.addTooltipHtml(die_div.id, this.getDieTooltip(die_type_id), _('Choose this die'));
+            },
+
+            getBackgroundPosition: function (dice_type, expectedFace = undefined) {
+                var season = dice_type[0];
+                var dice = dice_type[1];
+                var realFace = expectedFace;
+                if (!realFace) {
+                    realFace = dice_type[2];
+                }
+                var backx = 54 * (toint(dice) - 1) + (5 * 54 * (toint(season) - 1));
+                var backy = 54 * (toint(realFace) - 1);
+                return '-' + backx + 'px -' + backy + 'px';
             },
 
             getDieTooltip: function (die_type_id) {
@@ -763,9 +787,10 @@ define([
                 for (var i in dices) {
                     var die = dices[i];
                     var die_type = die.season + '' + die.id + '' + die.face;
-
+                    var changed = false;//todo ?
                     if (with_id) {
                         this.seasonDices.addToStockWithId(die_type, die.id);
+                        this.addRollToDiv(this.seasonDices.getItemDivId(die.id), changed ? 'change' : (Math.random() > 0.5 ? 'odd' : 'even'));
                     }
                     else {
                         // During the initial game setup, show all dices without ID
@@ -780,25 +805,65 @@ define([
             },
 
             giveDiceToPlayer: function (dice_type, dice_player) {
-                var season = dice_type[0];
-                var dice = dice_type[1];
-                var face = dice_type[2];
-
-                var backx = 54 * (toint(dice) - 1) + (5 * 54 * (toint(season) - 1));
-                var backy = 54 * (toint(face) - 1);
-                dojo.style('playerdie_' + dice_player, 'display', 'block');
-                dojo.style('playerdie_' + dice_player, 'backgroundPosition', '-' + backx + 'px -' + backy + 'px');
-                this.placeOnObject('playerdie_' + dice_player, 'seasons_dices_item_' + dice);
-                this.slideToObject('playerdie_' + dice_player, 'playerdie_wrap_' + dice_player).play();
-                this.addTooltipHtml('playerdie_' + dice_player, this.getDieTooltip(dice_type), _('Chosen die'));
-
-                dojo.style('playerdie_left_' + dice_player, 'display', 'block');
-                dojo.style('playerdie_left_' + dice_player, 'backgroundPosition', '-' + backx + 'px -' + backy + 'px');
-                this.placeOnObject('playerdie_left_' + dice_player, 'seasons_dices_item_' + dice);
-                this.slideToObject('playerdie_left_' + dice_player, 'playerdie_wrap_left_' + dice_player).play();
-                this.addTooltipHtml('playerdie_left_' + dice_player, this.getDieTooltip(dice_type), _('Chosen die'));
-
+                let dice = dice_type[1];
+                this.updatePlayerDie(dice_type, dice_player);
                 this.seasonDices.removeFromStockById(dice);
+            },
+
+            updatePlayerDie(dice_type, dice_player) {
+                var dieLocation = ['playerdie_' + dice_player, 'playerdie_left_' + dice_player];
+                var backgroundPos = this.getBackgroundPosition(dice_type);
+                let dice = dice_type[1];
+
+                dieLocation.forEach((loc, index) => {
+                    dojo.style(loc, 'display', 'block');
+                    dojo.style(loc, 'backgroundPosition', backgroundPos);
+                    this.addTooltipHtml(loc, this.getDieTooltip(dice_type), _('Chosen die'));
+                    if (index === 1) {   //animation only on left
+                        let from = $('seasons_dices_item_' + dice) ? 'seasons_dices_item_' + dice : "generalactions";//either season die or from reroll button if the player die was already chosen
+                        this.placeOnObject(loc, from);
+                        this.slideToObject(loc, 'playerdie_wrap_left_' + dice_player).play();
+                    }
+                })
+            },
+
+            setNewFace: function (dieId, addChangeDieRoll = false) {
+                const dieDiv = $(dieId);
+
+                if (dieDiv) {
+                    console.log("setNewFace", dieDiv);
+                    //dieDiv.dataset.dieValue = '' + die.value;
+                    const currentFace = Number(dieDiv.dataset.dieFace);
+                    if (currentFace != die.face) {
+                        dieDiv.dataset.dieFace = '' + die.face;
+
+                        if (addChangeDieRoll) {
+                            this.addRollToDiv(dieDiv, 'change');
+                        }
+                    }
+                }
+            },
+
+            addRollToDiv: function (dieDiv, rollClass, attempt = 0) {
+                var divElement = $(dieDiv);
+                divElement.classList.remove('rolled');
+                if (rollClass === 'odd' || rollClass === 'even') {
+                    divElement.addEventListener('animationend', () => {
+                        divElement.classList.remove('rolled');
+                    })
+                    setTimeout(() => divElement.classList.add('rolled'), 50);
+                }
+
+                const dieList = divElement.getElementsByClassName('die-list')[0];
+                if (dieList) {
+                    dieList.dataset.rollType = '-';
+                    dieList.dataset.roll = divElement.dataset.dieFace;
+                    setTimeout(() => dieList.dataset.rollType = rollClass, 50);
+                } else if (attempt < 5) {
+                    setTimeout(() => this.addRollToDiv(dieDiv, rollClass, attempt + 1), 200);
+                }
+
+                this.playSound("dice", false);
             },
 
             markCardActivated: function (player_id, card_id) {
@@ -2121,7 +2186,7 @@ define([
             },
             notif_newDices: function (notif) {
                 console.log(notif);
-
+                //todo add animation
                 this.showSeasonDices(notif.args.dices, true);
             },
             notif_score: function (notif) {
@@ -2277,13 +2342,10 @@ define([
                 this.cardChoice.removeFromStockById(notif.args.card);
             },
             notif_rerollDice: function (notif) {
-                var season = notif.args.dice.season;
-                var dice = notif.args.dice.id;
-                var face = notif.args.dice.face;
+                const dieType = notif.args.dice.season + notif.args.dice.id + notif.args.dice.face;
+                this.playSound("dice", false);
+                this.updatePlayerDie(dieType, notif.args.player_id);
 
-                var backx = 54 * (toint(dice) - 1) + (5 * 54 * (toint(season) - 1));
-                var backy = 54 * (toint(face) - 1);
-                dojo.style('playerdie_' + notif.args.player_id, 'backgroundPosition', '-' + backx + 'px -' + backy + 'px');
             },
             notif_rerollSeasonsDice: function (notif) {
                 var season = notif.args.dice.season;
@@ -2294,6 +2356,9 @@ define([
                 var backy = 54 * (toint(face) - 1);
 
                 dojo.style('seasons_dices_item_' + notif.args.dice.id, 'backgroundPosition', '-' + backx + 'px -' + backy + 'px');
+                this.setNewFace(this.seasonDices.getItemDivId(dice), true);//to do check
+                //this.addRollToDiv('seasons_dices_item_' + notif.args.dice.id, changed ? 'change' : (Math.random() > 0.5 ? 'odd' : 'even'));
+
             },
 
             notif_firstPlayer: function (notif) {
