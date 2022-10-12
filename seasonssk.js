@@ -862,6 +862,8 @@ define([
                 } else if (attempt < 5) {
                     setTimeout(() => this.addRollToDiv(dieDiv, rollClass, attempt + 1), 200);
                 }
+
+                this.playSound("dice", false);
             },
 
             markCardActivated: function (player_id, card_id) {
@@ -2341,6 +2343,7 @@ define([
             },
             notif_rerollDice: function (notif) {
                 const dieType = notif.args.dice.season + notif.args.dice.id + notif.args.dice.face;
+                this.playSound("dice", false);
                 this.updatePlayerDie(dieType, notif.args.player_id);
 
             },
