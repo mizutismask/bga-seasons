@@ -21,6 +21,7 @@ if (!defined('EVT_ON_SUMMON')) {
     define("EVT_ON_PLAY", 'play');
     define("EVT_ON_ACTIVE", 'active');
     define("EVT_ON_DRAW_ONE", 'onDrawOne');
+    define("PLAYER_FIELD_LAST_DRAFT_CARD", "player_last_draft_card");
 }
 
 class SeasonsSK extends Table {
@@ -400,6 +401,10 @@ class SeasonsSK extends Table {
 
     function updatePlayer(int $playerId, String $field, int $newValue) {
         $this->DbQuery("UPDATE player SET $field = $newValue WHERE player_id = $playerId");
+    }
+
+    function getPlayerFieldValue(int $playerId, String $field) {
+        return self::getUniqueValueFromDB("select $field from player WHERE player_id = $playerId");
     }
 
     function dealTokenToAllPlayers($number) {
@@ -1336,7 +1341,8 @@ class SeasonsSK extends Table {
 
         // Place this card in player's hand
         $this->cards->moveCard($card_id, 'hand', $player_id);
-
+        $this->updatePlayer($player_id, PLAYER_FIELD_LAST_DRAFT_CARD, $card_id);
+        
         self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => true));
 
         // All remaining choices => to next player choice
@@ -1349,6 +1355,32 @@ class SeasonsSK extends Table {
         self::notifyUpdateCardCount();
 
         $this->gamestate->setPlayerNonMultiactive($player_id, 'everyoneChoosed');
+    }
+
+    function undoDraftChooseCard() {
+        $this->gamestate->checkPossibleAction('undoDraftChooseCard');
+
+        $player_id = self::getCurrentPlayerId();
+        $this->gamestate->setPlayersMultiactive([$player_id], "ignored");
+
+        $card_id = $this->getPlayerFieldValue($player_id, PLAYER_FIELD_LAST_DRAFT_CARD);
+        if (!$card_id) {
+            throw new BgaUserException("Your last choice was not saved, undo is not available for you now");
+        }
+        $this->cards->moveCard($card_id, 'choice', $player_id);
+
+        $players = self::loadPlayersBasicInfos();
+        $next_player_table = self::createNextPlayerTable(array_keys($players));
+        $nextPlayer = $next_player_table[$player_id];
+        $this->cards->moveAllCardsInLocation('nextchoice', 'choice', $nextPlayer, $player_id);
+
+        $cards = $this->cards->getCardsInLocation('choice', $player_id);
+        $this->updatePlayer($player_id, PLAYER_FIELD_LAST_DRAFT_CARD, 0);
+
+        self::notifyPlayer($player_id, 'discard', '', array('card_id' => $card_id, 'player_id' => $player_id));
+        self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => $cards));
+
+        self::notifyUpdateCardCount();
     }
 
     function draftTwist($card_id) {

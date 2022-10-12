@@ -73,7 +73,7 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} must choose a card to keep from the set'),
         "type" => "multipleactiveplayer",
         "action" => "stDraftChoice",
-        "possibleactions" => array("draftChooseCard"),
+        "possibleactions" => array("draftChooseCard", "undoDraftChooseCard"),
         "transitions" => array("everyoneChoosed" => 11)
     ),
     11 => array(
