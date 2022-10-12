@@ -230,6 +230,11 @@ h3 {
 	align-items: center;
 }
 
+/* don't need border since the die moves immediatly somewhere else.*/
+#seasons_dices .stockitem_selected {
+	border: none ! important;
+}
+
 .gamestate_draftChoice #season_dices_wrap,
 .gamestate_continueDraftChoice #season_dices_wrap,
 .gamestate_draftTwist #season_dices_wrap,
@@ -373,7 +378,8 @@ h3 {
 	cursor: default;
 }
 
-.stockitem:hover {
+/* no zoom on dice because they get blury */
+:not(#seasons_dices)>.stockitem:hover {
 	transform: scale(1.05);
 	z-index: 150 !important;
 }
