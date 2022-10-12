@@ -397,6 +397,39 @@ define([
             ///////////////////////////////////////////////////
             //// Utilities
 
+            addUndoButton() {
+                this.addSecondaryActionButton('undo', _('Undo'), 'onClickUndo');
+            },
+            addSecondaryActionButton(id, text, callback) {
+                if (!$(id)) this.addActionButton(id, text, callback, null, false, 'gray');
+            },
+
+            /*
+            * Make an AJAX call with automatic lock
+            */
+            takeAction(action, data, check = true, checkPossibleActions = true) {
+                if (check && !this.checkAction(action)) return false;
+                if (!check && checkPossibleActions && !this.checkPossibleActions(action)) return false;
+
+                data = data || {};
+                if (data.lock === undefined) {
+                    data.lock = true;
+                } else if (data.lock === false) {
+                    delete data.lock;
+                }
+                return new Promise((resolve, reject) => {
+                    this.ajaxcall(
+                        '/' + this.game_name + '/' + this.game_name + '/' + action + '.html',
+                        data,
+                        this,
+                        (data) => resolve(data),
+                        (isError, message, code) => {
+                            if (isError) reject(message, code);
+                        },
+                    );
+                });
+            },
+
             /*
             * Play a given sound that should be first added in the tpl file
             */
@@ -1575,6 +1608,9 @@ define([
 
             },
 
+            onClickUndo() {
+                this.takeAction('undoDraftChooseCard', {}, false, true);
+            },
 
             ///////////////////////////////////////////////////
             //// Game & client states
@@ -1587,7 +1623,6 @@ define([
                         // Remove "activated" tokens
                         dojo.query('.activated').removeClass('activated');
                         break;
-
                     case 'amuletFireChoice':
                     case 'divineChoice':
                     case 'chaliceEternityChoice':
@@ -1985,6 +2020,12 @@ define([
 
                     if (this.checkPossibleActions('cancel')) {
                         this.addActionButton('cancel', _('Cancel'), 'onCancel');
+                    }
+                } else {
+                    switch (stateName) {
+                        case 'draftChoice':
+                            this.addUndoButton();
+                            break;
                     }
                 }
 
