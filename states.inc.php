@@ -63,7 +63,7 @@ $machinestates = array(
         "description" => clienttranslate("Game setup"),
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array("" => 11)//98 for fake scoring, 11 for real
+        "transitions" => array("" => 11) //98 for fake scoring, 11 for real
     ),
 
     /////////// Draft & deck building phase ////////////////
@@ -99,7 +99,7 @@ $machinestates = array(
         "description" => clienttranslate('Everyone must choose his ability token'),
         "descriptionmyturn" => clienttranslate('${you} must choose one ability token'),
         "type" => "multipleactiveplayer",
-        "action"=> "stMakeEveryoneActive",
+        "action" => "stMakeEveryoneActive",
         "possibleactions" => array("chooseToken"),
         "transitions" => array("startYear" => 20)
     ),
@@ -118,7 +118,7 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} must distribute your cards in 3 decks: year I, year II, year III.'),
         "type" => "multipleactiveplayer",
         "action" => "stBuildLibraryNew",
-        "possibleactions" => array("chooseLibrarynew"),
+        "possibleactions" => array("chooseLibrarynew", "undoChooseLibrarynew"),
         "transitions" => array("chooseLibrarynew" => 20, "chooseToken" => 13)
     ),
 
@@ -1077,7 +1077,7 @@ $machinestates = array(
         "description" => '',
         "type" => "game",
         "action" => "stFinalScoring",
-        "transitions" => array("debugEnd" => STATE_DEBUGGING_END,"realEnd" => 99)
+        "transitions" => array("debugEnd" => STATE_DEBUGGING_END, "realEnd" => 99)
     ),
 
     // Final state.

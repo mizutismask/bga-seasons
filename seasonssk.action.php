@@ -483,4 +483,11 @@ class action_seasonssk extends APP_GameAction {
         $this->game->undoDraftChooseCard();
         self::ajaxResponse();
     }
+
+    public function
+    undoChooseLibrarynew() {
+        self::setAjaxMode();
+        $this->game->undoChooseLibraryNew();
+        self::ajaxResponse();
+    }
 }

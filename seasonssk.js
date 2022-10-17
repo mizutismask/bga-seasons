@@ -240,10 +240,7 @@ define([
                         this.libraryBuild[l].addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
                     }
                     this.libraryBuild[l].addItemType(0, 9999, g_gamethemeurl + 'img/voidcard.png', 0);
-                    for (var i = 1; i <= 3; i++) {
-                        this.libraryBuild[l].addToStockWithId(0, this.nextInvocCardId);
-                        this.nextInvocCardId--;
-                    }
+                    this.addVoidCardsToLibraryBuilds(l);
                     dojo.connect(this.libraryBuild[l], 'onChangeSelection', this, 'onLibraryBuildchange');
                 }
 
@@ -396,6 +393,12 @@ define([
 
             ///////////////////////////////////////////////////
             //// Utilities
+            addVoidCardsToLibraryBuilds(year) {
+                for (var i = 1; i <= 3; i++) {
+                    this.libraryBuild[year].addToStockWithId(0, this.nextInvocCardId);
+                    this.nextInvocCardId--;
+                }
+            },
 
             addUndoButton() {
                 this.addSecondaryActionButton('undo', _('Undo'), 'onClickUndo');
@@ -1609,7 +1612,17 @@ define([
             },
 
             onClickUndo() {
-                this.takeAction('undoDraftChooseCard', {}, false, true);
+                console.log("this.gamedatas.gamestate", this.gamedatas.gamestate);
+                switch (this.gamedatas.gamestate.name) {
+                    case 'draftChooseCard':
+                        this.takeAction('undoDraftChooseCard', {}, false, true);
+                        break;
+                    case 'buildLibraryNew':
+                        this.takeAction('undoChooseLibrarynew', {}, false, true);
+                        break;
+                    default:
+                        break;
+                }
             },
 
             ///////////////////////////////////////////////////
@@ -2024,6 +2037,7 @@ define([
                 } else {
                     switch (stateName) {
                         case 'draftChoice':
+                        case 'buildLibraryNew':
                             this.addUndoButton();
                             break;
                     }
@@ -2143,6 +2157,7 @@ define([
                     ['scoreRemainingCards', this.scoreAnimationDuration],
                     ['tokenScore', this.scoreAnimationDuration],
                     ['scoreAfterEnd', this.scoreAnimationDuration],
+                    ['undoChooseLibraryNew', undefined],
                 ];
                 notifs.forEach(function (notif) {
                     dojo.subscribe(notif[0], _this, "notif_" + notif[0]);
@@ -2200,6 +2215,7 @@ define([
                 }
             },
             notif_placeMyInLibrarynew: function (notif) {
+                console.log("notif_placeMyInLibrarynew", notif);
                 if (toint(notif.args.player_id) == this.player_id) {
                     var bFirstCard = true;
                     for (var i in notif.args.cards) {
@@ -2217,6 +2233,22 @@ define([
                             this.library[notif.args.year].addToStockWithId(card.type, card.id);
                         }
                     }
+                }
+            },
+
+            notif_undoChooseLibraryNew: function (notif) {
+                console.log("notif_undoChooseLibraryNew", notif);
+                for (let i = 1; i <= 3; i++) {
+                    this.libraryBuild[i].removeAll();
+                    this.addVoidCardsToLibraryBuilds(i);
+                    if (i < 1) {
+                        this.library[i].removeAll();
+                    }
+                }
+                this.playerHand.removeAll();
+                for (var i in notif.args.cards) {
+                    var card = notif.args.cards[i];
+                    this.playerHand.addToStockWithId(card.type, card.id);
                 }
             },
 
