@@ -10,6 +10,7 @@ ALTER TABLE `player` ADD `player_score_bonus_actions` int(10) NOT NULL DEFAULT '
 ALTER TABLE `player` ADD `player_score_remaining_cards` int(10) NOT NULL DEFAULT '0';
 ALTER TABLE `player` ADD `player_score_token` int(10) NOT NULL DEFAULT '0';
 ALTER TABLE `player` ADD `player_last_draft_card` int(10);
+ALTER TABLE  `player` ADD  `player_reset_possible` TINYINT(1) UNSIGNED NOT NULL DEFAULT  '0';
 
 CREATE TABLE IF NOT EXISTS `card` (
   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
