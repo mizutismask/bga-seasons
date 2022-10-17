@@ -17,6 +17,7 @@ require_once(APP_GAMEMODULE_PATH . 'module/table/table.game.php');
 
 if (!defined('NOTIF_TOKEN_CHANGE')) {
     define("PLAYER_FIELD_LAST_DRAFT_CARD", "player_last_draft_card");
+    define("PLAYER_FIELD_RESET_POSSIBLE", "player_reset_possible");
 }
 
 class SeasonsSK extends Table {
@@ -394,6 +395,10 @@ class SeasonsSK extends Table {
 
     function updatePlayer(int $playerId, String $field, int $newValue) {
         $this->DbQuery("UPDATE player SET $field = $newValue WHERE player_id = $playerId");
+    }
+
+    function updatePlayersExceptOne(int $playerId, String $field, int $newValue) {
+        $this->DbQuery("UPDATE player SET $field = $newValue WHERE player_id != $playerId");
     }
 
     function getPlayerFieldValue(int $playerId, String $field) {
@@ -1287,7 +1292,7 @@ class SeasonsSK extends Table {
         // Place this card in player's hand
         $this->cards->moveCard($card_id, 'hand', $player_id);
         $this->updatePlayer($player_id, PLAYER_FIELD_LAST_DRAFT_CARD, $card_id);
-        
+
         self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => true));
 
         // All remaining choices => to next player choice
@@ -1306,12 +1311,11 @@ class SeasonsSK extends Table {
         $this->gamestate->checkPossibleAction('undoDraftChooseCard');
 
         $player_id = self::getCurrentPlayerId();
-        $this->gamestate->setPlayersMultiactive([$player_id], "ignored");
-
         $card_id = $this->getPlayerFieldValue($player_id, PLAYER_FIELD_LAST_DRAFT_CARD);
         if (!$card_id) {
             throw new BgaUserException("Your last choice was not saved, undo is not available for you now");
         }
+        $this->gamestate->setPlayersMultiactive([$player_id], "ignored");
         $this->cards->moveCard($card_id, 'choice', $player_id);
 
         $players = self::loadPlayersBasicInfos();
@@ -1507,13 +1511,26 @@ class SeasonsSK extends Table {
         $this->gamestate->nextState('chooseDie');
     }
 
+    /* Undo all the player turn actions. */
+    function resetPlayerTurn() {
+        //self::checkAction('resetPlayerTurn');
+        $player_id = self::getCurrentPlayerId();
+        $possible = $this->getPlayerFieldValue($player_id, PLAYER_FIELD_RESET_POSSIBLE);
+        if (!$possible) {
+            throw new BgaUserException("Undo is not available, you probably have done undoable actions (draw, reroll…)");
+        }
+        $this->undoRestorePoint();
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
+        $this->gamestate->nextState('playerTurn');
+    }
     function endTurn() {
         self::checkAction('endTurn');
 
         if (self::getGameStateValue('mustDrawPowerCard') == 1)
             throw new feException(self::_("You must draw a power card before the end of your turn"), true);
 
-
+        $player_id = self::getCurrentPlayerId();
+        //todo
         $this->gamestate->nextState('endOfTurn');
     }
 
@@ -1619,6 +1636,7 @@ class SeasonsSK extends Table {
             self::increaseSummoningGauge($player_id, clienttranslate('Bonus'), 1);
             $this->gamestate->nextState('useBonus');
         } else if ($bonusId == 4) {
+            $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
             // Draw 2 cards and keep 1
             if (self::getGameStateValue('mustDrawPowerCard') == 1) {
                 // 2 cards => choice pool
@@ -1898,6 +1916,7 @@ class SeasonsSK extends Table {
         self::setGameStateValue('lastCardDrawn', $card['id']);
 
         self::setGameStateValue('mustDrawPowerCard', 0);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
         $this->gamestate->nextState('draw');
     }
@@ -3084,17 +3103,18 @@ class SeasonsSK extends Table {
                 self::giveLibaryCardsToPlayers($newYear);
             }
         }
+        $newSeason = self::getCurrentSeason();
 
         $notifArgs = self::getStandardArgs();
         $notifArgs['month'] = $monthChoice;
         $notifArgs['year'] = $possible_months[$monthChoice];
+        $notifArgs['seasonChanged'] = $currentSeason != $newSeason;
         self::notifyAllPlayers(
             'timeProgression',
             clienttranslate('${card_name}: ${player_name} moves the season token'),
             $notifArgs
         );
 
-        $newSeason = self::getCurrentSeason();
 
         if ($currentSeason != $newSeason) {
             self::triggerEffectsOnEvent('onSeasonChange', array(
@@ -3211,10 +3231,12 @@ class SeasonsSK extends Table {
     }
 
     function argPlayerTurn() {
+        $player_id = self::getActivePlayerId();
         return array(
             'transmutationPossible' => self::getGameStateValue('transmutationPossible'),
             'possibleCards' => $this->getPossibleCards(),
             'drawCardPossible' => self::getGameStateValue('mustDrawPowerCard'),
+            'resetPossible' => intval($this->getPlayerFieldValue($player_id, PLAYER_FIELD_RESET_POSSIBLE)),
         );
     }
 
@@ -3641,8 +3663,15 @@ class SeasonsSK extends Table {
     }
 
     function stStartPlayerTurn() {
-        // Get current player dice
         $player_id = self::getActivePlayerId();
+
+        //makes a savepoint to allow undo
+        self::dump("***********************Point de sauvegarde", $player_id);
+        $this->updatePlayersExceptOne($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, true);
+        $this->undoSavepoint();
+
+        // Get current player dice
         $season = self::getCurrentDiceSeason();
         $playerDice = self::getObjectFromDB("SELECT dice_id, dice_face FROM dice
                                               WHERE dice_season='$season' AND dice_player_id='$player_id' ");
@@ -4238,14 +4267,16 @@ class SeasonsSK extends Table {
             if ($year == 2 || $year == 3)
                 self::giveLibaryCardsToPlayers($year);
         }
-
+        
         self::setGameStateValue('month', $month);
         self::setGameStateValue('year', $year);
-
+        $newSeason = self::getCurrentSeason();
+        
         self::notifyAllPlayers('timeProgression', clienttranslate('The season token moves ${step} spaces forward'), array(
             'step' => $timeProgression,
             'month' => $month,
-            'year' => $year
+            'year' => $year, 
+            'seasonChanged' => $currentSeason != $newSeason,
         ));
 
         //        => Move to stStartYear because effects at the end of seasons should be applied before game end        

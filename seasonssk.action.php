@@ -484,10 +484,15 @@ class action_seasonssk extends APP_GameAction {
         self::ajaxResponse();
     }
 
-    public function
-    undoChooseLibrarynew() {
+    public function undoChooseLibrarynew() {
         self::setAjaxMode();
         $this->game->undoChooseLibraryNew();
+        self::ajaxResponse();
+    }
+
+    public function resetPlayerTurn() {
+        self::setAjaxMode();
+        $this->game->resetPlayerTurn();
         self::ajaxResponse();
     }
 }
