@@ -1688,12 +1688,7 @@ define([
                         }
 
                         break;
-                    case 'buildLibrary3':
-                    case 'buildLibrary2':
-                        dojo.style('season_dices_wrap', 'display', 'none')
-                        break;
                     case 'buildLibraryNew':
-                        dojo.style('season_dices_wrap', 'display', 'none');
                         dojo.style('season_library_choice', 'display', 'block');
                         this.libraryBuild[1].updateDisplay();
                         this.libraryBuild[2].updateDisplay();
@@ -1709,8 +1704,6 @@ define([
                             var div = document.getElementById("new-year");
                             div.addEventListener('animationend', function () { return dojo.destroy(div); });
                             div.classList.add('new-year-animation');
-                            //todo
-                            // dojo.style('season_dices_wrap', 'display', 'block')
                         }
                         break;
                     case 'rattyNightshade':
