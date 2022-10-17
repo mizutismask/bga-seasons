@@ -184,11 +184,12 @@ define([
                             this.tokensStock[player_id].addToStockWithId(token.type, tokenId);
                         }
 
-                        if (gamedatas.tokens[player_id].length == 1) {
-                            dojo.place("tokens_" + player_id, "left_avatar_" + player_id, "replace");
-                            if (player_id == this.player_id) {
-                                dojo.query("#tokens_" + player_id + " .stockitem").connect('click', this, 'onPlayToken');
-                            }
+                        if (Object.keys(gamedatas.tokens[player_id]).length == 1) {
+                            const notif = {};
+                            notif.args = {};
+                            notif.args.player_id = player_id;
+                            notif.args.token_id = Object.keys(gamedatas.tokens[player_id]);
+                            this.notif_tokenChosen(notif);
                         }
                     }
                 }
