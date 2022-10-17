@@ -117,7 +117,7 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} must distribute your cards in 3 decks: year I, year II, year III.'),
         "type" => "multipleactiveplayer",
         "action" => "stBuildLibraryNew",
-        "possibleactions" => array("chooseLibrarynew"),
+        "possibleactions" => array("chooseLibrarynew", "undoChooseLibrarynew"),
         "transitions" => array("chooseLibrarynew" => 20, "chooseToken" => 13)
     ),
 

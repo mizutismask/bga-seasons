@@ -1509,7 +1509,7 @@ class SeasonsSK extends Table {
                 // Place these cards in library
                 $this->cards->moveCards($card_ids, 'library' . $library, $player_id);
             }
-
+            self::dump("*************************************************notifyPlayer", $player_id);
             self::notifyPlayer($player_id, 'placeMyInLibrarynew', '', array(
                 'player_id' => $player_id,
                 'cards' => $cards,
@@ -1520,7 +1520,20 @@ class SeasonsSK extends Table {
 
         // This player => no more active
         $state = $this->isEnchantedKingdom() ? "chooseToken" : 'chooseLibrarynew';
+        self::dump("*************************************************setPlayerNonMultiactive", $state);
         $this->gamestate->setPlayerNonMultiactive($player_id, $state);
+        self::dump("*************************************************end chooseLibrarynew", $player_id);
+    }
+
+    function undoChooseLibraryNew() {
+        $this->gamestate->checkPossibleAction('undoChooseLibrarynew');
+        $player_id = self::getCurrentPlayerId();
+        $this->gamestate->setPlayersMultiactive([$player_id], "ignored");
+        $this->cards->moveAllCardsInLocation('library2', 'hand', $player_id, $player_id);
+        $this->cards->moveAllCardsInLocation('library3', 'hand', $player_id, $player_id);
+        self::notifyPlayer($player_id, 'undoChooseLibraryNew', '', array(
+            'cards' => $this->cards->getCardsInLocation('hand', $player_id),
+        ));
     }
 
     function chooseDie($die_id) {
