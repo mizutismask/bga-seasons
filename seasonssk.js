@@ -195,7 +195,7 @@ define([
                             const notif = {};
                             notif.args = {};
                             notif.args.player_id = player_id;
-                            notif.args.token_id = Object.keys(gamedatas.tokens[player_id]);
+                            notif.args.token_id = Object.keys(gamedatas.tokens[player_id])[0];
                             this.notif_tokenChosen(notif);
                         }
                     } else {
@@ -2170,6 +2170,7 @@ define([
 
                 dojo.subscribe('updateScores', this, "notif_updateScores");
                 dojo.subscribe('potionOfLifeWarning', this, "notif_potionOfLifeWarning");
+                dojo.subscribe('tokenUsed', this, "notif_tokenUsed");
 
                 var _this = this;
                 var notifs = [
@@ -2332,6 +2333,7 @@ define([
             },
 
             notif_tokenChosen: function (notif) {
+                console.log("notif_tokenChosen", dojo.query("#tokens_" + playerId).length);
                 var playerId = notif.args.player_id;
                 var tokenId = notif.args.token_id
 
@@ -2343,7 +2345,9 @@ define([
                     }
                 });
                 dojo.place("tokens_" + playerId, "left_avatar_" + playerId, "replace");
-                dojo.query("tokens_" + playerId).connect('onclick', this, 'onPlayToken');
+                if (playerId == this.player_id) {
+                    dojo.query("#tokens_" + playerId + " .stockitem").connect('click', this, 'onPlayToken');
+                }
             },
 
             notif_summon: function (notif) {
@@ -2445,6 +2449,13 @@ define([
                 console.log(notif);
                 this.setFirstPlayer(notif.args.player_id);
             },
+
+            notif_tokenUsed: function (notif) {
+                console.log('notif_tokenUsed');
+                console.log(notif);
+                //todo
+            },
+
             notif_bonusUsed: function (notif) {
                 console.log('notif_bonusUsed');
                 console.log(notif);
