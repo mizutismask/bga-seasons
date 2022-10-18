@@ -2177,12 +2177,7 @@ class SeasonsSK extends Table {
         $player_id = self::getActivePlayerId();
 
         // Get cards details
-        $card = $this->cards->getCard($card_id);
-
-        if (!$card)
-            throw new feException("Card not found");
-        if ($card['location'] != 'tableau' || $card['location_arg'] != $player_id)
-            throw new feException("This card is not in your tableau");
+        $card = $this->checkCardIsInTableau($card_id, $player_id);
 
         if ($card['type_arg'] == 1)
             throw new feException(self::_("This card has been activated already during this turn"), true);
@@ -2394,12 +2389,7 @@ class SeasonsSK extends Table {
         $card_name = self::getCurrentEffectCardName();
 
         // Get cards details
-        $card = $this->cards->getCard($card_id);
-
-        if (!$card)
-            throw new feException("Card not found");
-        if ($card['location'] != 'tableau' || $card['location_arg'] != $player_id)
-            throw new feException("This card is not in your tableau");
+        $card =  $this->checkCardIsInTableau($card_id, $player_id);
 
         $card_type = $this->card_types[self::ot($card['type'])];
 
@@ -2481,12 +2471,7 @@ class SeasonsSK extends Table {
         $player_id = self::getActivePlayerId();
 
         // Get cards details
-        $card = $this->cards->getCard($card_id);
-
-        if (!$card)
-            throw new feException("Card not found");
-        if ($card['location'] != 'tableau' || $card['location_arg'] != $player_id)
-            throw new feException("This card is not in your tableau");
+        $card =  $this->checkCardIsInTableau($card_id, $player_id);
 
         $card_type = $this->card_types[self::ot($card['type'])];
 
@@ -2502,12 +2487,7 @@ class SeasonsSK extends Table {
         $player_id = self::getActivePlayerId();
 
         // Get cards details
-        $card = $this->cards->getCard($card_id);
-
-        if (!$card)
-            throw new feException("Card not found");
-        if ($card['location'] != 'tableau' || $card['location_arg'] != $player_id)
-            throw new feException("This card is not in your tableau");
+        $card =  $this->checkCardIsInTableau($card_id, $player_id);
 
         $card_type = $this->card_types[self::ot($card['type'])];
 
@@ -2543,6 +2523,23 @@ class SeasonsSK extends Table {
         $this->$method_name($card_id, self::ot($card['type']));
     }
 
+    function checkCardIsInHand($card_id, $player_id) {
+        return $this->checkCardIsInLocation($card_id, 'hand', $player_id);
+    }
+
+    function checkCardIsInTableau($card_id, $player_id) {
+        return $this->checkCardIsInLocation($card_id, 'tableau', $player_id);
+    }
+
+    function checkCardIsInLocation($card_id, $location, $player_id) {
+        $card = $this->cards->getCard($card_id);
+
+        if (!$card)
+            throw new feException("Card not found");
+        if ($card['location'] != $location || $card['location_arg'] != $player_id)
+            throw new feException("This card is not in your " . $location);
+        return $card;
+    }
 
     function discard($card_id) {
         self::checkAction('discard');
@@ -2550,13 +2547,7 @@ class SeasonsSK extends Table {
         $player_id = self::getActivePlayerId();
 
         // Get cards details
-        $card = $this->cards->getCard($card_id);
-
-        if (!$card)
-            throw new feException("Card not found");
-        if ($card['location'] != 'hand' || $card['location_arg'] != $player_id)
-            throw new feException("This card is not in your hand");
-
+        $card = $this->checkCardIsInHand($card_id, $player_id);
         $card_type = $this->card_types[self::ot($card['type'])];
 
         // Okay, card can be discarded
@@ -2627,6 +2618,7 @@ class SeasonsSK extends Table {
                 $this->applyResourceDelta($player_id, $delta, false);
                 $this->doDrawPowerCard();
                 break;
+            
 
             default:
                 # code...
@@ -2640,7 +2632,7 @@ class SeasonsSK extends Table {
         ));
     }
 
-    function notifyAbilityTokenInUse(){
+    function notifyAbilityTokenInUse() {
         self::notifyAllPlayers('msg', clienttranslate('${player_name} uses his ability token'), array(
             'player_name' => self::getCurrentPlayerName(),
         ));
