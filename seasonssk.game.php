@@ -1839,11 +1839,12 @@ class SeasonsSK extends Table {
         $player_id = self::getActivePlayerId();
 
         $card = $this->cards->pickCard('deck', $player_id);
+        //$this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);//todo merger
         self::notifyUpdateCardCount();
 
         self::incStat(1, 'cards_drawn', $player_id);
 
-        self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${player_name} draw a power card'), array(
+        self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${player_name} draws a power card'), array(
             'player_id' => $player_id,
             'player_name' => self::getActivePlayerName()
         ));
@@ -2598,7 +2599,7 @@ class SeasonsSK extends Table {
         $player_id = self::getCurrentPlayerId();
         $tokens = $this->tokensDeck->getCardsInLocation('hand', $player_id);
         if (count($tokens) != 1) {
-            throw new feException("No token can be played at this point");
+            throw new BgaUserException("No token can be played at this point");
         }
         $token = array_pop($tokens);
         $notifArgs = $this->getStandardArgs(false);
@@ -2608,10 +2609,23 @@ class SeasonsSK extends Table {
                 //move back on bonus track
                 $nb_used = self::getUniqueValueFromDB("SELECT player_nb_bonus_used FROM player WHERE player_id='$player_id' ");
                 if ($nb_used > 0) {
+                    $this->notifyAbilityTokenInUse();
                     $this->decreaseBonusUsage($player_id, $nb_used, $notifArgs);
                 } else {
-                    throw new feException("You can not use this token now since you've never used a bonus action");
+                    throw new BgaUserException("You can not use this token now since you've never used a bonus action");
                 }
+                break;
+            case 15:
+                //discard 5 fire energy to draw a card
+                $cost = [3 => 5]; //3=fire
+                $delta = [3 => -5];
+                $stock = self::getResourceStock($player_id);
+                if (!self::checkCostAgainstStock($cost, $stock)) {
+                    throw new BgaUserException("You don't have 5 fire energies in your reserve");
+                }
+                $this->notifyAbilityTokenInUse();
+                $this->applyResourceDelta($player_id, $delta, false);
+                $this->doDrawPowerCard();
                 break;
 
             default:
@@ -2623,6 +2637,12 @@ class SeasonsSK extends Table {
         self::notifyAllPlayers('tokenUsed', '', array(
             'token_id' => $token["id"],
             'player_id' => $player_id,
+        ));
+    }
+
+    function notifyAbilityTokenInUse(){
+        self::notifyAllPlayers('msg', clienttranslate('${player_name} uses his ability token'), array(
+            'player_name' => self::getCurrentPlayerName(),
         ));
     }
 
@@ -4353,7 +4373,7 @@ class SeasonsSK extends Table {
 
                 $token = array_pop($tokens);
                 $points = $this->abilityTokens[$token["type"]]['points'];
-                $msg= $points<0? clienttranslate('Token used: ${player_name} loses ${points_disp} points'): clienttranslate('Token used: ${player_name} gains ${points_disp} points');
+                $msg = $points < 0 ? clienttranslate('Token used: ${player_name} loses ${points_disp} points') : clienttranslate('Token used: ${player_name} gains ${points_disp} points');
                 self::notifyAllPlayers('winPoints', $msg, array(
                     'player_id' => $player_id,
                     'player_name' => $players[$player_id]['player_name'],
@@ -4430,7 +4450,7 @@ class SeasonsSK extends Table {
             ]);
         }
 
-       /* if ($this->getBgaEnvironment() == 'studio')
+        /* if ($this->getBgaEnvironment() == 'studio')
             $this->gamestate->nextState('debugEnd'); // debug end
         else
             $this->gamestate->nextState('realEnd');*/ // real end
