@@ -2585,7 +2585,9 @@ class SeasonsSK extends Table {
         ));
     }
 
-    function playToken() {
+    /**Some token need to specify a card to be played. card_id parameter is used is that scenario. */
+    function playToken($card_id) {
+        self::checkAction('playToken');
         //no self::checkAction('playToken'); here because many tokens have specific moments to be played
         $player_id = self::getCurrentPlayerId();
         $tokens = $this->tokensDeck->getCardsInLocation('hand', $player_id);
@@ -2594,6 +2596,7 @@ class SeasonsSK extends Table {
         }
         $token = array_pop($tokens);
         $notifArgs = $this->getStandardArgs(false);
+        $immediateUse = true;
 
         switch ($token["type"]) {
             case 14:
@@ -2618,18 +2621,40 @@ class SeasonsSK extends Table {
                 $this->applyResourceDelta($player_id, $delta, false);
                 $this->doDrawPowerCard();
                 break;
-            
+            case 18:
+                //move a card in year 2 or 3 to your hand
+                $year = self::getGameStateValue('year');
+                if ($year > 2) {
+                    throw new BgaUserException("This ability token can not be played during year III");
+                }
+                if (!$card_id) {
+                    $immediateUse = false;
+                    $this->gamestate->nextState('tokenEffect'); //need to choose a card
+                } else {
+                    // Give these card to this player
+                    $card = $this->cards->getCard($card_id);
+                    if (!$card)
+                        throw new feException("Card not found");
+                    if ($card['location'] != "library2" && $card['location'] != "library3" || $card['location_arg'] != $player_id)
+                        throw new feException("This card is not in your library");
+                    $this->cards->moveCard($card_id, 'hand', $player_id);
+                    self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => true));
+                    $this->gamestate->nextState('continuePlayerTurn');
+                }
+                break;
 
             default:
                 # code...
                 break;
         }
 
-        $this->tokensDeck->moveCard($token["id"], 'used',  $player_id);
-        self::notifyAllPlayers('tokenUsed', '', array(
-            'token_id' => $token["id"],
-            'player_id' => $player_id,
-        ));
+        if ($immediateUse) {
+            $this->tokensDeck->moveCard($token["id"], 'used',  $player_id);
+            self::notifyAllPlayers('tokenUsed', '', array(
+                'token_id' => $token["id"],
+                'player_id' => $player_id,
+            ));
+        }
     }
 
     function notifyAbilityTokenInUse() {
@@ -3159,6 +3184,17 @@ class SeasonsSK extends Table {
     //////////////////////////////////////////////////////////////////////////////
     //////////// Game state arguments
     ////////////
+    function argToken18Effect() {
+        $player_id = self::getCurrentPlayerId();
+        $cards = $this->cards->getCardsInLocation("library2", $player_id)+$this->cards->getCardsInLocation("library3", $player_id);
+        return [
+            '_private' => [
+                $player_id => [
+                    'cards' => $cards,
+                ]
+            ],
+        ];
+    }
 
     function argStartYear() {
         return array(
@@ -3715,6 +3751,26 @@ class SeasonsSK extends Table {
         $variableCost = self::argSummonVariableCost();
         if (count($variableCost['costs']) == 0)
             throw new feException(self::_("You have not enough energies to summon this card"), true);
+    }
+
+    function stTokenEffect() {
+        $player_id = self::getActivePlayerId();
+        $tokens = $this->tokensDeck->getCardsInLocation('hand', $player_id);
+        if (count($tokens) == 1) {
+            $token = array_pop($tokens);
+            $this->notifyAbilityTokenInUse();
+            switch ($token["type"]) {
+                case 18:
+                    $this->gamestate->nextState('token18Effect');
+                    break;
+
+                default:
+                    $this->gamestate->nextState('continuePlayerTurn');
+                    break;
+            }
+        } else {
+            $this->gamestate->nextState('continuePlayerTurn');
+        }
     }
 
     // Apply current stack of cards effect

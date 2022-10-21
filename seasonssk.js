@@ -1270,7 +1270,12 @@ define([
 
             onPlayToken: function (evt) {
                 //no this.checkAction('playToken') here because many tokens have specific moments to be played
-                this.ajaxcall("/seasonssk/seasonssk/playToken.html", { lock: true }, this, function (result) {
+                const selection = this.cardChoice.getSelectedItems();
+                let optCardId=undefined;
+                if (selection.length == 1) {
+                    optCardId = selection[0].id;
+                }
+                this.ajaxcall("/seasonssk/seasonssk/playToken.html", { lock: true, "optCardId": optCardId }, this, function (result) {
                 });
 
             },
@@ -1457,7 +1462,10 @@ define([
                 var selected = this.cardChoice.getSelectedItems();
                 if (selected.length == 1) {
                     var card_id = selected[0].id;
-                    if (this.checkAction('chooseCard', true)) {
+                    if (this.gamedatas.gamestate.name === "token18Effect") {
+                        this.onPlayToken();
+                    }
+                    else if (this.checkAction('chooseCard', true)) {
                         this.ajaxcall("/seasonssk/seasonssk/chooseCard.html", { id: card_id, lock: true }, this, function (result) {
                         });
                         this.cardChoice.unselectAll();
@@ -1659,7 +1667,6 @@ define([
 
             onEnteringState: function (stateName, args) {
                 console.log('Entering state: ' + stateName, args);
-
                 switch (stateName) {
                     case 'nextPlayerTurn':
                         // Remove "activated" tokens
@@ -1683,6 +1690,13 @@ define([
                     case 'sepulchralAmuletChoice2':
                     case 'carnivoraChoice':
                     case 'draftTwist':
+                    case 'token18Effect':
+                        if (stateName === 'token18Effect' && this.isCurrentPlayerActive()) {
+                                notif = { "args": [] };
+                                notif.args.cards = args.args._private.cards;
+                                console.log("token18Effect", notif);
+                                this.notif_newCardChoice(notif);
+                        }
                         if (this.isCurrentPlayerActive()) {
                             dojo.style('choiceCards', 'display', 'block');
                             this.cardChoice.updateDisplay();
@@ -1769,7 +1783,7 @@ define([
                     case 'sepulchralAmuletChoice2':
                     case 'carnivoraChoice':
                     case 'draftTwist':
-
+                    case 'token18Effect':
                         dojo.style('choiceCards', 'display', 'none');
                         break;
                     case 'temporalBoots':
@@ -1808,6 +1822,9 @@ define([
 
                 if (this.isCurrentPlayerActive()) {
                     switch (stateName) {
+                        case 'token18Effect':
+                            this.addActionButton('playToken', _('Choose selected card'), 'onPlayToken');
+                            break;
                         case 'buildLibrary3':
                         case 'buildLibrary2':
                             this.addActionButton('buildLibrary', _('Choose selected cards'), 'onBuildLibrary');
