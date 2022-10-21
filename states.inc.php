@@ -63,7 +63,7 @@ $machinestates = array(
         "description" => clienttranslate("Game setup"),
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array("" => 11)//98 for fake scoring, 11 for real
+        "transitions" => array("" => 11) //98 for fake scoring, 11 for real
     ),
 
     /////////// Draft & deck building phase ////////////////
@@ -99,7 +99,7 @@ $machinestates = array(
         "description" => clienttranslate('Everyone must choose his ability token'),
         "descriptionmyturn" => clienttranslate('${you} must choose one ability token'),
         "type" => "multipleactiveplayer",
-        "action"=> "stMakeEveryoneActive",
+        "action" => "stMakeEveryoneActive",
         "possibleactions" => array("chooseToken"),
         "transitions" => array("startYear" => 20)
     ),
@@ -204,10 +204,11 @@ $machinestates = array(
         "type" => "activeplayer",
         "args" => "argPlayerTurn",
         "action" => "stPlayerTurn",
-        "possibleactions" => array("incSummon", "draw", "transmute", "summon", "active", "useBonus", 'endTurn'),
+        "possibleactions" => array("incSummon", "draw", "transmute", "summon", "active", "useBonus", 'endTurn', 'playToken'),
         "transitions" => array(
             "endOfTurn" => 25, "cardEffect" => 50, "summonVariableCost" => 35, "draw" => 32, "useBonus" => 30,
-            "bonusDraw" => 36, "bonusExchange" => 37
+            "bonusDraw" => 36, "bonusExchange" =>
+            37, "tokenEffect" => 200
         )
     ),
     31 => array(
@@ -1061,6 +1062,25 @@ $machinestates = array(
         "transitions" => array("energyOk" => 165, "discardEnergy" => 165, "continueDiscard" => 194)
     ),
 
+    /* Token effects */
+    200 => array(
+        "name" => "tokenEffect",
+        "description" => '',
+        "descriptionmyturn" => '',
+        "type" => "game",
+        "action" => "stTokenEffect",
+        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30)
+    ),
+    218 => array(
+        "name" => "token18Effect",
+        "description" => clienttranslate('${actplayer} must select a power card from one of the future libraries and add it to their hand'),
+        "descriptionmyturn" => clienttranslate('${you} must select a power card from one of your libraries and add it to your hand'),
+        "type" => "activeplayer",
+        "args" => "argToken18Effect",
+        "possibleactions" => array("playToken"),
+        "transitions" => array("continuePlayerTurn" => 30)
+    ),
+
     /////////// End of game ////////////////
 
     STATE_DEBUGGING_END => [ // active player state for debugging end of game
@@ -1077,7 +1097,7 @@ $machinestates = array(
         "description" => '',
         "type" => "game",
         "action" => "stFinalScoring",
-        "transitions" => array("debugEnd" => STATE_DEBUGGING_END,"realEnd" => 99)
+        "transitions" => array("debugEnd" => STATE_DEBUGGING_END, "realEnd" => 99)
     ),
 
     // Final state.

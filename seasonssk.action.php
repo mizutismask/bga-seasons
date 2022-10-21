@@ -474,7 +474,8 @@ class action_seasonssk extends APP_GameAction {
 
     public function playToken() {
         self::setAjaxMode();
-        $this->game->playToken();
+        $optCardId = self::getArg("optCardId", AT_posint, false);
+        $this->game->playToken($optCardId);
         self::ajaxResponse();
     }
 }
