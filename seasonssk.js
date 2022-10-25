@@ -176,15 +176,16 @@ define([
 
                     //tokens
                     this.tokensStock[player_id] = new ebg.stock();
-                    this.tokensStock[player_id].create(this, $('tokens_' + player_id), 100, 100);
+                    this.tokensStock[player_id].create(this, $('tokens_' + player_id), 99, 99);
                     this.tokensStock[player_id].setSelectionMode(0);
+                    this.tokensStock[player_id].image_items_per_row = 6;
                     this.tokensStock[player_id].autowidth = true;
                     this.tokensStock[player_id].onItemCreate = dojo.hitch(this, 'setupNewToken');
 
                     if (gamedatas.tokens) {
                         for (var tokenType in this.gamedatas.abilityTokens) {
-                            console.log("tokenType", tokenType);
-                            this.tokensStock[player_id].addItemType(tokenType, tokenType, g_gamethemeurl + 'img/pathOfDestinyTokens.png', parseInt(tokenType) - 13);
+                            this.tokensStock[player_id].addItemType(tokenType, tokenType, g_gamethemeurl + 'img/abilityTokens.png', parseInt(tokenType) * 2 - 2);//recto
+                            this.tokensStock[player_id].addItemType(tokenType + "2", tokenType, g_gamethemeurl + 'img/abilityTokens.png', parseInt(tokenType) * 2 - 1);//verso
                         }
 
                         for (const [tokenId, token] of Object.entries(this.gamedatas.tokens[player_id])) {
@@ -1271,7 +1272,7 @@ define([
             onPlayToken: function (evt) {
                 //no this.checkAction('playToken') here because many tokens have specific moments to be played
                 const selection = this.cardChoice.getSelectedItems();
-                let optCardId=undefined;
+                let optCardId = undefined;
                 if (selection.length == 1) {
                     optCardId = selection[0].id;
                 }
@@ -1692,10 +1693,9 @@ define([
                     case 'draftTwist':
                     case 'token18Effect':
                         if (stateName === 'token18Effect' && this.isCurrentPlayerActive()) {
-                                notif = { "args": [] };
-                                notif.args.cards = args.args._private.cards;
-                                console.log("token18Effect", notif);
-                                this.notif_newCardChoice(notif);
+                            notif = { "args": [] };
+                            notif.args.cards = args.args._private.cards;
+                            this.notif_newCardChoice(notif);
                         }
                         if (this.isCurrentPlayerActive()) {
                             dojo.style('choiceCards', 'display', 'block');

@@ -1780,73 +1780,73 @@ $this->dices = array(
 );
 /*****Enchanted kingdom******/
 $this->abilityTokens = array(
- /*   1 => array(
+    "01" => array(
         'points' => -5,
         'desc' => clienttranslate('Draw a Power card. Either add this card to your hand or discard it. If you use this effect, lose 5 Prestige points at the end of the game.'),
     ),
-    2 => array(
+    "02" => array(
         'points' => 6,
         'desc' => clienttranslate('Sacrifice or discard one of your Power cards. If you use this effect, gain 6 Prestige points at the end of the game.'),
     ),
-    3 => array(
+    "03" => array(
         'points' => -5,
         'desc' => clienttranslate('Collect 2 energy tokens of your choice from the stockpile. Place them in your reserve. If you use this effect, lose 5 Prestige points at the end of the game.'),
     ),
-    4 => array(
+    "04" => array(
         'points' => 10,
         'desc' => clienttranslate('Move your sorcerer token back one space on the summoning gauge. If you use this effect, gain 10 Prestige points at the end of the game.'),
     ),
-    5 => array(
+    "05" => array(
         'points' => 0,
         'desc' => clienttranslate('Gain 3 Prestige points (instead of losing 5 Prestige points) for each Power card still in your hand at the end of the game.'),
     ),
-    6 => array(
+    "06" => array(
         'points' => 0,
         'desc' => clienttranslate('You are allowed to transmute during your turn, and receive 1 additional crystal per energy transmuted. Using this effect does not cause you to lose or gain any Prestige points at the end of the game.'),
     ),
-    7 => array(
+    "07" => array(
         'points' => -6,
         'desc' => clienttranslate('Move your sorcerer token forward 12 spaces on the crystal track. If you use this effect, lose 6 Prestige points at the end of the game.'),
     ),
-    8 => array(
+    "08" => array(
         'points' => 18,
         'desc' => clienttranslate('Discard 4 water energy tokens from your reserve. If you use this effect, gain 18 Prestige points at the end of the game. '),
     ),
-    9 => array(
+    "09" => array(
         'points' => -5,
         'desc' => clienttranslate('Move your sorcerer token forward 2 spaces on your summoning gauge. If you use this effect, lose 5 Prestige points at the end of the game.'),
     ),
-    10 => array(
+    "10" => array(
         'points' => 3,
         'desc' => clienttranslate('Move the season marker 2 spaces backwards or forwards on the season wheel. If you use this effect, gain 3 Prestige points at the end of the game.'),
     ),
-    11 => array(
+    "11" => array(
         'points' => 9,
         'desc' => clienttranslate('Look at the Power cards in the other players hands. If you use this effect, gain 9 Prestige points at the end of the game.'),
     ),
-    12 => array(
+    "12" => array(
         'points' => 0,
         'desc' => clienttranslate(' Look at the first three cards in the Power card draw pile and replace them in the order of your choice. Using this effect does not cause you to lose or gain any Prestige points at the end of the game.'),
-    ),*/
+    ),
     /********path of destiny**********/
 
-    13 => array(
+    "13" => array(
         'points' => -5,
         'desc' => clienttranslate('Look at the first Power card in the discard pile. Add this card to your hand. If you use this effect, lose 5 Prestige points at the end of the game.'),
     ),
-    14 => array(
+    "14" => array(
         'points' => 3,
         'desc' => clienttranslate('Move your Sorcerer token back one space on your bonus track. If you use this effect, gain 3 Prestige points at the end of the game.'),
     ),
-    15 => array(
+    "15" => array(
         'points' => 10,
         'desc' => clienttranslate('Discard 5 Fire energy tokens from your reserve and draw a Power card. If you use this effect, gain 10 Prestige points at the end of the game.'),
     ),
-    17 => array(
+    "17" => array(
         'points' => 9,
         'desc' => clienttranslate('Reroll your Season die before performing the action(s) shown on it. You must perform the action(s) shown on the Season die after it has been rerolled. If you use this effect, gain 9 Prestige points at the end of the game.'),
-    ), 
-    18 => array(
+    ),
+    "18" => array(
         'points' => 9,
         'desc' => clienttranslate('Select a Power card that is currently under one of your Library tokens (for year 2 or year 3) and add it to your hand. If you use this effect, gain 9 Prestige points at the end of the game. This token can’t be used in year III.'),
     ),
