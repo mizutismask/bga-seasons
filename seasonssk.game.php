@@ -2599,6 +2599,26 @@ class SeasonsSK extends Table {
         $immediateUse = true;
 
         switch ($token["type"]) {
+            case 1:
+                //draw a card
+                $this->notifyAbilityTokenInUse();
+                $this->doDrawPowerCard();
+                break;
+            case 13:
+                //put the first card of the discard in your hand
+                $card = $this->cards->getCardOnTop("discard");
+                if ($card) {
+                    $this->notifyAbilityTokenInUse();
+                    $this->cards->moveCard($card_id, 'hand', $player_id);
+                    self::notifyUpdateCardCount(); //todo does not update card count
+                    self::notifyAllPlayers('msg', clienttranslate('${player_name} takes the top card from the discard'), array(
+                        'player_name' => self::getCurrentPlayerName()
+                    ));
+                    self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card));
+                } else {
+                    throw new BgaUserException("The discard pile is empty. Use your token later.");
+                }
+                break;
             case 14:
                 //move back on bonus track
                 $nb_used = self::getUniqueValueFromDB("SELECT player_nb_bonus_used FROM player WHERE player_id='$player_id' ");
@@ -3186,7 +3206,7 @@ class SeasonsSK extends Table {
     ////////////
     function argToken18Effect() {
         $player_id = self::getCurrentPlayerId();
-        $cards = $this->cards->getCardsInLocation("library2", $player_id)+$this->cards->getCardsInLocation("library3", $player_id);
+        $cards = $this->cards->getCardsInLocation("library2", $player_id) + $this->cards->getCardsInLocation("library3", $player_id);
         return [
             '_private' => [
                 $player_id => [
@@ -4346,12 +4366,20 @@ class SeasonsSK extends Table {
     function looseRemainingCardsInHand() {
         $players = self::loadPlayersBasicInfos();
         $nbrRemaining = $this->cards->countCardsByLocationArgs('hand');
-
+        
         foreach ($nbrRemaining as $player_id => $nbrCards) {
-            $points = -5 * $nbrCards;
+            $cardValue = -5;
+            $wins = false;
+            $tokens = $this->tokensDeck->getCardsOfType('05');
+            if ($tokens && array_pop($tokens)["location_arg"] == $player_id) {
+                $cardValue = 3;
+                $wins = true;
+            }
+            $points = $cardValue * $nbrCards;
             self::DbQuery("UPDATE player SET player_score=GREATEST( 0, player_score+$points ) WHERE player_id='$player_id' ");
 
-            self::notifyAllPlayers('winPoints', clienttranslate('Remaining cards in hands: ${player_name} looses ${points_disp} points for ${nbr} cards'), array(
+            $msg = $wins ? clienttranslate('Remaining cards in hands: ${player_name} wins ${points_disp} points for ${nbr} cards') : clienttranslate('Remaining cards in hands: ${player_name} looses ${points_disp} points for ${nbr} cards');
+            self::notifyAllPlayers('winPoints', $msg, array(
                 'player_id' => $player_id,
                 'player_name' => $players[$player_id]['player_name'],
                 'points' => $points,
@@ -4498,10 +4526,10 @@ class SeasonsSK extends Table {
             ]);
         }
 
-        /* if ($this->getBgaEnvironment() == 'studio')
+         if ($this->getBgaEnvironment() == 'studio')
             $this->gamestate->nextState('debugEnd'); // debug end
         else
-            $this->gamestate->nextState('realEnd');*/ // real end
+            $this->gamestate->nextState('realEnd'); // real end
     }
 
 
