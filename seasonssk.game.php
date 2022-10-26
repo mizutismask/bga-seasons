@@ -2653,6 +2653,10 @@ class SeasonsSK extends Table {
                 $this->notifyAbilityTokenInUse();
                 $this->applyResourceDelta($player_id, $delta, false);
                 break;
+            case 9:
+                //adds 2 to the summoning gauge
+                $this->increaseSummoningGauge($player_id, clienttranslate("Ability token"), 2);
+                break;
             case 13:
                 //put the first card of the discard in your hand
                 $card = $this->cards->getCardOnTop("discard");
