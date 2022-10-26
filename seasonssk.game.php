@@ -15,7 +15,12 @@ require_once(APP_GAMEMODULE_PATH . 'module/table/table.game.php');
 
 
 
-if (!defined('NOTIF_TOKEN_CHANGE')) {
+if (!defined('EVT_ON_SUMMON')) {
+    define("EVT_ON_SUMMON", 'onSummon');
+    define("EVT_ON_SEASON_CHANGE", 'onSeasonChange');
+    define("EVT_ON_PLAY", 'play');
+    define("EVT_ON_ACTIVE", 'active');
+    define("EVT_ON_DRAW_ONE", 'onDrawOne');
 }
 
 class SeasonsSK extends Table {
@@ -30,7 +35,7 @@ class SeasonsSK extends Table {
             "elementalAmulet1" => 21, "elementalAmulet2" => 22, "elementalAmulet3" => 23, "elementalAmulet4" => 24,
             "opponentTarget" => 25, "mustDrawPowerCard" => 26, "elementalAmuletFree" => 27,
             "lastCardDrawn" => 28, "firstActivation" => 29, "steadfast_die_mode" => 30,
-            "discardPos" => 31, "useOtus" => 32, "lastCardPicked" => 33
+            "discardPos" => 31, "useOtus" => 32, "lastCardPicked" => 33, "currentTokenEffect" => 34
         ));
 
         $this->cards = self::getNew("module.common.deck");
@@ -96,6 +101,9 @@ class SeasonsSK extends Table {
         $sql .= implode(',', $sql_values);
         self::DbQuery($sql);
 
+        //initialize everything to be compliant with undo framework
+        //foreach ($this->GAMESTATELABELS as $value_label => $ID) if ($ID >= 10 && $ID < 90) $this->setGameStateInitialValue($value_label, 0);
+
         self::setGameStateInitialValue('year', 1);
         self::setGameStateInitialValue('month', 1);
         self::setGameStateInitialValue('diceSeason', 0);
@@ -117,8 +125,7 @@ class SeasonsSK extends Table {
         self::setGameStateInitialValue('steadfast_die_mode', 0);
         self::setGameStateInitialValue('discardPos', 1);
         self::setGameStateInitialValue('lastCardPicked', 0);
-
-
+        self::setGameStateInitialValue('currentTokenEffect', 0);
 
         self::initStat('table', 'turn_number', 0);
 
@@ -736,9 +743,9 @@ class SeasonsSK extends Table {
         self::DbQuery($sql);
     }
 
-    // Apply all cards effect in current effect table stack,
-
-    //  then get back to the specified state with the specified active player
+    /**
+     * Apply all cards effect in current effect table stack, then get back to the specified state with the specified active player.
+     */
     function applyCardsEffect($returnState, $active_player_id) {
         if ($returnState == 'playerTurn')
             self::setGameStateInitialValue('afterEffectState', 1);
@@ -835,9 +842,14 @@ class SeasonsSK extends Table {
         return $result;
     }
 
-    // Trigger an effect linked to an event for all cards of specified type specified
-    // If player_id is null => look into all cards in all tableau. Otherwise look into tableau of specified player.
-    function triggerEffectsOnEvent($event, $card_types_id, $player_id = null, $bIfNotActivated = false, $exclude_player = null) {
+    /**
+     * Stacks effects linked to an event for all cards of specified type. Looks at player cards from his tableau to see if they correspond to the ones that have to be triggered ($card_types_id) and inserts effects if it does.
+     * @param string $event Moment when the effects will be applied.
+     * @param array $card_types_id Ids of the cards that can have effects triggered at this moment.
+     * @param $player_id If not specified => look into all cards in all tableau, otherwise => look into tableau of specified player.
+     * @return boolean At least one effect has been inserted
+     */
+    function insertEffectsOnEventIfNeeded($event, $card_types_id, $player_id = null, $bIfNotActivated = false, $exclude_player = null) {
         $bAtLeastOneEffect = false;
 
         $all_card_types_id = array();
@@ -1552,6 +1564,7 @@ class SeasonsSK extends Table {
         if ($bonusId == 1) {
             // Discard 2 energies to gain 2 energies
             self::setGameStateValue('currentEffect', 0);
+            self::setGameStateValue('currentTokenEffect', 0);
             self::setGameStateValue('energyNbr', 2);
 
             if (self::countPlayerEnergies(self::getActivePlayerId(), true) < 2)
@@ -1791,7 +1804,7 @@ class SeasonsSK extends Table {
         }
     }
 
-    // If active player (or specified player) has Io's minion => reduce points to 0 and notify it
+    /**  If active player (or specified player) has Io's minion => reduce points to 0 and notify it*/
     function checkMinion($points, $player_id = null) {
         if ($player_id === null) {
             $player_id = self::getActivePlayerId();
@@ -2128,20 +2141,20 @@ class SeasonsSK extends Table {
                 6,  // Staff of spring
                 30, // Yjang’s Forgotten Vase
             );
-            self::triggerEffectsOnEvent('onSummon', $onSummonCardsLocalPlayer, $player_id);
+            self::insertEffectsOnEventIfNeeded(EVT_ON_SUMMON, $onSummonCardsLocalPlayer, $player_id);
         }
 
         // Trigger effects of Urmian Psychic Cage
         $onSummonCardsAllPlayer = array(
             215,  // Urmian Psychic Cage
         );
-        self::triggerEffectsOnEvent('onSummon', $onSummonCardsAllPlayer, null, true);
+        self::insertEffectsOnEventIfNeeded(EVT_ON_SUMMON, $onSummonCardsAllPlayer, null, true);
 
         if (!$bFreeByEffect) {
             $onSummonCardsOpponents = array(
                 202,  // Magma core, only if standard summon
             );
-            self::triggerEffectsOnEvent('onSummon', $onSummonCardsOpponents, null, true, $player_id);
+            self::insertEffectsOnEventIfNeeded(EVT_ON_SUMMON, $onSummonCardsOpponents, null, true, $player_id);
         }
 
 
@@ -2163,7 +2176,7 @@ class SeasonsSK extends Table {
         ));
 
         // Summon card effect
-        self::insertEffect($card_id, 'play');
+        self::insertEffect($card_id, EVT_ON_PLAY);
 
         self::applyCardsEffect('playerTurn', $player_id);
     }
@@ -2180,7 +2193,7 @@ class SeasonsSK extends Table {
         $card = $this->checkCardIsInTableau($card_id, $player_id);
 
         if ($card['type_arg'] == 1)
-            throw new feException(self::_("This card has been activated already during this turn"), true);
+            throw new feException(self::_("This card has already been activated during this turn"), true);
 
         $card_type = $this->card_types[self::ct($card['type'])];
 
@@ -2282,13 +2295,14 @@ class SeasonsSK extends Table {
         }
 
         // Summon card effect
-        self::insertEffect($card_id, 'active');
+        self::insertEffect($card_id, EVT_ON_ACTIVE);
         self::applyCardsEffect($bActiveBeforeTurn ? 'beforeTurn' : 'playerTurn', $player_id);
     }
 
     // Choose an energy to gain
     function gainEnergy($energy_id) {
         self::checkAction('gainEnergy');
+        $fromToken3 = false;
 
         if ($energy_id >= 1 && $energy_id <= 4) {
             $player_id = self::getActivePlayerId();
@@ -2297,6 +2311,14 @@ class SeasonsSK extends Table {
                 $card_id = $effect_card['card_id'];
                 $notifArgs = self::getStandardArgs();
                 $notifArgs['card_id'] = $card_id;
+            } else if (self::getGameStateValue('currentTokenEffect') == 3) {
+                $effect_card = null;
+                $notifArgs = array(
+                    'i18n' => array('card_name'),
+                    'player_id' => $player_id,
+                    'player_name' => self::getActivePlayerName(),
+                    'card_name' => clienttranslate('Ability token')
+                );
             } else {
                 $effect_card = null;
                 $notifArgs = array(
@@ -2331,8 +2353,9 @@ class SeasonsSK extends Table {
             if ($to_gain <= 0) {
                 if ($effect_card !== null && self::ct($effect_card['card_type']) == 115)  // Amulet of time: we have to do something afterwards
                     $this->gamestate->nextState('endAmuletOfTime');
-                else
+                else {
                     $this->gamestate->nextState('end');
+                }
             } else
                 $this->gamestate->nextState('next');
         } else if ($energy_id == 0) {
@@ -2603,6 +2626,11 @@ class SeasonsSK extends Table {
                 //draw a card
                 $this->notifyAbilityTokenInUse();
                 $this->doDrawPowerCard();
+                break;
+            case 3:
+                //gets 2 energies to choose
+                $this->notifyAbilityTokenInUse();
+                $this->gamestate->nextState('tokenEffect'); //need to choose energies types
                 break;
             case 13:
                 //put the first card of the discard in your hand
@@ -2981,7 +3009,7 @@ class SeasonsSK extends Table {
             foreach ($escaped as $escapedowner_id => $escaped_cards) {
                 if ($escapedowner_id != $player_id) {
                     foreach ($escaped_cards as $escaped_card) {
-                        self::insertEffect($escaped_card, 'onDrawOne');
+                        self::insertEffect($escaped_card, EVT_ON_DRAW_ONE);
                     }
                 }
             }
@@ -3109,7 +3137,7 @@ class SeasonsSK extends Table {
         $newSeason = self::getCurrentSeason();
 
         if ($currentSeason != $newSeason) {
-            self::triggerEffectsOnEvent('onSeasonChange', array(
+            self::insertEffectsOnEventIfNeeded(EVT_ON_SEASON_CHANGE, array(
                 11, // Figrim the Avaricious (each opponent gives you a crystal)
                 27,  // Hourglass of time => gain 1 energy
                 107 // Statue of Eolis: Whenever the season changes, either collect 1 energy token OR receive 2 crystals and look at the top card of the draw pile.
@@ -3117,7 +3145,7 @@ class SeasonsSK extends Table {
         }
 
         if ($plus_three == $monthChoice) {
-            self::triggerEffectsOnEvent('onSeasonChange', array(
+            self::insertEffectsOnEventIfNeeded(EVT_ON_SEASON_CHANGE, array(
                 212 // Chrono-ring
             ));
         }
@@ -3256,9 +3284,15 @@ class SeasonsSK extends Table {
     }
 
     function argGainEnergy() {
+        $src_name = "";
+        if (self::getGameStateValue('currentTokenEffect') == 3) {
+            $src_name = clienttranslate('Ability token');
+        } else {
+            $src_name = self::getCurrentEffectCardName();
+        }
         return array(
             'i18n' => array('card_name'),
-            'card_name' => self::getCurrentEffectCardName(),
+            'card_name' =>  $src_name,
             'nbr' => self::getGameStateValue('energyNbr')
         );
     }
@@ -3779,7 +3813,13 @@ class SeasonsSK extends Table {
         if (count($tokens) == 1) {
             $token = array_pop($tokens);
             $this->notifyAbilityTokenInUse();
+            self::setGameStateValue('currentTokenEffect', $token["type"]);
             switch ($token["type"]) {
+                case 3:
+                    self::setGameStateValue('energyNbr', 2);
+                    self::setGameStateValue('afterEffectPlayer', $player_id);
+                    $this->gamestate->nextState('token3Effect'); //gainEnergy
+                    break;
                 case 18:
                     $this->gamestate->nextState('token18Effect');
                     break;
@@ -3793,7 +3833,10 @@ class SeasonsSK extends Table {
         }
     }
 
-    // Apply current stack of cards effect
+    /**
+     * Apply current stack of cards effects until there is no more.
+     * Called when entering cardEffect state.
+     */
     function stCardEffect() {
         // Get the first card effect
         $effect = self::getObjectFromDB("SELECT effect_id, effect_card, effect_type, card_type, card_location_arg player_id
@@ -3802,8 +3845,10 @@ class SeasonsSK extends Table {
                                           ORDER BY effect_id ASC
                                           LIMIT 0,1");
 
+        self::dump('*******************effect', $effect);
+        self::dump('*******************changeActivePlayer to ', self::getGameStateValue('afterEffectPlayer'));
         if ($effect === null) {
-            // No more effect ! Get back to initial state.           
+            // No more effect ! Get back to initial state.    
             $this->gamestate->changeActivePlayer(self::getGameStateValue('afterEffectPlayer'));
             switch (self::getGameStateValue('afterEffectState')) {
                 case 1:
@@ -3828,6 +3873,7 @@ class SeasonsSK extends Table {
 
         // There's an effect: let's treat it !
         self::setGameStateValue('currentEffect', $effect['effect_id']);
+        self::setGameStateValue('currentTokenEffect', 0);
         $nextState = "nextEffect";
 
         // THE big switch for card effect management...        
@@ -3851,7 +3897,7 @@ class SeasonsSK extends Table {
             // Method does not exists.
             // For 'play', this does mean "nothing to do".
             // Otherwise it's a mistake
-            if ($effect['effect_type'] != 'play')
+            if ($effect['effect_type'] != EVT_ON_PLAY)
                 throw new feException("Can't find " . $method_name);
         }
 
@@ -3860,8 +3906,13 @@ class SeasonsSK extends Table {
     }
 
     function stCheckEnergy() {
-        if (self::checkEnergy(self::getActivePlayerId()))
-            $this->gamestate->nextState('energyOk');
+        if (self::checkEnergy(self::getActivePlayerId())) {
+            if (self::getGameStateValue('currentTokenEffect') == 3) {
+                $this->gamestate->nextState('playerTurn');
+            } else {
+                $this->gamestate->nextState('energyOk');
+            }
+        }
     }
 
     function stNextEffect() {
@@ -4305,7 +4356,7 @@ class SeasonsSK extends Table {
         $bSomeEffect = false;
 
         if ($currentSeason != $newSeason) {
-            $bSomeEffect |= self::triggerEffectsOnEvent('onSeasonChange', array(
+            $bSomeEffect |= self::insertEffectsOnEventIfNeeded(EVT_ON_SEASON_CHANGE, array(
                 11, // Figrim the Avaricious (each opponent gives you a crystal)
                 27,  // Hourglass of time => gain 1 energy
                 107 //  Statue of Eolis: Whenever the season changes, either collect 1 energy token OR receive 2 crystals and look at the top card of the draw pile.
@@ -4313,7 +4364,7 @@ class SeasonsSK extends Table {
         }
 
         if ($timeProgression == 3) {
-            $bSomeEffect |= self::triggerEffectsOnEvent('onSeasonChange', array(
+            $bSomeEffect |= self::insertEffectsOnEventIfNeeded(EVT_ON_SEASON_CHANGE, array(
                 212 // Chrono-ring
             ));
         }
@@ -4366,7 +4417,7 @@ class SeasonsSK extends Table {
     function looseRemainingCardsInHand() {
         $players = self::loadPlayersBasicInfos();
         $nbrRemaining = $this->cards->countCardsByLocationArgs('hand');
-        
+
         foreach ($nbrRemaining as $player_id => $nbrCards) {
             $cardValue = -5;
             $wins = false;
@@ -4526,7 +4577,7 @@ class SeasonsSK extends Table {
             ]);
         }
 
-         if ($this->getBgaEnvironment() == 'studio')
+        if ($this->getBgaEnvironment() == 'studio')
             $this->gamestate->nextState('debugEnd'); // debug end
         else
             $this->gamestate->nextState('realEnd'); // real end
@@ -5984,9 +6035,9 @@ class SeasonsSK extends Table {
         $onSummonCardsAllPlayer = array(
             215,  // Urmian Psychic Cage
         );
-        self::triggerEffectsOnEvent('onSummon', $onSummonCardsAllPlayer, null, true);
+        self::insertEffectsOnEventIfNeeded(EVT_ON_SUMMON, $onSummonCardsAllPlayer, null, true);
 
-        self::insertEffect($card['id'], 'play');
+        self::insertEffect($card['id'], EVT_ON_PLAY);
 
         $this->gamestate->nextState('discardEnergy');
     }
@@ -7604,7 +7655,7 @@ class SeasonsSK extends Table {
         // trigger "play" effect
         $this->gamestate->nextState("chooseOpponentCard");
 
-        self::insertEffect($raven_id, 'play');
+        self::insertEffect($raven_id, EVT_ON_PLAY);
         self::applyCardsEffect('playerTurn', $player_id);
     }
 

@@ -332,7 +332,7 @@ $machinestates = array(
         "action" => "stCheckEnergy",
         "args" => "argCheckEnergy",
         "possibleactions" => array("discardEnergy", "discardEnergyEffect"),
-        "transitions" => array("energyOk" => 51, "discardEnergy" => 51, "continueDiscard" => 52)
+        "transitions" => array("energyOk" => 51, "discardEnergy" => 51, "continueDiscard" =>52, "playerTurn" => 30)
     ),
 
 
@@ -1069,7 +1069,7 @@ $machinestates = array(
         "descriptionmyturn" => '',
         "type" => "game",
         "action" => "stTokenEffect",
-        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30)
+        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60)
     ),
     218 => array(
         "name" => "token18Effect",
