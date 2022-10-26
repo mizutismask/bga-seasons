@@ -2642,6 +2642,17 @@ class SeasonsSK extends Table {
                 ));
                 $this->notifyUpdateScores();
                 break;
+            case 8:
+                //discard 4 water energy
+                $cost = [2 => 4]; //2=water
+                $delta = [2 => -4];
+                $stock = self::getResourceStock($player_id);
+                if (!self::checkCostAgainstStock($cost, $stock)) {
+                    throw new BgaUserException("You don't have 4 water energies in your reserve");
+                }
+                $this->notifyAbilityTokenInUse();
+                $this->applyResourceDelta($player_id, $delta, false);
+                break;
             case 13:
                 //put the first card of the discard in your hand
                 $card = $this->cards->getCardOnTop("discard");
