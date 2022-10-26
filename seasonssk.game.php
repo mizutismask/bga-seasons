@@ -2632,6 +2632,16 @@ class SeasonsSK extends Table {
                 $this->notifyAbilityTokenInUse();
                 $this->gamestate->nextState('tokenEffect'); //need to choose energies types
                 break;
+            case 7:
+                //gets 12 crystals
+                $points = self::checkMinion(12, $player_id);
+                self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id'");
+                self::notifyAllPlayers('winPoints', clienttranslate('Ability token: ${player_name} gets 12 crystals'), array(
+                    'points' => $points,
+                    'player_name' => self::getCurrentPlayerName(),
+                ));
+                $this->notifyUpdateScores();
+                break;
             case 13:
                 //put the first card of the discard in your hand
                 $card = $this->cards->getCardOnTop("discard");
