@@ -2659,12 +2659,12 @@ class SeasonsSK extends Table {
             case 4:
                 //-1 on summoning gauge
                 $summoning_gauge = self::getUniqueValueFromDB("SELECT player_invocation FROM player WHERE player_id='$player_id'");
-                if ($summoning_gauge == 0) {
+                if (!$summoning_gauge) {
                     throw new BgaUserException("Your summoning gauge is at 0 and thus can not be reduced");
                 }
                 $total_cards = $this->cards->countCardsInLocation('tableau', $player_id);
-                if (!$summoning_gauge > $total_cards) {
-                    throw new BgaUserException("You can not reduce you summoning gauge if all the slots already have a card");
+                if (intval($summoning_gauge) <= intval($total_cards)) {
+                    throw new BgaUserException("You can not reduce you summoning gauge if all the slots already contain a summoned card");
                 }
                 $this->decreaseSummoningGauge($player_id, clienttranslate('Ability token'));
                 break;
