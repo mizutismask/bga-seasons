@@ -954,6 +954,7 @@ define([
             // Adapt the invocation target card of the specified player
             adaptInvocation: function (player_id) {
                 var invoc_level = toint($('invocation_level_' + player_id).innerHTML) + 1;
+                dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:nth-child(1n+${invoc_level})`).removeClass("ssn-loc-available");
                 dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:not(:nth-child(1n+${invoc_level}))`).addClass("ssn-loc-available");
             },
 
@@ -1612,7 +1613,7 @@ define([
                     // bonus<id>
                     var bonus_id = evt.currentTarget.id.substr(5);
                     this.confirmationDialog(_('Are you sure to use this bonus (points penalty at the end of the game) ?'), dojo.hitch(this, function () {
-                        this.ajaxcall('/seasons/seasons/useBonus.html', { id: bonus_id, lock: true }, this, function (result) { });
+                        this.ajaxcall('/seasonssk/seasonssk/useBonus.html', { id: bonus_id, lock: true }, this, function (result) { });
                     }));
                 }
             },

@@ -1073,8 +1073,7 @@ class SeasonsSK extends Table {
             return true;
     }
 
-    // Increase summoning gauge of player by $nbr by effect $card_name
-    // (or the seasons die if $card_name is empty)
+    /** Increase summoning gauge of player by $nbr by effect $card_name (or the seasons die if $card_name is empty)*/
     function increaseSummoningGauge($player_id, $card_name = "", $nbr = 1) {
         $summoning_gauge = self::getUniqueValueFromDB("SELECT player_invocation FROM player WHERE player_id='$player_id'");
         $new_summoning_gauge = $summoning_gauge + $nbr;
@@ -1102,6 +1101,31 @@ class SeasonsSK extends Table {
         }
     }
 
+    /** 
+     * Decrease summoning gauge of player by $nbr.
+     * 
+     */
+    function decreaseSummoningGauge($player_id, $card_name = "", $nbr = -1) {
+        $summoning_gauge = self::getUniqueValueFromDB("SELECT player_invocation FROM player WHERE player_id='$player_id'");
+        $new_summoning_gauge = $summoning_gauge + $nbr;
+        if ($new_summoning_gauge < 0)
+            $new_summoning_gauge = 0;
+
+        self::DbQuery("UPDATE player SET player_invocation='$new_summoning_gauge' WHERE player_id='$player_id'");
+
+        $players = self::loadPlayersBasicInfos();
+        $notifArgs = array(
+            'i18n' => array('card_name'),
+            'player_id' => $player_id,
+            'player_name' => $players[$player_id]['player_name'],
+            'nbr' => $nbr,
+            'old' => $summoning_gauge,
+            'new' => $new_summoning_gauge,
+            'card_name' => $card_name
+        );
+        self::notifyAllPlayers("incInvocationLevel", clienttranslate('${card_name}: ${player_name} decreases his summoning gauge from ${old} to ${new}'), $notifArgs);
+    }
+
     function checkPlayerCanSacrificeCard($player_id, $multiplier = 1) {
         // Check if this player can sacrifice a card, taking into account Crystal Titan
         $titans = self::getAllCardsOfTypeInTableau(array(303));
@@ -1125,7 +1149,7 @@ class SeasonsSK extends Table {
             return true;
     }
 
-    // Clean a card in database when it leaves a tableau
+    /** Clean a card in database when it leaves a tableau*/
     function cleanTableauCard($card_id, $player_id, $bSacrifice = true, $bForceSacrifice = false) {
         $card = self::getObjectFromDB("SELECT card_type, card_location, card_location_arg FROM card WHERE card_id='$card_id'");
         $card_type_id = $card['card_type'];
@@ -2632,8 +2656,20 @@ class SeasonsSK extends Table {
                 $this->notifyAbilityTokenInUse();
                 $this->gamestate->nextState('tokenEffect'); //need to choose energies types
                 break;
+            case 4:
+                //-1 on summoning gauge
+                $summoning_gauge = self::getUniqueValueFromDB("SELECT player_invocation FROM player WHERE player_id='$player_id'");
+                if ($summoning_gauge == 0) {
+                    throw new BgaUserException("Your summoning gauge is at 0 and thus can not be reduced");
+                }
+                $total_cards = $this->cards->countCardsInLocation('tableau', $player_id);
+                if (!$summoning_gauge > $total_cards) {
+                    throw new BgaUserException("You can not reduce you summoning gauge if all the slots already have a card");
+                }
+                $this->decreaseSummoningGauge($player_id, clienttranslate('Ability token'));
+                break;
             case 7:
-                //gets 12 crystals
+                //+12 crystals
                 $points = self::checkMinion(12, $player_id);
                 self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id'");
                 self::notifyAllPlayers('winPoints', clienttranslate('Ability token: ${player_name} gets 12 crystals'), array(
@@ -2654,7 +2690,7 @@ class SeasonsSK extends Table {
                 $this->applyResourceDelta($player_id, $delta, false);
                 break;
             case 9:
-                //adds 2 to the summoning gauge
+                //+2 to the summoning gauge
                 $this->increaseSummoningGauge($player_id, clienttranslate("Ability token"), 2);
                 break;
             case 13:
