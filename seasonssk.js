@@ -383,7 +383,7 @@ define([
 
                 // Add invocation card on tableau
                 for (player_id in gamedatas.players) {
-                    this.adaptInvocation(player_id);
+                    this.updateInvocationLevelOnSlots(player_id);
                 }
 
                 // Resources on cards
@@ -951,8 +951,8 @@ define([
                 }
             },
 
-            // Adapt the invocation target card of the specified player
-            adaptInvocation: function (player_id) {
+            /** Shows available slots on a player tableau. */
+            updateInvocationLevelOnSlots: function (player_id) {
                 var invoc_level = toint($('invocation_level_' + player_id).innerHTML) + 1;
                 dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:nth-child(1n+${invoc_level})`).removeClass("ssn-loc-available");
                 dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:not(:nth-child(1n+${invoc_level}))`).addClass("ssn-loc-available");
@@ -1610,8 +1610,8 @@ define([
             onUseBonus: function (evt) {
                 dojo.stopEvent(evt);
                 if (this.checkAction('useBonus')) {
-                    // bonus<id>
-                    var bonus_id = evt.currentTarget.id.substr(5);
+                    // bonus<id>_playerId
+                    var bonus_id = evt.currentTarget.id.split("_")[0].substr(5);
                     this.confirmationDialog(_('Are you sure to use this bonus (points penalty at the end of the game) ?'), dojo.hitch(this, function () {
                         this.ajaxcall('/seasonssk/seasonssk/useBonus.html', { id: bonus_id, lock: true }, this, function (result) { });
                     }));
@@ -2311,7 +2311,7 @@ define([
             },
             notif_incInvocationLevel: function (notif) {
                 $('invocation_level_' + notif.args.player_id).innerHTML = Math.max(0, Math.min(15, toint($('invocation_level_' + notif.args.player_id).innerHTML) + toint(notif.args.nbr)));
-                this.adaptInvocation(notif.args.player_id);
+                this.updateInvocationLevelOnSlots(notif.args.player_id);
             },
             notif_playerPickPowerCard: function (notif) {
             },
@@ -2389,7 +2389,7 @@ define([
                     this.playerTableau[notif.args.player_id].addToStockWithId(this.ot(notif.args.card.type), notif.args.card.id, 'overall_player_board_' + notif.args.player_id);
                 }
                 this.setupNewCardOnTableau(notif.args.card.type, notif.args.card.id, notif.args.player_id);
-                this.adaptInvocation(notif.args.player_id);
+                this.updateInvocationLevelOnSlots(notif.args.player_id);
                 if (this.gamedatas.card_types[notif.args.card.type].category == "f") {
                     this.playSound("familiar", false);
                 }
@@ -2401,7 +2401,7 @@ define([
             notif_discardFromTableau: function (notif) {
                 // Discard card from tableau
                 this.playerTableau[notif.args.player_id].removeFromStockById(notif.args.card_id);
-                this.adaptInvocation(notif.args.player_id);
+                this.updateInvocationLevelOnSlots(notif.args.player_id);
 
                 // Specific: Amulet of Water
                 if (typeof this.amulet_of_water_ingame[notif.args.card_id] != 'undefined') {
