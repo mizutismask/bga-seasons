@@ -1274,6 +1274,22 @@ define([
 
                 if (allselected.length > 2) {
                     bError = true;
+                } else if (allselected.length == 1 && selected.length == 1) {//selection from player hand only
+                    //the card goes to the first library with empty slots
+                    var selectionFromHand = allselected[0];
+                    if (this.libraryBuild[1].getPresentTypeList().hasOwnProperty(0)) {
+                        this.libraryBuild[1].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "player_hand");
+                        this.libraryBuild[1].removeFromStock(0);//removes blank
+                        this.playerHand.removeFromStockById(selectionFromHand.id)
+                    } else if (this.libraryBuild[2].getPresentTypeList().hasOwnProperty(0)) {
+                        this.libraryBuild[2].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "player_hand");
+                        this.libraryBuild[2].removeFromStock(0);//removes blank
+                        this.playerHand.removeFromStockById(selectionFromHand.id)
+                    } else if (this.libraryBuild[3].getPresentTypeList().hasOwnProperty(0)) {
+                        this.libraryBuild[3].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "player_hand");
+                        this.libraryBuild[3].removeFromStock(0);//removes blank
+                        this.playerHand.removeFromStockById(selectionFromHand.id)
+                    }
                 }
                 else if (allselected.length == 2) {
                     // Can perform a switch between these 2 cards
