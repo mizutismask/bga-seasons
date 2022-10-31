@@ -585,6 +585,7 @@ define([
                 if (toint(year) == 0) { year = 1; }
                 if (toint(year) > 3) { year = 3; } this.slideToObject($('current_year'), 'yearplace_' + year, 1000).play();
 
+                this.currentMonth = parseInt(month);
                 var currentSeason = this.getSeasonFromMonth(month);
                 var monthAnimation = this.slideToObject($('current_month'), 'monthplace_' + month, 1000);
                 dojo.connect(monthAnimation, 'onEnd', dojo.hitch(this, 'changeCurrentSeason', currentSeason));
@@ -1706,6 +1707,12 @@ define([
                     case 'temporalBoots':
                         dojo.query('.monthplace').style('cursor', 'pointer');
                         break;
+                    case 'token10Effect':
+                        //moves season +2 or -2
+                        dojo.query('#monthplace_' + ((this.currentMonth + (this.currentMonth < 3 ? 12 : 0) - 2))).style('cursor', 'pointer');
+                        dojo.query('#monthplace_' + ((this.currentMonth + 2) % 12)).style('cursor', 'pointer');
+                        break;
+
                     case 'lewisChoice':
                         if (this.isCurrentPlayerActive()) {
                             dojo.query('.choose_opponent').style('display', 'block');
@@ -1788,6 +1795,7 @@ define([
                         dojo.style('choiceCards', 'display', 'none');
                         break;
                     case 'temporalBoots':
+                    case 'token10Effect':
                         dojo.query('.monthplace').style('cursor', 'auto');
                         break;
                     case 'lewisChoice':
