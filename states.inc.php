@@ -18,7 +18,6 @@ if (!defined('ST_END_SCORE')) {
     define('ST_END_SCORE', 90);
     define('ST_END_GAME', 99);
     define('STATE_DEBUGGING_END', 100);
-    
 }
 /*
    Game state machine is a tool used to facilitate game developpement by doing common stuff that can be set up
@@ -312,7 +311,8 @@ $machinestates = array(
             "staffWinterDiscard" => 176, "chronoRingChoice" => 178, "urmianChoice" => 179,
             "draw" => 181, // Note: Servant of Ragfield
             "craftyChoice" => 183, "discardMinion" => 185, "chaliceEternity" => 186, "chaliceEternityChoice" => 187,
-            "carnivoraChoice" => 188, "igramulChoice" => 189,  "escaped_choice" => 193
+            "carnivoraChoice" => 188, "igramulChoice" => 189,  "escaped_choice" =>
+            193,  "endTokenEffect" => 299
         )
     ),
 
@@ -332,7 +332,7 @@ $machinestates = array(
         "action" => "stCheckEnergy",
         "args" => "argCheckEnergy",
         "possibleactions" => array("discardEnergy", "discardEnergyEffect"),
-        "transitions" => array("energyOk" => 51, "discardEnergy" => 51, "continueDiscard" =>52, "playerTurn" => 30)
+        "transitions" => array("energyOk" => 51, "discardEnergy" => 51, "continueDiscard" => 52, "playerTurn" => 30)
     ),
 
 
@@ -1069,7 +1069,15 @@ $machinestates = array(
         "descriptionmyturn" => '',
         "type" => "game",
         "action" => "stTokenEffect",
-        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60)
+        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60, "token10Effect" => 210)
+    ),
+    210 => array(
+        "name" => "token10Effect",
+        "description" => clienttranslate('Ability token: ${actplayer} must move the season token 2 steps back or forward'),
+        "descriptionmyturn" => clienttranslate('${you} must move the season token 2 steps back or forward'),
+        "type" => "activeplayer",
+        "possibleactions" => array("moveSeason"),
+        "transitions" => array("moveSeason" => 51, )//"continuePlayerTurn" => 30
     ),
     218 => array(
         "name" => "token18Effect",
@@ -1079,6 +1087,14 @@ $machinestates = array(
         "args" => "argToken18Effect",
         "possibleactions" => array("playToken"),
         "transitions" => array("continuePlayerTurn" => 30)
+    ),
+    299 => array(
+        "name" => "endTokenEffect",
+        "description" => '',
+        "descriptionmyturn" => '',
+        "type" => "game",
+        "action" => "stEndTokenEffect",
+        "transitions" => array( "continuePlayerTurn" => 30)
     ),
 
     /////////// End of game ////////////////
