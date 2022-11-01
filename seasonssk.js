@@ -19,9 +19,11 @@ define([
     "dojo", "dojo/_base/declare",
     "ebg/core/gamegui",
     "ebg/counter",
-    "ebg/stock"
+    "ebg/stock",
+    g_gamethemeurl + "modules/bga-cards.js",
+    //g_gamethemeurl + "modules/bga-cards-sprite-scrollable.js",
 ],
-    function (dojo, declare) {
+    function (dojo, declare, bgaCards, bgaCardsSpriteScrollable) {
         return declare("bgagame.seasonssk", ebg.core.gamegui, {
             constructor: function () {
                 console.log('seasonssk constructor');
@@ -295,6 +297,55 @@ define([
                     this.playerHand.addToStockWithId(card.type, card.id);
                 }
 
+                //scrollable player hand
+                // create the card manager
+                this.handManager = new CardManager(this, {
+                    getId: (card) => `card-${card.id}`,
+                    setupDiv: (card, div) => {
+                        div.classList.add('thickness');
+                        div.style.width = '124px';
+                        div.style.height = '173px';
+                        div.style.position = 'relative';
+                    },
+                    setupFrontDiv: (card, div) => {
+                        //calculates background data to see the correct picture, like in the old stock component
+                        div.style.backgroundImage = "url(" + g_gamethemeurl + 'img/cards.jpg' + ")"
+                        const imageItemsPerRow = 10;
+                        var imagePosition = this.getCardImageIndex(card.type);
+                        var row = Math.floor(imagePosition / imageItemsPerRow);
+                        img_dy = (imagePosition - (row * imageItemsPerRow)) * 100;
+                        img_dx = row * 100;
+                        div.style.backgroundPosition = "-" + img_dy + "% -" + img_dx + "%";
+
+                        div.classList.add('seasons-card-front');
+                        div.id = `card-${card.id}-front`;
+
+                        //adds the name of the card
+                        var cardDesc = this.gamedatas.card_types[card.type];
+                        dojo.place(this.format_block('jstpl_card_content', {
+                            id: card.id,
+                            type: card.type,
+                            name: _(cardDesc.name),
+                            cardactivation: cardDesc.activation ? "cardactivation" : "",
+                        }), div.id);
+
+                        var html = this.getCardTooltip(card.type, false);
+                        this.addTooltipHtml(div.id, html);
+                    },
+                    setupBackDiv: (card, div) => {
+                        //div.style.background = 'url(' + g_gamethemeurl + 'img/card-back.jpg)';
+                    },
+                });
+                var settings = { "width": "300px", "height": "300px", "shift": "2px", "scrollbarVisible": false, "buttonGap": "5px", "leftButton": { "classes": "scroll-button" }, "rightButton": { "classes": "scroll-button" } }
+                this.handScrollStock = new SpriteScrollableStock(this.handManager, document.getElementById(`my-scrollable-hand`), settings);
+                this.handScrollStock.setSelectionMode("single");
+                this.handScrollStock.onSelectionChange = (selection, lastChange) => this.onPlayerScrollingHandSelectionChanged(selection, lastChange);
+                //this.handScrollStock.onSelectionChange = (selection, lastChange) => this.selectionChange(selection, lastChange);
+                for (var i in this.gamedatas.hand) {
+                    var card = this.gamedatas.hand[i];
+                    this.handScrollStock.addCard(card);
+                }
+
                 // Init card choice
                 this.cardChoice = new ebg.stock();
                 this.cardChoice.create(this, $('choiceCardsStock'), 124, 173);
@@ -510,11 +561,11 @@ define([
                     return card_type_id;
             },
 
-            getCardImageIndex: function (card_id) {
-                if (typeof this.gamedatas.card_types[card_id].imageindex != 'undefined') {
-                    return this.gamedatas.card_types[card_id].imageindex;
+            getCardImageIndex: function (typeId) {
+                if (typeof this.gamedatas.card_types[typeId].imageindex != 'undefined') {
+                    return this.gamedatas.card_types[typeId].imageindex;
                 }
-                return toint(card_id) - 1;
+                return toint(typeId) - 1;
             },
 
             setFirstPlayer: function (player_id) {
@@ -1154,10 +1205,19 @@ define([
                 }
             },
 
-            onPlayerHandSelectionChanged: function () {
-                console.log('onPlayerHandSelectionChanged');
+            selectionChange(selection, lastChange) {
+                console.log('selectionChange', selection);
+                this.onSelectionChange?.(selection, lastChange);
+            },
 
-                var selected = this.playerHand.getSelectedItems();
+            onPlayerScrollingHandSelectionChanged: function (selection, lastChange) {
+                console.log('onPlayerScrollingHandSelectionChanged', selection);
+                this.onSelectionChange?.(selection, lastChange);
+                this.handlePlayerHandSelectionChanged(selection, this.handScrollStock);
+            },
+
+            handlePlayerHandSelectionChanged: function (handSelection, hand) {
+                console.log('handlePlayerHandSelectionChanged', handSelection, hand);
                 if (this.checkAction('chooseLibrary', true)) {
                     // Let the player select the cards
 
@@ -1168,18 +1228,18 @@ define([
                 }
                 else if (this.checkAction('chooseLibrarynew', true)) {
                     // Let the player select the cards
-                    if (selected.length >= 1) {
+                    if (handSelection.length >= 1) {
                         this.buildLibrary();
                     }
                 }
-                else if (selected.length == 1) {
-                    var card_id = selected[0].id;
+                else if (handSelection.length == 1) {
+                    var card_id = handSelection[0].id;
                     if (this.checkAction('summon', true)) {
                         // Summon a card
                         var id_string = this.getAllSelectedEnergies(false);
                         this.ajaxcall("/seasonssk/seasonssk/summon.html", { id: card_id, forceuse: id_string, lock: true }, this, function (result) {
                         });
-                        this.playerHand.unselectAll();
+                        hand.unselectAll();
                     }
                     else if (this.checkAction('chooseCardHand', true)) {
                         // Discard a card
@@ -1191,18 +1251,26 @@ define([
                         // Discard a card
                         this.ajaxcall("/seasonssk/seasonssk/chooseCardHandcrafty.html", { id: card_id, lock: true }, this, function (result) {
                         });
-                        this.playerHand.unselectAll();
+                        hand.unselectAll();
                     }
                     else if (this.checkAction('discard', true)) {
                         // Discard a card
                         this.ajaxcall("/seasonssk/seasonssk/discard.html", { id: card_id, lock: true }, this, function (result) {
                         });
-                        this.playerHand.unselectAll();
+                        hand.unselectAll();
                     }
                     else {
-                        this.playerHand.unselectAll();
+                        hand.unselectAll();
                     }
                 }
+            },
+
+            onPlayerHandSelectionChanged: function () {
+                console.log('onPlayerHandSelectionChanged');
+
+                var selected = this.playerHand.getSelectedItems();
+                this.handlePlayerHandSelectionChanged(selected, this.playerHand);
+
             },
 
             onChooseToken: function (evt) {
@@ -1318,6 +1386,94 @@ define([
                     this.buildLibraryUnselect();
                     return;
                 }
+
+                /**************new way */
+                // Depending on selection on buildLibrary & player hand, switch cards and build libraries
+
+                var bError = false;
+                var allselected = [];
+
+                // Get selected cards. We must have a total of 2 selected cards
+                for (var l = 1; l <= 3; l++) {
+                    var selected = this.libraryBuild[l].getSelectedItems();
+                    if (selected.length > 1) {
+                        bError = true;
+                    }
+                    else if (selected.length == 1) {
+                        allselected.push({ loc: l, id: selected[0].id, type: selected[0].type });
+                    }
+                }
+
+                selected = this.handScrollStock.getSelection();
+                console.log("selection", selected);
+                if (selected.length > 1) {
+                    bError = true;
+                }
+                else if (selected.length == 1) {
+                    allselected.push({ loc: 0, id: selected[0].id, type: selected[0].type });
+                }
+
+                if (bError) {
+                    // Unselected everything
+                    this.buildLibraryUnselect();
+                    return;
+                }
+
+                if (allselected.length > 2) {
+                    bError = true;
+                } else if (allselected.length == 1 && selected.length == 1) {//selection from player hand only
+                    //the card goes to the first library with empty slots
+                    var selectionFromHand = allselected[0];
+                    if (this.libraryBuild[1].getPresentTypeList().hasOwnProperty(0)) {
+                        this.libraryBuild[1].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "player_hand");
+                        this.libraryBuild[1].removeFromStock(0);//removes blank
+                        this.handScrollStock.removeCard(selectionFromHand)
+                    } else if (this.libraryBuild[2].getPresentTypeList().hasOwnProperty(0)) {
+                        this.libraryBuild[2].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "player_hand");
+                        this.libraryBuild[2].removeFromStock(0);//removes blank
+                        this.handScrollStock.removeCard(selectionFromHand)
+                    } else if (this.libraryBuild[3].getPresentTypeList().hasOwnProperty(0)) {
+                        this.libraryBuild[3].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "player_hand");
+                        this.libraryBuild[3].removeFromStock(0);//removes blank
+                        this.handScrollStock.removeCard(selectionFromHand)
+                    }
+                }
+                else if (allselected.length == 2) {
+                    // Can perform a switch between these 2 cards
+
+                    if (allselected[1].type != 0 || allselected[0].loc != 0) {
+                        if (allselected[1].loc == 0) { var from = 'player_hand_item_' + allselected[1].id; }
+                        else { var from = 'library_build_' + allselected[1].loc + '_item_' + allselected[1].id; }
+                        //todo handle from
+                        if (allselected[0].loc == 0) { this.handScrollStock.addCard(allselected[1]); }
+                        else { this.libraryBuild[allselected[0].loc].addToStockWithId(allselected[1].type, allselected[1].id, from); }
+                    }
+
+                    if (allselected[0].type != 0 || allselected[1].loc != 0) {
+                        if (allselected[0].loc == 0) { var from = 'player_hand_item_' + allselected[0].id; }
+                        else { var from = 'library_build_' + allselected[0].loc + '_item_' + allselected[0].id; }
+
+                        if (allselected[1].loc == 0) { this.handScrollStock.addCard(allselected[0]); }
+                        else { this.libraryBuild[allselected[1].loc].addToStockWithId(allselected[0].type, allselected[0].id, from); }
+                    }
+
+                    if (allselected[1].loc == 0) { this.handScrollStock.removeCard(allselected[1]) }
+                    else { this.libraryBuild[allselected[1].loc].removeFromStockById(allselected[1].id) }
+
+                    if (allselected[0].loc == 0) { this.handScrollStock.removeCard(allselected[0]) }
+                    else { this.libraryBuild[allselected[0].loc].removeFromStockById(allselected[0].id) }
+
+
+                    this.buildLibraryUnselect();
+                }
+
+
+                if (bError) {
+                    // Unselected everything
+                    this.buildLibraryUnselect();
+                    return;
+                }
+
 
             },
 

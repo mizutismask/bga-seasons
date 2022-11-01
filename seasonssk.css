@@ -1,6 +1,8 @@
 /* Testlayout stylesheet */
 
 @import url(../../../css/csslayer.css);
+/* Thoun's stock replacement */
+@import url(modules/bga-cards.css);
 
 :root {
 	--scoreColor: #2373a1;
@@ -232,7 +234,7 @@ h3 {
 
 /* don't need border since the die moves immediatly somewhere else.*/
 #seasons_dices .stockitem_selected {
-	border: none ! important;
+	border: none !important;
 }
 
 .gamestate_draftChoice #season_dices_wrap,
@@ -379,7 +381,7 @@ h3 {
 }
 
 /* no zoom on dice because they get blury */
-:not(#seasons_dices)>.stockitem:hover {
+:not(#seasons_dices) > .stockitem:hover {
 	transform: scale(1.05);
 	z-index: 150 !important;
 }
@@ -511,6 +513,43 @@ h3 {
 
 .player_score .bonusused {
 	vertical-align: text-bottom;
+}
+
+.left,
+.firstPlayer,
+.right {
+	display: inline-block;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	background-image: url(img/icons2022.png);
+}
+
+.scrollable-stock button {
+	width: 60px;
+	height: 60px;
+	background-color: transparent;
+	align-self:center;
+	background-position: center;
+	display: inline-block;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	background-image: url(img/icons2022.png);
+}
+
+.scrollable-stock .right {
+	background-position: 39.4068% -4%;
+	background-size: 1280%;
+}
+
+.scrollable-stock .left {
+	background-position: 30.5085% -4%;
+	background-size: 1280%;
+}
+.firstPlayer {
+	width: 70px;
+	height: 71px;
+	background-position: 0.537634% 0.540541%;
+	background-size: 365.714%;
 }
 
 .playerOrderHelp {
@@ -670,6 +709,7 @@ h3 {
 }
 
 #player_hand .stockitem,
+.card .card-sides .card-side,
 #library_2 .stockitem,
 #library_3 .stockitem,
 .tableau .stockitem {
@@ -802,6 +842,11 @@ a.choose_player {
 	margin-right: 10px;
 }
 
+/* Cards */
+.card-stock .card.selected {
+  border: rgb(199, 25, 199) 2px solid;
+}
+
 /* Die animation */
 .die {
 	display: inline-block;
@@ -878,7 +923,7 @@ a.choose_player {
 	box-sizing: border-box;
 
 	background-image: url("img/dices.png");
-	width: 56px;/*54+2 for borders*/
+	width: 56px; /*54+2 for borders*/
 	height: 56px;
 }
 

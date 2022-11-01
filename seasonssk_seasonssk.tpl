@@ -119,6 +119,14 @@
         </div>
     </div>
 
+     <div id="myscrollablehand" class="seasons_rightpanel">
+        <h3>{LB_MY_HAND}</h3>
+        <div id="my-scrollable-hand">
+        </div>
+    </div>
+
+    
+
     <br class="clear"/>
 
 
