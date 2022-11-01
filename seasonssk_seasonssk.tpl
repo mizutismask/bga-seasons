@@ -119,16 +119,7 @@
         </div>
     </div>
 
-     <div id="myscrollablehand" class="seasons_rightpanel">
-        <h3>{LB_MY_HAND}</h3>
-        <div id="my-scrollable-hand">
-        </div>
-    </div>
-
-    
-
     <br class="clear"/>
-
 
     <div class="whiteblock tableau" id="currentPlayerTablea">
         <div id="leftPlayerBoard_{CURRENT_PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{CURRENT_PLAYER_COLOR}">

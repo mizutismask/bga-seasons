@@ -30,6 +30,20 @@ h3 {
 .season_1 h3 {
 	color: var(--scoreColor);
 }
+#myhand h3 {
+	color: white;
+}
+
+/* player_hand scrollbar */
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollable-stock-inner::-webkit-scrollbar {
+	display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollable-stock-inner {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
 
 /* main board */
 
@@ -432,6 +446,12 @@ h3 {
 	background-color: rgb(12 12 12 / 43%);
 	text-align: center;
 	border-radius: 10px;
+	padding: 10px 0px 10px 0px;
+	justify-content: space-between;
+}
+#player_hand,
+#myhand h3 {
+	box-shadow: inset 1px 1px 4px 2px #303838;
 }
 #myhand h3 {
 	background-color: rgb(12 12 12 / 43%);
@@ -528,7 +548,7 @@ h3 {
 	width: 60px;
 	height: 60px;
 	background-color: transparent;
-	align-self:center;
+	align-self: center;
 	background-position: center;
 	display: inline-block;
 	overflow: hidden;
@@ -844,7 +864,7 @@ a.choose_player {
 
 /* Cards */
 .card-stock .card.selected {
-  border: rgb(199, 25, 199) 2px solid;
+	border: rgb(199, 25, 199) 2px solid;
 }
 
 /* Die animation */
