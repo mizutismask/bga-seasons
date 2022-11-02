@@ -51,6 +51,8 @@ define([
                 this.log = this.isDebug ? console.log.bind(window.console) : function () { };
                 //this.animationDuration = 500;
                 this.scoreAnimationDuration = 1500;
+
+                dojo.connect(window, "onresize", this, dojo.hitch(this, "updateScrollButtonsVisibility"));
             },
 
             setup: function (gamedatas) {
@@ -442,7 +444,7 @@ define([
                 this.playerHand.removeCard(card);
                 this.updateScrollButtonsVisibility();
             },
-            
+
             /*
             * Play a given sound that should be first added in the tpl file
             */
@@ -1381,7 +1383,6 @@ define([
             updateScrollButtonsVisibility: function () {
                 var hand = this.queryFirst("#player_hand .scrollable-stock-inner");
                 if (hand.scrollWidth <= hand.clientWidth) {
-                    console.log("hide", dojo.query("#player_hand button").length);
                     dojo.query("#player_hand button").style("display", "none");
                 } else {
                     dojo.query("#player_hand button").style("display", "inline-block");

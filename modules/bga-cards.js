@@ -295,11 +295,9 @@ var CardStock = /** @class */ (function () {
         var element = this.getCardElement(card);
         element.classList.remove('selected');
         var index = this.selectedCards.findIndex(function (c) { return _this.manager.getId(c) == _this.manager.getId(card); });
-        console.log("index", index, _this.manager.getId(card), this.selectedCards);
         if (index !== -1) {
             this.selectedCards.splice(index, 1);
         }
-        console.log("selectedCards", this.selectedCards);
         if (!silent) {
             (_a = this.onSelectionChange) === null || _a === void 0 ? void 0 : _a.call(this, this.selectedCards.slice(), card);
         }

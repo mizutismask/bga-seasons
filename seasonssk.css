@@ -535,37 +535,27 @@ h3 {
 	vertical-align: text-bottom;
 }
 
-.left,
-.firstPlayer,
-.right {
-	display: inline-block;
-	overflow: hidden;
-	background-repeat: no-repeat;
-	background-image: url(img/icons2022.png);
-}
-
 .scrollable-stock button {
-	width: 60px;
-	height: 60px;
+	width: 36px;
+	height: 23px;
 	background-color: transparent;
 	align-self: center;
 	background-position: center;
 	display: inline-block;
 	overflow: hidden;
 	background-repeat: no-repeat;
-	background-image: url(img/icons2022.png);
+	cursor: pointer;
 }
 
 .scrollable-stock .right {
-	background-position: 39.4068% -4%;
-	background-size: 1280%;
+	background-image: url(img/forward.png);
 }
 
 .scrollable-stock .left {
-	background-position: 30.5085% -4%;
-	background-size: 1280%;
+	background-image: url(img/backward.png);
 }
 .firstPlayer {
+	background-image: url(img/icons2022.png);
 	width: 70px;
 	height: 71px;
 	background-position: 0.537634% 0.540541%;
@@ -805,7 +795,7 @@ a.choose_player {
 }
 
 .library_build_wrap {
-	width: 600px;
+	width: 400px;
 }
 
 #score {
