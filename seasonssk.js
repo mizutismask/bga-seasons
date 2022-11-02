@@ -195,6 +195,8 @@ define([
                                 dojo.query("#tokens_" + player_id + " .stockitem").connect('click', this, 'onPlayToken');
                             }
                         }
+                    } else {
+                        $(abilityTokens).style.display = "none";
                     }
                 }
                 this.updateCounters(gamedatas.counters);
@@ -327,7 +329,7 @@ define([
                 this.playerHand.onSelectionChange = (selection, lastChange) => this.onPlayerHandSelectionChanged(selection, lastChange);
                 for (var i in this.gamedatas.hand) {
                     var card = this.gamedatas.hand[i];
-                    this.playerHand.addCard(card);
+                    this.addCardToPlayerHand(card);
                 }
 
                 // Init card choice
@@ -431,6 +433,16 @@ define([
             ///////////////////////////////////////////////////
             //// Utilities
 
+            addCardToPlayerHand(card) {
+                this.playerHand.addCard(card);
+                this.updateScrollButtonsVisibility();
+            },
+
+            removeCardFromPlayerHand(card) {
+                this.playerHand.removeCard(card);
+                this.updateScrollButtonsVisibility();
+            },
+            
             /*
             * Play a given sound that should be first added in the tpl file
             */
@@ -1305,17 +1317,17 @@ define([
                     //the card goes to the first library with empty slots
                     var selectionFromHand = allselected[0];
                     if (this.libraryBuild[1].getPresentTypeList().hasOwnProperty(0)) {
-                        this.libraryBuild[1].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "player_hand");
+                        this.libraryBuild[1].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "card-" + selectionFromHand.id);
                         this.libraryBuild[1].removeFromStock(0);//removes blank
-                        this.playerHand.removeCard(selectionFromHand)
+                        this.removeCardFromPlayerHand(selectionFromHand)
                     } else if (this.libraryBuild[2].getPresentTypeList().hasOwnProperty(0)) {
-                        this.libraryBuild[2].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "player_hand");
+                        this.libraryBuild[2].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "card-" + selectionFromHand.id);
                         this.libraryBuild[2].removeFromStock(0);//removes blank
-                        this.playerHand.removeCard(selectionFromHand)
+                        this.removeCardFromPlayerHand(selectionFromHand)
                     } else if (this.libraryBuild[3].getPresentTypeList().hasOwnProperty(0)) {
-                        this.libraryBuild[3].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "player_hand");
+                        this.libraryBuild[3].addToStockWithId(selectionFromHand.type, selectionFromHand.id, "card-" + selectionFromHand.id);
                         this.libraryBuild[3].removeFromStock(0);//removes blank
-                        this.playerHand.removeCard(selectionFromHand)
+                        this.removeCardFromPlayerHand(selectionFromHand)
                     }
                 }
                 else if (allselected.length == 2) {
@@ -1325,7 +1337,7 @@ define([
                         if (allselected[1].loc == 0) { var from = 'card-' + allselected[1].id; }
                         else { var from = 'library_build_' + allselected[1].loc + '_item_' + allselected[1].id; }
                         //todo handle from
-                        if (allselected[0].loc == 0) { this.playerHand.addCard(allselected[1]); }
+                        if (allselected[0].loc == 0) { this.addCardToPlayerHand(allselected[1]); }
                         else { this.libraryBuild[allselected[0].loc].addToStockWithId(allselected[1].type, allselected[1].id, from); }
                     }
 
@@ -1333,14 +1345,14 @@ define([
                         if (allselected[0].loc == 0) { var from = 'card-' + allselected[0].id; }
                         else { var from = 'library_build_' + allselected[0].loc + '_item_' + allselected[0].id; }
 
-                        if (allselected[1].loc == 0) { this.playerHand.addCard(allselected[0]); }
+                        if (allselected[1].loc == 0) { this.addCardToPlayerHand(allselected[0]); }
                         else { this.libraryBuild[allselected[1].loc].addToStockWithId(allselected[0].type, allselected[0].id, from); }
                     }
 
-                    if (allselected[1].loc == 0) { this.playerHand.removeCard(allselected[1]) }
+                    if (allselected[1].loc == 0) { this.removeCardFromPlayerHand(allselected[1]) }
                     else { this.libraryBuild[allselected[1].loc].removeFromStockById(allselected[1].id) }
 
-                    if (allselected[0].loc == 0) { this.playerHand.removeCard(allselected[0]) }
+                    if (allselected[0].loc == 0) { this.removeCardFromPlayerHand(allselected[0]) }
                     else { this.libraryBuild[allselected[0].loc].removeFromStockById(allselected[0].id) }
 
 
@@ -1354,7 +1366,9 @@ define([
                     return;
                 }
 
-
+                if (this.playerHand.isEmpty()) {
+                    $(myhand).style.display = "none";
+                }
             },
 
             buildLibraryUnselect: function () {
@@ -1362,6 +1376,16 @@ define([
                     this.libraryBuild[l].unselectAll();
                 }
                 this.playerHand.unselectAll();
+            },
+
+            updateScrollButtonsVisibility: function () {
+                var hand = this.queryFirst("#player_hand .scrollable-stock-inner");
+                if (hand.scrollWidth <= hand.clientWidth) {
+                    console.log("hide", dojo.query("#player_hand button").length);
+                    dojo.query("#player_hand button").style("display", "none");
+                } else {
+                    dojo.query("#player_hand button").style("display", "inline-block");
+                }
             },
 
             onBuildLibrary: function () {
@@ -2206,7 +2230,7 @@ define([
                     for (var i in notif.args.cards) {
                         var card = notif.args.cards[i];
                         this.library[notif.args.year].addToStockWithId(card.type, card.id, $('card-' + card.id));
-                        this.playerHand.removeCard(card);
+                        this.removeCardFromPlayerHand(card);
                     }
                 }
             },
@@ -2222,7 +2246,7 @@ define([
                                 bFirstCard = false;
                             }
 
-                            this.playerHand.addCard(card);
+                            this.addCardToPlayerHand(card);
                         }
                         else {
                             this.library[notif.args.year].addToStockWithId(card.type, card.id);
@@ -2278,7 +2302,7 @@ define([
                     }
                 }
                 //todo handle from
-                this.playerHand.addCard(notif.args.card);
+                this.addCardToPlayerHand(notif.args.card);
 
                 if (typeof from != 'undefined') {
                     // Remove from choice
@@ -2293,7 +2317,7 @@ define([
                 for (var i in notif.args.cards) {
                     var card = notif.args.cards[i];
                     //todo from
-                    this.playerHand.addCard(card);
+                    this.addCardToPlayerHand(card);
                 }
             },
             notif_winPoints: function (notif) {
@@ -2335,7 +2359,7 @@ define([
                 }
                 else if (notif.args.player_id == this.player_id) {
                     this.playerTableau[notif.args.player_id].addToStockWithId(this.ot(notif.args.card.type), notif.args.card.id, 'card-' + notif.args.card.id);
-                    this.playerHand.removeCard(notif.args.card);
+                    this.removeCardFromPlayerHand(notif.args.card);
                 }
                 else {
                     this.playerTableau[notif.args.player_id].addToStockWithId(this.ot(notif.args.card.type), notif.args.card.id, 'overall_player_board_' + notif.args.player_id);
@@ -2365,7 +2389,7 @@ define([
             },
             notif_discard: function (notif) {
                 if (notif.args.player_id == this.player_id) {
-                    this.playerHand.removeCard({ id: notif.args.card_id });
+                    this.removeCardFromPlayerHand({ id: notif.args.card_id });
                 }
             },
             notif_placeEnergyOnCard: function (notif) {
