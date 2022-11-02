@@ -885,14 +885,14 @@ class SeasonsSK extends Table {
     function getStandardArgs($withCardInfo = true) {
         if ($withCardInfo) {
             $currentEffect = self::getGameStateValue('currentEffect');
-           // self::dump('*******************currentEffect', $currentEffect);
+            // self::dump('*******************currentEffect', $currentEffect);
             $card_type_id = self::ot(self::getUniqueValueFromDB("SELECT card_type
                                           FROM effect
                                           INNER JOIN card ON card_id=effect_card
                                           WHERE effect_id='$currentEffect'"));
-          //  self::dump('*******************card_type_id', $card_type_id);
+            //  self::dump('*******************card_type_id', $card_type_id);
             $card_type = $this->card_types[$card_type_id];
-           // self::dump('*******************card_type', $card_type);
+            // self::dump('*******************card_type', $card_type);
         }
         /*if(self::getGameStateValue('currentTokenEffect')){
             $withCardInfo=false;
@@ -2673,6 +2673,14 @@ class SeasonsSK extends Table {
                 }
                 $this->decreaseSummoningGauge($player_id, clienttranslate('Ability token'));
                 break;
+            case 6:
+                self::setGameStateValue('transmutationPossible', 2);  // Note: 2 = "with bonus +1"
+                self::notifyAllPlayers('transmutationPossible', clienttranslate('Ability token: ${player_name} can transmute this turn with one additional crystal'), array(
+                    'player_id' => $player_id,
+                    'player_name' => self::getActivePlayerName(),
+                    'transmutationPossible' => 2
+                ));
+                break;
             case 7:
                 //+12 crystals
                 $points = self::checkMinion(12, $player_id);
@@ -2701,7 +2709,7 @@ class SeasonsSK extends Table {
             case 10:
                 //+2 or -2 season move
                 $immediateUse = false;
-                $this->gamestate->nextState('tokenEffect'); //need to choose a card
+                $this->gamestate->nextState('tokenEffect'); //need to choose a move
                 break;
             case 13:
                 //put the first card of the discard in your hand
@@ -3920,7 +3928,7 @@ class SeasonsSK extends Table {
     function stEndTokenEffect() {
         //$tokenType = str_pad(self::getGameStateValue('currentTokenEffect'), 2, '0', STR_PAD_LEFT);
         $tokenType = self::getGameStateValue('currentTokenEffect');
-        $tokens= $this->tokensDeck->getCardsOfType($tokenType);
+        $tokens = $this->tokensDeck->getCardsOfType($tokenType);
         $token = array_pop($tokens);
         $this->useToken($token["id"], $token["location_arg"]);
         self::setGameStateValue('currentTokenEffect', 0);

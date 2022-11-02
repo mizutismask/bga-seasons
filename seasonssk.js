@@ -436,6 +436,17 @@ define([
 
             ///////////////////////////////////////////////////
             //// Utilities
+            addTransmutationButton(args) {
+                // Transmutation possible ?
+                if (toint(args.transmutationPossible) > 0) {
+                    var msg = _('Transmute energies');
+                    var bonus = toint(args.transmutationPossible) - 1;
+                    if (bonus > 0) {
+                        msg += ' (+' + bonus + ')';
+                    }
+                    this.addActionButton('transmute', msg, 'onTransmute');
+                }
+            },
 
             addCardToPlayerHand(card) {
                 this.playerHand.addCard(card);
@@ -1852,15 +1863,7 @@ define([
                             this.addActionButton('amuletOfTime', _('Discard selected cards'), 'onAmuletOfTime');
                             break;
                         case 'playerTurn':
-                            // Transmutation possible ?
-                            if (toint(args.transmutationPossible) > 0) {
-                                var msg = _('Transmute energies');
-                                var bonus = toint(args.transmutationPossible) - 1;
-                                if (bonus > 0) {
-                                    msg += ' (+' + bonus + ')';
-                                }
-                                this.addActionButton('transmute', msg, 'onTransmute');
-                            }
+                            this.addTransmutationButton(args);
                             //highlight cards that can be played
                             if (args.possibleCards) {
                                 args.possibleCards.forEach(c => dojo.query("#card-" + c).addClass("possibleCard"));
@@ -2197,6 +2200,7 @@ define([
                 dojo.subscribe('updateScores', this, "notif_updateScores");
                 dojo.subscribe('potionOfLifeWarning', this, "notif_potionOfLifeWarning");
                 dojo.subscribe('tokenUsed', this, "notif_tokenUsed");
+                dojo.subscribe('transmutationPossible', this, "notif_transmutationPossible");
 
                 var _this = this;
                 var notifs = [
@@ -2480,6 +2484,12 @@ define([
                 console.log('notif_tokenUsed');
                 console.log(notif);
                 //todo
+            },
+
+            notif_transmutationPossible: function (notif) {
+                if (notif.args.player_id == this.player_id) {
+                    this.addTransmutationButton(notif.args);
+                }
             },
 
             notif_bonusUsed: function (notif) {
