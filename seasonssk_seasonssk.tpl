@@ -121,7 +121,6 @@
 
     <br class="clear"/>
 
-
     <div class="whiteblock tableau" id="currentPlayerTablea">
         <div id="leftPlayerBoard_{CURRENT_PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{CURRENT_PLAYER_COLOR}">
             <div id="cristals_counter_{CURRENT_PLAYER_ID}" class="sicon icon_cristal counter"></div>

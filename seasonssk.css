@@ -1,6 +1,8 @@
 /* Testlayout stylesheet */
 
 @import url(../../../css/csslayer.css);
+/* Thoun's stock replacement */
+@import url(modules/bga-cards.css);
 
 :root {
 	--scoreColor: #2373a1;
@@ -27,6 +29,20 @@ h3 {
 
 .season_1 h3 {
 	color: var(--scoreColor);
+}
+#myhand h3 {
+	color: white;
+}
+
+/* player_hand scrollbar */
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollable-stock-inner::-webkit-scrollbar {
+	display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollable-stock-inner {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
 }
 
 /* main board */
@@ -232,7 +248,7 @@ h3 {
 
 /* don't need border since the die moves immediatly somewhere else.*/
 #seasons_dices .stockitem_selected {
-	border: none ! important;
+	border: none !important;
 }
 
 .gamestate_draftChoice #season_dices_wrap,
@@ -379,7 +395,7 @@ h3 {
 }
 
 /* no zoom on dice because they get blury */
-:not(#seasons_dices)>.stockitem:hover {
+:not(#seasons_dices) > .stockitem:hover {
 	transform: scale(1.05);
 	z-index: 150 !important;
 }
@@ -430,6 +446,12 @@ h3 {
 	background-color: rgb(12 12 12 / 43%);
 	text-align: center;
 	border-radius: 10px;
+	padding: 10px 5px 10px 5px;
+	justify-content: space-between;
+}
+#player_hand,
+#myhand h3 {
+	box-shadow: inset 1px 1px 4px 2px #303838;
 }
 #myhand h3 {
 	background-color: rgb(12 12 12 / 43%);
@@ -511,6 +533,33 @@ h3 {
 
 .player_score .bonusused {
 	vertical-align: text-bottom;
+}
+
+.scrollable-stock button {
+	width: 36px;
+	height: 23px;
+	background-color: transparent;
+	align-self: center;
+	background-position: center;
+	display: inline-block;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+.scrollable-stock .right {
+	background-image: url(img/forward.png);
+}
+
+.scrollable-stock .left {
+	background-image: url(img/backward.png);
+}
+.firstPlayer {
+	background-image: url(img/icons2022.png);
+	width: 70px;
+	height: 71px;
+	background-position: 0.537634% 0.540541%;
+	background-size: 365.714%;
 }
 
 .playerOrderHelp {
@@ -670,6 +719,7 @@ h3 {
 }
 
 #player_hand .stockitem,
+.card .card-sides .card-side,
 #library_2 .stockitem,
 #library_3 .stockitem,
 .tableau .stockitem {
@@ -745,7 +795,7 @@ a.choose_player {
 }
 
 .library_build_wrap {
-	width: 600px;
+	width: 400px;
 }
 
 #score {
@@ -800,6 +850,11 @@ a.choose_player {
 .token-stock {
 	display: inline-block;
 	margin-right: 10px;
+}
+
+/* Cards */
+.card-stock .card.selected {
+	border: rgb(199, 25, 199) 2px solid;
 }
 
 /* Die animation */
@@ -878,7 +933,7 @@ a.choose_player {
 	box-sizing: border-box;
 
 	background-image: url("img/dices.png");
-	width: 56px;/*54+2 for borders*/
+	width: 56px; /*54+2 for borders*/
 	height: 56px;
 }
 
