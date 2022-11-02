@@ -324,7 +324,7 @@ define([
                     },
                 });
                 var settings = {
-                    "width": "300px", "height": "300px", "shift": "2px", "scrollbarVisible": false, "scrollStep": 130, "buttonGap": "5px", "leftButton": { "classes": "scroll-button" }, "rightButton": { "classes": "scroll-button" }
+                    "width": "300px", "height": "300px", "shift": "2px", "center": false, "scrollbarVisible": false, "scrollStep": 130, "buttonGap": "5px", "leftButton": { "classes": "scroll-button" }, "rightButton": { "classes": "scroll-button" }
                 }
                 this.playerHand = new ScrollableStock(this.handManager, document.getElementById(`player_hand`), settings);
                 this.playerHand.setSelectionMode("single");
