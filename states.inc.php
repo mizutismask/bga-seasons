@@ -171,7 +171,16 @@ $machinestates = array(
         "type" => "activeplayer",
         "action" => "stMaliceDie",
         "possibleactions" => array("reroll"),
-        "transitions" => array("startTurn" => 227, "cardEffect" => 50)
+        "transitions" => array("startTurn" => 217, "cardEffect" => 50)
+    ),
+    217 => array(
+        "name" => "token17Effect",
+        "description" => clienttranslate('${actplayer} can use his ability token to reroll'),
+        "descriptionmyturn" => clienttranslate('${you} can use your ability token to reroll your die'),
+        "type" => "activeplayer",
+        "action" => "stToken17Effect",
+        "possibleactions" => array("reroll", "playToken"),//reroll implies playing token automatically
+        "transitions" => array("steadfastDie" => 227)
     ),
     227 => array(
         "name" => "steadfastDie",
@@ -182,6 +191,7 @@ $machinestates = array(
         "possibleactions" => array("steadFast"),
         "transitions" => array("startTurn" => 28, "cardEffect" => 50)
     ),
+  
     28 => array(
         "name" => "startPlayerTurn",
         "description" => '',
@@ -1069,7 +1079,7 @@ $machinestates = array(
         "descriptionmyturn" => '',
         "type" => "game",
         "action" => "stTokenEffect",
-        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60, "token10Effect" => 210)
+        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60, "token10Effect" => 210, "token17Effect" => 217)
     ),
     210 => array(
         "name" => "token10Effect",

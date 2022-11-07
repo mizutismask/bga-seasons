@@ -2716,7 +2716,7 @@ class SeasonsSK extends Table {
                 $card = $this->cards->getCardOnTop("discard");
                 if ($card) {
                     $this->notifyAbilityTokenInUse();
-                    $this->cards->moveCard($card_id, 'hand', $player_id);
+                    $this->cards->moveCard($card["id"], 'hand', $player_id);
                     self::notifyUpdateCardCount(); //todo does not update card count
                     self::notifyAllPlayers('msg', clienttranslate('${player_name} takes the top card from the discard'), array(
                         'player_name' => self::getCurrentPlayerName()
@@ -2735,6 +2735,18 @@ class SeasonsSK extends Table {
                 } else {
                     throw new BgaUserException("You can not use this token now since you've never used a bonus action");
                 }
+                break;
+            case 17:
+                //reroll
+                /* 
+                    this token is not played like the others, we systematically enter first into state token17Effect,
+                    then leave if it's not relevant because there is no token to play or stay there to make the reroll decision.
+                    When the reroll decision is true, the token is automatically played and its effect is done here. 
+                    There is no token effect state for this token, so we simulate it calling stTokenEffect() and stEndTokenEffect()
+                */
+                $this->stTokenEffect();
+                $this->rerollDiceOfCurrentPlayer($this->getStandardArgs(false), clienttranslate('Ability token: ${player_name} reroll his dice'),);
+                $this->stEndTokenEffect("steadfastDie");
                 break;
             case 15:
                 //discard 5 fire energy to draw a card
@@ -3272,8 +3284,18 @@ class SeasonsSK extends Table {
                 // For coherence, we must "active" the Die Of Malice as if it was any activation
                 self::active($card_id, true);
             }
-        } else
-            throw new feException("Can't found die of malice");
+        } else {
+            if ($bReroll) {
+                $tokens = $this->tokensDeck->getCardsOfType("17");
+                $token = array_pop($tokens);
+                if ($token && $this->checkTokenBelongsToPlayer($token["id"], $player_id)) {
+                    $this->playToken(null); //automatically plays the token
+                } else
+                    throw new feException("Can't find either die of malice nor ability token 17");
+            } else {
+                $this->gamestate->nextState('steadfastDie');
+            }
+        }
     }
 
     function steadfast($action_id) {
@@ -3772,6 +3794,17 @@ class SeasonsSK extends Table {
             $this->gamestate->nextState('startTurn');
     }
 
+    function stToken17Effect() {
+        $player_id = self::getActivePlayerId();
+        $tokens = $this->tokensDeck->getCardsOfType("17");
+        $token = array_pop($tokens);
+      if ($token && $token['location'] == 'hand' && $token['location_arg'] == $player_id) {
+  //stay here to choose if the player reroll or not
+        } else {
+            $this->gamestate->nextState('steadfastDie');
+        }
+    }
+
     function stSteadfastDie() {
 
         $player_id = self::getActivePlayerId();
@@ -3779,9 +3812,9 @@ class SeasonsSK extends Table {
         self::setGameStateValue('steadfast_die_mode', 0);
 
         // Looking for steadfast die
-        $maliceDice = self::getAllCardsOfTypeInTableau(array(114), $player_id, true);
-        if (isset($maliceDice[114])) {
-            // Player has some malice Die => stay at this state to make a choice
+        $cards = self::getAllCardsOfTypeInTableau(array(114), $player_id, true);
+        if (isset($cards[114])) {
+            // Player has some steadfast Die => stay at this state to make a choice
         } else
             $this->gamestate->nextState('startTurn');
     }
@@ -3899,6 +3932,7 @@ class SeasonsSK extends Table {
     function stTokenEffect() {
         $player_id = self::getActivePlayerId();
         $tokens = $this->tokensDeck->getCardsInLocation('hand', $player_id);
+        self::dump('*******************tokens', count($tokens));
         if (count($tokens) == 1) {
             $token = array_pop($tokens);
             $this->notifyAbilityTokenInUse();
@@ -3911,6 +3945,9 @@ class SeasonsSK extends Table {
                     break;
                 case 10:
                     $this->gamestate->nextState('token10Effect');
+                    break;
+                case 17:
+                    //we don't want to change state
                     break;
                 case 18:
                     $this->gamestate->nextState('token18Effect');
@@ -3925,14 +3962,14 @@ class SeasonsSK extends Table {
         }
     }
 
-    function stEndTokenEffect() {
+    function stEndTokenEffect($nextState = 'continuePlayerTurn') {
         //$tokenType = str_pad(self::getGameStateValue('currentTokenEffect'), 2, '0', STR_PAD_LEFT);
         $tokenType = self::getGameStateValue('currentTokenEffect');
         $tokens = $this->tokensDeck->getCardsOfType($tokenType);
         $token = array_pop($tokens);
         $this->useToken($token["id"], $token["location_arg"]);
         self::setGameStateValue('currentTokenEffect', 0);
-        $this->gamestate->nextState('continuePlayerTurn');
+        $this->gamestate->nextState($nextState);
     }
 
     /**
@@ -5814,7 +5851,7 @@ class SeasonsSK extends Table {
         self::DbQuery("UPDATE card SET card_type_arg='1' WHERE card_id='$card_id' ");
     }
 
-    function die_of_malice_active($card_id, $card_name, $notifArgs) {
+    function rerollDiceOfCurrentPlayer($notifArgs, $msg) {
         // Reroll season dice of current player
         $season = self::getCurrentDiceSeason();
         $player_id = self::getActivePlayerId();
@@ -5827,9 +5864,14 @@ class SeasonsSK extends Table {
         $dice = self::getObjectFromDB("SELECT dice_id id, dice_season season, dice_face face FROM dice WHERE dice_season='$season' AND dice_player_id='$player_id' ");
 
         $notifArgs['dice'] = $dice;
+        self::notifyAllPlayers("rerollDice", $msg, $notifArgs);
+    }
+
+    function die_of_malice_active($card_id, $card_name, $notifArgs) {
+        $player_id = self::getActivePlayerId();
         $points = self::checkMinion(2, $player_id);
         $notifArgs['points'] = $points;
-        self::notifyAllPlayers("rerollDice", clienttranslate('${card_name}: ${player_name} reroll his dice and gets ${points} crystals'), $notifArgs);
+        $this->rerollDiceOfCurrentPlayer($notifArgs, clienttranslate('${card_name}: ${player_name} reroll his dice and gets ${points} crystals'),);
 
         // +2 crystals
         self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ");

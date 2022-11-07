@@ -1962,6 +1962,7 @@ define([
                             break;
 
                         case 'maliceDie':
+                        case 'token17Effect':
                             this.addActionButton('reroll', _('Reroll die'), 'onReroll');
                             this.addActionButton('dontreroll', _('Do not reroll'), 'onReroll');
                             break;
