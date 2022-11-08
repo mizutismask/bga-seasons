@@ -451,7 +451,7 @@ h3 {
 }
 #player_hand,
 #myhand h3 {
-	box-shadow: inset 1px 1px 4px 2px #303838;
+	box-shadow: inset 1px 1px 4px -2px #303838;
 }
 #myhand h3 {
 	background-color: rgb(12 12 12 / 43%);
