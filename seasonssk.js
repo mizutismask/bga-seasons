@@ -59,6 +59,7 @@ define([
 
                 this.setupSeasonHighlighter();
                 this.leftPlayerBoardsCristalCounters = [];
+                this.opponentsStocks = [];
 
                 console.log("gamedatas", gamedatas);
                 if (Number(gamedatas.gamestate.id) == 98 || Number(gamedatas.gamestate.id) == 99 || Number(gamedatas.gamestate.id) == 100) { // score or end
@@ -325,10 +326,10 @@ define([
                         //no back in seasons
                     },
                 });
-                var settings = {
+                var handSettings = {
                     "width": "300px", "height": "300px", "shift": "2px", "center": false, "scrollbarVisible": false, "scrollStep": 130, "buttonGap": "5px", "leftButton": { "classes": "scroll-button" }, "rightButton": { "classes": "scroll-button" }
                 }
-                this.playerHand = new ScrollableStock(this.handManager, document.getElementById(`player_hand`), settings);
+                this.playerHand = new ScrollableStock(this.handManager, document.getElementById(`player_hand`), handSettings);
                 this.playerHand.setSelectionMode("single");
                 this.playerHand.onSelectionChange = (selection, lastChange) => this.onPlayerHandSelectionChanged(selection, lastChange);
                 for (var i in this.gamedatas.hand) {
@@ -436,6 +437,11 @@ define([
 
             ///////////////////////////////////////////////////
             //// Utilities
+
+            getPlayerName(playerId) {
+                return this.gamedatas.players[playerId].name;
+            },
+
             addTransmutationButton(args) {
                 // Transmutation possible ?
                 if (toint(args.transmutationPossible) > 0) {
@@ -939,6 +945,27 @@ define([
                 }
             },
 
+            createOpponentsHandsStocks: function (opponentsCards) {
+                for (var playerId in opponentsCards) {
+                    dojo.place(this.format_block('jstpl_opponent_hand', {
+                        playerId: playerId,
+                        playerName: this.getPlayerName(playerId),
+                    }), "myhand", "after");
+
+                    var hand = new ebg.stock();
+                    this.opponentsStocks.push(hand);
+                    hand.create(this, $('opponent_hand_' + playerId), 124, 173);
+                    hand.image_items_per_row = 10;
+                    hand.onItemCreate = dojo.hitch(this, 'setupNewCard');
+                    hand.extraClasses = 'thickness';
+                    hand.setSelectionMode(0);
+                    for (var card_id in this.gamedatas.card_types) {
+                        hand.addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
+                    }
+                    opponentsCards[playerId].forEach(card => hand.addToStockWithId(card.type, card.id));
+                }
+            },
+
             addEnergyToPlayerStock: function (player_id, energy_id) {
                 this.energies[player_id].addToStock(energy_id);
             },
@@ -1292,6 +1319,11 @@ define([
                 this.ajaxcall("/seasonssk/seasonssk/playToken.html", { lock: true, "optCardId": optCardId }, this, function (result) {
                 });
 
+            },
+
+            onEndSeeOpponentsHands: function (evt) {
+                this.checkAction('endSeeOpponentsHands');
+                this.takeAction("endSeeOpponentsHands");
             },
 
             onLibraryBuildchange: function (library) {
@@ -1723,7 +1755,9 @@ define([
                         dojo.query('#monthplace_' + ((this.currentMonth + (this.currentMonth < 3 ? 12 : 0) - 2))).style('cursor', 'pointer');
                         dojo.query('#monthplace_' + ((this.currentMonth + 2) % 12)).style('cursor', 'pointer');
                         break;
-
+                    case 'token11Effect':
+                        this.createOpponentsHandsStocks(args.args._private.opponentsCards);
+                        break;
                     case 'lewisChoice':
                         if (this.isCurrentPlayerActive()) {
                             dojo.query('.choose_opponent').style('display', 'block');
@@ -1834,6 +1868,10 @@ define([
                     case 'chooseToken':
                         //this.tokensStock[this.player_id].setSelectionMode(0);
                         break;
+                    case 'token11Effect':
+                        dojo.query('.opponent-hand').forEach(elm => dojo.destroy(elm));
+                        this.opponentsStocks = undefined;
+                        break;
                 }
             },
 
@@ -1842,6 +1880,9 @@ define([
 
                 if (this.isCurrentPlayerActive()) {
                     switch (stateName) {
+                        case 'token11Effect':
+                            this.addActionButton('endSeeOpponentsHands', _('Finished'), 'onEndSeeOpponentsHands');
+                            break;
                         case 'token18Effect':
                             this.addActionButton('playToken', _('Choose selected card'), 'onPlayToken');
                             break;

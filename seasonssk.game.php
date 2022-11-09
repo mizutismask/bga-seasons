@@ -2711,6 +2711,11 @@ class SeasonsSK extends Table {
                 $immediateUse = false;
                 $this->gamestate->nextState('tokenEffect'); //need to choose a move
                 break;
+            case 11:
+                //see opponents cards
+                $immediateUse = false;
+                $this->gamestate->nextState('tokenEffect'); //need to look
+                break;
             case 13:
                 //put the first card of the discard in your hand
                 $card = $this->cards->getCardOnTop("discard");
@@ -3266,6 +3271,10 @@ class SeasonsSK extends Table {
         $this->$method_name($player_id);
     }
 
+    function endSeeOpponentsHands() {
+        $this->gamestate->nextState('endTokenEffect');
+    }
+
     // Note: die of malice management
     function reroll($bReroll) {
         self::checkAction('reroll');
@@ -3350,6 +3359,26 @@ class SeasonsSK extends Table {
             '_private' => [
                 $player_id => [
                     'cards' => $cards,
+                ]
+            ],
+        ];
+    }
+
+    function argToken11Effect() {
+        $player_id = self::getCurrentPlayerId();
+        $cards = $this->cards->getCardsInLocation("hand", null, "location_arg");
+        $cardsByPlayer = [];
+        foreach ($cards as $card) {
+            if (!isset($cardsByPlayer[$card["location_arg"]])) {
+                $cardsByPlayer[$card["location_arg"]] = [];
+            }
+            $cardsByPlayer[$card["location_arg"]][] = $card;
+        }
+        unset($cardsByPlayer[$player_id]);
+        return [
+            '_private' => [
+                $player_id => [
+                    'opponentsCards' => $cardsByPlayer,
                 ]
             ],
         ];
@@ -3798,8 +3827,8 @@ class SeasonsSK extends Table {
         $player_id = self::getActivePlayerId();
         $tokens = $this->tokensDeck->getCardsOfType("17");
         $token = array_pop($tokens);
-      if ($token && $token['location'] == 'hand' && $token['location_arg'] == $player_id) {
-  //stay here to choose if the player reroll or not
+        if ($token && $token['location'] == 'hand' && $token['location_arg'] == $player_id) {
+            //stay here to choose if the player reroll or not
         } else {
             $this->gamestate->nextState('steadfastDie');
         }
@@ -3945,6 +3974,9 @@ class SeasonsSK extends Table {
                     break;
                 case 10:
                     $this->gamestate->nextState('token10Effect');
+                    break;
+                case 11:
+                    $this->gamestate->nextState('token11Effect');
                     break;
                 case 17:
                     //we don't want to change state

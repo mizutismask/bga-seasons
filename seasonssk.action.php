@@ -478,4 +478,10 @@ class action_seasonssk extends APP_GameAction {
         $this->game->playToken($optCardId);
         self::ajaxResponse();
     }
+    public function endSeeOpponentsHands() {
+        self::setAjaxMode();
+        $this->game->endSeeOpponentsHands();
+        self::ajaxResponse();
+    }
+    
 }

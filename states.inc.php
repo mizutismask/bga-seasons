@@ -1079,7 +1079,7 @@ $machinestates = array(
         "descriptionmyturn" => '',
         "type" => "game",
         "action" => "stTokenEffect",
-        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60, "token10Effect" => 210, "token17Effect" => 217)
+        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60, "token10Effect" => 210, "token17Effect" => 217, "token11Effect" => 211)
     ),
     210 => array(
         "name" => "token10Effect",
@@ -1088,6 +1088,15 @@ $machinestates = array(
         "type" => "activeplayer",
         "possibleactions" => array("moveSeason"),
         "transitions" => array("moveSeason" => 51, )//"continuePlayerTurn" => 30
+    ),
+    211 => array(
+        "name" => "token11Effect", //seeOpponentsHands
+        "description" => clienttranslate('Ability token: ${actplayer} is looking at the other players hands'),
+        "descriptionmyturn" => clienttranslate('${you} are looking at the other players hands'),
+        "type" => "activeplayer",
+        "args" => "argToken11Effect",
+        "possibleactions" => array("endSeeOpponentsHands"),
+        "transitions" => array("endTokenEffect" => 299)
     ),
     218 => array(
         "name" => "token18Effect",
