@@ -268,6 +268,12 @@ var jstpl_year2= '<div class="whiteblock" id="library_2_wrap">\
 var jstpl_year3= '<div class="whiteblock" id="library_3_wrap">\
         <div id="library_3"></div>\
     </div>'
+var jstpl_opponent_hand='\
+    <div class="seasons_rightpanel opponent-hand">\
+        <h3>${playerName}</h3>\
+        <div id="opponent_hand_${playerId}">\
+        </div>\
+    </div>'
 </script>  
 
 {OVERALL_GAME_FOOTER}

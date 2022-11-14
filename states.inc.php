@@ -18,7 +18,6 @@ if (!defined('ST_END_SCORE')) {
     define('ST_END_SCORE', 90);
     define('ST_END_GAME', 99);
     define('STATE_DEBUGGING_END', 100);
-    
 }
 /*
    Game state machine is a tool used to facilitate game developpement by doing common stuff that can be set up
@@ -63,7 +62,7 @@ $machinestates = array(
         "description" => clienttranslate("Game setup"),
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array("" => 11)//98 for fake scoring, 11 for real
+        "transitions" => array("" => 11) //98 for fake scoring, 11 for real
     ),
 
     /////////// Draft & deck building phase ////////////////
@@ -99,7 +98,7 @@ $machinestates = array(
         "description" => clienttranslate('Everyone must choose his ability token'),
         "descriptionmyturn" => clienttranslate('${you} must choose one ability token'),
         "type" => "multipleactiveplayer",
-        "action"=> "stMakeEveryoneActive",
+        "action" => "stMakeEveryoneActive",
         "possibleactions" => array("chooseToken"),
         "transitions" => array("startYear" => 20)
     ),
@@ -172,7 +171,16 @@ $machinestates = array(
         "type" => "activeplayer",
         "action" => "stMaliceDie",
         "possibleactions" => array("reroll"),
-        "transitions" => array("startTurn" => 227, "cardEffect" => 50)
+        "transitions" => array("startTurn" => 217, "cardEffect" => 50)
+    ),
+    217 => array(
+        "name" => "token17Effect",
+        "description" => clienttranslate('${actplayer} can use his ability token to reroll'),
+        "descriptionmyturn" => clienttranslate('${you} can use your ability token to reroll your die'),
+        "type" => "activeplayer",
+        "action" => "stToken17Effect",
+        "possibleactions" => array("reroll", "playToken"),//reroll implies playing token automatically
+        "transitions" => array("steadfastDie" => 227)
     ),
     227 => array(
         "name" => "steadfastDie",
@@ -183,6 +191,7 @@ $machinestates = array(
         "possibleactions" => array("steadFast"),
         "transitions" => array("startTurn" => 28, "cardEffect" => 50)
     ),
+  
     28 => array(
         "name" => "startPlayerTurn",
         "description" => '',
@@ -204,10 +213,11 @@ $machinestates = array(
         "type" => "activeplayer",
         "args" => "argPlayerTurn",
         "action" => "stPlayerTurn",
-        "possibleactions" => array("incSummon", "draw", "transmute", "summon", "active", "useBonus", 'endTurn'),
+        "possibleactions" => array("incSummon", "draw", "transmute", "summon", "active", "useBonus", 'endTurn', 'playToken'),
         "transitions" => array(
             "endOfTurn" => 25, "cardEffect" => 50, "summonVariableCost" => 35, "draw" => 32, "useBonus" => 30,
-            "bonusDraw" => 36, "bonusExchange" => 37
+            "bonusDraw" => 36, "bonusExchange" =>
+            37, "tokenEffect" => 200
         )
     ),
     31 => array(
@@ -311,7 +321,8 @@ $machinestates = array(
             "staffWinterDiscard" => 176, "chronoRingChoice" => 178, "urmianChoice" => 179,
             "draw" => 181, // Note: Servant of Ragfield
             "craftyChoice" => 183, "discardMinion" => 185, "chaliceEternity" => 186, "chaliceEternityChoice" => 187,
-            "carnivoraChoice" => 188, "igramulChoice" => 189,  "escaped_choice" => 193
+            "carnivoraChoice" => 188, "igramulChoice" => 189,  "escaped_choice" =>
+            193,  "endTokenEffect" => 299
         )
     ),
 
@@ -331,7 +342,7 @@ $machinestates = array(
         "action" => "stCheckEnergy",
         "args" => "argCheckEnergy",
         "possibleactions" => array("discardEnergy", "discardEnergyEffect"),
-        "transitions" => array("energyOk" => 51, "discardEnergy" => 51, "continueDiscard" => 52)
+        "transitions" => array("energyOk" => 51, "discardEnergy" => 51, "continueDiscard" => 52, "playerTurn" => 30)
     ),
 
 
@@ -1061,6 +1072,68 @@ $machinestates = array(
         "transitions" => array("energyOk" => 165, "discardEnergy" => 165, "continueDiscard" => 194)
     ),
 
+    /* Token effects */
+    200 => array(
+        "name" => "tokenEffect",
+        "description" => '',
+        "descriptionmyturn" => '',
+        "type" => "game",
+        "action" => "stTokenEffect",
+        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60, "token10Effect" => 210, "token17Effect" => 217, "token11Effect" =>211, "token12Effect" => 212, "token2Effect" => 202)
+    ),
+    202 => array(
+        "name" => "token2Effect",
+        "description" => clienttranslate('Ability token: ${actplayer} must discard or sacrifice a power card'),
+        "descriptionmyturn" => clienttranslate('${you} must move discard or sacrifice a power card'),
+        "type" => "activeplayer",
+        "possibleactions" => array("sacrifice", "discard"),
+        "transitions" => array("endTokenEffect" => 299)
+    ),
+    210 => array(
+        "name" => "token10Effect",
+        "description" => clienttranslate('Ability token: ${actplayer} must move the season token 2 steps back or forward'),
+        "descriptionmyturn" => clienttranslate('${you} must move the season token 2 steps back or forward'),
+        "type" => "activeplayer",
+        "possibleactions" => array("moveSeason"),
+        "transitions" => array("moveSeason" => 51, )//"continuePlayerTurn" => 30
+    ),
+    211 => array(
+        "name" => "token11Effect", //seeOpponentsHands
+        "description" => clienttranslate('Ability token: ${actplayer} is looking at the other players hands'),
+        "descriptionmyturn" => clienttranslate('${you} are looking at the other players hands'),
+        "type" => "activeplayer",
+        "args" => "argToken11Effect",
+        "possibleactions" => array("endSeeOpponentsHands"),
+        "transitions" => array("endTokenEffect" => 299)
+    ),
+    212 => array(
+        "name" => "token12Effect", //sort 3 cards
+        "description" => clienttranslate('Ability token: ${actplayer} is sorting the top 3 cards of the draw pile'),
+        "descriptionmyturn" => clienttranslate('${you} must choose the order of the top 3 cards of the draw pile'),
+        "type" => "activeplayer",
+        "args" => "argToken12Effect",
+        "possibleactions" => array("sort"),
+        "transitions" => array("endTokenEffect" => 299)
+    ),
+
+    218 => array(
+        "name" => "token18Effect",
+        "description" => clienttranslate('${actplayer} must select a power card from one of the future libraries and add it to their hand'),
+        "descriptionmyturn" => clienttranslate('${you} must select a power card from one of your libraries and add it to your hand'),
+        "type" => "activeplayer",
+        "args" => "argToken18Effect",
+        "possibleactions" => array("playToken"),
+        "transitions" => array("continuePlayerTurn" => 30)
+    ),
+    299 => array(
+        "name" => "endTokenEffect",
+        "description" => '',
+        "descriptionmyturn" => '',
+        "type" => "game",
+        "action" => "stEndTokenEffect",
+        "transitions" => array( "continuePlayerTurn" => 30)
+    ),
+
     /////////// End of game ////////////////
 
     STATE_DEBUGGING_END => [ // active player state for debugging end of game
@@ -1077,7 +1150,7 @@ $machinestates = array(
         "description" => '',
         "type" => "game",
         "action" => "stFinalScoring",
-        "transitions" => array("debugEnd" => STATE_DEBUGGING_END,"realEnd" => 99)
+        "transitions" => array("debugEnd" => STATE_DEBUGGING_END, "realEnd" => 99)
     ),
 
     // Final state.

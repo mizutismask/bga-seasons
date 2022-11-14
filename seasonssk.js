@@ -59,6 +59,7 @@ define([
 
                 this.setupSeasonHighlighter();
                 this.leftPlayerBoardsCristalCounters = [];
+                this.opponentsStocks = [];
 
                 console.log("gamedatas", gamedatas);
                 if (Number(gamedatas.gamestate.id) == 98 || Number(gamedatas.gamestate.id) == 99 || Number(gamedatas.gamestate.id) == 100) { // score or end
@@ -176,26 +177,28 @@ define([
 
                     //tokens
                     this.tokensStock[player_id] = new ebg.stock();
-                    this.tokensStock[player_id].create(this, $('tokens_' + player_id), 100, 100);
+                    this.tokensStock[player_id].create(this, $('tokens_' + player_id), 99, 99);
                     this.tokensStock[player_id].setSelectionMode(0);
+                    this.tokensStock[player_id].image_items_per_row = 6;
                     this.tokensStock[player_id].autowidth = true;
                     this.tokensStock[player_id].onItemCreate = dojo.hitch(this, 'setupNewToken');
 
                     if (gamedatas.tokens) {
                         for (var tokenType in this.gamedatas.abilityTokens) {
-                            console.log("tokenType", tokenType);
-                            this.tokensStock[player_id].addItemType(tokenType, tokenType, g_gamethemeurl + 'img/pathOfDestinyTokens.png', parseInt(tokenType) - 13);
+                            this.tokensStock[player_id].addItemType(tokenType, tokenType, g_gamethemeurl + 'img/abilityTokens.png', parseInt(tokenType) * 2 - 2);//recto
+                            this.tokensStock[player_id].addItemType(tokenType + "2", tokenType, g_gamethemeurl + 'img/abilityTokens.png', parseInt(tokenType) * 2 - 1);//verso
                         }
 
                         for (const [tokenId, token] of Object.entries(this.gamedatas.tokens[player_id])) {
                             this.tokensStock[player_id].addToStockWithId(token.type, tokenId);
                         }
 
-                        if (gamedatas.tokens[player_id].length == 1) {
-                            dojo.place("tokens_" + player_id, "left_avatar_" + player_id, "replace");
-                            if (player_id == this.player_id) {
-                                dojo.query("#tokens_" + player_id + " .stockitem").connect('click', this, 'onPlayToken');
-                            }
+                        if (Object.keys(gamedatas.tokens[player_id]).length == 1) {
+                            const notif = {};
+                            notif.args = {};
+                            notif.args.player_id = player_id;
+                            notif.args.token_id = Object.keys(gamedatas.tokens[player_id])[0];
+                            this.notif_tokenChosen(notif);
                         }
                     } else {
                         $(abilityTokens).style.display = "none";
@@ -323,10 +326,10 @@ define([
                         //no back in seasons
                     },
                 });
-                var settings = {
+                var handSettings = {
                     "width": "300px", "height": "300px", "shift": "2px", "center": false, "scrollbarVisible": false, "scrollStep": 130, "buttonGap": "5px", "leftButton": { "classes": "scroll-button" }, "rightButton": { "classes": "scroll-button" }
                 }
-                this.playerHand = new ScrollableStock(this.handManager, document.getElementById(`player_hand`), settings);
+                this.playerHand = new ScrollableStock(this.handManager, document.getElementById(`player_hand`), handSettings);
                 this.playerHand.setSelectionMode("single");
                 this.playerHand.onSelectionChange = (selection, lastChange) => this.onPlayerHandSelectionChanged(selection, lastChange);
                 for (var i in this.gamedatas.hand) {
@@ -381,7 +384,7 @@ define([
 
                 // Add invocation card on tableau
                 for (player_id in gamedatas.players) {
-                    this.adaptInvocation(player_id);
+                    this.updateInvocationLevelOnSlots(player_id);
                 }
 
                 // Resources on cards
@@ -434,6 +437,39 @@ define([
 
             ///////////////////////////////////////////////////
             //// Utilities
+            permute: function (nums) {
+                var result = [];
+                var backtrack = (i, nums) => {
+                    if (i === nums.length) {
+                        result.push(nums.slice());
+                        return;
+                    }
+                    for (let j = i; j < nums.length; j++) {
+                        [nums[i], nums[j]] = [nums[j], nums[i]];
+                        backtrack(i + 1, nums);
+                        [nums[i], nums[j]] = [nums[j], nums[i]];
+                    }
+                }
+                backtrack(0, nums);
+                console.log(result);
+                return result;
+            },
+
+            getPlayerName(playerId) {
+                return this.gamedatas.players[playerId].name;
+            },
+
+            addTransmutationButton(args) {
+                // Transmutation possible ?
+                if (toint(args.transmutationPossible) > 0) {
+                    var msg = _('Transmute energies');
+                    var bonus = toint(args.transmutationPossible) - 1;
+                    if (bonus > 0) {
+                        msg += ' (+' + bonus + ')';
+                    }
+                    this.addActionButton('transmute', msg, 'onTransmute');
+                }
+            },
 
             addCardToPlayerHand(card) {
                 this.playerHand.addCard(card);
@@ -583,6 +619,7 @@ define([
                 if (toint(year) == 0) { year = 1; }
                 if (toint(year) > 3) { year = 3; } this.slideToObject($('current_year'), 'yearplace_' + year, 1000).play();
 
+                this.currentMonth = parseInt(month);
                 var currentSeason = this.getSeasonFromMonth(month);
                 var monthAnimation = this.slideToObject($('current_month'), 'monthplace_' + month, 1000);
                 dojo.connect(monthAnimation, 'onEnd', dojo.hitch(this, 'changeCurrentSeason', currentSeason));
@@ -925,6 +962,27 @@ define([
                 }
             },
 
+            createOpponentsHandsStocks: function (opponentsCards) {
+                for (var playerId in opponentsCards) {
+                    dojo.place(this.format_block('jstpl_opponent_hand', {
+                        playerId: playerId,
+                        playerName: this.getPlayerName(playerId),
+                    }), "myhand", "after");
+
+                    var hand = new ebg.stock();
+                    this.opponentsStocks.push(hand);
+                    hand.create(this, $('opponent_hand_' + playerId), 124, 173);
+                    hand.image_items_per_row = 10;
+                    hand.onItemCreate = dojo.hitch(this, 'setupNewCard');
+                    hand.extraClasses = 'thickness';
+                    hand.setSelectionMode(0);
+                    for (var card_id in this.gamedatas.card_types) {
+                        hand.addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
+                    }
+                    opponentsCards[playerId].forEach(card => hand.addToStockWithId(card.type, card.id));
+                }
+            },
+
             addEnergyToPlayerStock: function (player_id, energy_id) {
                 this.energies[player_id].addToStock(energy_id);
             },
@@ -949,9 +1007,10 @@ define([
                 }
             },
 
-            // Adapt the invocation target card of the specified player
-            adaptInvocation: function (player_id) {
+            /** Shows available slots on a player tableau. */
+            updateInvocationLevelOnSlots: function (player_id) {
                 var invoc_level = toint($('invocation_level_' + player_id).innerHTML) + 1;
+                dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:nth-child(1n+${invoc_level})`).removeClass("ssn-loc-available");
                 dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:not(:nth-child(1n+${invoc_level}))`).addClass("ssn-loc-available");
             },
 
@@ -1154,8 +1213,6 @@ define([
                 }
             },
 
-
-
             onChooseCost: function (evt) {
                 if (this.checkAction('chooseCost')) {
                     var cost_id = evt.currentTarget.id.substr(4);
@@ -1269,9 +1326,27 @@ define([
 
             onPlayToken: function (evt) {
                 //no this.checkAction('playToken') here because many tokens have specific moments to be played
-                this.ajaxcall("/seasonssk/seasonssk/playToken.html", { lock: true }, this, function (result) {
+                const selection = this.cardChoice.getSelectedItems();
+                let optCardId = undefined;
+                if (selection.length == 1) {
+                    optCardId = selection[0].id;
+                }
+                this.ajaxcall("/seasonssk/seasonssk/playToken.html", { lock: true, "optCardId": optCardId }, this, function (result) {
                 });
 
+            },
+
+            onEndSeeOpponentsHands: function (evt) {
+                this.checkAction('endSeeOpponentsHands');
+                this.takeAction("endSeeOpponentsHands");
+            },
+
+            onReorderCards: function (evt) {
+                this.checkAction('sort');
+                var choice = evt.currentTarget.id.split("_");
+                choice.shift();//the first one is meaningless
+                var cardsIds = choice.shift() + ";" + choice.shift() + ";" + choice.shift();
+                this.takeAction("sort", { cards: cardsIds });
             },
 
             onLibraryBuildchange: function (library) {
@@ -1456,7 +1531,10 @@ define([
                 var selected = this.cardChoice.getSelectedItems();
                 if (selected.length == 1) {
                     var card_id = selected[0].id;
-                    if (this.checkAction('chooseCard', true)) {
+                    if (this.gamedatas.gamestate.name === "token18Effect") {
+                        this.onPlayToken();
+                    }
+                    else if (this.checkAction('chooseCard', true)) {
                         this.ajaxcall("/seasonssk/seasonssk/chooseCard.html", { id: card_id, lock: true }, this, function (result) {
                         });
                         this.cardChoice.unselectAll();
@@ -1599,10 +1677,10 @@ define([
             onUseBonus: function (evt) {
                 dojo.stopEvent(evt);
                 if (this.checkAction('useBonus')) {
-                    // bonus<id>
-                    var bonus_id = evt.currentTarget.id.substr(5);
+                    // bonus<id>_playerId
+                    var bonus_id = evt.currentTarget.id.split("_")[0].substr(5);
                     this.confirmationDialog(_('Are you sure to use this bonus (points penalty at the end of the game) ?'), dojo.hitch(this, function () {
-                        this.ajaxcall('/seasons/seasons/useBonus.html', { id: bonus_id, lock: true }, this, function (result) { });
+                        this.ajaxcall('/seasonssk/seasonssk/useBonus.html', { id: bonus_id, lock: true }, this, function (result) { });
                     }));
                 }
             },
@@ -1658,7 +1736,7 @@ define([
 
             onEnteringState: function (stateName, args) {
                 console.log('Entering state: ' + stateName, args);
-
+                this.currentState = stateName;
                 switch (stateName) {
                     case 'nextPlayerTurn':
                         // Remove "activated" tokens
@@ -1682,6 +1760,18 @@ define([
                     case 'sepulchralAmuletChoice2':
                     case 'carnivoraChoice':
                     case 'draftTwist':
+                    case 'token18Effect':
+                    case 'token12Effect':
+                        if (stateName === 'token18Effect' && this.isCurrentPlayerActive()) {
+                            notif = { "args": [] };
+                            notif.args.cards = args.args._private.cards;
+                            this.notif_newCardChoice(notif);
+                        } else if (stateName === 'token12Effect' && this.isCurrentPlayerActive()) {
+                            notif = { "args": [] };
+                            notif.args.cards = args.args._private.cards;
+                            this.notif_newCardChoice(notif);
+                            this.cardChoice.setSelectionMode(0);
+                        }
                         if (this.isCurrentPlayerActive()) {
                             dojo.style('choiceCards', 'display', 'block');
                             this.cardChoice.updateDisplay();
@@ -1689,6 +1779,16 @@ define([
                         break;
                     case 'temporalBoots':
                         dojo.query('.monthplace').style('cursor', 'pointer');
+                        break;
+                    case 'token10Effect':
+                        //moves season +2 or -2
+                        dojo.query('#monthplace_' + ((this.currentMonth + (this.currentMonth < 3 ? 12 : 0) - 2))).style('cursor', 'pointer');
+                        dojo.query('#monthplace_' + ((this.currentMonth + 2) % 12)).style('cursor', 'pointer');
+                        break;
+                    case 'token11Effect':
+                        if (this.isCurrentPlayerActive()) {
+                            this.createOpponentsHandsStocks(args.args._private.opponentsCards);
+                        }
                         break;
                     case 'lewisChoice':
                         if (this.isCurrentPlayerActive()) {
@@ -1768,10 +1868,15 @@ define([
                     case 'sepulchralAmuletChoice2':
                     case 'carnivoraChoice':
                     case 'draftTwist':
-
+                    case 'token18Effect':
+                    case 'token12Effect':
                         dojo.style('choiceCards', 'display', 'none');
+                        if (stateName == 'token12Effect') {
+                            this.cardChoice.setSelectionMode(1);
+                        }
                         break;
                     case 'temporalBoots':
+                    case 'token10Effect':
                         dojo.query('.monthplace').style('cursor', 'auto');
                         break;
                     case 'lewisChoice':
@@ -1799,14 +1904,39 @@ define([
                     case 'chooseToken':
                         //this.tokensStock[this.player_id].setSelectionMode(0);
                         break;
+                    case 'token11Effect':
+                        dojo.query('.opponent-hand').forEach(elm => dojo.destroy(elm));
+                        this.opponentsStocks = undefined;
+                        break;
                 }
             },
 
             onUpdateActionButtons: function (stateName, args) {
-                console.log('onUpdateActionButtons: ' + stateName);
+                console.log('onUpdateActionButtons: ', stateName, args);
 
                 if (this.isCurrentPlayerActive()) {
                     switch (stateName) {
+                        case 'token12Effect':
+                            let orders = this.permute([args._private.cards[0], args._private.cards[1], args._private.cards[2]]);
+                            orders.forEach(cards => {
+                                var orderedIds = "";
+                                var orderedNames = "";
+                                cards.forEach(c => {
+                                    orderedIds += c.id + "_";
+                                    var card = this.gamedatas.card_types[c.type];
+                                    orderedNames += card.name + "<br/>";
+                                });
+                                orderedIds = orderedIds.substring(0, orderedIds.length - 1);
+                                this.addActionButton('order_' + orderedIds, orderedNames, 'onReorderCards');
+                            });
+
+                            break;
+                        case 'token11Effect':
+                            this.addActionButton('endSeeOpponentsHands', _('Finished'), 'onEndSeeOpponentsHands');
+                            break;
+                        case 'token18Effect':
+                            this.addActionButton('playToken', _('Choose selected card'), 'onPlayToken');
+                            break;
                         case 'buildLibrary3':
                         case 'buildLibrary2':
                             this.addActionButton('buildLibrary', _('Choose selected cards'), 'onBuildLibrary');
@@ -1825,15 +1955,7 @@ define([
                             this.addActionButton('amuletOfTime', _('Discard selected cards'), 'onAmuletOfTime');
                             break;
                         case 'playerTurn':
-                            // Transmutation possible ?
-                            if (toint(args.transmutationPossible) > 0) {
-                                var msg = _('Transmute energies');
-                                var bonus = toint(args.transmutationPossible) - 1;
-                                if (bonus > 0) {
-                                    msg += ' (+' + bonus + ')';
-                                }
-                                this.addActionButton('transmute', msg, 'onTransmute');
-                            }
+                            this.addTransmutationButton(args);
                             //highlight cards that can be played
                             if (args.possibleCards) {
                                 args.possibleCards.forEach(c => dojo.query("#card-" + c).addClass("possibleCard"));
@@ -1932,6 +2054,7 @@ define([
                             break;
 
                         case 'maliceDie':
+                        case 'token17Effect':
                             this.addActionButton('reroll', _('Reroll die'), 'onReroll');
                             this.addActionButton('dontreroll', _('Do not reroll'), 'onReroll');
                             break;
@@ -2169,6 +2292,8 @@ define([
 
                 dojo.subscribe('updateScores', this, "notif_updateScores");
                 dojo.subscribe('potionOfLifeWarning', this, "notif_potionOfLifeWarning");
+                dojo.subscribe('tokenUsed', this, "notif_tokenUsed");
+                dojo.subscribe('transmutationPossible', this, "notif_transmutationPossible");
 
                 var _this = this;
                 var notifs = [
@@ -2291,7 +2416,7 @@ define([
             },
             notif_incInvocationLevel: function (notif) {
                 $('invocation_level_' + notif.args.player_id).innerHTML = Math.max(0, Math.min(15, toint($('invocation_level_' + notif.args.player_id).innerHTML) + toint(notif.args.nbr)));
-                this.adaptInvocation(notif.args.player_id);
+                this.updateInvocationLevelOnSlots(notif.args.player_id);
             },
             notif_playerPickPowerCard: function (notif) {
             },
@@ -2331,6 +2456,7 @@ define([
             },
 
             notif_tokenChosen: function (notif) {
+                console.log("notif_tokenChosen", dojo.query("#tokens_" + playerId).length);
                 var playerId = notif.args.player_id;
                 var tokenId = notif.args.token_id
 
@@ -2342,7 +2468,9 @@ define([
                     }
                 });
                 dojo.place("tokens_" + playerId, "left_avatar_" + playerId, "replace");
-                dojo.query("tokens_" + playerId).connect('onclick', this, 'onPlayToken');
+                if (playerId == this.player_id) {
+                    dojo.query("#tokens_" + playerId + " .stockitem").connect('click', this, 'onPlayToken');
+                }
             },
 
             notif_summon: function (notif) {
@@ -2366,7 +2494,7 @@ define([
                     this.playerTableau[notif.args.player_id].addToStockWithId(this.ot(notif.args.card.type), notif.args.card.id, 'overall_player_board_' + notif.args.player_id);
                 }
                 this.setupNewCardOnTableau(notif.args.card.type, notif.args.card.id, notif.args.player_id);
-                this.adaptInvocation(notif.args.player_id);
+                this.updateInvocationLevelOnSlots(notif.args.player_id);
                 if (this.gamedatas.card_types[notif.args.card.type].category == "f") {
                     this.playSound("familiar", false);
                 }
@@ -2378,7 +2506,7 @@ define([
             notif_discardFromTableau: function (notif) {
                 // Discard card from tableau
                 this.playerTableau[notif.args.player_id].removeFromStockById(notif.args.card_id);
-                this.adaptInvocation(notif.args.player_id);
+                this.updateInvocationLevelOnSlots(notif.args.player_id);
 
                 // Specific: Amulet of Water
                 if (typeof this.amulet_of_water_ingame[notif.args.card_id] != 'undefined') {
@@ -2444,6 +2572,19 @@ define([
                 console.log(notif);
                 this.setFirstPlayer(notif.args.player_id);
             },
+
+            notif_tokenUsed: function (notif) {
+                console.log('notif_tokenUsed');
+                console.log(notif);
+                //todo
+            },
+
+            notif_transmutationPossible: function (notif) {
+                if (notif.args.player_id == this.player_id) {
+                    this.addTransmutationButton(notif.args);
+                }
+            },
+
             notif_bonusUsed: function (notif) {
                 console.log('notif_bonusUsed');
                 console.log(notif);

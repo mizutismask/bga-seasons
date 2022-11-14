@@ -65,9 +65,9 @@ h3 {
 }
 
 .tokenart {
-	width: 100px;
-	height: 100px;
-	background: url("img/pathOfDestinyTokens.png");
+	width: 99px;
+	height: 99px;
+	background: url("img/abilityTokens.png");
 	display: inline-block;
 }
 
@@ -451,7 +451,7 @@ h3 {
 }
 #player_hand,
 #myhand h3 {
-	box-shadow: inset 1px 1px 4px 2px #303838;
+	box-shadow: inset 1px 1px 4px -2px #303838;
 }
 #myhand h3 {
 	background-color: rgb(12 12 12 / 43%);

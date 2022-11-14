@@ -464,7 +464,7 @@ class action_seasonssk extends APP_GameAction {
         $this->game->score();
         self::ajaxResponse();
     }
-    
+
     public function chooseToken() {
         self::setAjaxMode();
         $card_id = self::getArg("tokenId", AT_posint, true);
@@ -474,7 +474,32 @@ class action_seasonssk extends APP_GameAction {
 
     public function playToken() {
         self::setAjaxMode();
-        $this->game->playToken();
+        $optCardId = self::getArg("optCardId", AT_posint, false);
+        $this->game->playToken($optCardId);
         self::ajaxResponse();
+    }
+    public function endSeeOpponentsHands() {
+        self::setAjaxMode();
+        $this->game->endSeeOpponentsHands();
+        self::ajaxResponse();
+    }
+
+    public function sort() {
+        self::setAjaxMode();
+        $cardIds = $this->getArrayFromArg(self::getArg("cards", AT_numberlist, true));
+        $this->game->sortCards($cardIds);
+        self::ajaxResponse();
+    }
+
+    private function getArrayFromArg($arg){
+        // Removing last ';' if exists
+        if (substr($arg, -1) == ';')
+        $arg = substr($arg, 0, -1);
+        if ($arg == '')
+            $energy = array();
+        else
+            $energy = explode(';', $arg);
+
+        return $energy;
     }
 }
