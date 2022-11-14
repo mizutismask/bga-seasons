@@ -437,6 +437,23 @@ define([
 
             ///////////////////////////////////////////////////
             //// Utilities
+            permute: function (nums) {
+                var result = [];
+                var backtrack = (i, nums) => {
+                    if (i === nums.length) {
+                        result.push(nums.slice());
+                        return;
+                    }
+                    for (let j = i; j < nums.length; j++) {
+                        [nums[i], nums[j]] = [nums[j], nums[i]];
+                        backtrack(i + 1, nums);
+                        [nums[i], nums[j]] = [nums[j], nums[i]];
+                    }
+                }
+                backtrack(0, nums);
+                console.log(result);
+                return result;
+            },
 
             getPlayerName(playerId) {
                 return this.gamedatas.players[playerId].name;
@@ -1196,8 +1213,6 @@ define([
                 }
             },
 
-
-
             onChooseCost: function (evt) {
                 if (this.checkAction('chooseCost')) {
                     var cost_id = evt.currentTarget.id.substr(4);
@@ -1324,6 +1339,14 @@ define([
             onEndSeeOpponentsHands: function (evt) {
                 this.checkAction('endSeeOpponentsHands');
                 this.takeAction("endSeeOpponentsHands");
+            },
+
+            onReorderCards: function (evt) {
+                this.checkAction('sort');
+                var choice = evt.currentTarget.id.split("_");
+                choice.shift();//the first one is meaningless
+                var cardsIds = choice.shift() + ";" + choice.shift() + ";" + choice.shift();
+                this.takeAction("sort", { cards: cardsIds });
             },
 
             onLibraryBuildchange: function (library) {
@@ -1713,6 +1736,7 @@ define([
 
             onEnteringState: function (stateName, args) {
                 console.log('Entering state: ' + stateName, args);
+                this.currentState = stateName;
                 switch (stateName) {
                     case 'nextPlayerTurn':
                         // Remove "activated" tokens
@@ -1737,10 +1761,16 @@ define([
                     case 'carnivoraChoice':
                     case 'draftTwist':
                     case 'token18Effect':
+                    case 'token12Effect':
                         if (stateName === 'token18Effect' && this.isCurrentPlayerActive()) {
                             notif = { "args": [] };
                             notif.args.cards = args.args._private.cards;
                             this.notif_newCardChoice(notif);
+                        } else if (stateName === 'token12Effect' && this.isCurrentPlayerActive()) {
+                            notif = { "args": [] };
+                            notif.args.cards = args.args._private.cards;
+                            this.notif_newCardChoice(notif);
+                            this.cardChoice.setSelectionMode(0);
                         }
                         if (this.isCurrentPlayerActive()) {
                             dojo.style('choiceCards', 'display', 'block');
@@ -1756,7 +1786,9 @@ define([
                         dojo.query('#monthplace_' + ((this.currentMonth + 2) % 12)).style('cursor', 'pointer');
                         break;
                     case 'token11Effect':
-                        this.createOpponentsHandsStocks(args.args._private.opponentsCards);
+                        if (this.isCurrentPlayerActive()) {
+                            this.createOpponentsHandsStocks(args.args._private.opponentsCards);
+                        }
                         break;
                     case 'lewisChoice':
                         if (this.isCurrentPlayerActive()) {
@@ -1837,7 +1869,11 @@ define([
                     case 'carnivoraChoice':
                     case 'draftTwist':
                     case 'token18Effect':
+                    case 'token12Effect':
                         dojo.style('choiceCards', 'display', 'none');
+                        if (stateName == 'token12Effect') {
+                            this.cardChoice.setSelectionMode(1);
+                        }
                         break;
                     case 'temporalBoots':
                     case 'token10Effect':
@@ -1876,10 +1912,25 @@ define([
             },
 
             onUpdateActionButtons: function (stateName, args) {
-                console.log('onUpdateActionButtons: ' + stateName);
+                console.log('onUpdateActionButtons: ', stateName, args);
 
                 if (this.isCurrentPlayerActive()) {
                     switch (stateName) {
+                        case 'token12Effect':
+                            let orders = this.permute([args._private.cards[0], args._private.cards[1], args._private.cards[2]]);
+                            orders.forEach(cards => {
+                                var orderedIds = "";
+                                var orderedNames = "";
+                                cards.forEach(c => {
+                                    orderedIds += c.id + "_";
+                                    var card = this.gamedatas.card_types[c.type];
+                                    orderedNames += card.name + "<br/>";
+                                });
+                                orderedIds = orderedIds.substring(0, orderedIds.length - 1);
+                                this.addActionButton('order_' + orderedIds, orderedNames, 'onReorderCards');
+                            });
+
+                            break;
                         case 'token11Effect':
                             this.addActionButton('endSeeOpponentsHands', _('Finished'), 'onEndSeeOpponentsHands');
                             break;

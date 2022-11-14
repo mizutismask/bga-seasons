@@ -773,8 +773,10 @@ class SeasonsSK extends Table {
         $card_type_id = self::getUniqueValueFromDB("SELECT effect_card_type
                                           FROM effect
                                           WHERE effect_id='$currentEffect'");
-
-        return $this->card_types[self::ct($card_type_id)]['name'];
+        if ($card_type_id) {
+            return $this->card_types[self::ct($card_type_id)]['name'];
+        }
+        return "Ability token";
     }
 
     function getCurrentEffectCard() {
@@ -1303,6 +1305,18 @@ class SeasonsSK extends Table {
     //////////////////////////////////////////////////////////////////////////////
     //////////// Player actions
     //////////// 
+    function sortCards($cardIds) {
+        $player_id = self::getCurrentPlayerId();
+        foreach (array_reverse($cardIds) as $card_id) {
+            $this->cards->insertCardOnExtremePosition($card_id, 'deck', true);
+        }
+        self::notifyAllPlayers('msg', clienttranslate('Ability token: ${player_name} reorders the top 3 cards of the draw pile'), array(
+            'player_name' => self::getCurrentPlayerName(),
+        ));
+        self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => []));
+        $this->gamestate->nextState('endTokenEffect');
+    }
+
     function score() {
         $this->gamestate->nextState('finalScoring');
     }
@@ -2439,6 +2453,9 @@ class SeasonsSK extends Table {
         $player_id = self::getActivePlayerId();
 
         $card_name = self::getCurrentEffectCardName();
+        if (!$card_name) {
+            $card_name = _("Ability token");
+        }
 
         // Get cards details
         $card =  $this->checkCardIsInTableau($card_id, $player_id);
@@ -2508,7 +2525,13 @@ class SeasonsSK extends Table {
 
         // Sacrifice card effect
         $method_name = self::getCardEffectMethod($card_name, 'sacrifice');
-        $this->$method_name($card_id, self::ot($card['type']), $bSacrificeZira);   // Note: we transmit original type here because the only usage is to determine if card is a familiar/magical item (see Necrotic Kriss)
+        if (method_exists($this, $method_name)) {
+            $this->$method_name($card_id, self::ot($card['type']), $bSacrificeZira);   // Note: we transmit original type here because the only usage is to determine if card is a familiar/magical item (see Necrotic Kriss)
+        }
+
+        if (self::getGameStateValue('currentTokenEffect') == 2) {
+            $this->gamestate->nextState('endTokenEffect');
+        }
     }
 
     function cancel() {
@@ -2607,6 +2630,9 @@ class SeasonsSK extends Table {
         self::notifyUpdateCardCount();
 
         $card_name = self::getCurrentEffectCardName();
+        if (!$card_name) {
+            $card_name = _("Ability token");
+        }
 
         self::notifyAllPlayers('discard', clienttranslate('${card_name}: ${player_name} discards ${discarded}'), array(
             'i18n' => array('card_name', 'sacrified'),
@@ -2619,7 +2645,12 @@ class SeasonsSK extends Table {
 
         // Discard card effect
         $method_name = self::getCardEffectMethod($card_name, 'discard');
-        $this->$method_name($card_id, self::ct($card['type']));
+        if (method_exists($this, $method_name)) {
+            $this->$method_name($card_id, self::ct($card['type']));
+        }
+        if (self::getGameStateValue('currentTokenEffect') == 2) {
+            $this->gamestate->nextState('endTokenEffect');
+        }
     }
 
     function chooseToken($tokenId) {
@@ -2655,6 +2686,11 @@ class SeasonsSK extends Table {
                 //draw a card
                 $this->notifyAbilityTokenInUse();
                 $this->doDrawPowerCard();
+                break;
+            case 2:
+                //sacrifice or discard a card
+                $immediateUse = false;
+                $this->gamestate->nextState('tokenEffect'); //need to choose the card
                 break;
             case 3:
                 //gets 2 energies to choose
@@ -2715,6 +2751,11 @@ class SeasonsSK extends Table {
                 //see opponents cards
                 $immediateUse = false;
                 $this->gamestate->nextState('tokenEffect'); //need to look
+                break;
+            case 12:
+                //sort top 3 power cards
+                $immediateUse = false;
+                $this->gamestate->nextState('tokenEffect'); //need to see and sort
                 break;
             case 13:
                 //put the first card of the discard in your hand
@@ -3384,6 +3425,19 @@ class SeasonsSK extends Table {
         ];
     }
 
+    function argToken12Effect() {
+        $player_id = self::getCurrentPlayerId();
+        $cards = $this->cards->getCardsOnTop(3, "deck");
+        return [
+            '_private' => [
+                $player_id => [
+                    'cards' => $cards,
+                ]
+            ],
+        ];
+    }
+
+
     function argStartYear() {
         return array(
             'currentYear' => self::getGameStateValue('year'),
@@ -3967,6 +4021,9 @@ class SeasonsSK extends Table {
             $this->notifyAbilityTokenInUse();
             self::setGameStateValue('currentTokenEffect', $token["type"]);
             switch ($token["type"]) {
+                case 2:
+                    $this->gamestate->nextState('token2Effect');
+                    break;
                 case 3:
                     self::setGameStateValue('energyNbr', 2);
                     self::setGameStateValue('afterEffectPlayer', $player_id);
@@ -3977,6 +4034,9 @@ class SeasonsSK extends Table {
                     break;
                 case 11:
                     $this->gamestate->nextState('token11Effect');
+                    break;
+                case 12:
+                    $this->gamestate->nextState('token12Effect');
                     break;
                 case 17:
                     //we don't want to change state
@@ -3995,10 +4055,12 @@ class SeasonsSK extends Table {
     }
 
     function stEndTokenEffect($nextState = 'continuePlayerTurn') {
-        //$tokenType = str_pad(self::getGameStateValue('currentTokenEffect'), 2, '0', STR_PAD_LEFT);
-        $tokenType = self::getGameStateValue('currentTokenEffect');
+        $tokenType = str_pad(self::getGameStateValue('currentTokenEffect'), 2, '0', STR_PAD_LEFT);
         $tokens = $this->tokensDeck->getCardsOfType($tokenType);
         $token = array_pop($tokens);
+        if (!$token) {
+            throw new BgaVisibleSystemException("The current token effect of type " . $tokenType . " does not exist");
+        }
         $this->useToken($token["id"], $token["location_arg"]);
         self::setGameStateValue('currentTokenEffect', 0);
         $this->gamestate->nextState($nextState);

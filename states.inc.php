@@ -1079,7 +1079,15 @@ $machinestates = array(
         "descriptionmyturn" => '',
         "type" => "game",
         "action" => "stTokenEffect",
-        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60, "token10Effect" => 210, "token17Effect" => 217, "token11Effect" => 211)
+        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60, "token10Effect" => 210, "token17Effect" => 217, "token11Effect" =>211, "token12Effect" => 212, "token2Effect" => 202)
+    ),
+    202 => array(
+        "name" => "token2Effect",
+        "description" => clienttranslate('Ability token: ${actplayer} must discard or sacrifice a power card'),
+        "descriptionmyturn" => clienttranslate('${you} must move discard or sacrifice a power card'),
+        "type" => "activeplayer",
+        "possibleactions" => array("sacrifice", "discard"),
+        "transitions" => array("endTokenEffect" => 299)
     ),
     210 => array(
         "name" => "token10Effect",
@@ -1098,6 +1106,16 @@ $machinestates = array(
         "possibleactions" => array("endSeeOpponentsHands"),
         "transitions" => array("endTokenEffect" => 299)
     ),
+    212 => array(
+        "name" => "token12Effect", //sort 3 cards
+        "description" => clienttranslate('Ability token: ${actplayer} is sorting the top 3 cards of the draw pile'),
+        "descriptionmyturn" => clienttranslate('${you} must choose the order of the top 3 cards of the draw pile'),
+        "type" => "activeplayer",
+        "args" => "argToken12Effect",
+        "possibleactions" => array("sort"),
+        "transitions" => array("endTokenEffect" => 299)
+    ),
+
     218 => array(
         "name" => "token18Effect",
         "description" => clienttranslate('${actplayer} must select a power card from one of the future libraries and add it to their hand'),
