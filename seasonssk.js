@@ -775,18 +775,24 @@ define([
 
             getTokenTooltip: function (card_div, card_id, card_type_id) {
                 var card = this.gamedatas.abilityTokens[card_type_id];
-                card.text = this.nl2br(_(card.desc), false);
-                card.text = card.text.replace(new RegExp("\\. ", 'g'), '.<br/><br/>');
-                card.text = card.text.replace(new RegExp(" -", 'g'), '<br/>-');
+                /* we add a trailing "2" to the type of the token in order to display the verso side.
+                So, the type may not exist, and that means the token was used, and we don't need its detail anymore */
+                if (card) {
+                    card.text = this.nl2br(_(card.desc), false);
+                    card.text = card.text.replace(new RegExp("\\. ", 'g'), '.<br/><br/>');
+                    card.text = card.text.replace(new RegExp(" -", 'g'), '<br/>-');
 
-                // Get the background position information 
-                backPos = dojo.style(card_div, 'backgroundPosition');
+                    // Get the background position information 
+                    backPos = dojo.style(card_div, 'backgroundPosition');
 
-                return this.format_block('jstpl_token_tooltip', {
-                    "text": card.text,
-                    "points": card.points,
-                    "backPos": backPos,
-                });
+                    return this.format_block('jstpl_token_tooltip', {
+                        "text": card.text,
+                        "points": card.points,
+                        "backPos": backPos,
+                    });
+                } else {
+                    return _("Token used");
+                }
             },
 
             setupNewToken: function (card_div, card_type_id, card_id) {
@@ -2574,9 +2580,8 @@ define([
             },
 
             notif_tokenUsed: function (notif) {
-                console.log('notif_tokenUsed');
-                console.log(notif);
-                //todo
+                this.tokensStock[notif.args.player_id].removeFromStockById(notif.args.token_id);
+                this.tokensStock[notif.args.player_id].addToStockWithId(notif.args.token_type + "2", notif.args.token_id);
             },
 
             notif_transmutationPossible: function (notif) {

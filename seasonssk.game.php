@@ -2834,15 +2834,16 @@ class SeasonsSK extends Table {
         }
 
         if ($immediateUse) {
-            $this->useToken($token["id"], $player_id);
+            $this->useToken($token["id"], $player_id, $token["type"]);
         }
     }
 
-    function useToken($tokenId, $playerId) {
+    function useToken($tokenId, $playerId, $tokenType) {
         $this->tokensDeck->moveCard($tokenId, 'used',  $playerId);
         self::notifyAllPlayers('tokenUsed', '', array(
             'token_id' => $tokenId,
             'player_id' => $playerId,
+            'token_type' => $tokenType,
         ));
     }
     function notifyAbilityTokenInUse() {
@@ -4061,7 +4062,7 @@ class SeasonsSK extends Table {
         if (!$token) {
             throw new BgaVisibleSystemException("The current token effect of type " . $tokenType . " does not exist");
         }
-        $this->useToken($token["id"], $token["location_arg"]);
+        $this->useToken($token["id"], $token["location_arg"],$token["type"]);
         self::setGameStateValue('currentTokenEffect', 0);
         $this->gamestate->nextState($nextState);
     }
