@@ -452,7 +452,6 @@ define([
                     }
                 }
                 backtrack(0, nums);
-                console.log(result);
                 return result;
             },
 
@@ -480,6 +479,48 @@ define([
             removeCardFromPlayerHand(card) {
                 this.playerHand.removeCard(card);
                 this.updateScrollButtonsVisibility();
+            },
+            addVoidCardsToLibraryBuilds(year) {
+                for (var i = 1; i <= 3; i++) {
+                    this.libraryBuild[year].addToStockWithId(0, this.nextInvocCardId);
+                    this.nextInvocCardId--;
+                }
+            },
+
+            addUndoButton() {
+                this.addSecondaryActionButton('undo', _('Undo'), 'onClickUndo');
+            },
+            addResetButton() {
+                this.addSecondaryActionButton('resetPlayerTurn', _('Reset turn'), 'onClickReset');
+            },
+            addSecondaryActionButton(id, text, callback) {
+                if (!$(id)) this.addActionButton(id, text, callback, null, false, 'gray');
+            },
+
+            /*
+            * Make an AJAX call with automatic lock
+            */
+            takeAction(action, data, check = true, checkPossibleActions = true) {
+                if (check && !this.checkAction(action)) return false;
+                if (!check && checkPossibleActions && !this.checkPossibleActions(action)) return false;
+
+                data = data || {};
+                if (data.lock === undefined) {
+                    data.lock = true;
+                } else if (data.lock === false) {
+                    delete data.lock;
+                }
+                return new Promise((resolve, reject) => {
+                    this.ajaxcall(
+                        '/' + this.game_name + '/' + this.game_name + '/' + action + '.html',
+                        data,
+                        this,
+                        (data) => resolve(data),
+                        (isError, message, code) => {
+                            if (isError) reject(message, code);
+                        },
+                    );
+                });
             },
             addVoidCardsToLibraryBuilds(year) {
                 for (var i = 1; i <= 3; i++) {
@@ -2010,6 +2051,9 @@ define([
                             break;
                         case 'playerTurn':
                             this.addTransmutationButton(args);
+                            if (args.resetPossible) {
+                                this.addResetButton();
+                            }
                             //highlight cards that can be played
                             if (args.possibleCards) {
                                 args.possibleCards.forEach(c => dojo.query("#card-" + c).addClass("possibleCard"));
