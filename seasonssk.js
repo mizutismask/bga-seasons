@@ -327,7 +327,7 @@ define([
                     },
                 });
                 var handSettings = {
-                    "width": "300px", "height": "300px", "shift": "2px", "center": false, "scrollbarVisible": false, "scrollStep": 130, "buttonGap": "5px", "gap": "10px","leftButton": { "classes": "scroll-button" }, "rightButton": { "classes": "scroll-button" }
+                    "width": "300px", "height": "300px", "shift": "2px", "center": false, "scrollbarVisible": false, "scrollStep": 130, "buttonGap": "5px", "gap": "10px", "leftButton": { "classes": "scroll-button" }, "rightButton": { "classes": "scroll-button" }
                 }
                 this.playerHand = new ScrollableStock(this.handManager, document.getElementById(`player_hand`), handSettings);
                 this.playerHand.setSelectionMode("single");
@@ -1685,7 +1685,9 @@ define([
                 if (this.checkAction('useBonus')) {
                     // bonus<id>_playerId
                     var bonus_id = evt.currentTarget.id.split("_")[0].substr(5);
-                    this.confirmationDialog(_('Are you sure to use this bonus (points penalty at the end of the game) ?'), dojo.hitch(this, function () {
+                    var remaining = [].slice.call(document.getElementById("bonusUsedCube_" + this.player_id).classList).filter(c => c.match(/bonusUsed\d+/)).shift().slice(-1);
+                    remaining = 3 - parseInt(remaining);
+                    this.confirmationDialog(_('Are you sure to use this bonus? You will get penalty points at the end of the game.  <br/>(' + remaining+ " remaining use/s)"), dojo.hitch(this, function () {
                         this.ajaxcall('/seasonssk/seasonssk/useBonus.html', { id: bonus_id, lock: true }, this, function (result) { });
                     }));
                 }
