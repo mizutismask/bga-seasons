@@ -324,7 +324,11 @@ class SeasonsSK extends Table {
         if ($this->isPathOfDestiny() || $this->isEnchantedKingdom()) {
             $result['tokens'] = [];
             foreach ($players as $player_id => $player) {
-                $result['tokens'][$player_id] = $this->tokensDeck->getCardsInLocation('hand', $player_id);
+                $token  = $this->tokensDeck->getCardsInLocation('hand', $player_id);
+                if (!$token) {
+                    $token  = $this->tokensDeck->getCardsInLocation('used', $player_id);
+                }
+                $result['tokens'][$player_id] = $token;
             }
         }
         return $result;
@@ -576,13 +580,18 @@ class SeasonsSK extends Table {
     // Check a resource cost for the active player, including Amulet of Water (we should
     // also check Staff of Winter, but so far this function isn't called with Earth
     // energy). Throw an feException if the active player cannot pay the cost.
-    function checkTotalResourceCost($cost) {
+    function checkTotalResourceCost($cost, $throwsException = true) {
         $stock = self::getTotalResourceStock();
         foreach ($cost as $resource_id => $qt_needed) {
-            if ($qt_needed > $stock[$resource_id]) {
-                throw new feException(self::_("To execute this action you need more: ") . ' ' . $this->energies[$resource_id]['nametr'], true);
+            if ($resource_id !=0 && $qt_needed > $stock[$resource_id]) {
+                if ($throwsException) {
+                    throw new feException(self::_("To execute this action you need more: ") . ' ' . $this->energies[$resource_id]['nametr'], true);
+                } else {
+                    return false;
+                }
             }
         }
+        return true;
     }
 
     // Check a cost (POSITIVE) against a stock
@@ -1887,8 +1896,15 @@ class SeasonsSK extends Table {
     }
 
     function getPossibleCards() {
-        $cards = [11]; //todo
-        return $cards;
+        $possibleCards = [];
+        $player_id = self::getActivePlayerId();
+        $cards = $this->cards->getPlayerHand($player_id);
+        foreach ($cards as $c) {
+            if ($this->isSummonable($c["id"])) {
+                $possibleCards[] = $c["id"];
+            }
+        }
+        return $possibleCards;
     }
 
     function doDrawPowerCard() {
@@ -1991,7 +2007,24 @@ class SeasonsSK extends Table {
         }
     }
 
+    function isSummonable($card_id) {
+        $player_id = self::getActivePlayerId();
+        $card = $this->cards->getCard($card_id);
+        if (!$card)
+            return false;
 
+        $card_types = self::getCardTypes();
+        $card_type = $card_types[$card['type']];
+
+        $hasEnoughPoints = true;
+        if (isset($card_type['cost'][0])) {
+            $point_cost = $card_type['cost'][0];
+            $player_score = self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id='$player_id' ");
+            $hasEnoughPoints = $player_score >= $point_cost;
+        }
+
+        return $hasEnoughPoints && $this->checkTotalResourceCost($card_type['cost'], false);
+    }
 
     // Summon a new card
     function summon($card_id, $forceCost = null, $bFreeByEffect = false, $amuletEnergies = null) {
@@ -2663,7 +2696,7 @@ class SeasonsSK extends Table {
         $this->gamestate->setPlayerNonMultiactive($player_id, 'startYear');
 
         self::notifyAllPlayers('tokenChosen', '', array(
-            'token_id' => $tokenId,
+            'token' => $token,
             'player_id' => $player_id,
         ));
     }
@@ -4062,7 +4095,7 @@ class SeasonsSK extends Table {
         if (!$token) {
             throw new BgaVisibleSystemException("The current token effect of type " . $tokenType . " does not exist");
         }
-        $this->useToken($token["id"], $token["location_arg"],$token["type"]);
+        $this->useToken($token["id"], $token["location_arg"], $token["type"]);
         self::setGameStateValue('currentTokenEffect', 0);
         $this->gamestate->nextState($nextState);
     }
