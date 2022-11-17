@@ -558,10 +558,10 @@ h3 {
 .scrollable-stock .left {
 	background-image: url(img/backward.png);
 }
-.firstPlayer {
+#firstplayer {
 	background-image: url(img/icons2022.png);
-	width: 70px;
-	height: 71px;
+	width: 45px;
+	height: 45px;
 	background-position: 0.537634% 0.540541%;
 	background-size: 365.714%;
 }
@@ -753,24 +753,6 @@ a.choose_player {
 	display: none;
 	margin: 10px;
 	margin-top: 15px;
-}
-
-#firstplayer {
-	top: 0px;
-	left: 0px;
-	width: 30px;
-	height: 30px;
-	background-image: url("img/icons.png");
-	position: absolute;
-	background-position: -0px -25px;
-}
-.firstplayerplace {
-	position: relative;
-	display: inline-block;
-	top: 4px;
-	left: 0px;
-	width: 30px;
-	height: 30px;
 }
 
 .bonusused {

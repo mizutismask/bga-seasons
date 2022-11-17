@@ -258,7 +258,7 @@ var jstpl_die_tooltip = '<div class="dietooltip"><ul>\
                             </div>\
                           </ul></div>';
 
-var jstpl_firstplayer = '<div id="firstplayer" class="sicon"></div>';
+var jstpl_firstplayer = '<div id="firstplayer"></div>';
 var jstpl_deadlock = '<div id="deadlock_${id}" class="deadlock"></div>';
 var jstpl_trap = '<div id="trap_${id}" class="trap"></div>';
 
