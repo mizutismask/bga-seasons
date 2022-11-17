@@ -205,11 +205,11 @@ var jstpl_player_board = '<div class="clear">\
                 <div id="energies_${player.id}" class="energies"></div>\
             </div>\
         </div>\
-        <div class="boardblock_seasons">\
-            <div id="tinvocationlevel_${player.id}" class="sicon invocation_level imgtext tinvocationlevel" ></div><span id="invocation_level_${player.id}" class="tinvocationlevel">0</span><span class="ssn-info">${maxInfo}</span>\
-            <div id="handcounticon_${player.id}" class="icon16 icon16_hand tthand"></div><span id="handcount_${player.id}" class="tthand">0</span>\
+        <div id="boardblock_additional_info_${player.id}" class="boardblock_additional_info">\
+            <div><div id="tinvocationlevel_${player.id}" class="sicon invocation_level imgtext tinvocationlevel" ></div><span id="invocation_level_${player.id}" class="tinvocationlevel">0</span><span class="ssn-info">${maxInfo}</span></div>\
+            <div><div id="handcounticon_${player.id}" class="icon16 icon16_hand tthand"></div><span id="handcount_${player.id}" class="tthand">0</span></div>\
             <div id="bonusused_${player.id}" class="sicon bonusused bonusused${player.nb_bonus} imgtext ttbonusused"></div>\
-            <div class="firstplayerplace" id="firstplayer_${player.id}"></div>\
+            <div id="firstplayer_${player.id}" class="firstplayerplace"></div>\
         </div>\
         <div><a href="#" id="choose_player_${player.id}"  class="choose_player button ${player.choose_opponent}"><span>{LB_CHOOSE_THIS_PLAYER}</span></a></div>\
     </div>';

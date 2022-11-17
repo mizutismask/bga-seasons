@@ -81,7 +81,8 @@ define([
                     this.setupPlayerOrderHints(player_id, gamedatas);
 
                     dojo.addClass('overall_player_board_' + player_id, 'avatarBorder');
-                    var nameDiv = "overall_player_board_" + player_id;
+                    dojo.style('overall_player_board_' + player_id, "border-color", '#' + player['color']);
+                    var nameDiv = "boardblock_additional_info_" + player_id;
                     dojo.style(nameDiv, "border-color", '#' + player['color']);
                     dojo.create('img', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit' }, nameDiv, 'last');
                     dojo.attr("player_board_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 92));
@@ -170,7 +171,7 @@ define([
                     dojo.query('.age2').connect('onclick', this, 'onShowAgeCards');
                     dojo.query('.age3').connect('onclick', this, 'onShowAgeCards');
 
-                    dojo.attr("left_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 92));
+                    dojo.attr("left_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 184));
 
                     this.leftPlayerBoardsCristalCounters[player_id.toString()] = new ebg.counter();
                     this.leftPlayerBoardsCristalCounters[player_id.toString()].create('cristals_counter_' + player_id);

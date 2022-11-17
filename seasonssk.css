@@ -255,10 +255,9 @@ h3 {
 .gamestate_continueDraftChoice #season_dices_wrap,
 .gamestate_draftTwist #season_dices_wrap,
 .gamestate_chooseToken #season_dices_wrap,
-.gamestate_buildLibraryNew #season_dices_wrap ,
+.gamestate_buildLibraryNew #season_dices_wrap,
 .gamestate_buildLibrary3 #season_dices_wrap,
-.gamestate_buildLibrary2 #season_dices_wrap
-{
+.gamestate_buildLibrary2 #season_dices_wrap {
 	display: none;
 }
 
@@ -584,7 +583,7 @@ h3 {
 	left: 0;
 	bottom: 0;
 	height: 1px;
-	width: 66%;
+	width: 31%;
 	border-bottom-style: solid;
 	border-color: inherit;
 	border-width: 6px;
@@ -598,13 +597,13 @@ h3 {
 	display: inline-block;
 	background-repeat: no-repeat;
 	background-image: url(img/spritesresponsive.png);
-	width: 100px;
-	height: 100px;
+	width: 184px;
+	height: 184px;
 	background-position: 62.799% 77.2519%;
 	background-size: 544.681%;
 	border-style: solid;
 	border-radius: 50%;
-	margin: -26px 0 -31px 62%;
+	margin: -30% 0 -61px -17%;
 }
 
 #new-year {
@@ -720,6 +719,21 @@ h3 {
 }
 .boardblock_seasons {
 	margin-left: 60px;
+}
+
+.boardblock_additional_info {
+	display: grid;
+	flex-direction: column;
+	gap: 5px;
+	grid-template-columns:max-content;
+}
+
+.boardblock_additional_info div {
+	grid-column: 1;
+	/*margin: auto 0;*/
+}
+.boardblock_additional_info .ssn-avatar {
+	grid-column: 2;
 }
 
 #player_hand .stockitem,
