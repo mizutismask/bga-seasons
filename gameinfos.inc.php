@@ -72,6 +72,8 @@ $gameinfos = array(
 // Favorite colors support : if set to "true", support attribution of favorite colors based on player's preferences (see reattributeColorsBasedOnPreferences PHP method)
 'favorite_colors_support' => true,
 
+// Colors attributed to players
+'player_colors' => array("b4df4d", "f79a06", "9147a3", "817566"),
 
 // Game interface width range (pixels)
 // Note: game interface = space on the left side, without the column on the right
@@ -90,7 +92,6 @@ $gameinfos = array(
     'max' => null
 ),
 
-
 // Game presentation
 // Short game presentation text (6-9 lines) that will appear on the game description page, structured as an array of paragraphs.
 // Each paragraph must be wrapped with totranslate() for translation and should not contain html (plain text without formatting).
@@ -106,10 +107,6 @@ $gameinfos = array(
     totranslate("With slight randomness, Seasons enables players to manage their hand to combine the powers of their cards."),
     totranslate("Gather energy, summon familiars and magic items, amass enough crystals, symbols of prestige, and become the kingdom’s most illustrious mage.")
 ),
-
-
-
-
 
 // Games categories
 //  You can attribute any number of "tags" to your game.

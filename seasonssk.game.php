@@ -72,7 +72,6 @@ class SeasonsSK extends Table {
 
         // Create players
         $default_color = array("b4df4d", "f79a06", "9147a3", "817566");
-        //$default_color = array("ff0000", "008000", "0000ff", "ffa500");
         $sql = "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar) VALUES ";
         $values = array();
         foreach ($players as $player_id => $player) {
@@ -81,7 +80,10 @@ class SeasonsSK extends Table {
         }
         $sql .= implode($values, ',');
         self::DbQuery($sql);
-        self::reattributeColorsBasedOnPreferences($players, $default_color);
+
+        $gameinfos = $this->getGameinfos();
+        if ($gameinfos['favorite_colors_support'])
+            $this->reattributeColorsBasedOnPreferences($players, $gameinfos['player_colors']);
         self::reloadPlayersBasicInfos();
 
         $players_count = count($players);
@@ -9118,7 +9120,7 @@ class SeasonsSK extends Table {
         self::applyResourceDelta(self::getActivePlayerId(), array($resource_id => 1));
     }
 
-    function end(){
+    function end() {
         self::setGameStateValue('month', 1);
         self::setGameStateValue('year', 4);
     }
