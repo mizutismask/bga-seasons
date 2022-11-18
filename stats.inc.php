@@ -74,7 +74,11 @@ $stats_type = array(
             "name" => totranslate("Points: cards on tableau"),
             "type" => "int"
         ),
-
+        "points_eog_cards" => array(
+            "id" => 21,
+            "name" => totranslate("Points: end of game card effects"),
+            "type" => "int"
+        ),
         "points_remaining_cards" => array(
             "id" => 12,
             "name" => totranslate("Points: remaining cards in hand"),
@@ -86,11 +90,17 @@ $stats_type = array(
             "name" => totranslate("Points: bonus used"),
             "type" => "int"
         ),
+        "points_token" => array(
+            "id" => 20,
+            "name" => totranslate("Points: ability token used"),
+            "type" => "int"
+        ),
         "crystal_transmutations" => array(
             "id" => 14,
             "name" => totranslate("Crystals gains with transmutation"),
             "type" => "int"
         ),
+        
         "cards_drawn" => array(
             "id" => 15,
             "name" => totranslate("Cards drawn"),
@@ -116,7 +126,6 @@ $stats_type = array(
             "name" => totranslate("Final number of card in tableau"),
             "type" => "int"
         )
-
 
     )
 

@@ -131,8 +131,11 @@ class SeasonsSK extends Table {
 
         self::initStat('player', 'points_crystals', 0);
         self::initStat('player', 'points_cards_on_tableau', 0);
+        self::initStat('player', 'points_eog_cards', 0);
         self::initStat('player', 'points_remaining_cards', 0);
         self::initStat('player', 'points_bonus', 0);
+        if ($this->isEnchantedKingdom() || $this->isPathOfDestiny())
+            self::initStat('player', 'points_token', 0);
         self::initStat('player', 'crystal_transmutations', 0);
         self::initStat('player', 'cards_drawn', 0);
         self::initStat('player', 'cards_summoned', 0);
@@ -583,7 +586,7 @@ class SeasonsSK extends Table {
     function checkTotalResourceCost($cost, $throwsException = true) {
         $stock = self::getTotalResourceStock();
         foreach ($cost as $resource_id => $qt_needed) {
-            if ($resource_id !=0 && $qt_needed > $stock[$resource_id]) {
+            if ($resource_id != 0 && $qt_needed > $stock[$resource_id]) {
                 if ($throwsException) {
                     throw new feException(self::_("To execute this action you need more: ") . ' ' . $this->energies[$resource_id]['nametr'], true);
                 } else {
@@ -1048,6 +1051,7 @@ class SeasonsSK extends Table {
                 //check total
                 $this->updatePlayer($player_id, "player_score_eog_cards", $totalPerPlayer);
                 $scores[$player_id] = $totalPerPlayer;
+                self::incStat($points, 'points_eog_cards', $player_id);
             }
         }
         foreach ($players as $player_id => $player) {
@@ -4790,9 +4794,7 @@ class SeasonsSK extends Table {
             ]);
 
             self::notifyUpdateScores();
-
-            // self::incStat($points, 'points_bonus', $player_id);
-
+            self::incStat($points, 'points_token', $player_id);
         }
     }
 
@@ -4850,9 +4852,9 @@ class SeasonsSK extends Table {
             ]);
         }
 
-        if ($this->getBgaEnvironment() == 'studio')
+      /*  if ($this->getBgaEnvironment() == 'studio')
             $this->gamestate->nextState('debugEnd'); // debug end
-        else
+        else*/
             $this->gamestate->nextState('realEnd'); // real end
     }
 
@@ -9114,5 +9116,10 @@ class SeasonsSK extends Table {
     }
     function ae($resource_id) {
         self::applyResourceDelta(self::getActivePlayerId(), array($resource_id => 1));
+    }
+
+    function end(){
+        self::setGameStateValue('month', 1);
+        self::setGameStateValue('year', 4);
     }
 }
