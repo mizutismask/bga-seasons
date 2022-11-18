@@ -434,6 +434,10 @@ define([
                 var nextId = playerIndex + 1 >= gamedatas.playerorder.length ? gamedatas.playerorder[0] : gamedatas.playerorder[playerIndex + 1];
                 dojo.create('div', { class: 'playerOrderHelp', title: gamedatas.players[previousId].name, style: 'color:#' + gamedatas.players[previousId]['color'], innerHTML: "&gt;" }, nameDiv, 'before');
                 dojo.create('div', { class: 'playerOrderHelp', title: gamedatas.players[nextId].name, style: 'color:#' + gamedatas.players[nextId]['color'], innerHTML: "&gt;" }, nameDiv, 'after');
+
+                //we need to remember this to use it during draft
+                this.previousPlayer = previousId;
+                this.nextPlayer = nextId;
             },
 
             ///////////////////////////////////////////////////
@@ -2540,10 +2544,16 @@ define([
                 this.energies_on_card[notif.args.card_id].removeFromStock(notif.args.energy_type);
             },
             notif_newCardChoice: function (notif) {
-                this.cardChoice.removeAll();
+                var from = undefined;
+                var to = undefined;
+                if (this.currentState == "continueDraftChoice") {
+                    from = "player_board_avatar_" + this.previousPlayer;
+                    to = "player_board_avatar_" + this.nextPlayer;
+                }
+                this.cardChoice.removeAllTo(to);
                 for (var i in notif.args.cards) {
                     var card = notif.args.cards[i];
-                    this.cardChoice.addToStockWithId(card.type, card.id);
+                    this.cardChoice.addToStockWithId(card.type, card.id, from);
                 }
             },
             notif_newOtusChoice: function (notif) {
