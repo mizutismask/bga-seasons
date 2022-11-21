@@ -2728,6 +2728,15 @@ class SeasonsSK extends Table {
                 break;
             case 2:
                 //sacrifice or discard a card
+                $handCardsNb=$this->cards->countCardInLocation('hand', $player_id);
+                $cardsNb = $handCardsNb;
+                $cardsNb += $this->cards->countCardInLocation('tableau', $player_id);
+                if ($cardsNb==0) {
+                    throw new BgaUserException("You do not have a power card to sacrifice or discard");
+                }
+                if ($handCardsNb == 0 &&!self::checkPlayerCanSacrificeCard($player_id)) {
+                    throw new BgaUserException("You do not have enough crystal to pay Crystal Titan");
+                }
                 $immediateUse = false;
                 $this->gamestate->nextState('tokenEffect'); //need to choose the card
                 break;
