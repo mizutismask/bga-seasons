@@ -304,24 +304,24 @@ h3 {
 
 .leftPlayerBoard .icon_cristal {
 	position: relative;
-    /*top: -108px;*/
-    left: -17px;
+	/*top: -108px;*/
+	left: -17px;
 }
 .leftPlayerBoard .prestige {
 	position: relative;
-   /* top: -108px;*/
-    right: -20px;
+	/* top: -108px;*/
+	right: -20px;
 }
 
-#board_counters{
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-width: 100%;
+#board_counters {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
 }
 
-#board_counters .counter{
-	margin-top:-100px;
+#board_counters .counter {
+	margin-top: -100px;
 }
 
 .counter {
@@ -350,21 +350,35 @@ width: 100%;
 	column-gap: 7px;
 
 	/*todo remplacer par vraie image. */
-	/*margin: 50px 8%;*/
-	/*border-image-repeat: round;*/
-	/*background: url("https://image.shutterstock.com/image-illustration/old-paper-scroll-ancient-parchment-600w-720299497.jpg")
-	no-repeat;*/
+	margin: 50px 8%;
+	border-image-repeat: round;
+	background: url("img/parchmentInside.png");
 
-	/*
 	border: 60px solid transparent;
-	border-image-source: url("https://image.shutterstock.com/image-illustration/old-paper-scroll-ancient-parchment-600w-720299497.jpg");
+	border-image-source: url("img/parchmentComplete.png");
 	border-image-slice: 186;
 	background-position: 43% 70%;
-	background-size: 316%;*/
-	background: url("https://cdn.pixabay.com/photo/2017/09/28/08/38/paper-2794699_960_720.png")
+	/*background-size: 316%;*/
+
+	/*background: url("https://cdn.pixabay.com/photo/2017/09/28/08/38/paper-2794699_960_720.png")
 		no-repeat;
-	background-size: cover;
+	background-size: cover;*/
 }
+/*.tableau::before{
+	background: url("img/parchmentLeft.png");
+width: 20px;
+}*/
+/*.parchement {
+	width: 20px;
+	display: inline;
+}
+.parchementEnding {
+	background: url("img/parchmentRight.png");
+}
+.parchementBeginning {
+	background: url("img/parchmentLeft.png");
+	width: 20px;
+}*/
 
 .stock-wrapper {
 	display: grid;

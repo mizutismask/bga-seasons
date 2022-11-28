@@ -120,7 +120,8 @@
     </div>
 
     <br class="clear"/>
-
+    
+    <div class="parchementBeginning parchement">
     <div class="whiteblock tableau" id="currentPlayerTablea">
         <div id="leftPlayerBoard_{CURRENT_PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{CURRENT_PLAYER_COLOR}">
             <div id="board_counters">
@@ -155,6 +156,7 @@
             <div class="age age3" data-year="3"></div>
         </div>
     </div> 
+    </div>
 
     <!-- BEGIN player -->
     <div class="whiteblock tableau">
