@@ -21,6 +21,12 @@ if (!defined('EVT_ON_SUMMON')) {
     define("EVT_ON_PLAY", 'play');
     define("EVT_ON_ACTIVE", 'active');
     define("EVT_ON_DRAW_ONE", 'onDrawOne');
+    define("END_OF_GAME_CARDS", [
+        19, // Ragfield’s Helm
+        45, // Lantern of Xidit
+        46, // Sealed Chest of Urm
+        112 // Jewel of the Ancients
+    ]);
 }
 
 class SeasonsSK extends Table {
@@ -479,13 +485,22 @@ class SeasonsSK extends Table {
     function argCounters() {
         $players = self::getCollectionFromDB("SELECT player_id, player_score, player_invocation FROM player", false);
         $counters = array();
+        $pointsByPlayer = self::getTableauCardsPoints();
         foreach ($players as $player_id => $player) {
-            $counters['cristals_counter_' . $player_id] = array('counter_name' => 'cristals_counter_' . $player_id, 'counter_value' => $player['player_score']);
+            $counters['cristals_counter_' . $player_id] = array(
+                'counter_name' => 'cristals_counter_' . $player_id,
+                'counter_value' => $player['player_score']
+            );
+
+            $counters['cards_points_counter_' . $player_id] = array(
+                'counter_name' => 'cards_points_counter_' . $player_id,
+                'counter_value' => $pointsByPlayer[$player_id]
+            );
         }
         return $counters;
     }
 
-    // Count cards in game: card in hands
+    /**  Count cards in game: card in hands*/
     function getCardCount() {
         $result = $this->cards->countCardsByLocationArgs('hand');
 
@@ -496,6 +511,22 @@ class SeasonsSK extends Table {
         }
 
         return $result;
+    }
+
+    /**  Count points from tableau cards for every player, except for end of game (EOG) cards */
+    function getTableauCardsPoints() {
+        $players = self::loadPlayersBasicInfos();
+        $pointsByPlayer = [];
+        foreach ($players as $player_id => $player) {
+            $points = 0;
+            $cards = $this->cards->getCardsInLocation('tableau', $player_id);
+            foreach ($cards as $card_id => $card) {
+                $points += $this->card_types[$card["type"]]['points'];
+            }
+            $pointsByPlayer[$player_id] = $points;
+        }
+
+        return $pointsByPlayer;
     }
 
     function getCurrentSeason() {
@@ -941,12 +972,7 @@ class SeasonsSK extends Table {
     // Trigger the gain of final points at the end of the game
     function gainEndOfGameEffectsPoints() {
         $players = self::loadPlayersBasicInfos();
-        $cardWithPoints = self::getAllCardsOfTypeInTableau(array(
-            19, // Ragfield’s Helm
-            45, // Lantern of Xidit
-            46, // Sealed Chest of Urm
-            112 // Jewel of the Ancients
-        ));
+        $cardWithPoints = self::getAllCardsOfTypeInTableau(END_OF_GAME_CARDS);
         $scores = [];
         foreach ($players as $player_id => $player) {
             $scores[$player_id] = 0;
@@ -2254,7 +2280,8 @@ class SeasonsSK extends Table {
             'card_name' => $card_type['name'],
             'cost' => $cost_displayed,
             'card' => $card,
-            'fromOtus' => $bFromOtus
+            'fromOtus' => $bFromOtus,
+            'counters' => $this->argCounters(),
         ));
 
         // Summon card effect
@@ -2728,13 +2755,13 @@ class SeasonsSK extends Table {
                 break;
             case 2:
                 //sacrifice or discard a card
-                $handCardsNb=$this->cards->countCardInLocation('hand', $player_id);
+                $handCardsNb = $this->cards->countCardInLocation('hand', $player_id);
                 $cardsNb = $handCardsNb;
                 $cardsNb += $this->cards->countCardInLocation('tableau', $player_id);
-                if ($cardsNb==0) {
+                if ($cardsNb == 0) {
                     throw new BgaUserException("You do not have a power card to sacrifice or discard");
                 }
-                if ($handCardsNb == 0 &&!self::checkPlayerCanSacrificeCard($player_id)) {
+                if ($handCardsNb == 0 && !self::checkPlayerCanSacrificeCard($player_id)) {
                     throw new BgaUserException("You do not have enough crystal to pay Crystal Titan");
                 }
                 $immediateUse = false;
@@ -4863,10 +4890,10 @@ class SeasonsSK extends Table {
             ]);
         }
 
-      /*  if ($this->getBgaEnvironment() == 'studio')
+        /*  if ($this->getBgaEnvironment() == 'studio')
             $this->gamestate->nextState('debugEnd'); // debug end
         else*/
-            $this->gamestate->nextState('realEnd'); // real end
+        $this->gamestate->nextState('realEnd'); // real end
     }
 
 

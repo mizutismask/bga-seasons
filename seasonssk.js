@@ -59,6 +59,7 @@ define([
 
                 this.setupSeasonHighlighter();
                 this.leftPlayerBoardsCristalCounters = [];
+                this.leftPlayerBoardsPointsCounters = [];
                 this.opponentsStocks = [];
 
                 console.log("gamedatas", gamedatas);
@@ -175,6 +176,9 @@ define([
 
                     this.leftPlayerBoardsCristalCounters[player_id.toString()] = new ebg.counter();
                     this.leftPlayerBoardsCristalCounters[player_id.toString()].create('cristals_counter_' + player_id);
+                    this.leftPlayerBoardsPointsCounters[player_id.toString()] = new ebg.counter();
+                    this.leftPlayerBoardsPointsCounters[player_id.toString()].create('cards_points_counter_' + player_id);
+                    
 
                     //tokens
                     this.tokensStock[player_id] = new ebg.stock();
@@ -2276,6 +2280,8 @@ define([
                 this.notifqueue.setSynchronous('pickPowerCards', 300);
 
                 dojo.subscribe('winPoints', this, "notif_winPoints");
+                dojo.subscribe('updateCardsPoints', this, "notif_updateCardsPoints");
+                
                 dojo.subscribe('summon', this, "notif_summon");
                 dojo.subscribe('active', this, "notif_active");
                 dojo.subscribe('discardFromTableau', this, "notif_discardFromTableau");
@@ -2410,6 +2416,9 @@ define([
                 console.log(this.leftPlayerBoardsCristalCounters);
                 this.leftPlayerBoardsCristalCounters[notif.args.player_id].toValue(notif.args.points);
             },
+            notif_updateCardsPoints: function (notif) {
+                this.leftPlayerBoardsPointsCounters[notif.args.player_id].toValue(notif.args.points);
+            },
             notif_resourceStockUpdate: function (notif) {
                 for (var ress_id in notif.args.delta) {
                     var qt = notif.args.delta[ress_id];
@@ -2511,6 +2520,7 @@ define([
                 if (this.gamedatas.card_types[notif.args.card.type].category == "f") {
                     this.playSound("familiar", false);
                 }
+                this.updateCounters(notif.args.counters);
 
             },
             notif_active: function (notif) {
