@@ -303,15 +303,27 @@ h3 {
 }
 
 .leftPlayerBoard .icon_cristal {
-	margin-left: -105px;
+	position: relative;
+    /*top: -108px;*/
+    left: -17px;
 }
-.leftPlayerBoard .icon_play {
-	margin-right: -105px;
+.leftPlayerBoard .prestige {
+	position: relative;
+   /* top: -108px;*/
+    right: -20px;
+}
 
-	/*todo replace with position: relative;
-    top: -18px;
-    right: -56px;*/
+#board_counters{
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+width: 100%;
 }
+
+#board_counters .counter{
+	margin-top:-100px;
+}
+
 .counter {
 	color: white;
 	font-weight: bold;
@@ -327,15 +339,9 @@ h3 {
 	margin-top: 10px;
 }
 .age {
-	width: 35px;
-	height: 35px;
-}
-
-.age2 {
-	background-color: teal;
-}
-.age3 {
-	background-color: greenyellow;
+	width: 55px;
+	height: 55px;
+	cursor: pointer;
 }
 
 .tableau {
@@ -506,15 +512,109 @@ h3 {
 	height: 12px;
 	background-position: -100px -30px;
 }
-.icon_cristal {
-	width: 30px;
-	height: 30px;
-	background-position: -119px -35px;
-}
+
 .icon_black_cube {
 	width: 30px;
 	height: 30px;
 	background-position: -0px -25px;
+}
+
+/*
+Responsive CSS Sprite created using: https://responsive-css.us/
+*/
+
+.availableLocation,
+.backward,
+.icon_cristal,
+#firstplayer,
+.forward,
+.icon_active,
+.parchment,
+.parchmentLeft,
+.parchmentRight,
+.prestige,
+.unavailableLocation,
+.age2,
+.age3 {
+	display: inline-block;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	background-image: url(img/icons2022.png);
+}
+
+.availableLocation {
+	width: 284px;
+	height: 380px;
+	background-position: 66.5533% 0.059952%;
+	background-size: 721.127%;
+}
+.backward {
+	width: 20px;
+	height: 20px;
+	background-position: 99.4576% 1.08481%;
+	background-size: 10240%;
+}
+.icon_cristal {
+	width: 33px;
+	height: 37px;
+	background-position: 92.8244% 7.77892%;
+	background-size: 2467.47%;
+}
+#firstplayer {
+	width: 45px;
+	height: 45px;
+	background-position: 86.7037% 13.4547%;
+	background-size: 2925.71%;
+}
+.forward {
+	width: 20px;
+	height: 20px;
+	background-position: 99.4576% 0.0493097%;
+	background-size: 10240%;
+}
+.icon_active {
+	width: 108px;
+	height: 113px;
+	background-position: 88.4021% 7.8553%;
+	background-size: 1896.3%;
+}
+.parchment {
+	width: 888px;
+	height: 962px;
+	background-position: 24.569% 0.092081%;
+	background-size: 230.631%;
+}
+.parchmentLeft {
+	width: 141px;
+	height: 1085px;
+	background-position: 7.49869% 0.103842%;
+	background-size: 1452.48%;
+}
+.parchmentRight {
+	width: 141px;
+	height: 1085px;
+	background-position: 0.0524384% 0.103842%;
+	background-size: 1452.48%;
+}
+.prestige {
+	width: 43px;
+	height: 37px;
+	background-position: 97.2973% 7.704%;
+	background-size: 2354.02%;
+}
+.unavailableLocation {
+	width: 255px;
+	height: 350px;
+	background-position: 81.372% 0.0588928%;
+	background-size: 803.137%;
+}
+.age2 {
+	background-position: 90.3583% 0.052687%;
+	background-size: 1365.33%;
+}
+.age3 {
+	background-position: 98.314% 0.052687%;
+	background-size: 1365.33%;
 }
 
 .bonusUsedCube.bonusUsed0 {
@@ -556,13 +656,6 @@ h3 {
 
 .scrollable-stock .left {
 	background-image: url(img/backward.png);
-}
-#firstplayer {
-	background-image: url(img/icons2022.png);
-	width: 45px;
-	height: 45px;
-	background-position: 0.537634% 0.540541%;
-	background-size: 365.714%;
 }
 
 .playerOrderHelp {
@@ -694,6 +787,8 @@ h3 {
 	left: 12px;
 }
 
+/*new icons */
+
 /* player die */
 
 .playerdie {
@@ -725,7 +820,7 @@ h3 {
 	display: grid;
 	flex-direction: column;
 	gap: 5px;
-	grid-template-columns:max-content;
+	grid-template-columns: max-content;
 }
 
 .boardblock_additional_info div {
