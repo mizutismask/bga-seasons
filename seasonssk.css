@@ -336,7 +336,6 @@ h3 {
 	display: flex;
 	column-gap: 6px;
 	justify-content: center;
-	margin-top: 10px;
 }
 .age {
 	width: 55px;
@@ -573,6 +572,11 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	height: 37px;
 	background-position: 92.8244% 7.77892%;
 	background-size: 2467.47%;
+}
+
+.player_board_content .icon_cristal{
+	width: 22px;
+	height: 28px;
 }
 #firstplayer {
 	width: 45px;
