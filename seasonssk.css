@@ -289,7 +289,7 @@ h3 {
 	height: 80px;
 	border: 2px solid;
 	border-radius: 40px;
-	margin-top: -38px;
+	/*margin-top: -38px;*/
 	border-color: inherit;
 }
 
@@ -310,13 +310,14 @@ h3 {
 .leftPlayerBoard .prestige {
 	position: relative;
 	/* top: -108px;*/
-	right: -20px;
+	right: -15px;
 }
 
 #board_counters {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	align-items:flex-start;
 	width: 100%;
 }
 
@@ -615,8 +616,8 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	background-size: 1452.48%;
 }
 .prestige {
-	width: 43px;
-	height: 37px;
+	width: 40px;
+	height: 35px;
 	background-position: 97.2973% 7.704%;
 	background-size: 2354.02%;
 }
