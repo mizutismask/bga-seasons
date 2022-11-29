@@ -121,7 +121,6 @@
 
     <br class="clear"/>
     
-    <div class="parchementBeginning parchement">
     <div class="whiteblock tableau" id="currentPlayerTablea">
         <div id="leftPlayerBoard_{CURRENT_PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{CURRENT_PLAYER_COLOR}">
             <div id="board_counters">
@@ -157,14 +156,15 @@
             <div class="age age2" data-year="2"></div>
             <div class="age age3" data-year="3"></div>
         </div>
-    </div> 
     </div>
 
     <!-- BEGIN player -->
     <div class="whiteblock tableau">
         <div id="leftPlayerBoard_{PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{PLAYER_COLOR}">
-            <div id="cristals_counter_{PLAYER_ID}" class="sicon icon_cristal counter"></div>
-            <div id="cards_points_counter_{PLAYER_ID}" class="sicon icon_play counter"></div>
+            <div id="board_counters">
+                <div id="cristals_counter_{PLAYER_ID}" class="sicon icon_cristal counter"></div>
+                <div id="cards_points_counter_{PLAYER_ID}" class="prestige counter"></div>
+            </div>
             <img id="left_avatar_{PLAYER_ID}" alt="" class="ssn-avatar" />
             <div class="playerdie_wrap" id="playerdie_wrap_left_{PLAYER_ID}">
                 <div class="playerdie" id="playerdie_left_{PLAYER_ID}"></div>

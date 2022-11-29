@@ -283,6 +283,7 @@ h3 {
 	align-items: center;
 	justify-content: center;
 	padding: 5px 5px 25px 5px;
+	position: relative;
 }
 .leftPlayerBoard .ssn-avatar {
 	width: 80px;
@@ -304,12 +305,12 @@ h3 {
 
 .leftPlayerBoard .icon_cristal {
 	position: relative;
-	/*top: -108px;*/
+	top: 0px;
 	left: -17px;
 }
 .leftPlayerBoard .prestige {
 	position: relative;
-	/* top: -108px;*/
+	top: 0px;
 	right: -15px;
 }
 
@@ -317,13 +318,12 @@ h3 {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	align-items:flex-start;
+	align-items: flex-start;
 	width: 100%;
+	position: absolute;
+	top: 0px;
 }
 
-#board_counters .counter {
-	margin-top: -125px;
-}
 
 .counter {
 	color: white;
@@ -575,7 +575,7 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	background-size: 2467.47%;
 }
 
-.player_board_content .icon_cristal{
+.player_board_content .icon_cristal {
 	width: 22px;
 	height: 28px;
 }
