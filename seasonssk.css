@@ -322,7 +322,7 @@ h3 {
 }
 
 #board_counters .counter {
-	margin-top: -100px;
+	margin-top: -125px;
 }
 
 .counter {
@@ -637,19 +637,19 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 }
 
 .bonusUsedCube.bonusUsed0 {
-	margin-left: -87px;
+	margin-left: -3px;
 	margin-bottom: -7px;
 }
 .bonusUsedCube.bonusUsed1 {
-	margin-left: -28px;
+	margin-left: 26px;
 	margin-bottom: -4px;
 }
 .bonusUsedCube.bonusUsed2 {
-	margin-left: 28px;
+	margin-left: 55px;
 	margin-bottom: -4px;
 }
 .bonusUsedCube.bonusUsed3 {
-	margin-left: 87px;
+	margin-left: 84px;
 	margin-bottom: -7px;
 }
 

@@ -133,12 +133,14 @@
                 <div class="playerdie" id="playerdie_left_{CURRENT_PLAYER_ID}"></div>
             </div>
             <h3>{CURRENT_PLAYER_NAME}</h3>
-            <div id="bonusUsedCube_{CURRENT_PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
-            <div class="bonus_actions_used">
-                <div id="bonusUsed1_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused0 ttbonusused"></div>
-                <div id="bonusUsed2_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused1 ttbonusused"></div>
-                <div id="bonusUsed3_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused2 ttbonusused"></div>
-                <div id="bonusUsed4_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused3 ttbonusused"></div>
+            <div class="bonus-progress">
+                <div id="bonusUsedCube_{CURRENT_PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
+                <div class="bonus_actions_used">
+                    <div id="bonusUsed1_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused0 ttbonusused"></div>
+                    <div id="bonusUsed2_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused1 ttbonusused"></div>
+                    <div id="bonusUsed3_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused2 ttbonusused"></div>
+                    <div id="bonusUsed4_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused3 ttbonusused"></div>
+                </div>
             </div>
             <div class="bonus_actions">
                 <div id="bonus1_{CURRENT_PLAYER_ID}" class="bonus bonus1"></div>
@@ -168,12 +170,14 @@
                 <div class="playerdie" id="playerdie_left_{PLAYER_ID}"></div>
             </div>
             <h3>{PLAYER_NAME}</h3>
-            <div id="bonusUsedCube_{PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
-            <div class="bonus_actions_used">
-                <div id="bonusUsed1_{PLAYER_ID}" class="sicon bonusused bonusused0 ttbonusused"></div>
-                <div id="bonusUsed2_{PLAYER_ID}" class="sicon bonusused bonusused1 ttbonusused"></div>
-                <div id="bonusUsed3_{PLAYER_ID}" class="sicon bonusused bonusused2 ttbonusused"></div>
-                <div id="bonusUsed4_{PLAYER_ID}" class="sicon bonusused bonusused3 ttbonusused"></div>
+            <div class="bonus-progress">
+                <div id="bonusUsedCube_{PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
+                <div class="bonus_actions_used">
+                    <div id="bonusUsed1_{PLAYER_ID}" class="sicon bonusused bonusused0 ttbonusused"></div>
+                    <div id="bonusUsed2_{PLAYER_ID}" class="sicon bonusused bonusused1 ttbonusused"></div>
+                    <div id="bonusUsed3_{PLAYER_ID}" class="sicon bonusused bonusused2 ttbonusused"></div>
+                    <div id="bonusUsed4_{PLAYER_ID}" class="sicon bonusused bonusused3 ttbonusused"></div>
+                </div>
             </div>
             <div class="bonus_actions">
                 <div id="bonus1_{PLAYER_ID}" class="bonus bonus1"></div>
