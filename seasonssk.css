@@ -350,10 +350,10 @@ h3 {
 	column-gap: 7px;
 
 	/*todo remplacer par vraie image. */
-	margin: 50px 8%;
+	margin: 15px 0px;
 	border-image-repeat: round;
 	background: url("img/parchmentInside.png");
-
+	background-clip: padding-box;
 	border: 60px solid transparent;
 	border-image-source: url("img/parchmentComplete.png");
 	border-image-slice: 186;
