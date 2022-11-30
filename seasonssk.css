@@ -284,6 +284,7 @@ h3 {
 	justify-content: center;
 	padding: 5px;
 	position: relative;
+	gap: 10px;
 }
 .leftPlayerBoard .ssn-avatar {
 	width: 92px;
@@ -291,8 +292,8 @@ h3 {
 	border: 2px solid;
 	border-radius: 50px;
 	border-color: inherit;
-	position: absolute;
-	top: 10px;
+	/*position: absolute;
+	top: 10px;*/
 }
 
 .bonus_actions_used {
@@ -825,7 +826,7 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	left: 0px;
 }
 
-.playerdie_wrap {
+/*.playerdie_wrap {
 	width: 54px;
 	height: 54px;
 	float: left;
@@ -836,6 +837,20 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	border: 1px dashed darkgray;
 	border-radius: 18px;
 }
+*/
+.player_board_content .playerdie_wrap {
+	float: left;
+	position: relative;
+}
+
+.playerdie_wrap {
+	border: 1px dashed darkgray;
+	border-radius: 18px;
+	width: 54px;
+	height: 54px;
+	box-sizing:border-box;
+}
+
 .boardblock_seasons {
 	margin-left: 60px;
 }
