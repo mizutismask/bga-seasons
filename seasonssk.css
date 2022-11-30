@@ -504,6 +504,10 @@ width: 20px;
 	border: 2px solid white;
 	margin: -5px;
 	border-radius: 13px;
+	/*background-color: rgba(38,18,9,0.15);*/
+	background: url("img/slotAvailable.png") no-repeat center;
+	
+
 }
 
 .empty-slot {
