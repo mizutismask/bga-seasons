@@ -240,10 +240,11 @@ h3 {
 }
 
 #season_dices_wrap {
-	display: grid;
-	grid-template-columns: max-content auto;
+	display: flex;
+	flex-flow: wrap;
 	justify-content: space-between;
 	align-items: center;
+	gap: 5px;
 }
 
 /* don't need border since the die moves immediatly somewhere else.*/

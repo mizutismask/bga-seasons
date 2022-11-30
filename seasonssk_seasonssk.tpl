@@ -70,24 +70,28 @@
 
 
     <div id="season_dices_wrap" class="whiteblock seasons_rightpanel">
-        <h3>{LB_SEASONS_DICES}</h3>
-        <h3>{LB_TRANSMUTATION_RATE}</h3>
-        <div id="seasons_dices"></div>
-        <div class="conversion_reminder">
-            <div id="convertFor3" class="reminder">
-                <div class="sicon"></div>
-                <div class="sicon icon_cristal counter">3</div>
-            </div>
-            <div class="sicon icon_separator"></div>
-             <div id="convertFor2" class="reminder">
-                <div class="sicon"></div>
-                <div class="sicon icon_cristal counter">2</div>
-            </div>
-             <div class="sicon icon_separator"></div>
-             <div id="convertFor1" class="reminder">
-                <div id="energyType1" class="sicon energy"></div>
-                <div id="energyType2" class="sicon energy"></div>
-                <div class="sicon icon_cristal counter">1</div>
+        <div>
+            <h3>{LB_SEASONS_DICES}</h3>
+            <div id="seasons_dices"></div>
+        </div>
+        <div>
+            <h3>{LB_TRANSMUTATION_RATE}</h3>
+            <div class="conversion_reminder">
+                <div id="convertFor3" class="reminder">
+                    <div class="sicon"></div>
+                    <div class="sicon icon_cristal counter">3</div>
+                </div>
+                <div class="sicon icon_separator"></div>
+                <div id="convertFor2" class="reminder">
+                    <div class="sicon"></div>
+                    <div class="sicon icon_cristal counter">2</div>
+                </div>
+                <div class="sicon icon_separator"></div>
+                <div id="convertFor1" class="reminder">
+                    <div id="energyType1" class="sicon energy"></div>
+                    <div id="energyType2" class="sicon energy"></div>
+                    <div class="sicon icon_cristal counter">1</div>
+                </div>
             </div>
         </div>
     </div>

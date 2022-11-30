@@ -270,7 +270,7 @@ define([
                 this.seasonDices.image_items_per_row = 20;
                 this.seasonDices.onItemCreate = dojo.hitch(this, 'setupNewDie');
                 this.seasonDices.extraClasses = 'die';
-                // this.seasonDices.autowidth=true;//todo check
+                this.seasonDices.autowidth=true;//todo check
                 for (var season_id in this.gamedatas.dices) {
                     for (var dice_id in this.gamedatas.dices[season_id]) {
                         for (var face_id = 1; face_id <= 6; face_id++) {
