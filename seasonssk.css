@@ -334,6 +334,9 @@ h3 {
 }
 
 .ages {
+	position: absolute;
+	bottom: -45px;
+	left: 12px;
 	display: flex;
 	column-gap: 6px;
 	justify-content: center;
@@ -345,6 +348,7 @@ h3 {
 }
 
 .tableau {
+	position: relative;
 	display: grid;
 	grid-template-columns: max-content auto;
 	column-gap: 7px;
