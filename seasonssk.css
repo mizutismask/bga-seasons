@@ -264,10 +264,13 @@ h3 {
 .conversion_reminder {
 	display: flex;
 	grid-column: 2;
+	align-items: center;
+	gap: 12px;
 }
 
 .reminder {
 	display: flex;
+	align-items: center;
 }
 
 #convertFor1 .energy {
@@ -332,6 +335,12 @@ h3 {
 	display: flex !important;
 	justify-content: center;
 	align-items: center;
+}
+
+.conversion_reminder .counter{
+	color: black;
+	-webkit-text-stroke: 1px #fff;
+	font-size: x-large;
 }
 
 .ages {
