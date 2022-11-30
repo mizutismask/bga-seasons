@@ -137,7 +137,7 @@ define([
                     this.underlayerPlayerTableau[player_id].extraClasses = 'thickness empty-slot';
                     this.underlayerPlayerTableau[player_id].onItemCreate = dojo.hitch(this, 'setupNewCard');
                     this.underlayerPlayerTableau[player_id].setSelectionMode = 0;
-                    this.underlayerPlayerTableau[player_id].addItemType(0, 9999, g_gamethemeurl + 'img/voidcard.png', 0);
+                    this.underlayerPlayerTableau[player_id].addItemType(0, 9999, g_gamethemeurl + 'img/voidcards.png', 0);
                     for (let i = 0; i < 15; i++) {//insert empty slots
                         this.underlayerPlayerTableau[player_id].addToStockWithId(0, this.nextInvocCardId);
                         this.nextInvocCardId--;
