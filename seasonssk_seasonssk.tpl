@@ -118,8 +118,7 @@
     <div id="choiceCards" class="seasonsblock seasons_rightpanel">
         <h3>{LB_CARDS_DRAWN}</h3>
         <div class="block-inside-wrapper">
-            <div id="choiceCardsStock">
-        </div>
+            <div id="choiceCardsStock"></div>
         </div>
     </div>
 
@@ -207,7 +206,7 @@
         <h3>{OTUS_TITLE}:</h3>
         <div class="block-inside-wrapper">
             <div id="otus"></div>
-        <div/>
+        </div>
     </div>
     
     
