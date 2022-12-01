@@ -542,11 +542,7 @@ width: 20px;
 	height: 12px;
 	background-position: -130px 0px;
 }
-.icon_active {
-	width: 12px;
-	height: 12px;
-	background-position: -130px -20px;
-}
+
 .icon_permanent {
 	width: 12px;
 	height: 12px;
@@ -618,8 +614,8 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	background-size: 10240%;
 }
 .icon_active {
-	width: 108px;
-	height: 113px;
+	width: 12px;
+	height: 12px;
 	background-position: 88.4021% 7.8553%;
 	background-size: 1896.3%;
 }
