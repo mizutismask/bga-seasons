@@ -48,19 +48,19 @@
         
     </div>
     <div id="season_library_choice" style="display:none">
-        <div class="whiteblock">
+        <div class="seasonsblock">
             <h3>{YEAR_I}</h3>
             <div class="library_build_wrap">
                 <div id="library_build_1"></div>
             </div>
         </div>
-        <div class="whiteblock">
+        <div class="seasonsblock">
             <h3>{CARDS_FOR_YEAR_2}</h3>
             <div class="library_build_wrap">
                 <div id="library_build_2"></div>
             </div>
         </div>
-        <div class="whiteblock">
+        <div class="seasonsblock">
             <h3>{CARDS_FOR_YEAR_3}</h3>
             <div class="library_build_wrap">
                 <div id="library_build_3"></div>
@@ -98,26 +98,32 @@
 
     <div id="abilityTokens" class="seasons_rightpanel">
         <div id="tokensStocks">
-            <div class="token-stock whiteblock">
+            <div class="token-stock seasonsblock">
                 <h3>{LB_ABILITY_TOKENS} {CURRENT_PLAYER_NAME}</h3>
-                <div id="tokens_{CURRENT_PLAYER_ID}"></div>
+                <div class="block-inside-wrapper">
+                    <div id="tokens_{CURRENT_PLAYER_ID}"></div>
+                </div>
             </div>
             <!-- BEGIN tokens -->
-            <div class="token-stock whiteblock">
+            <div class="token-stock seasonsblock">
                 <h3>{LB_ABILITY_TOKENS} {PLAYER_NAME}</h3>
-                <div id="tokens_{PLAYER_ID}"></div>
+                <div class="block-inside-wrapper">
+                    <div id="tokens_{PLAYER_ID}"></div>
+                </div>
             </div>
             <!-- END tokens -->
         </div>
     </div>
 
-    <div id="choiceCards" class="whiteblock seasons_rightpanel">
+    <div id="choiceCards" class="seasonsblock seasons_rightpanel">
         <h3>{LB_CARDS_DRAWN}</h3>
-        <div id="choiceCardsStock">
+        <div class="block-inside-wrapper">
+            <div id="choiceCardsStock">
+        </div>
         </div>
     </div>
 
-    <div id="myhand" class="seasons_rightpanel">
+    <div id="myhand" class="seasons_rightpanel seasonsblock">
         <h3>{LB_MY_HAND}</h3>
         <div id="player_hand">
         </div>
@@ -197,9 +203,11 @@
     </div>
     <!-- END player -->
 
-    <div class="whiteblock" id="otus_wrap">
+    <div class="seasonsblock" id="otus_wrap">
         <h3>{OTUS_TITLE}:</h3>
-        <div id="otus"></div>
+        <div class="block-inside-wrapper">
+            <div id="otus"></div>
+        <div/>
     </div>
     
     
@@ -274,11 +282,17 @@ var jstpl_firstplayer = '<div id="firstplayer"></div>';
 var jstpl_deadlock = '<div id="deadlock_${id}" class="deadlock"></div>';
 var jstpl_trap = '<div id="trap_${id}" class="trap"></div>';
 
-var jstpl_year2= '<div class="whiteblock" id="library_2_wrap">\
-        <div id="library_2"></div>\
+var jstpl_year2= '<div class="seasonsblock" id="library_2_wrap">\
+        <h3>${title}</h3>\
+        <div>\
+            <div id="library_2"></div>\
+        </div>\
     </div>'
-var jstpl_year3= '<div class="whiteblock" id="library_3_wrap">\
-        <div id="library_3"></div>\
+var jstpl_year3= '<div class="seasonsblock" id="library_3_wrap">\
+        <h3>${title}</h3>\
+        <div>\
+            <div id="library_3"></div>\
+        </div>\
     </div>'
 var jstpl_opponent_hand='\
     <div class="seasons_rightpanel opponent-hand">\

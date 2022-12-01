@@ -186,6 +186,7 @@ define([
                     this.tokensStock[player_id].setSelectionMode(0);
                     this.tokensStock[player_id].image_items_per_row = 6;
                     this.tokensStock[player_id].autowidth = true;
+                    //this.tokensStock[player_id].centerItems = true;
                     this.tokensStock[player_id].onItemCreate = dojo.hitch(this, 'setupNewToken');
 
                     if (gamedatas.tokens) {
@@ -256,7 +257,7 @@ define([
                         var card = this.gamedatas.card_types[card_id];
                         this.libraryBuild[l].addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
                     }
-                    this.libraryBuild[l].addItemType(0, 9999, g_gamethemeurl + 'img/voidcard.png', 0);
+                    this.libraryBuild[l].addItemType(0, 9999, g_gamethemeurl + 'img/voidcards.png', 0);
                     for (var i = 1; i <= 3; i++) {
                         this.libraryBuild[l].addToStockWithId(0, this.nextInvocCardId);
                         this.nextInvocCardId--;
@@ -503,8 +504,10 @@ define([
             createYearCardsPopin(age) {
                 this.agePopins[age] = new ebg.popindialog();
                 this.agePopins[age].create('age' + age + 'Popin');
-                this.agePopins[age].setTitle(age == 2 ? _("<h3>Your cards for year II</h3>") : _("<h3>Your cards for year III</h3>"));
-                var html = this.format_block('jstpl_year' + age, {});
+                let title = age == 2 ? _("Your cards for year II") : _("Your cards for year III");
+                var html = this.format_block('jstpl_year' + age, {
+                    title: title,
+                });
                 this.agePopins[age].setContent(html);
                 // allows to reopen the popin several times
                 this.agePopins[age].replaceCloseCallback(() => this.agePopins[age].hide());

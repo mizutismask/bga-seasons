@@ -338,7 +338,7 @@ h3 {
 	align-items: center;
 }
 
-.conversion_reminder .counter{
+.conversion_reminder .counter {
 	color: black;
 	-webkit-text-stroke: 1px #fff;
 	font-size: x-large;
@@ -478,26 +478,35 @@ width: 20px;
 	height: 346px;
 	margin: 10px;
 }
-
-#player_hand {
-	background-color: rgb(12 12 12 / 43%);
+.seasonsblock {
 	text-align: center;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	padding: 10px;
+}
+
+.seasonsblock > div {
+	background-color: rgb(12 12 12 / 43%);
 	border-radius: 10px;
-	padding: 10px 5px 10px 5px;
+	/*padding: 10px 5px 10px 5px;myhand*/
+	padding: 7px 4px 2px 4px;
 	justify-content: space-between;
-	min-height: 173px;
 }
-#player_hand,
-#myhand h3 {
+
+.seasonsblock h3 {
+	color: white;
 	box-shadow: inset 1px 1px 4px -2px #303838;
-}
-#myhand h3 {
 	background-color: rgb(12 12 12 / 43%);
 	border-radius: 8px 8px 0px 0px;
 	padding: 4px 10px 0px 10px;
 	margin: 0px;
 	display: inline;
 }
+#player_hand {
+	min-height: 173px;
+	padding-bottom: 8px;
+}
+
 #myhand {
 	text-align: center;
 }
@@ -837,6 +846,11 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	left: 0px;
 }
 
+.player_board_content .playerdie {
+	top: -1px;
+	left: -1px;
+}
+
 /*.playerdie_wrap {
 	width: 54px;
 	height: 54px;
@@ -885,6 +899,10 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 .card .card-sides .card-side,
 #library_2 .stockitem,
 #library_3 .stockitem,
+#library_build_1 .stockitem,
+#library_build_2 .stockitem,
+#library_build_3 .stockitem,
+#choiceCards .stockitem,
 .tableau .stockitem {
 	border-radius: 8px;
 }
@@ -940,7 +958,7 @@ a.choose_player {
 }
 
 .library_build_wrap {
-	width: 400px;
+	width: 388px;
 }
 
 #score {
