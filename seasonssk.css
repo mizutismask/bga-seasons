@@ -362,7 +362,7 @@ h3 {
 	position: relative;
 	display: grid;
 	grid-template-columns: max-content auto;
-	column-gap: 7px;
+	column-gap: 18px;
 
 	/*todo remplacer par vraie image. */
 	margin: 15px 0px;
