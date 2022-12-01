@@ -344,6 +344,14 @@ h3 {
 	font-size: x-large;
 }
 
+.conversion_reminder .energy1,
+.conversion_reminder .energy2,
+.conversion_reminder .energy3,
+.conversion_reminder .energy4 {
+	/*width: 33px;
+	height: 33px;todo big energies here*/
+}
+
 .ages {
 	position: absolute;
 	bottom: -45px;
