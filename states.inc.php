@@ -73,7 +73,7 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} must choose a card to keep from the set'),
         "type" => "multipleactiveplayer",
         "action" => "stDraftChoice",
-        "possibleactions" => array("draftChooseCard"),
+        "possibleactions" => array("draftChooseCard", "undoDraftChooseCard"),
         "transitions" => array("everyoneChoosed" => 11)
     ),
     11 => array(
@@ -117,7 +117,7 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} must distribute your cards in 3 decks: year I, year II, year III.'),
         "type" => "multipleactiveplayer",
         "action" => "stBuildLibraryNew",
-        "possibleactions" => array("chooseLibrarynew"),
+        "possibleactions" => array("chooseLibrarynew", "undoChooseLibrarynew"),
         "transitions" => array("chooseLibrarynew" => 20, "chooseToken" => 13)
     ),
 
@@ -179,7 +179,7 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} can use your ability token to reroll your die'),
         "type" => "activeplayer",
         "action" => "stToken17Effect",
-        "possibleactions" => array("reroll", "playToken"),//reroll implies playing token automatically
+        "possibleactions" => array("reroll", "playToken"), //reroll implies playing token automatically
         "transitions" => array("steadfastDie" => 227)
     ),
     227 => array(
@@ -191,7 +191,7 @@ $machinestates = array(
         "possibleactions" => array("steadFast"),
         "transitions" => array("startTurn" => 28, "cardEffect" => 50)
     ),
-  
+
     28 => array(
         "name" => "startPlayerTurn",
         "description" => '',
@@ -216,8 +216,7 @@ $machinestates = array(
         "possibleactions" => array("incSummon", "draw", "transmute", "summon", "active", "useBonus", 'endTurn', 'playToken'),
         "transitions" => array(
             "endOfTurn" => 25, "cardEffect" => 50, "summonVariableCost" => 35, "draw" => 32, "useBonus" => 30,
-            "bonusDraw" => 36, "bonusExchange" =>
-            37, "tokenEffect" => 200
+            "bonusDraw" => 36, "bonusExchange" => 37, "resetPlayerTurn" => 30, "playerTurn" => 30, "tokenEffect" => 200,
         )
     ),
     31 => array(
@@ -1079,7 +1078,7 @@ $machinestates = array(
         "descriptionmyturn" => '',
         "type" => "game",
         "action" => "stTokenEffect",
-        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60, "token10Effect" => 210, "token17Effect" => 217, "token11Effect" =>211, "token12Effect" => 212, "token2Effect" => 202)
+        "transitions" => array("token18Effect" => 218, "continuePlayerTurn" => 30, "token3Effect" => 60, "token10Effect" => 210, "token17Effect" => 217, "token11Effect" => 211, "token12Effect" => 212, "token2Effect" => 202)
     ),
     202 => array(
         "name" => "token2Effect",
@@ -1095,7 +1094,7 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} must move the season token 2 steps back or forward'),
         "type" => "activeplayer",
         "possibleactions" => array("moveSeason"),
-        "transitions" => array("moveSeason" => 51, )//"continuePlayerTurn" => 30
+        "transitions" => array("moveSeason" => 51,) //"continuePlayerTurn" => 30
     ),
     211 => array(
         "name" => "token11Effect", //seeOpponentsHands
@@ -1131,7 +1130,7 @@ $machinestates = array(
         "descriptionmyturn" => '',
         "type" => "game",
         "action" => "stEndTokenEffect",
-        "transitions" => array( "continuePlayerTurn" => 30)
+        "transitions" => array("continuePlayerTurn" => 30)
     ),
 
     /////////// End of game ////////////////

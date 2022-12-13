@@ -502,4 +502,22 @@ class action_seasonssk extends APP_GameAction {
 
         return $energy;
     }
+
+    public function undoDraftChooseCard() {
+        self::setAjaxMode();
+        $this->game->undoDraftChooseCard();
+        self::ajaxResponse();
+    }
+
+    public function undoChooseLibrarynew() {
+        self::setAjaxMode();
+        $this->game->undoChooseLibraryNew();
+        self::ajaxResponse();
+    }
+
+    public function resetPlayerTurn() {
+        self::setAjaxMode();
+        $this->game->resetPlayerTurn();
+        self::ajaxResponse();
+    }
 }

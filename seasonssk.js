@@ -85,8 +85,10 @@ define([
                     dojo.style('overall_player_board_' + player_id, "border-color", '#' + player['color']);
                     var nameDiv = "boardblock_additional_info_" + player_id;
                     dojo.style(nameDiv, "border-color", '#' + player['color']);
-                    dojo.create('img', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit' }, nameDiv, 'last');
-                    dojo.attr("player_board_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 184));
+                    if (!$("player_board_avatar_" + player_id)) {   
+                        dojo.create('img', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit' }, nameDiv, 'last');
+                        dojo.attr("player_board_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 184));
+                    }
 
                     $('invocation_level_' + player_id).innerHTML = player.invocation;
                     if (gamedatas.handcount[player_id]) { $('handcount_' + player_id).innerHTML = gamedatas.handcount[player_id]; }
@@ -257,11 +259,8 @@ define([
                         var card = this.gamedatas.card_types[card_id];
                         this.libraryBuild[l].addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
                     }
-                    this.libraryBuild[l].addItemType(0, 9999, g_gamethemeurl + 'img/voidcards.png', 0);
-                    for (var i = 1; i <= 3; i++) {
-                        this.libraryBuild[l].addToStockWithId(0, this.nextInvocCardId);
-                        this.nextInvocCardId--;
-                    }
+                    this.libraryBuild[l].addItemType(0, 9999, g_gamethemeurl + 'img/voidcard.png', 0);
+                    this.addVoidCardsToLibraryBuilds(l);
                     dojo.connect(this.libraryBuild[l], 'onChangeSelection', this, 'onLibraryBuildchange');
                 }
 
@@ -437,7 +436,9 @@ define([
 
                 var previousId = playerIndex - 1 < 0 ? gamedatas.playerorder[gamedatas.playerorder.length - 1] : gamedatas.playerorder[playerIndex - 1];
                 var nextId = playerIndex + 1 >= gamedatas.playerorder.length ? gamedatas.playerorder[0] : gamedatas.playerorder[playerIndex + 1];
+                if (!$(playerId + '_previous_player'))
                 dojo.create('div', { class: 'playerOrderHelp', title: gamedatas.players[previousId].name, style: 'color:#' + gamedatas.players[previousId]['color'], innerHTML: "&gt;" }, nameDiv, 'before');
+                if (!$(playerId + '_next_player'))
                 dojo.create('div', { class: 'playerOrderHelp', title: gamedatas.players[nextId].name, style: 'color:#' + gamedatas.players[nextId]['color'], innerHTML: "&gt;" }, nameDiv, 'after');
 
                 //we need to remember this to use it during draft
@@ -461,7 +462,6 @@ define([
                     }
                 }
                 backtrack(0, nums);
-                console.log(result);
                 return result;
             },
 
@@ -489,6 +489,90 @@ define([
             removeCardFromPlayerHand(card) {
                 this.playerHand.removeCard(card);
                 this.updateScrollButtonsVisibility();
+            },
+            addVoidCardsToLibraryBuilds(year) {
+                for (var i = 1; i <= 3; i++) {
+                    this.libraryBuild[year].addToStockWithId(0, this.nextInvocCardId);
+                    this.nextInvocCardId--;
+                }
+            },
+
+            addUndoButton() {
+                this.addSecondaryActionButton('undo', _('Undo'), 'onClickUndo');
+            },
+            addResetButton() {
+                this.addSecondaryActionButton('resetPlayerTurn', _('Reset turn'), 'onClickReset');
+            },
+            addSecondaryActionButton(id, text, callback) {
+                if (!$(id)) this.addActionButton(id, text, callback, null, false, 'gray');
+            },
+
+            /*
+            * Make an AJAX call with automatic lock
+            */
+            takeAction(action, data, check = true, checkPossibleActions = true) {
+                if (check && !this.checkAction(action)) return false;
+                if (!check && checkPossibleActions && !this.checkPossibleActions(action)) return false;
+
+                data = data || {};
+                if (data.lock === undefined) {
+                    data.lock = true;
+                } else if (data.lock === false) {
+                    delete data.lock;
+                }
+                return new Promise((resolve, reject) => {
+                    this.ajaxcall(
+                        '/' + this.game_name + '/' + this.game_name + '/' + action + '.html',
+                        data,
+                        this,
+                        (data) => resolve(data),
+                        (isError, message, code) => {
+                            if (isError) reject(message, code);
+                        },
+                    );
+                });
+            },
+            addVoidCardsToLibraryBuilds(year) {
+                for (var i = 1; i <= 3; i++) {
+                    this.libraryBuild[year].addToStockWithId(0, this.nextInvocCardId);
+                    this.nextInvocCardId--;
+                }
+            },
+
+            addUndoButton() {
+                this.addSecondaryActionButton('undo', _('Undo'), 'onClickUndo');
+            },
+            addResetButton() {
+                this.addSecondaryActionButton('resetPlayerTurn', _('Reset turn'), 'onClickReset');
+            },
+            addSecondaryActionButton(id, text, callback) {
+                if (!$(id)) this.addActionButton(id, text, callback, null, false, 'gray');
+            },
+
+            /*
+            * Make an AJAX call with automatic lock
+            */
+            takeAction(action, data, check = true, checkPossibleActions = true) {
+                if (check && !this.checkAction(action)) return false;
+                if (!check && checkPossibleActions && !this.checkPossibleActions(action)) return false;
+
+                data = data || {};
+                if (data.lock === undefined) {
+                    data.lock = true;
+                } else if (data.lock === false) {
+                    delete data.lock;
+                }
+                return new Promise((resolve, reject) => {
+                    this.ajaxcall(
+                        '/' + this.game_name + '/' + this.game_name + '/' + action + '.html',
+                        data,
+                        this,
+                        (data) => resolve(data),
+                        (isError, message, code) => {
+                            if (isError) reject(message, code);
+                        },
+                    );
+                });
             },
 
             /*
@@ -558,14 +642,16 @@ define([
                 svgRoot.appendChild(svgNode);
             },
 
-            changeCurrentSeason(currentSeason) {
+            changeCurrentSeason(currentSeason, playSound) {
                 dojo.query(`#seasonHighlighter svg path`).forEach(quarter => {
                     dojo.attr(quarter, "fill-opacity", OTHER_SEASON_OPACITY);
                 });
                 dojo.query(`#seasonHighlighter svg path:nth-child(${currentSeason})`).forEach(quarter => {
                     dojo.attr(quarter, "fill-opacity", CURRENT_SEASON_OPACITY);
                 });
-                this.playSound("season_" + currentSeason, false);
+                if (playSound) {
+                    this.playSound("season_" + currentSeason, false);
+                }
             },
 
             getSectorPath: function (x, y, outerDiameter, a1, a2) {
@@ -630,14 +716,14 @@ define([
                 }
             },
 
-            setSeasonDate: function (year, month) {
+            setSeasonDate: function (year, month,seasonChanged=true) {
                 if (toint(year) == 0) { year = 1; }
                 if (toint(year) > 3) { year = 3; } this.slideToObject($('current_year'), 'yearplace_' + year, 1000).play();
 
                 this.currentMonth = parseInt(month);
                 var currentSeason = this.getSeasonFromMonth(month);
                 var monthAnimation = this.slideToObject($('current_month'), 'monthplace_' + month, 1000);
-                dojo.connect(monthAnimation, 'onEnd', dojo.hitch(this, 'changeCurrentSeason', currentSeason));
+                dojo.connect(monthAnimation, 'onEnd', dojo.hitch(this, 'changeCurrentSeason', currentSeason, seasonChanged));
                 monthAnimation.play();
 
                 dojo.query("html").removeClass("season_1 season_2 season_3 season_4").addClass("season_" + currentSeason);
@@ -1753,6 +1839,23 @@ define([
 
             },
 
+            onClickUndo() {
+                console.log("this.gamedatas.gamestate", this.gamedatas.gamestate);
+                switch (this.gamedatas.gamestate.name) {
+                    case 'draftChoice':
+                        this.takeAction('undoDraftChooseCard', {}, false, true);
+                        break;
+                    case 'buildLibraryNew':
+                        this.takeAction('undoChooseLibrarynew', {}, false, true);
+                        break;
+                    default:
+                        break;
+                }
+            },
+
+            onClickReset() {
+                this.takeAction('resetPlayerTurn', {}, true, false);
+            },
 
             ///////////////////////////////////////////////////
             //// Game & client states
@@ -1765,7 +1868,6 @@ define([
                         // Remove "activated" tokens
                         dojo.query('.activated').removeClass('activated');
                         break;
-
                     case 'amuletFireChoice':
                     case 'divineChoice':
                     case 'chaliceEternityChoice':
@@ -1827,12 +1929,7 @@ define([
                         }
 
                         break;
-                    case 'buildLibrary3':
-                    case 'buildLibrary2':
-                        dojo.style('season_dices_wrap', 'display', 'none')
-                        break;
                     case 'buildLibraryNew':
-                        dojo.style('season_dices_wrap', 'display', 'none');
                         dojo.style('season_library_choice', 'display', 'block');
                         this.libraryBuild[1].updateDisplay();
                         this.libraryBuild[2].updateDisplay();
@@ -1848,8 +1945,6 @@ define([
                             var div = document.getElementById("new-year");
                             div.addEventListener('animationend', function () { return dojo.destroy(div); });
                             div.classList.add('new-year-animation');
-                            //todo
-                            // dojo.style('season_dices_wrap', 'display', 'block')
                         }
                         break;
                     case 'rattyNightshade':
@@ -1979,6 +2074,9 @@ define([
                             break;
                         case 'playerTurn':
                             this.addTransmutationButton(args);
+                            if (args.resetPossible) {
+                                this.addResetButton();
+                            }
                             //highlight cards that can be played
                             if (args.possibleCards) {
                                 args.possibleCards.forEach(c => dojo.query("#card-" + c).addClass("possibleCard"));
@@ -2209,6 +2307,13 @@ define([
                     if (this.checkPossibleActions('cancel')) {
                         this.addActionButton('cancel', _('Cancel'), 'onCancel');
                     }
+                } else {
+                    switch (stateName) {
+                        case 'draftChoice':
+                        case 'buildLibraryNew':
+                            this.addUndoButton();
+                            break;
+                    }
                 }
 
                 if (this.checkPossibleActions('sacrifice', true)) {
@@ -2329,6 +2434,7 @@ define([
                     ['scoreRemainingCards', this.scoreAnimationDuration],
                     ['tokenScore', this.scoreAnimationDuration],
                     ['scoreAfterEnd', this.scoreAnimationDuration],
+                    ['undoChooseLibraryNew', undefined],
                 ];
                 notifs.forEach(function (notif) {
                     dojo.subscribe(notif[0], _this, "notif_" + notif[0]);
@@ -2386,6 +2492,7 @@ define([
                 }
             },
             notif_placeMyInLibrarynew: function (notif) {
+                console.log("notif_placeMyInLibrarynew", notif);
                 if (toint(notif.args.player_id) == this.player_id) {
                     var bFirstCard = true;
                     for (var i in notif.args.cards) {
@@ -2403,6 +2510,22 @@ define([
                             this.library[notif.args.year].addToStockWithId(card.type, card.id);
                         }
                     }
+                }
+            },
+
+            notif_undoChooseLibraryNew: function (notif) {
+                console.log("notif_undoChooseLibraryNew", notif);
+                for (let i = 1; i <= 3; i++) {
+                    this.libraryBuild[i].removeAll();
+                    this.addVoidCardsToLibraryBuilds(i);
+                    if (i < 1) {
+                        this.library[i].removeAll();
+                    }
+                }
+                this.playerHand.removeAll();
+                for (var i in notif.args.cards) {
+                    var card = notif.args.cards[i];
+                    this.playerHand.addToStockWithId(card.type, card.id);
                 }
             },
 
@@ -2437,10 +2560,11 @@ define([
                 }
             },
             notif_timeProgression: function (notif) {
+                console.log("notif_timeProgression", notif);
                 if (toint(notif.args.year) == 4) {
                     notif.args.year = 3;    // Note: happened at the end of the game
                 }
-                this.setSeasonDate(notif.args.year, notif.args.month);
+                this.setSeasonDate(notif.args.year, notif.args.month, notif.args.seasonChanged);
             },
             notif_incInvocationLevel: function (notif) {
                 $('invocation_level_' + notif.args.player_id).innerHTML = Math.max(0, Math.min(15, toint($('invocation_level_' + notif.args.player_id).innerHTML) + toint(notif.args.nbr)));

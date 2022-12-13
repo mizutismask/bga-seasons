@@ -75,6 +75,8 @@ $gameinfos = array(
 // Colors attributed to players
 'player_colors' => array("b4df4d", "f79a06", "9147a3", "817566"),
 
+'db_undo_support' => true,
+
 // Game interface width range (pixels)
 // Note: game interface = space on the left side, without the column on the right
 'game_interface_width' => array(
