@@ -86,7 +86,7 @@ define([
                     var nameDiv = "boardblock_additional_info_" + player_id;
                     dojo.style(nameDiv, "border-color", '#' + player['color']);
                     dojo.create('img', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit' }, nameDiv, 'last');
-                    dojo.attr("player_board_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 92));
+                    dojo.attr("player_board_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 184));
 
                     $('invocation_level_' + player_id).innerHTML = player.invocation;
                     if (gamedatas.handcount[player_id]) { $('handcount_' + player_id).innerHTML = gamedatas.handcount[player_id]; }
@@ -172,7 +172,7 @@ define([
                     dojo.query('.age2').connect('onclick', this, 'onShowAgeCards');
                     dojo.query('.age3').connect('onclick', this, 'onShowAgeCards');
 
-                    dojo.attr("left_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 184));
+                    dojo.attr("left_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 92));
 
                     this.leftPlayerBoardsCristalCounters[player_id.toString()] = new ebg.counter();
                     this.leftPlayerBoardsCristalCounters[player_id.toString()].create('cristals_counter_' + player_id);
@@ -526,6 +526,9 @@ define([
             /** 184, 92, 50, 32 are valid sizes. */
             getPlayerAvatarWithSize(pId, size) {
                 let url = this.getPlayerAvatar(pId);
+                if (!this.isDebug && size == 184) {
+                    return url.replace(/_[0-9]{2}./, ".");//no size when default in prod
+                }
                 return url.replace(/_[0-9]{2}./, "_" + size + ".");
             },
             /**
