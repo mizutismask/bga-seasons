@@ -353,7 +353,7 @@ h3 {
 .ages {
 	position: absolute;
 	bottom: -45px;
-	left: 12px;
+	left: 5px;
 	display: flex;
 	column-gap: 6px;
 	justify-content: center;
@@ -370,37 +370,16 @@ h3 {
 	grid-template-columns: max-content auto;
 	column-gap: 18px;
 
-	/*todo remplacer par vraie image. */
 	margin: 15px 0px;
-	border-image-repeat: round;
-	background: url("img/parchmentInside.png");
+	background-color: #ccae99;
 	background-clip: padding-box;
-	border: 60px solid transparent;
-	border-image-source: url("img/parchmentComplete.png");
-	border-image-slice: 186;
-	background-position: 43% 70%;
-	/*background-size: 316%;*/
-
-	/*background: url("https://cdn.pixabay.com/photo/2017/09/28/08/38/paper-2794699_960_720.png")
-		no-repeat;
-	background-size: cover;*/
+	border: solid;
+	border-width: 64px 37px;
+	border-image-source: url("img/parchmentFrame.png");
+	border-image-slice: 150 80;
+	border-image-repeat: round;
+	/*padding: 0px 10px;*/
 }
-/*.tableau::before{
-	background: url("img/parchmentLeft.png");
-width: 20px;
-}*/
-/*.parchement {
-	width: 20px;
-	display: inline;
-}
-.parchementEnding {
-	background: url("img/parchmentRight.png");
-}
-.parchementBeginning {
-	background: url("img/parchmentLeft.png");
-	width: 20px;
-}*/
-
 .stock-wrapper {
 	display: grid;
 }

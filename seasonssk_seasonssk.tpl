@@ -130,7 +130,7 @@
 
     <br class="clear"/>
     
-    <div class="whiteblock tableau" id="currentPlayerTablea">
+    <div class="tableau" id="currentPlayerTablea">
         <div id="leftPlayerBoard_{CURRENT_PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{CURRENT_PLAYER_COLOR}">
             <div id="board_counters">
                 <div id="cristals_counter_{CURRENT_PLAYER_ID}" class="sicon icon_cristal counter"></div>
@@ -168,7 +168,7 @@
     </div>
 
     <!-- BEGIN player -->
-    <div class="whiteblock tableau">
+    <div class="tableau">
         <div id="leftPlayerBoard_{PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{PLAYER_COLOR}">
             <div id="board_counters">
                 <div id="cristals_counter_{PLAYER_ID}" class="sicon icon_cristal counter"></div>
