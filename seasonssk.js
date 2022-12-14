@@ -129,7 +129,7 @@ define([
                     this.setReserveSize(player_id, player.reserve_size);
 
                     //cards stocks
-                    var itemMargin = 25;
+                    var itemMargin = 25;//16min
                     var itemsPerRow = 10;
                     //underlayer for empty slots
                     this.underlayerPlayerTableau[player_id] = new ebg.stock();
