@@ -85,7 +85,7 @@ define([
                     dojo.style('overall_player_board_' + player_id, "border-color", '#' + player['color']);
                     var nameDiv = "boardblock_additional_info_" + player_id;
                     dojo.style(nameDiv, "border-color", '#' + player['color']);
-                    if (!$("player_board_avatar_" + player_id)) {   
+                    if (!$("player_board_avatar_" + player_id)) {
                         dojo.create('img', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit' }, nameDiv, 'last');
                         dojo.attr("player_board_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 184));
                     }
@@ -180,7 +180,6 @@ define([
                     this.leftPlayerBoardsCristalCounters[player_id.toString()].create('cristals_counter_' + player_id);
                     this.leftPlayerBoardsPointsCounters[player_id.toString()] = new ebg.counter();
                     this.leftPlayerBoardsPointsCounters[player_id.toString()].create('cards_points_counter_' + player_id);
-                    
 
                     //tokens
                     this.tokensStock[player_id] = new ebg.stock();
@@ -270,7 +269,7 @@ define([
                 this.seasonDices.image_items_per_row = 20;
                 this.seasonDices.onItemCreate = dojo.hitch(this, 'setupNewDie');
                 this.seasonDices.extraClasses = 'die';
-                this.seasonDices.autowidth=true;//todo check
+                this.seasonDices.autowidth = true;//todo check
                 for (var season_id in this.gamedatas.dices) {
                     for (var dice_id in this.gamedatas.dices[season_id]) {
                         for (var face_id = 1; face_id <= 6; face_id++) {
@@ -437,9 +436,9 @@ define([
                 var previousId = playerIndex - 1 < 0 ? gamedatas.playerorder[gamedatas.playerorder.length - 1] : gamedatas.playerorder[playerIndex - 1];
                 var nextId = playerIndex + 1 >= gamedatas.playerorder.length ? gamedatas.playerorder[0] : gamedatas.playerorder[playerIndex + 1];
                 if (!$(playerId + '_previous_player'))
-                dojo.create('div', { class: 'playerOrderHelp', title: gamedatas.players[previousId].name, style: 'color:#' + gamedatas.players[previousId]['color'], innerHTML: "&gt;" }, nameDiv, 'before');
+                    dojo.create('div', { class: 'playerOrderHelp', title: gamedatas.players[previousId].name, style: 'color:#' + gamedatas.players[previousId]['color'], innerHTML: "&gt;" }, nameDiv, 'before');
                 if (!$(playerId + '_next_player'))
-                dojo.create('div', { class: 'playerOrderHelp', title: gamedatas.players[nextId].name, style: 'color:#' + gamedatas.players[nextId]['color'], innerHTML: "&gt;" }, nameDiv, 'after');
+                    dojo.create('div', { class: 'playerOrderHelp', title: gamedatas.players[nextId].name, style: 'color:#' + gamedatas.players[nextId]['color'], innerHTML: "&gt;" }, nameDiv, 'after');
 
                 //we need to remember this to use it during draft
                 this.previousPlayer = previousId;
@@ -716,7 +715,7 @@ define([
                 }
             },
 
-            setSeasonDate: function (year, month,seasonChanged=true) {
+            setSeasonDate: function (year, month, seasonChanged = true) {
                 if (toint(year) == 0) { year = 1; }
                 if (toint(year) > 3) { year = 3; } this.slideToObject($('current_year'), 'yearplace_' + year, 1000).play();
 
@@ -1119,6 +1118,14 @@ define([
                 var invoc_level = toint($('invocation_level_' + player_id).innerHTML) + 1;
                 dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:nth-child(1n+${invoc_level})`).removeClass("ssn-loc-available");
                 dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:not(:nth-child(1n+${invoc_level}))`).addClass("ssn-loc-available");
+                this.updateInvocationAvailabilityOnSlots(player_id);
+            },
+
+            /** Removes availability slot markers on a player tableau where there is already a card. */
+            updateInvocationAvailabilityOnSlots: function (player_id) {
+                let nbCards = Math.max(0, this.playerTableau[player_id].count() + 1);
+                console.log("nbCards pour", player_id, nbCards);
+                dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:not(:nth-child(1n+${nbCards}))`).removeClass("ssn-loc-available");
             },
 
             ///////////////////////////////////////////////////
@@ -1788,7 +1795,7 @@ define([
                     var bonus_id = evt.currentTarget.id.split("_")[0].substr(5);
                     var remaining = [].slice.call(document.getElementById("bonusUsedCube_" + this.player_id).classList).filter(c => c.match(/bonusUsed\d+/)).shift().slice(-1);
                     remaining = 3 - parseInt(remaining);
-                    this.confirmationDialog(_('Are you sure to use this bonus? You will get penalty points at the end of the game.  <br/>(' + remaining+ " remaining use/s)"), dojo.hitch(this, function () {
+                    this.confirmationDialog(_('Are you sure to use this bonus? You will get penalty points at the end of the game.  <br/>(' + remaining + " remaining use/s)"), dojo.hitch(this, function () {
                         this.ajaxcall('/seasonssk/seasonssk/useBonus.html', { id: bonus_id, lock: true }, this, function (result) { });
                     }));
                 }
@@ -2392,7 +2399,7 @@ define([
 
                 dojo.subscribe('winPoints', this, "notif_winPoints");
                 dojo.subscribe('updateCardsPoints', this, "notif_updateCardsPoints");
-                
+
                 dojo.subscribe('summon', this, "notif_summon");
                 dojo.subscribe('active', this, "notif_active");
                 dojo.subscribe('discardFromTableau', this, "notif_discardFromTableau");
