@@ -447,9 +447,34 @@ h3 {
 	box-shadow: none;
 }
 
-.tableau .activated{
-	filter : brightness(50%);
-	-webkit-filter :brightness(50%); /* Chrome, Safari, Opera */
+.tableau .activated {
+	filter: brightness(50%);
+	-webkit-filter: brightness(50%); /* Chrome, Safari, Opera */
+}
+
+
+.show-player-tableau a,
+.anchor-up a{
+	color: #000;
+}
+
+.show-player-tableau{
+	height: 40px;
+	width: 25px;
+}
+
+.anchor-up {
+	height: 25px;
+	width: 25px;
+	position: absolute;
+	right: 35px;
+	margin-top: -40px;
+}
+
+.show-player-tableau svg,
+.anchor-up svg {
+	height: 100%;
+	width: auto;
 }
 
 .cardenergies {
@@ -526,11 +551,11 @@ h3 {
 	bottom: 0px;
 	margin: -5px;
 	border-radius: 13px;
-	background-color: rgba(38,18,9,0.15);
+	background-color: rgba(38, 18, 9, 0.15);
 }
 
-
-.empty-slot{ /*,.ssn-loc-full:after */
+.empty-slot {
+	/*,.ssn-loc-full:after */
 	box-shadow: inset 1px 1px 4px 2px #5c4223;
 }
 
@@ -606,8 +631,8 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	height: 28px;
 }
 #firstplayer {
-	width: 45px;
-	height: 45px;
+	width: 40px;
+	height: 40px;
 	background-position: 86.7037% 13.4547%;
 	background-size: 2925.71%;
 }
@@ -1408,18 +1433,17 @@ body > .card {
 
 /***********Modified from Thoun's original *************/
 .card .card-sides .card-side {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  transform-style: preserve-3d;
-  -webkit-backface-visibility: hidden; /* Safari */
-  backface-visibility: hidden;
-  transform-origin: center center;
-  overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	transform-style: preserve-3d;
+	-webkit-backface-visibility: hidden; /* Safari */
+	backface-visibility: hidden;
+	transform-origin: center center;
+	overflow: hidden;
 }
-.card:not(.possibleCard) .card-sides .card-side{
-  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.5);
+.card:not(.possibleCard) .card-sides .card-side {
+	box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.5);
 }
-
