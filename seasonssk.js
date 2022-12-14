@@ -152,7 +152,7 @@ define([
                     //console.log("************", player_id, this.playerTableau);
                     this.playerTableau[player_id].create(this, $('player_tableau_' + player_id), this.cardwidth, this.cardHeight);
                     this.playerTableau[player_id].image_items_per_row = itemsPerRow;
-                    this.playerTableau[player_id].extraClasses = 'thickness';
+                    this.playerTableau[player_id].extraClasses = 'thickness ssn-loc-full';
 
                     for (var card_id in this.gamedatas.card_types) {
                         this.playerTableau[player_id].addItemType(card_id, 0, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
