@@ -214,7 +214,7 @@ define([
                 this.updateCounters(gamedatas.counters);
 
                 this.addTooltipToClass('tinvocationlevel', _('Summoning gauge: maximum number of cards this player can have in play (maximum value: 15)'), '');
-                this.addTooltipToClass('tthand', _('Number of power cards in hand'), '');
+                this.addTooltipToClass('tthand', _('Number of power cards in hand <br/>(-5 points per remaining card at the end)'), '');
                 this.addTooltipToClass('ttbonusused', _('Bonus used penalty: -5 points for 1 bonus, -12 points for 2 bonus, -20 points for 3 bonus.'), '');
 
                 // Libraries
