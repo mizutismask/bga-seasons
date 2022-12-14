@@ -442,9 +442,11 @@ h3 {
 	height: 40px;
 	box-shadow: 0px 0px 2px 2px rgb(186 86 209 / 93%);
 }
-.tableau .activated .cardactivation {
-	display: block;
+.tableau .activated.cardactivation {
+	display: none;
 	box-shadow: none;
+ 	/*filter : brightness(80%);
+	-webkit-filter :brightness(80%);*/ /* Chrome, Safari, Opera */
 }
 
 .cardenergies {
