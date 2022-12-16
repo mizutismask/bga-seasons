@@ -1557,9 +1557,9 @@ define([
                     return;
                 }
 
-                if (this.playerHand.isEmpty()) {
+                /*if (this.playerHand.isEmpty()) {
                     $(myhand).style.display = "none";
-                }
+                }*/
             },
 
             buildLibraryUnselect: function () {
