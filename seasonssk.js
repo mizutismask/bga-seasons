@@ -2772,7 +2772,7 @@ define([
                     this.addTooltip('bonus1_' + player_id, '', _('Bonus: Trade 2 energy tokens for 2 energy tokens of your choice'));
                     this.addTooltip('bonus2_' + player_id, '', _('Bonus: You can transmute energies this turn'));
                     this.addTooltip('bonus3_' + player_id, '', _('Bonus: Increase your summoning gauge by one'));
-                    this.addTooltip('bonus_4' + player_id, '', _('Bonus: Instead of drawing 1 card this turn, draw 2 cards and keep one.'));
+                    this.addTooltip('bonus4_' + player_id, '', _('Bonus: Instead of drawing 1 card this turn, draw 2 cards and keep one.'));
                 }
 
                 /* console.log("+++++", dojo.query("#leftPlayerBoard_" + player_id + " .bonus1").);
