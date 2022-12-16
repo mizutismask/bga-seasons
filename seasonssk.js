@@ -1124,7 +1124,6 @@ define([
             /** Removes availability slot markers on a player tableau where there is already a card. */
             updateInvocationAvailabilityOnSlots: function (player_id) {
                 let nbCards = Math.max(0, this.playerTableau[player_id].count() + 1);
-                console.log("nbCards pour", player_id, nbCards);
                 dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:not(:nth-child(1n+${nbCards}))`).removeClass("ssn-loc-available");
             },
 
@@ -1855,6 +1854,9 @@ define([
                     case 'buildLibraryNew':
                         this.takeAction('undoChooseLibrarynew', {}, false, true);
                         break;
+                    case 'playerTurn':
+                        this.takeAction('undoBonusAction', {}, true, true);
+                        break;
                     default:
                         break;
                 }
@@ -2081,6 +2083,9 @@ define([
                             break;
                         case 'playerTurn':
                             this.addTransmutationButton(args);
+                            if (args.undoBonusActionPossible) {
+                                this.addUndoButton();
+                            }
                             if (args.resetPossible) {
                                 this.addResetButton();
                             }
@@ -2753,7 +2758,7 @@ define([
             notif_bonusUsed: function (notif) {
                 console.log('notif_bonusUsed');
                 console.log(notif);
-                var oldnbr = toint(notif.args.bonus_used) - 1;
+                var oldnbr = notif.args.bonus_used_old ? notif.args.bonus_used_old : toint(notif.args.bonus_used) - 1;
                 dojo.removeClass('bonusused_' + notif.args.player_id, 'bonusused' + oldnbr + " invisible");
                 dojo.addClass('bonusused_' + notif.args.player_id, 'bonusused' + notif.args.bonus_used);
                 dojo.query("#bonusUsedCube_" + notif.args.player_id).removeClass('bonusUsed' + oldnbr).addClass('bonusUsed' + notif.args.bonus_used);

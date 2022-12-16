@@ -520,4 +520,10 @@ class action_seasonssk extends APP_GameAction {
         $this->game->resetPlayerTurn();
         self::ajaxResponse();
     }
+
+    public function undoBonusAction() {
+        self::setAjaxMode();
+        $this->game->undoBonusAction();
+        self::ajaxResponse();
+    }
 }

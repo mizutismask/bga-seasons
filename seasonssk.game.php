@@ -28,6 +28,7 @@ if (!defined('EVT_ON_SUMMON')) {
         112 // Jewel of the Ancients
     ]);
     define("PLAYER_FIELD_LAST_DRAFT_CARD", "player_last_draft_card");
+    define("BONUS_JUST_PLAYED", "bonusJustPlayed");
     define("PLAYER_FIELD_RESET_POSSIBLE", "player_reset_possible");
 }
 
@@ -43,7 +44,7 @@ class SeasonsSK extends Table {
             "elementalAmulet1" => 21, "elementalAmulet2" => 22, "elementalAmulet3" => 23, "elementalAmulet4" => 24,
             "opponentTarget" => 25, "mustDrawPowerCard" => 26, "elementalAmuletFree" => 27,
             "lastCardDrawn" => 28, "firstActivation" => 29, "steadfast_die_mode" => 30,
-            "discardPos" => 31, "useOtus" => 32, "lastCardPicked" => 33, "currentTokenEffect" => 34
+            "discardPos" => 31, "useOtus" => 32, "lastCardPicked" => 33, "currentTokenEffect" => 34, BONUS_JUST_PLAYED => 35,
         ));
 
         $this->cards = self::getNew("module.common.deck");
@@ -136,6 +137,7 @@ class SeasonsSK extends Table {
         self::setGameStateInitialValue('discardPos', 1);
         self::setGameStateInitialValue('lastCardPicked', 0);
         self::setGameStateInitialValue('currentTokenEffect', 0);
+        self::setGameStateInitialValue(BONUS_JUST_PLAYED, 0);
 
         self::initStat('table', 'turn_number', 0);
 
@@ -390,6 +392,10 @@ class SeasonsSK extends Table {
     //////////////////////////////////////////////////////////////////////////////
     //////////// Utility functions    (functions used everywhere)
     ////////////  
+    function isBonusActionUndoPossible() {
+        return in_array(self::getGameStateValue(BONUS_JUST_PLAYED), [2, 3]);
+    }
+
     function getPlayersIds() {
         return array_keys($this->loadPlayersBasicInfos());
     }
@@ -1669,6 +1675,21 @@ class SeasonsSK extends Table {
         }
     }
 
+    function getBonusName($bonusId) {
+        switch ($bonusId) {
+            case 1:
+                return clienttranslate('Exchange 2 energies');
+            case 2:
+                return clienttranslate('Transmute (+1)');
+            case 3:
+                return clienttranslate('Increase summoning gauge');
+            case 4:
+                return clienttranslate('Choose power card');
+            default:
+                return "Unknown bonus";
+        }
+    }
+
     function useBonus($bonusId) {
         self::checkAction('useBonus');
         $player_id = self::getActivePlayerId();
@@ -1680,20 +1701,7 @@ class SeasonsSK extends Table {
         if ($nb_used >= 3)
             throw new feException(self::_("You cannot use more than 3 bonus by game"), true);
 
-        switch ($bonusId) {
-            case 1:
-                $bonus_name = clienttranslate('Exchange 2 energies');
-                break;
-            case 2:
-                $bonus_name = clienttranslate('Transmute (+1)');
-                break;
-            case 3:
-                $bonus_name = clienttranslate('Increase summoning gauge');
-                break;
-            case 4:
-                $bonus_name = clienttranslate('Choose power card');
-                break;
-        }
+        $bonus_name = $this->getBonusName($bonusId);
 
         // Okay, increase bonus usage
         self::DbQuery("UPDATE player SET player_nb_bonus_used=player_nb_bonus_used+1 WHERE player_id='$player_id' ");
@@ -1716,6 +1724,7 @@ class SeasonsSK extends Table {
             if (self::countPlayerEnergies(self::getActivePlayerId(), true) < 2)
                 throw new feException(self::_("You don't have enough energies"), true);
 
+            self::setGameStateValue(BONUS_JUST_PLAYED, $bonusId);
             $this->gamestate->nextState('bonusExchange');
         } else if ($bonusId == 2) {
             // Transmute with bonus
@@ -1724,6 +1733,8 @@ class SeasonsSK extends Table {
                 self::setGameStateValue('transmutationPossible', 2);  // Note: 2 = "with bonus +1"
             else
                 self::setGameStateValue('transmutationPossible', $current + 1);
+
+            self::setGameStateValue(BONUS_JUST_PLAYED, $bonusId);
             $this->gamestate->nextState('useBonus');
         } else if ($bonusId == 3) {
             if (self::getUniqueValueFromDB("SELECT player_invocation FROM player WHERE player_id='$player_id' ") == 15)
@@ -1731,6 +1742,7 @@ class SeasonsSK extends Table {
 
             // +1 summoning gauge
             self::increaseSummoningGauge($player_id, clienttranslate('Bonus'), 1);
+            self::setGameStateValue(BONUS_JUST_PLAYED, $bonusId);
             $this->gamestate->nextState('useBonus');
         } else if ($bonusId == 4) {
             $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
@@ -1742,10 +1754,45 @@ class SeasonsSK extends Table {
 
                 self::setGameStateValue('currentEffect', 0);
                 self::setGameStateValue('mustDrawPowerCard', 0);
+                self::setGameStateValue(BONUS_JUST_PLAYED, $bonusId);
                 $this->gamestate->nextState('bonusDraw');
             } else
                 throw new feException(self::_("You cannot use this bonus if there is no card symbol on your dice"), true);
         }
+    }
+
+    function undoBonusAction() {
+        self::checkAction('undoBonusAction');
+        if (!$this->isBonusActionUndoPossible()) {
+            throw new BgaUserException("Undo this bonus action is not possible");
+        }
+        $player_id = self::getActivePlayerId();
+        $bonusId = self::getGameStateValue(BONUS_JUST_PLAYED);
+        $bonus_name = $this->getBonusName($bonusId);
+        $nb_used = self::getUniqueValueFromDB("SELECT player_nb_bonus_used FROM player WHERE player_id='$player_id' ");
+        $nb_used--;
+        self::DbQuery("UPDATE player SET player_nb_bonus_used=player_nb_bonus_used-1 WHERE player_id='$player_id' ");
+        self::notifyAllPlayers('bonusUsed', clienttranslate('${player_name} cancels a bonus: ${bonus_name}'), array(
+            'i18n' => array('bonus_name'),
+            'player_id' => $player_id,
+            'player_name' => self::getActivePlayerName(),
+            'bonus_id' => $bonusId,
+            'bonus_name' => $bonus_name,
+            'bonus_used' => $nb_used,
+            'bonus_used_old' => $nb_used + 1
+        ));
+        self::setGameStateValue(BONUS_JUST_PLAYED, 0);
+        switch ($bonusId) {
+            case 2:
+                //todo
+                break;
+            case 3:
+                $this->decreaseSummoningGauge($player_id, clienttranslate('Undo bonus'));
+                break;
+            default:
+                throw new BgaVisibleSystemException("UndoBonusAction: Unexpected bonus action id :" . $bonusId);
+        }
+        $this->gamestate->nextState('playerTurn');
     }
 
     // Build a consolidated real cost, transforming all Amulet Of Water energies in real energies
@@ -3603,6 +3650,7 @@ class SeasonsSK extends Table {
             'possibleCards' => $this->getPossibleCards(),
             'drawCardPossible' => self::getGameStateValue('mustDrawPowerCard'),
             'resetPossible' => intval($this->getPlayerFieldValue($player_id, PLAYER_FIELD_RESET_POSSIBLE)),
+            'undoBonusActionPossible' => $this->isBonusActionUndoPossible(),
         );
     }
 
@@ -4721,15 +4769,15 @@ class SeasonsSK extends Table {
             if ($year == 2 || $year == 3)
                 self::giveLibaryCardsToPlayers($year);
         }
-        
+
         self::setGameStateValue('month', $month);
         self::setGameStateValue('year', $year);
         $newSeason = self::getCurrentSeason();
-        
+
         self::notifyAllPlayers('timeProgression', clienttranslate('The season token moves ${step} spaces forward'), array(
             'step' => $timeProgression,
             'month' => $month,
-            'year' => $year, 
+            'year' => $year,
             'seasonChanged' => $currentSeason != $newSeason,
         ));
 
