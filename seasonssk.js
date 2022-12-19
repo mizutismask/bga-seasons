@@ -1830,7 +1830,6 @@ define([
                 this.checkAction('fairyMonolithActive');
 
                 var monolith = this.gamedatas.gamestate.args.card_id;
-                this.energies_on_card
 
                 var id_string = '';
 

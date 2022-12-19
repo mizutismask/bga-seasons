@@ -665,7 +665,7 @@ class SeasonsSK extends Table {
         return true;
     }
 
-    // Apply a resource delta to player's stock and notify
+    /** Apply a resource delta to player's stock and notify */
     function applyResourceDelta($player_id, $resources_delta, $bCheckBefore = true) {
         if ($bCheckBefore) {
             $cost = array();
@@ -2001,8 +2001,8 @@ class SeasonsSK extends Table {
             }
         }
         self::setGameStateValue(BONUS_JUST_PLAYED, 0);
-        if(!$bPotionOfLifeSpecial){
-            $this->gamestate->nextState('playerTurn');// from transmute action, we need to disable the undo transmutation bonus button
+        if (!$bPotionOfLifeSpecial) {
+            $this->gamestate->nextState('playerTurn'); // from transmute action, we need to disable the undo transmutation bonus button
         }
     }
 
