@@ -409,10 +409,8 @@ h3 {
 	max-width: 300px;
 }
 .possibleCard {
-	border-radius: 15px;
-	box-shadow: 0px 0px 3px 3px rgb(186 86 209 / 93%) !important;
-	-moz-box-shadow: 0px 0px 3px 3px rgb(186 86 209 / 93%) !important;
-	-webkit-box-shadow: 0px 0px 3px 3px rgb(186 86 209 / 93%) !important;
+	border-radius: 8px;
+	border: solid 2px #e9b415;
 	cursor: default;
 }
 
