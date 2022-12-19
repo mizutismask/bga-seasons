@@ -930,6 +930,10 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	border-radius: 8px;
 }
 
+.cardenergies .stockitem {
+	border-radius: 14px;
+}
+
 /* player reserve */
 
 .energywrapper {
