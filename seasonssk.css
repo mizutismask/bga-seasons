@@ -524,7 +524,7 @@ h3 {
 	text-align: center;
 }
 
-.ssn-loc-available:after {
+.ssn-loc-available:before {
 	content: " ";
 	position: absolute;
 	z-index: 0;
@@ -539,7 +539,7 @@ h3 {
 	background: url("img/slotAvailable.png") no-repeat center;
 }
 
-.ssn-loc-full:after {
+.ssn-loc-full:before {
 	content: " ";
 	position: absolute;
 	z-index: 0;
@@ -553,7 +553,7 @@ h3 {
 }
 
 .empty-slot {
-	/*,.ssn-loc-full:after */
+	/*,.ssn-loc-full:before */
 	box-shadow: inset 1px 1px 4px 2px #5c4223;
 }
 
