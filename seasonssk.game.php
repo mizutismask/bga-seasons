@@ -28,8 +28,9 @@ if (!defined('EVT_ON_SUMMON')) {
         112 // Jewel of the Ancients
     ]);
     define("PLAYER_FIELD_LAST_DRAFT_CARD", "player_last_draft_card");
-    define("BONUS_JUST_PLAYED", "bonusJustPlayed");
     define("PLAYER_FIELD_RESET_POSSIBLE", "player_reset_possible");
+    define("BONUS_JUST_PLAYED", "bonusJustPlayed");
+    define("LAST_TRANSMUTATION_POSSIBLE", 'lastTransmutationPossible');
 }
 
 class SeasonsSK extends Table {
@@ -44,7 +45,7 @@ class SeasonsSK extends Table {
             "elementalAmulet1" => 21, "elementalAmulet2" => 22, "elementalAmulet3" => 23, "elementalAmulet4" => 24,
             "opponentTarget" => 25, "mustDrawPowerCard" => 26, "elementalAmuletFree" => 27,
             "lastCardDrawn" => 28, "firstActivation" => 29, "steadfast_die_mode" => 30,
-            "discardPos" => 31, "useOtus" => 32, "lastCardPicked" => 33, "currentTokenEffect" => 34, BONUS_JUST_PLAYED => 35,
+            "discardPos" => 31, "useOtus" => 32, "lastCardPicked" => 33, "currentTokenEffect" => 34, BONUS_JUST_PLAYED => 35, LAST_TRANSMUTATION_POSSIBLE => 36,
         ));
 
         $this->cards = self::getNew("module.common.deck");
@@ -1632,6 +1633,7 @@ class SeasonsSK extends Table {
             throw new feException(self::_("You must draw a power card before the end of your turn"), true);
 
         $player_id = self::getCurrentPlayerId();
+        self::setGameStateValue(BONUS_JUST_PLAYED, 0);
         //todo
         $this->gamestate->nextState('endOfTurn');
     }
@@ -1729,6 +1731,7 @@ class SeasonsSK extends Table {
         } else if ($bonusId == 2) {
             // Transmute with bonus
             $current = self::getGameStateValue('transmutationPossible');
+            self::setGameStateValue(LAST_TRANSMUTATION_POSSIBLE, $current);
             if ($current < 2)
                 self::setGameStateValue('transmutationPossible', 2);  // Note: 2 = "with bonus +1"
             else
@@ -1784,7 +1787,8 @@ class SeasonsSK extends Table {
         self::setGameStateValue(BONUS_JUST_PLAYED, 0);
         switch ($bonusId) {
             case 2:
-                //todo
+                self::setGameStateValue("transmutationPossible", self::getGameStateValue(LAST_TRANSMUTATION_POSSIBLE));
+                self::setGameStateValue(LAST_TRANSMUTATION_POSSIBLE, 0);
                 break;
             case 3:
                 $this->decreaseSummoningGauge($player_id, clienttranslate('Undo bonus'));
@@ -1996,6 +2000,10 @@ class SeasonsSK extends Table {
                 }
             }
         }
+        self::setGameStateValue(BONUS_JUST_PLAYED, 0);
+        if(!$bPotionOfLifeSpecial){
+            $this->gamestate->nextState('playerTurn');// from transmute action, we need to disable the undo transmutation bonus button
+        }
     }
 
     /**  If active player (or specified player) has Io's minion => reduce points to 0 and notify it*/
@@ -2031,22 +2039,11 @@ class SeasonsSK extends Table {
 
     function drawPowerCard() {
         self::checkAction('draw');
+        self::setGameStateValue(BONUS_JUST_PLAYED, 0);
 
         if (self::getGameStateValue('mustDrawPowerCard') == 1) {
             self::doDrawPowerCard();
         }
-    }
-
-    function getPossibleCards() {
-        $possibleCards = [];
-        $player_id = self::getActivePlayerId();
-        $cards = $this->cards->getPlayerHand($player_id);
-        foreach ($cards as $c) {
-            if ($this->isSummonable($c["id"])) {
-                $possibleCards[] = $c["id"];
-            }
-        }
-        return $possibleCards;
     }
 
     function doDrawPowerCard() {
@@ -2071,6 +2068,18 @@ class SeasonsSK extends Table {
         $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
         $this->gamestate->nextState('draw');
+    }
+
+    function getPossibleCards() {
+        $possibleCards = [];
+        $player_id = self::getActivePlayerId();
+        $cards = $this->cards->getPlayerHand($player_id);
+        foreach ($cards as $c) {
+            if ($this->isSummonable($c["id"])) {
+                $possibleCards[] = $c["id"];
+            }
+        }
+        return $possibleCards;
     }
 
     function doNotUse() {
@@ -2395,6 +2404,8 @@ class SeasonsSK extends Table {
             'counters' => $this->argCounters(),
         ));
 
+        self::setGameStateValue(BONUS_JUST_PLAYED, 0);
+
         // Summon card effect
         self::insertEffect($card_id, EVT_ON_PLAY);
 
@@ -2439,6 +2450,7 @@ class SeasonsSK extends Table {
         ));
 
         self::incStat(1, 'cards_activated', $player_id);
+        self::setGameStateValue(BONUS_JUST_PLAYED, 0);
 
         // Thieving Fairies (cf Arcano Leech) + Heart of Argos
         $player_score = self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id='$player_id' ");
@@ -2658,6 +2670,7 @@ class SeasonsSK extends Table {
             'player_name' => self::getCurrentPlayerName(),
             'sacrified' => $card_type['name']
         ));
+        self::setGameStateValue(BONUS_JUST_PLAYED, 0);
 
         // If sacrified Shield of Zira: may gains some crystals
         $bSacrificeZira = false;
@@ -3019,6 +3032,7 @@ class SeasonsSK extends Table {
                 break;
         }
 
+        self::setGameStateValue(BONUS_JUST_PLAYED, 0);
         if ($immediateUse) {
             $this->useToken($token["id"], $player_id, $token["type"]);
         }
