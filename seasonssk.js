@@ -111,16 +111,7 @@ define([
                     this.energies_reserve[player_id].addItemType(0, 0, g_gamethemeurl + 'img/icons.png', 4);
                     this.energies_reserve[player_id].setSelectionMode(0);
 
-                    var ress_total = 0;
-                    if (this.gamedatas.resource[player_id]) {
-                        for (var ress_id in this.gamedatas.resource[player_id]) {
-                            var qt = this.gamedatas.resource[player_id][ress_id];
-                            for (var i = 0; i < qt; i++) {
-                                this.energies[player_id].addToStock(ress_id);
-                            }
-                            ress_total += toint(qt);
-                        }
-                    }
+                    this.updateResources(this.gamedatas.resource[player_id], player_id);
                     if (player_id != this.player_id) {
                         this.energies[player_id].setSelectionMode(0);
                     }
@@ -392,13 +383,7 @@ define([
                 }
 
                 // Resources on cards
-                for (var card_id in this.gamedatas.roc) {
-                    for (var ress_id in this.gamedatas.roc[card_id]) {
-                        for (i = 0; i < this.gamedatas.roc[card_id][ress_id].qt; i++) {
-                            this.placeEnergyOnCard(card_id, ress_id, this.gamedatas.roc[card_id][ress_id].player);
-                        }
-                    }
-                }
+                this.updateResourcesOnCards(this.gamedatas.roc);
 
                 this.setFirstPlayer(gamedatas.firstplayer);
                 this.addTooltip('firstplayer', _('First player'), '');
@@ -447,6 +432,29 @@ define([
 
             ///////////////////////////////////////////////////
             //// Utilities
+            updateResources: function (resources, player_id) {
+                this.energies[player_id].removeAll();
+                if (resources) {
+                    for (var ress_id in resources) {
+                        var qt = resources[ress_id];
+                        for (var i = 0; i < qt; i++) {
+                            this.energies[player_id].addToStock(ress_id);
+                        }
+                    }
+                }
+            },
+
+            updateResourcesOnCards: function (resources) {
+                for (var card_id in resources) {
+                    this.energies_on_card[card_id].removeAll();
+                    for (var ress_id in resources[card_id]) {
+                        for (i = 0; i < resources[card_id][ress_id].qt; i++) {
+                            this.placeEnergyOnCard(card_id, ress_id, resources[card_id][ress_id].player);
+                        }
+                    }
+                }
+            },
+
             permute: function (nums) {
                 var result = [];
                 var backtrack = (i, nums) => {
@@ -2435,6 +2443,8 @@ define([
                 dojo.subscribe('potionOfLifeWarning', this, "notif_potionOfLifeWarning");
                 dojo.subscribe('tokenUsed', this, "notif_tokenUsed");
                 dojo.subscribe('transmutationPossible', this, "notif_transmutationPossible");
+                dojo.subscribe('undoChooseLibraryNew', this, "notif_undoChooseLibraryNew");
+                dojo.subscribe('updateAllResources', this, "notif_updateAllResources");
 
                 var _this = this;
                 var notifs = [
@@ -2445,7 +2455,6 @@ define([
                     ['scoreRemainingCards', this.scoreAnimationDuration],
                     ['tokenScore', this.scoreAnimationDuration],
                     ['scoreAfterEnd', this.scoreAnimationDuration],
-                    ['undoChooseLibraryNew', undefined],
                 ];
                 notifs.forEach(function (notif) {
                     dojo.subscribe(notif[0], _this, "notif_" + notif[0]);
@@ -2616,6 +2625,13 @@ define([
                     this.scoreCtrl[player_id].toValue(notif.args.scores[player_id]);
                     this.leftPlayerBoardsCristalCounters[player_id].toValue(notif.args.scores[player_id]);
                 }
+            },
+
+            notif_updateAllResources: function (notif) {
+                console.log("notif_updateAllResources", notif
+                );
+                this.updateResources(notif.args.resources, notif.args.player_id);
+                this.updateResourcesOnCards(notif.args.roc);
             },
 
             notif_tokenChosen: function (notif) {

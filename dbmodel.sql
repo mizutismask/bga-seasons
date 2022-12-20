@@ -76,5 +76,19 @@ CREATE TABLE IF NOT EXISTS `ability_token` (
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `resource_undo` (
+  `resource_player` int(10) unsigned NOT NULL,
+  `resource_id` mediumint(8) unsigned NOT NULL,
+  `resource_qt` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`resource_player`,`resource_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `resource_on_card_undo` (
+  `roc_card` int(10) unsigned NOT NULL,
+  `roc_id` mediumint(8) unsigned NOT NULL,
+  `roc_qt` mediumint(8) unsigned NOT NULL,
+  `roc_player` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`roc_card`,`roc_id`),
+  KEY `roc_player` (`roc_player`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -325,8 +325,7 @@ class SeasonsSK extends Table {
         $result['tableau'] = $this->cards->getCardsInLocation('tableau');
 
         // Resources (=energies) on cards
-        $result['roc'] = self::getDoubleKeyCollectionFromDB("SELECT roc_card card, roc_id energy_id, roc_qt qt, roc_player player
-                                                              FROM resource_on_card");
+        $result['roc'] = $this->getROCStock();
 
         $result['firstplayer'] = self::getGameStateValue('firstPlayer');
 
@@ -393,8 +392,24 @@ class SeasonsSK extends Table {
     //////////////////////////////////////////////////////////////////////////////
     //////////// Utility functions    (functions used everywhere)
     ////////////  
+    function saveAllResourcesState($playerId) {
+        self::DbQuery("delete from resource_undo");
+        self::DbQuery("delete from resource_on_card_undo");
+        self::DbQuery("insert into resource_undo select * from resource where resource_player = '$playerId'");
+        self::DbQuery("insert into resource_on_card_undo select * from resource_on_card where roc_player = '$playerId'");
+    }
+
+    function restoreAllResourcesState($playerId) {
+        self::DbQuery("delete from resource where resource_player = '$playerId'");
+        self::DbQuery("delete from resource_on_card where roc_player = '$playerId'");
+        self::DbQuery("insert into resource select * from resource_undo");
+        self::DbQuery("insert into resource_on_card select * from resource_on_card_undo");
+
+        self::notifyAllPlayers("updateAllResources", '', array('player_id' => $playerId, 'resources' => $this->getResourceStock($playerId), 'roc' => $this->getROCStock()));
+    }
+
     function isBonusActionUndoPossible() {
-        return in_array(self::getGameStateValue(BONUS_JUST_PLAYED), [2, 3]);
+        return in_array(self::getGameStateValue(BONUS_JUST_PLAYED), [1, 2, 3]);
     }
 
     function getPlayersIds() {
@@ -707,6 +722,12 @@ class SeasonsSK extends Table {
             return $result[$player_id];
         else
             return $result;
+    }
+
+    /** Get resources on cards */
+    function getROCStock() {
+        return self::getDoubleKeyCollectionFromDB("SELECT roc_card card, roc_id energy_id, roc_qt qt, roc_player player
+                                                              FROM resource_on_card");
     }
 
     function getAmuletOfWaterStock($player_id) {
@@ -1727,6 +1748,7 @@ class SeasonsSK extends Table {
                 throw new feException(self::_("You don't have enough energies"), true);
 
             self::setGameStateValue(BONUS_JUST_PLAYED, $bonusId);
+            $this->saveAllResourcesState($player_id);
             $this->gamestate->nextState('bonusExchange');
         } else if ($bonusId == 2) {
             // Transmute with bonus
@@ -1786,6 +1808,9 @@ class SeasonsSK extends Table {
         ));
         self::setGameStateValue(BONUS_JUST_PLAYED, 0);
         switch ($bonusId) {
+            case 1:
+                $this->restoreAllResourcesState($player_id);
+                break;
             case 2:
                 self::setGameStateValue("transmutationPossible", self::getGameStateValue(LAST_TRANSMUTATION_POSSIBLE));
                 self::setGameStateValue(LAST_TRANSMUTATION_POSSIBLE, 0);
@@ -2980,7 +3005,7 @@ class SeasonsSK extends Table {
                 } else {
                     throw new BgaUserException("You can not use this token now since you've never used a bonus action");
                 }
-                break;
+                breagetResourceStockk;
             case 17:
                 //reroll
                 /* 
