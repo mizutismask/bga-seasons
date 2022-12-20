@@ -31,12 +31,6 @@ if (!defined('EVT_ON_SUMMON')) {
     define("PLAYER_FIELD_RESET_POSSIBLE", "player_reset_possible");
     define("BONUS_JUST_PLAYED", "bonusJustPlayed");
     define("LAST_TRANSMUTATION_POSSIBLE", 'lastTransmutationPossible');
-    define("BONUS_ENERGY1_TRADED", "bonusEnergy1Traded");
-    define("BONUS_ENERGY2_TRADED", "bonusEnergy2Traded");
-    define("BONUS_ENERGY1_TRADED_FOR", "bonusEnergy1TradedFor");
-    define("BONUS_ENERGY2_TRADED_FOR", "bonusEnergy2TradedFor");
-    define("BONUS_ENERGY1_FROM", "bonusEnergy1From");
-    define("BONUS_ENERGY2_FROM", "bonusEnergy2From");
 }
 
 class SeasonsSK extends Table {
@@ -51,10 +45,7 @@ class SeasonsSK extends Table {
             "elementalAmulet1" => 21, "elementalAmulet2" => 22, "elementalAmulet3" => 23, "elementalAmulet4" => 24,
             "opponentTarget" => 25, "mustDrawPowerCard" => 26, "elementalAmuletFree" => 27,
             "lastCardDrawn" => 28, "firstActivation" => 29, "steadfast_die_mode" => 30,
-            "discardPos" => 31, "useOtus" => 32, "lastCardPicked" => 33, "currentTokenEffect" => 34, BONUS_JUST_PLAYED => 35,
-            LAST_TRANSMUTATION_POSSIBLE => 36,
-            BONUS_ENERGY1_TRADED => 37, BONUS_ENERGY1_TRADED_FOR => 38, BONUS_ENERGY1_FROM => 39, BONUS_ENERGY2_TRADED => 40, BONUS_ENERGY2_TRADED_FOR => 41, BONUS_ENERGY2_FROM => 42, //to allow bonus action trade undo
-
+            "discardPos" => 31, "useOtus" => 32, "lastCardPicked" => 33, "currentTokenEffect" => 34, BONUS_JUST_PLAYED => 35, LAST_TRANSMUTATION_POSSIBLE => 36,
         ));
 
         $this->cards = self::getNew("module.common.deck");
@@ -148,12 +139,6 @@ class SeasonsSK extends Table {
         self::setGameStateInitialValue('lastCardPicked', 0);
         self::setGameStateInitialValue('currentTokenEffect', 0);
         self::setGameStateInitialValue(BONUS_JUST_PLAYED, 0);
-        self::setGameStateInitialValue(BONUS_ENERGY1_FROM, 0);
-        self::setGameStateInitialValue(BONUS_ENERGY2_FROM, 0);
-        self::setGameStateInitialValue(BONUS_ENERGY1_TRADED, 0);
-        self::setGameStateInitialValue(BONUS_ENERGY2_TRADED, 0);
-        self::setGameStateInitialValue(BONUS_ENERGY1_TRADED_FOR, 0);
-        self::setGameStateInitialValue(BONUS_ENERGY2_TRADED_FOR, 0);
 
         self::initStat('table', 'turn_number', 0);
 
@@ -692,25 +677,10 @@ class SeasonsSK extends Table {
                 self::checkResourceCost($player_id, $cost);
         }
 
-        $i = 0;
         foreach ($resources_delta as $resource_id => $delta) {
             $sql = "UPDATE resource SET resource_qt=resource_qt+$delta ";
             $sql .= "WHERE resource_player='$player_id' AND resource_id='$resource_id' ";
             self::DbQuery($sql);
-
-            if ($i == 0) {
-                self::setGameStateValue(BONUS_ENERGY1_TRADED, $resource_id);
-                self::setGameStateValue(BONUS_ENERGY1_FROM, 0);
-                if ($delta * -1 == 2) {
-                    self::setGameStateValue(BONUS_ENERGY2_TRADED, $resource_id);
-                    self::setGameStateValue(BONUS_ENERGY2_FROM, 0);
-                }
-            }
-            if ($i == 1) {
-                self::setGameStateValue(BONUS_ENERGY2_TRADED, $resource_id);
-                self::setGameStateValue(BONUS_ENERGY2_FROM, 0);
-            }
-            $i++;
         }
 
         self::notifyAllPlayers("resourceStockUpdate", '', array('player_id' => $player_id, 'delta' => $resources_delta));
@@ -1679,7 +1649,7 @@ class SeasonsSK extends Table {
 
         $cost = array(0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0);
 
-        foreach ($energies as $i => $energy) {
+        foreach ($energies as $energy) {
             if ($energy >= 10) {
                 $real_energy = $energy % 10;
                 $card_id = intval(floor($energy / 10));
@@ -1697,15 +1667,6 @@ class SeasonsSK extends Table {
 
                 self::DbQuery("UPDATE resource_on_card SET roc_qt=roc_qt-1
                                 WHERE roc_card='$card_id' AND roc_id='$real_energy' ");
-
-                if ($i == 0) {
-                    self::setGameStateValue(BONUS_ENERGY1_TRADED, $real_energy);
-                    self::setGameStateValue(BONUS_ENERGY1_FROM, $card_id);
-                }
-                if ($i == 1) {
-                    self::setGameStateValue(BONUS_ENERGY2_TRADED, $real_energy);
-                    self::setGameStateValue(BONUS_ENERGY2_FROM, $card_id);
-                }
 
                 self::notifyAllPlayers('removeEnergyOnCard', '', array(
                     'player_id' => $player_id,
