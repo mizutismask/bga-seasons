@@ -370,7 +370,7 @@ h3 {
 	grid-template-columns: max-content auto;
 	column-gap: 18px;
 
-	margin: 15px 0px;
+	margin-bottom: 5px;
 	background-color: #ccae99;
 	background-clip: padding-box;
 	border: solid;
@@ -450,13 +450,12 @@ h3 {
 	-webkit-filter: brightness(50%); /* Chrome, Safari, Opera */
 }
 
-
 .show-player-tableau a,
-.anchor-up a{
+.anchor-up a {
 	color: #000;
 }
 
-.show-player-tableau{
+.show-player-tableau {
 	height: 40px;
 	width: 25px;
 }
@@ -491,11 +490,14 @@ h3 {
 	height: 346px;
 	margin: 10px;
 }
+
+.seasonsclearblock {
+	padding: 0px 10px
+}
 .seasonsblock {
 	text-align: center;
-	margin-bottom: 10px;
-	margin-top: 10px;
-	padding: 10px;
+	margin-top: 8px;
+	padding: 3px;
 }
 
 .seasonsblock > div {

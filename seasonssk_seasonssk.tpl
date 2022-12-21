@@ -69,7 +69,7 @@
     </div>
 
 
-    <div id="season_dices_wrap" class="whiteblock seasons_rightpanel">
+    <div id="season_dices_wrap" class="seasons_rightpanel seasonsclearblock">
         <div>
             <h3>{LB_SEASONS_DICES}</h3>
             <div id="seasons_dices"></div>
