@@ -8,17 +8,11 @@
 	--scoreShadowColor: white;
 }
 
-html.season_1 {
-	background: url("img/backgroundSeason1.jpg");
-}
-html.season_2 {
-	background: url("img/backgroundSeason2.jpg");
-}
-html.season_3 {
-	background: url("img/backgroundSeason3.jpg");
-}
-html.season_4 {
-	background: url("img/backgroundSeason4.jpg");
+html.season_1,html.season_2,html.season_3,html.season_4 {
+	background-image: url("img/backgroundSeason.jpg");
+	background-attachment: fixed;
+    background-position: 50%;
+    background-size: cover;
 }
 
 h3 {
@@ -492,7 +486,7 @@ h3 {
 }
 
 .seasonsclearblock {
-	padding: 0px 10px
+	padding: 0px 10px;
 }
 .seasonsblock {
 	text-align: center;
