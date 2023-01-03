@@ -114,6 +114,8 @@ define([
                     this.updateResources(this.gamedatas.resource[player_id], player_id);
                     if (player_id != this.player_id) {
                         this.energies[player_id].setSelectionMode(0);
+                    } else {
+                        dojo.connect(this.energies[player_id], 'onChangeSelection', this, 'onEnergySelectionChange');
                     }
 
                     // Void items (reserve size)
@@ -479,12 +481,35 @@ define([
             addTransmutationButton(args) {
                 // Transmutation possible ?
                 if (toint(args.transmutationPossible) > 0) {
-                    var msg = _('Transmute energies');
-                    var bonus = toint(args.transmutationPossible) - 1;
-                    if (bonus > 0) {
-                        msg += ' (+' + bonus + ')';
-                    }
+                    msg = this.getDefaultTransmutationButtonText(args);
                     this.addActionButton('transmute', msg, 'onTransmute');
+                }
+            },
+
+            getDefaultTransmutationButtonText(args) {
+                var msg = _('Transmute energies');
+                var bonus = toint(args.transmutationPossible) - 1;
+                if (bonus > 0) {
+                    msg += ' (+' + bonus + ')';
+                }
+                return msg;
+            },
+
+            changeTransmutationButtonText(args) {
+                msg = this.getDefaultTransmutationButtonText(args);
+                separator = " => ";
+                if (msg.indexOf(separator) != -1) {
+                    msg = msg.replace(separator, separator + args.simulationPoints);
+                }
+                else {
+                    msg += separator + args.simulationPoints;
+                }
+                this.changeInnerHtml("transmute", msg += _(" points"));
+            },
+
+            changeInnerHtml: function (id, text) {
+                if (dojo.byId(id)) {
+                    dojo.byId(id).innerHTML = text;
                 }
             },
 
@@ -1783,6 +1808,13 @@ define([
                 }
             },
 
+            onEnergySelectionChange: function () {
+                if (dojo.byId("transmute")) {
+                    var id_string = this.getAllSelectedEnergies(false);
+                    this.takeAction("transmute", { energies: id_string, simulation: true });
+                }
+            },
+
             onCardEffectEnd: function () {
                 this.ajaxcall("/seasonssk/seasonssk/cardEffectEnd.html", { lock: true }, this, function (result) { });
             },
@@ -2445,6 +2477,8 @@ define([
                 dojo.subscribe('transmutationPossible', this, "notif_transmutationPossible");
                 dojo.subscribe('undoChooseLibraryNew', this, "notif_undoChooseLibraryNew");
                 dojo.subscribe('updateAllResources', this, "notif_updateAllResources");
+                dojo.subscribe('simulationPoints', this, "notif_simulationPoints");
+
 
                 var _this = this;
                 var notifs = [
@@ -2632,6 +2666,10 @@ define([
                 );
                 this.updateResources(notif.args.resources, notif.args.player_id);
                 this.updateResourcesOnCards(notif.args.roc);
+            },
+
+            notif_simulationPoints: function (notif) {
+                this.changeTransmutationButtonText(notif.args);
             },
 
             notif_tokenChosen: function (notif) {

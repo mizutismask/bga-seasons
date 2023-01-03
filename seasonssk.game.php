@@ -399,13 +399,14 @@ class SeasonsSK extends Table {
         self::DbQuery("insert into resource_on_card_undo select * from resource_on_card where roc_player = '$playerId'");
     }
 
-    function restoreAllResourcesState($playerId) {
+    function restoreAllResourcesState($playerId, $notify = true) {
         self::DbQuery("delete from resource where resource_player = '$playerId'");
         self::DbQuery("delete from resource_on_card where roc_player = '$playerId'");
         self::DbQuery("insert into resource select * from resource_undo");
         self::DbQuery("insert into resource_on_card select * from resource_on_card_undo");
 
-        self::notifyAllPlayers("updateAllResources", '', array('player_id' => $playerId, 'resources' => $this->getResourceStock($playerId), 'roc' => $this->getROCStock()));
+        if ($notify)
+            self::notifyAllPlayers("updateAllResources", '', array('player_id' => $playerId, 'resources' => $this->getResourceStock($playerId), 'roc' => $this->getROCStock()));
     }
 
     function isBonusActionUndoPossible() {
@@ -681,7 +682,7 @@ class SeasonsSK extends Table {
     }
 
     /** Apply a resource delta to player's stock and notify */
-    function applyResourceDelta($player_id, $resources_delta, $bCheckBefore = true) {
+    function applyResourceDelta($player_id, $resources_delta, $bCheckBefore = true, $notify = true) {
         if ($bCheckBefore) {
             $cost = array();
             foreach ($resources_delta as $resource_id => $delta) {
@@ -698,7 +699,8 @@ class SeasonsSK extends Table {
             self::DbQuery($sql);
         }
 
-        self::notifyAllPlayers("resourceStockUpdate", '', array('player_id' => $player_id, 'delta' => $resources_delta));
+        if ($notify)
+            self::notifyAllPlayers("resourceStockUpdate", '', array('player_id' => $player_id, 'delta' => $resources_delta));
     }
 
     function deckAutoReshuffle() {
@@ -1888,7 +1890,12 @@ class SeasonsSK extends Table {
         return $display;
     }
 
-    function transmute($energies, $bPotionOfLifeSpecial = false) {
+    /**
+     * If simulation = true, only calculate gains but does nothing
+     */
+    function transmute($energies, $bPotionOfLifeSpecial = false, $simulation = false) {
+        $player_id = self::getActivePlayerId();
+
         if (!$bPotionOfLifeSpecial) {
             self::checkAction('transmute');
 
@@ -1898,7 +1905,10 @@ class SeasonsSK extends Table {
         } else
             $transmutationPossible = self::getGameStateValue("transmutationPossible");
 
-        $player_id = self::getActivePlayerId();
+        $simulationPoints = 0;
+        if ($simulation) {
+            self::saveAllResourcesState($player_id); //we save the state and restore it at the end to make sure nor the computation or the energies are affected
+        }
 
         // Apply the cost of amulet of waters
         self::applyAmuletOfWaterEnergyCost($energies);
@@ -1913,7 +1923,7 @@ class SeasonsSK extends Table {
         }
 
         // Check & Consume resources
-        self::applyResourceDelta($player_id, $cost, true);
+        self::applyResourceDelta($player_id, $cost, true, !$simulation);
 
         // Compute gain in points
         $paid = array();
@@ -1960,25 +1970,28 @@ class SeasonsSK extends Table {
         }
 
         $points = self::checkMinion($points);
+        $simulationPoints = $points;
 
-        $sql = "UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ";
-        self::DbQuery($sql);
+        if (!$simulation) {
+            $sql = "UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ";
+            self::DbQuery($sql);
 
-        $notifArgs = array(
-            'player_id' => $player_id,
-            'player_name' => self::getActivePlayerName(),
-            'energies' => self::htmlResources($paid),
-            'points' => $points
-        );
-        $notifDescr = clienttranslate('${player_name} transmutes ${energies} for ${points} point(s)');
-        if ($bPotionOfLifeSpecial) {
-            $notifDescr = clienttranslate('${card_name}: ${player_name} transmutes ${energies} for ${points} point(s)');
-            $notifArgs['i18n'] = array('card_name');
-            $notifArgs['card_name'] = self::getCurrentEffectCardName();
+            $notifArgs = array(
+                'player_id' => $player_id,
+                'player_name' => self::getActivePlayerName(),
+                'energies' => self::htmlResources($paid),
+                'points' => $points
+            );
+            $notifDescr = clienttranslate('${player_name} transmutes ${energies} for ${points} point(s)');
+            if ($bPotionOfLifeSpecial) {
+                $notifDescr = clienttranslate('${card_name}: ${player_name} transmutes ${energies} for ${points} point(s)');
+                $notifArgs['i18n'] = array('card_name');
+                $notifArgs['card_name'] = self::getCurrentEffectCardName();
+            }
+            self::notifyUpdateScores();
+            self::notifyAllPlayers('winPoints', $notifDescr, $notifArgs);
+            self::incStat($points, 'crystal_transmutations', $player_id);
         }
-        self::notifyUpdateScores();
-        self::notifyAllPlayers('winPoints', $notifDescr, $notifArgs);
-        self::incStat($points, 'crystal_transmutations', $player_id);
 
         // Purse of Io: bonus for all transmuted energy
         $purseOfIo = self::getAllCardsOfTypeInTableau(array(
@@ -1987,24 +2000,27 @@ class SeasonsSK extends Table {
 
         if (isset($purseOfIo[8])) {
             $points = self::checkMinion($total_nbr * count($purseOfIo[8]), $player_id);
-            $sql = "UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ";
-            self::DbQuery($sql);
+            $simulationPoints += $points;
+            if (!$simulation) {
+                $sql = "UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ";
+                self::DbQuery($sql);
 
-            self::notifyAllPlayers('winPoints', clienttranslate('${card_name}: ${player_name} gains ${points} point(s)'), array(
-                'i18n' => array('card_name'),
-                'player_id' => $player_id,
-                'player_name' => self::getActivePlayerName(),
-                'points' => $points,
-                'card_name' => $this->card_types[8]['name']
-            ));
-            self::notifyUpdateScores();
+                self::notifyAllPlayers('winPoints', clienttranslate('${card_name}: ${player_name} gains ${points} point(s)'), array(
+                    'i18n' => array('card_name'),
+                    'player_id' => $player_id,
+                    'player_name' => self::getActivePlayerName(),
+                    'points' => $points,
+                    'card_name' => $this->card_types[8]['name']
+                ));
+                self::notifyUpdateScores();
+            }
         }
 
         // Io's transmuter: mark it as active if used during this round
         // Io's transmuter is used if:
         //  _ the current die has crystal and no cristalization power
         //  _ this is not a Potion of Life Cristalization
-        if (!$bPotionOfLifeSpecial) {
+        if (!$simulation && !$bPotionOfLifeSpecial) {
             $transmuter = self::getAllCardsOfTypeInTableau(array(
                 109 // Io's transmuter (+2 crystals)
             ), $player_id);
@@ -2025,9 +2041,20 @@ class SeasonsSK extends Table {
                 }
             }
         }
-        self::setGameStateValue(BONUS_JUST_PLAYED, 0);
-        if (!$bPotionOfLifeSpecial) {
-            $this->gamestate->nextState('playerTurn'); // from transmute action, we need to disable the undo transmutation bonus button
+
+        if ($simulation) {
+            self::restoreAllResourcesState($player_id, false);
+        } else {
+            self::setGameStateValue(BONUS_JUST_PLAYED, 0);
+            if (!$bPotionOfLifeSpecial) {
+                $this->gamestate->nextState('playerTurn'); // from transmute action, we need to disable the undo transmutation bonus button
+            }
+        }
+        if ($simulation) {
+            self::notifyPlayer($player_id, "simulationPoints", '', array(
+                "simulationPoints" => $simulationPoints,
+                "transmutationPossible" => self::getGameStateValue("transmutationPossible")
+            ));
         }
     }
 

@@ -73,6 +73,7 @@ class action_seasonssk extends APP_GameAction {
         self::setAjaxMode();
 
         $energy_raw = self::getArg("energies", AT_numberlist, true);
+        $simulation = self::getArg("simulation", AT_bool, false);
 
         // Removing last ';' if exists
         if (substr($energy_raw, -1) == ';')
@@ -82,7 +83,7 @@ class action_seasonssk extends APP_GameAction {
         else
             $energy = explode(';', $energy_raw);
 
-        $this->game->transmute($energy);
+        $this->game->transmute($energy, false, $simulation);
         self::ajaxResponse();
     }
 
@@ -491,10 +492,10 @@ class action_seasonssk extends APP_GameAction {
         self::ajaxResponse();
     }
 
-    private function getArrayFromArg($arg){
+    private function getArrayFromArg($arg) {
         // Removing last ';' if exists
         if (substr($arg, -1) == ';')
-        $arg = substr($arg, 0, -1);
+            $arg = substr($arg, 0, -1);
         if ($arg == '')
             $energy = array();
         else
