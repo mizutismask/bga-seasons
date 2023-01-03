@@ -34,6 +34,7 @@ define([
                 this.playerTableau = {};
                 this.underlayerPlayerTableau = {};
                 this.tokensStock = {};
+                this.energies_on_card_handlers = {};
 
                 this.cardwidth = 124;
                 this.cardHeight = 173;
@@ -130,7 +131,6 @@ define([
                     this.underlayerPlayerTableau[player_id].create(this, $('underlayer_player_tableau_' + player_id), this.cardwidth, this.cardHeight);
                     this.underlayerPlayerTableau[player_id].image_items_per_row = itemsPerRow;
                     this.underlayerPlayerTableau[player_id].extraClasses = 'thickness empty-slot';
-                    this.underlayerPlayerTableau[player_id].onItemCreate = dojo.hitch(this, 'setupNewCard');
                     this.underlayerPlayerTableau[player_id].setSelectionMode = 0;
                     this.underlayerPlayerTableau[player_id].addItemType(0, 9999, g_gamethemeurl + 'img/voidcards.png', 0);
                     for (let i = 0; i < 15; i++) {//insert empty slots
@@ -158,6 +158,7 @@ define([
                     }
                     else {
                         dojo.connect(this.playerTableau[player_id], 'onChangeSelection', this, 'onPowerCardActivation');
+                        this.playerTableau[player_id].onItemDelete = dojo.hitch(this, 'deleteCardOnMyTableau');
                     }
 
                     //left player board
@@ -945,8 +946,7 @@ define([
             setupNewCardOnTableau: function (card_type_id, tcard_id, player_id) {
                 var original_card_type_id = this.ot(card_type_id);
                 var card_type_id = this.ct(card_type_id);
-
-
+                
                 //remove blank
                 this.playerTableau[player_id].removeFromStock(0);
 
@@ -962,6 +962,10 @@ define([
 
                     if (toint(card_type_id) != 4 && toint(card_type_id) != 103 && toint(card_type_id) != 207) {
                         this.energies_on_card[tcard_id].setSelectionMode(0);
+                    }
+                    if (player_id == this.player_id && (!this.energies_on_card_handlers.hasOwnProperty(tcard_id) || !this.energies_on_card_handlers[tcard_id])) {
+                        let handle = dojo.connect(this.energies_on_card[tcard_id], 'onChangeSelection', this, 'onEnergySelectionChange');
+                        this.energies_on_card_handlers[tcard_id] = handle;
                     }
                 }
 
@@ -990,6 +994,15 @@ define([
 
                 // Ensure card is set with the right type
                 dojo.addClass('cardcontent_player_tableau_' + player_id + '_item_' + tcard_id, 'cardtype_' + card_type_id);
+            },
+
+            deleteCardOnMyTableau: function (card_div, card_type_id, card_id) {
+                console.log("this.energies_on_card_handlers[card_id]", this.energies_on_card_handlers[card_id]);
+                if (this.energies_on_card_handlers[card_id]) {
+                    console.log(card_id, "disconnected");
+                    dojo.disconnect(this.energies_on_card_handlers[card_id]);
+                    this.energies_on_card_handlers[card_id] = undefined;
+                }
             },
 
             showSeasonDices: function (dices, with_id) {
@@ -1217,7 +1230,6 @@ define([
                 for (var card_id in this.amulet_of_water_ingame) {
                     if (this.amulet_of_water_ingame[card_id] == 1) {
                         items = this.energies_on_card[card_id].getSelectedItems();
-                        this.energies_on_card[card_id].unselectAll();
 
                         for (i in items) {
                             id_string += card_id + '' + items[i].type + ';'; // Note: add the card id to items when they come from an amulet.
@@ -1798,7 +1810,7 @@ define([
                 }
             },
 
-            onEnergySelectionChange: function () {
+            onEnergySelectionChange: function (src_card_div_id, item_type) {
                 if (dojo.byId("transmute")) {
                     var id_string = this.getAllSelectedEnergies(false);
                     this.takeAction("transmute", { energies: id_string, simulation: true });

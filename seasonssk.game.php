@@ -1662,7 +1662,7 @@ class SeasonsSK extends Table {
     }
 
     // Apply cost with given energy on given Amulet of Water cards
-    function applyAmuletOfWaterEnergyCost($energies) {
+    function applyAmuletOfWaterEnergyCost($energies, $notify = true) {
         // Get all energies on amulet of water of player
         $player_id = self::getActivePlayerId();
         $aow = self::getDoubleKeyCollectionFromDB("SELECT roc_card card, roc_id energy_id, roc_qt qt
@@ -1691,11 +1691,13 @@ class SeasonsSK extends Table {
                 self::DbQuery("UPDATE resource_on_card SET roc_qt=roc_qt-1
                                 WHERE roc_card='$card_id' AND roc_id='$real_energy' ");
 
-                self::notifyAllPlayers('removeEnergyOnCard', '', array(
-                    'player_id' => $player_id,
-                    'card_id' => $card_id,
-                    'energy_type' => $real_energy
-                ));
+                if ($notify) {
+                    self::notifyAllPlayers('removeEnergyOnCard', '', array(
+                        'player_id' => $player_id,
+                        'card_id' => $card_id,
+                        'energy_type' => $real_energy
+                    ));
+                }
             }
         }
     }
@@ -1911,7 +1913,7 @@ class SeasonsSK extends Table {
         }
 
         // Apply the cost of amulet of waters
-        self::applyAmuletOfWaterEnergyCost($energies);
+        self::applyAmuletOfWaterEnergyCost($energies, !$simulation);
         $originalEnergies = self::mergeEnergyInRealCost($energies);
         $energies = self::filterAmuletOfWaterEnergies($energies);
 
