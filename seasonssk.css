@@ -19,13 +19,6 @@ h3 {
 	color: white;
 }
 
-.season_1 h3 {
-	color: var(--scoreColor);
-}
-#myhand h3 {
-	color: white;
-}
-
 /* player_hand scrollbar */
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollable-stock-inner::-webkit-scrollbar {
@@ -81,15 +74,19 @@ h3 {
 
 .season_1 #season_dices_wrap {
 	background: url("img/convertSeason1.png");
+	background-size: auto 100%;
 }
 .season_2 #season_dices_wrap {
-	border: 2px solid #61ac1b;
+	background: url("img/convertSeason2.png");
+	background-size: auto 100%;
 }
 .season_3 #season_dices_wrap {
-	border: 2px solid #f8ea26;
+	background: url("img/convertSeason3.png");
+	background-size: auto 100%;
 }
 .season_4 #season_dices_wrap {
-	border: 2px solid #fc3737;
+	background: url("img/convertSeason4.png");
+	background-size: auto 100%;
 }
 
 .seasons_rightpanel {
@@ -237,6 +234,7 @@ h3 {
 	justify-content: space-between;
 	align-items: center;
 	gap: 5px;
+	padding: 10px 5px 18px 5px;
 }
 
 /* don't need border since the die moves immediatly somewhere else.*/
