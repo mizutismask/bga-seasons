@@ -530,6 +530,14 @@ class SeasonsSK extends Table {
                 'counter_value' => $pointsByPlayer[$player_id]
             );
         }
+        $counters['draw_pile_counter'] = array(
+            'counter_name' => 'draw_pile_counter',
+            'counter_value' => $this->cards->countCardInLocation('deck')
+        );
+        $counters['discard_pile_counter'] = array(
+            'counter_name' => 'discard_pile_counter',
+            'counter_value' => $this->cards->countCardInLocation('discard')
+        );
         return $counters;
     }
 

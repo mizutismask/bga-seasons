@@ -8,11 +8,14 @@
 	--scoreShadowColor: white;
 }
 
-html.season_1,html.season_2,html.season_3,html.season_4 {
+html.season_1,
+html.season_2,
+html.season_3,
+html.season_4 {
 	background-image: url("img/backgroundSeason.jpg");
 	background-attachment: fixed;
-    background-position: 50%;
-    background-size: cover;
+	background-position: 50%;
+	background-size: cover;
 }
 
 h3 {
@@ -1028,6 +1031,27 @@ a.choose_player {
 }
 #score #tabble-wrapper table tr td.total {
 	font-weight: bold;
+}
+
+.card-pile {
+	width: 25px;
+	height: 33px;
+	border-radius: 5px;
+	display: inline-block;
+	border: 1px solid black;
+}
+
+.draw-pile {
+	background-color: rgb(19, 90, 81);
+}
+
+.discard-pile {
+	background-color: #bdc7b1;
+}
+
+#piles_counters{ 
+	display: flex;
+	gap: 3px;
 }
 
 /* Tokens */

@@ -41,11 +41,11 @@ class view_seasonssk_seasonssk extends game_view {
 
         foreach ($players as $player) {
             if ($player['player_id'] != $g_user->get_id()) {
-            $this->page->insert_block("tokens", array(
-                "PLAYER_ID" => $player['player_id'],
-                "PLAYER_NAME" => $player['player_name'],
-            ));
-           
+                $this->page->insert_block("tokens", array(
+                    "PLAYER_ID" => $player['player_id'],
+                    "PLAYER_NAME" => $player['player_name'],
+                ));
+
                 $this->page->insert_block("player", array(
                     "PLAYER_ID" => $player['player_id'],
                     "PLAYER_NAME" => $player['player_name'],
@@ -54,8 +54,8 @@ class view_seasonssk_seasonssk extends game_view {
             }
         }
 
-        $this->tpl['CARDS_FOR_YEAR_2'] = self::_("Your cards for year II");
-        $this->tpl['CARDS_FOR_YEAR_3'] = self::_("Your cards for year III");
+        $this->tpl['CARDS_FOR_YEAR_2'] = self::_("My cards for year II");
+        $this->tpl['CARDS_FOR_YEAR_3'] = self::_("My cards for year III");
         $this->tpl['OTUS_TITLE'] = self::_("Otus the Oracle");
 
         $this->tpl['YEAR_I'] = self::_("Year I (your starting hand)");
@@ -63,5 +63,14 @@ class view_seasonssk_seasonssk extends game_view {
         $this->tpl['CONVERT3'] = self::_("Transmute this energy into 3 cristals");
         $this->tpl['CONVERT2'] = self::_("Transmute this energy into 2 cristals");
         $this->tpl['CONVERT1'] = self::_("Transmute one of these energies into 1 cristal");
+
+        $this->tpl['LB_SEASONS_DICES'] = self::_("Seasons dice");
+        $this->tpl['LB_TRANSMUTATION_RATE'] = self::_("Transmutation rate");
+        $this->tpl['LB_CARDS_NUMBER'] = self::_("Cards nb.");
+        $this->tpl['LB_ABILITY_TOKENS'] = self::_("Ability tokens");
+        $this->tpl['LB_CARDS_DRAWN'] = self::_("Cards drawn");
+        $this->tpl['LB_MY_HAND'] = self::_("My hand");
+        $this->tpl['LB_CHOOSE_THIS_PLAYER'] = self::_("Choisir ce joueur");
+        
     }
 }

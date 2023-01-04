@@ -94,6 +94,13 @@
                 </div>
             </div>
         </div>
+        <div>
+            <h3>{LB_CARDS_NUMBER}</h3>
+            <div id="piles_counters">
+                <div id="draw_pile_counter" class="card-pile draw-pile counter"></div>
+                <div id="discard_pile_counter" class="card-pile discard-pile counter"></div>
+            </div>
+        </div>
     </div>
 
     <div id="abilityTokens" class="seasons_rightpanel">
