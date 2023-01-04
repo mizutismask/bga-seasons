@@ -444,6 +444,15 @@ define([
 
             ///////////////////////////////////////////////////
             //// Utilities
+            updateCountersSafe: function (notif) {
+                if (notif.hasOwnProperty("counters") && notif.counters) {
+                    this.updateCounters(notif.counters);
+                }
+                else if (notif.args.hasOwnProperty("counters") && notif.args.counters) {
+                    this.updateCounters(notif.args.counters);
+                }
+            },
+
             updateResources: function (resources, player_id) {
                 this.energies[player_id].removeAll();
                 if (resources) {
@@ -955,7 +964,7 @@ define([
             setupNewCardOnTableau: function (card_type_id, tcard_id, player_id) {
                 var original_card_type_id = this.ot(card_type_id);
                 var card_type_id = this.ct(card_type_id);
-                
+
                 //remove blank
                 this.playerTableau[player_id].removeFromStock(0);
 
@@ -2132,6 +2141,7 @@ define([
                             this.addActionButton('amuletOfTime', _('Discard selected cards'), 'onAmuletOfTime');
                             break;
                         case 'playerTurn':
+                            this.updateCountersSafe(args);
                             this.addTransmutationButton(args);
                             if (args.undoBonusActionPossible) {
                                 this.addUndoButton();
@@ -2651,6 +2661,7 @@ define([
                     // Remove from choice
                     this.cardChoice.removeFromStockById(notif.args.card.id);
                 }
+                this.updateCountersSafe(notif);
             },
             notif_pickPowerCards: function (notif) {
                 var from;
@@ -2662,6 +2673,7 @@ define([
                     //todo from
                     this.addCardToPlayerHand(card);
                 }
+                this.updateCountersSafe(notif);
             },
             notif_winPoints: function (notif) {
             },
@@ -2741,6 +2753,7 @@ define([
                 if (typeof this.amulet_of_water_ingame[notif.args.card_id] != 'undefined') {
                     this.amulet_of_water_ingame[notif.args.card_id] = 0;
                 }
+                this.updateCountersSafe(notif);
             },
             notif_reserveSizeChange: function (notif) {
                 this.setReserveSize(notif.args.player_id, notif.args.reserve_size);
@@ -2749,6 +2762,7 @@ define([
                 if (notif.args.player_id == this.player_id) {
                     this.removeCardFromPlayerHand({ id: notif.args.card_id });
                 }
+                this.updateCountersSafe(notif);
             },
             notif_placeEnergyOnCard: function (notif) {
                 this.placeEnergyOnCard(notif.args.card_id, notif.args.energy_type, notif.args.player_id);

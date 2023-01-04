@@ -1342,7 +1342,7 @@ class SeasonsSK extends Table {
                 'card_id' => $raven_id,
                 'player_id' => $raven['location_arg'],
                 'player_name' => $players[$raven['location_arg']]['player_name'],
-                'sacrified' => $this->card_types[118]['name']
+                'sacrified' => $this->card_types[118]['name'], "counters" => $this->argCounters()
             ));
         }
     }
@@ -2122,7 +2122,7 @@ class SeasonsSK extends Table {
             'player_name' => self::getActivePlayerName()
         ));
 
-        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card));
+        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
 
         self::setGameStateValue('lastCardDrawn', $card['id']);
 
@@ -2730,7 +2730,7 @@ class SeasonsSK extends Table {
             'card_id' => $card_id,
             'player_id' => $player_id,
             'player_name' => self::getCurrentPlayerName(),
-            'sacrified' => $card_type['name']
+            'sacrified' => $card_type['name'], "counters" => $this->argCounters()
         ));
         self::setGameStateValue(BONUS_JUST_PLAYED, 0);
 
@@ -3028,7 +3028,7 @@ class SeasonsSK extends Table {
                     self::notifyAllPlayers('msg', clienttranslate('${player_name} takes the top card from the discard'), array(
                         'player_name' => self::getCurrentPlayerName()
                     ));
-                    self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card));
+                    self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
                 } else {
                     throw new BgaUserException("The discard pile is empty. Use your token later.");
                 }
@@ -3324,7 +3324,8 @@ class SeasonsSK extends Table {
 
                 self::notifyAllPlayers('discardFromTableau', '', array(
                     'card_id' => $card_id,
-                    'player_id' => $player_id
+                    'player_id' =>
+                    $player_id, "counters" => $this->argCounters()
                 ));
             } else
                 throw new feException("You do not have any Shield of Zira");
@@ -3334,7 +3335,8 @@ class SeasonsSK extends Table {
 
             self::notifyAllPlayers('discardFromTableau', '', array(
                 'card_id' => $card_id,
-                'player_id' => $player_id
+                'player_id' =>
+                $player_id, "counters" => $this->argCounters()
             ));
         }
 
@@ -3727,6 +3729,7 @@ class SeasonsSK extends Table {
             'drawCardPossible' => self::getGameStateValue('mustDrawPowerCard'),
             'resetPossible' => intval($this->getPlayerFieldValue($player_id, PLAYER_FIELD_RESET_POSSIBLE)),
             'undoBonusActionPossible' => $this->isBonusActionUndoPossible(),
+            "counters" => $this->argCounters(),
         );
     }
 
@@ -5279,7 +5282,7 @@ class SeasonsSK extends Table {
         $this->cards->moveCards($card_ids, 'discard', self::incGameStateValue('discardPos', 1));
 
         foreach ($card_ids as $card_id) {
-            self::notifyPlayer($player_id, 'discard', '', array('card_id' => $card_id, 'player_id' => $player_id));
+            self::notifyPlayer($player_id, 'discard', '', array('card_id' => $card_id, 'player_id' => $player_id, "counters" => $this->argCounters()));
         }
 
         $notifArgs = self::getStandardArgs();
@@ -5292,7 +5295,7 @@ class SeasonsSK extends Table {
         }
 
         self::notifyUpdateCardCount();
-        self::notifyPlayer($player_id, "pickPowerCards", '', array("cards" => $cards_for_player));
+        self::notifyPlayer($player_id, "pickPowerCards", '', array("cards" => $cards_for_player, "counters" => $this->argCounters()));
 
         if ($cards_number == 1) {
             $card = reset($cards_for_player);
@@ -5370,7 +5373,8 @@ class SeasonsSK extends Table {
 
             self::notifyAllPlayers('discardFromTableau', '', array(
                 'card_id' => $card_id,
-                'player_id' => $player_id
+                'player_id' =>
+                $player_id, "counters" => $this->argCounters()
             ));
         }
 
@@ -5793,7 +5797,7 @@ class SeasonsSK extends Table {
         $card = $this->cards->pickCard('deck', $player_id);
         self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card));
         $card = $this->cards->pickCard('deck', $player_id);
-        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card));
+        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
 
         self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} draw 2 power cards'), $notifArgs);
         self::notifyUpdateCardCount();
@@ -5832,7 +5836,7 @@ class SeasonsSK extends Table {
             'target' => $players[$target_id]['player_name']
         ));
 
-        self::notifyPlayer($player_id, 'discard', '', array('player_id' => $player_id, 'card_id' => $card_id));
+        self::notifyPlayer($player_id, 'discard', '', array('player_id' => $player_id, 'card_id' => $card_id, "counters" => $this->argCounters()));
         self::notifyPlayer($target_id, "pickPowerCards", '', array("cards" => array($card)));
 
         $this->gamestate->nextState('chooseCardHand');
@@ -5919,7 +5923,7 @@ class SeasonsSK extends Table {
             self::incStat(1, 'cards_drawn', $player_id);
             self::notifyUpdateCardCount();
 
-            self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => true));
+            self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => true, "counters" => $this->argCounters()));
 
             $this->gamestate->nextState('orbChoice');
 
@@ -5950,6 +5954,8 @@ class SeasonsSK extends Table {
 
             $notifArgs['card'] = $card;
             $notifArgs['fromChoice'] = true;
+            $notifArgs['counters'] = $this->argCounters();
+
             self::notifyPlayer($player_id, "pickPowerCard", clienttranslate('${card_name}: ${player_name} chooses to keep the card'), $notifArgs);
 
             // -1 summoning gauge
@@ -6002,7 +6008,8 @@ class SeasonsSK extends Table {
 
             self::notifyAllPlayers('discardFromTableau', '', array(
                 'card_id' => $card_id,
-                'player_id' => $player_id
+                'player_id' =>
+                $player_id, "counters" => $this->argCounters()
             ));
         }
 
@@ -6065,7 +6072,7 @@ class SeasonsSK extends Table {
             'card_id' => $card_id,
             'player_id' => $card['location_arg'],
             'player_name' => self::getActivePlayerName(),
-            'sacrified' => $card_type['name']
+            'sacrified' => $card_type['name'], "counters" => $this->argCounters()
         ));
         self::notifyUpdateCardCount();
 
@@ -6167,7 +6174,7 @@ class SeasonsSK extends Table {
                 $card = $this->cards->pickCard('deck', $opponent_id);
                 self::notifyUpdateCardCount();
 
-                self::notifyPlayer($opponent_id, "pickPowerCard", '', array("card" => $card));
+                self::notifyPlayer($opponent_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
                 $lastCardDrawn = $card['id'];
                 $lastCardDrawnOpp = $opponent_id;
             }
@@ -6274,10 +6281,10 @@ class SeasonsSK extends Table {
             self::incStat(1, 'cards_drawn', $player_id);
             self::notifyUpdateCardCount();
 
-            self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => true));
 
             // Discard all other choice
             $this->cards->moveAllCardsInLocation('choice', 'discard', $player_id, self::incGameStateValue('discardPos', 1));
+            self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => true, "counters" => $this->argCounters())); //notify after discarding to have correct counters
 
             $this->gamestate->nextState('chooseCard');
 
@@ -6473,7 +6480,7 @@ class SeasonsSK extends Table {
             self::mayUseEscaped();
 
 
-            self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card));
+            self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
             $this->gamestate->nextState('continue');
         } else if ($energy_id == 4) {
             // Earth => 5 points
@@ -6791,7 +6798,7 @@ class SeasonsSK extends Table {
             $this->gamestate->nextState('familiarAddToHand');
         } else {
             // Discard the card
-            $this->cards->moveCard($card_id, 'discad');
+            $this->cards->moveCard($card_id, 'discard');
 
             // Get the next familiar (see "familiar_catcher_play" above)
             for ($i = 1; $i < 200; $i++)  // To avoid infinite loop
@@ -6946,7 +6953,8 @@ class SeasonsSK extends Table {
             self::cleanTableauCard($card_id, $player_id);
             self::notifyAllPlayers('discardFromTableau', '', array(
                 'card_id' => $card_id,
-                'player_id' => $player_id
+                'player_id' =>
+                $player_id, "counters" => $this->argCounters()
             ));
         }
     }
@@ -7462,8 +7470,7 @@ class SeasonsSK extends Table {
 
             self::notifyAllPlayers('discardFromTableau', '', array(
                 'card_id' => $card_id,
-
-                'player_id' => $player_id
+                'player_id' => $player_id, "counters" => $this->argCounters()
             ));
         }
 
@@ -7555,7 +7562,7 @@ class SeasonsSK extends Table {
         else
             self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} gives a power card to ${player_name2}'), $notifArgs);
 
-        self::notifyPlayer($target_id, "pickPowerCard", '', array("card" => $card));
+        self::notifyPlayer($target_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
         self::notifyPlayer($player_id, "removeFromChoice", '', array("card" => $card_id));
 
         if ($this->cards->countCardsInLocation('choice', $player_id) == 0) {
@@ -7721,7 +7728,8 @@ class SeasonsSK extends Table {
             self::notifyAllPlayers('discardFromTableau', '', array(
 
                 'card_id' => $card_id,
-                'player_id' => $player_id
+                'player_id' =>
+                $player_id, "counters" => $this->argCounters()
             ));
         }
 
@@ -7762,7 +7770,8 @@ class SeasonsSK extends Table {
 
             self::notifyAllPlayers('discardFromTableau', '', array(
                 'card_id' => $card_id,
-                'player_id' => $player_id
+                'player_id' =>
+                $player_id, "counters" => $this->argCounters()
             ));
         }
 
@@ -7788,7 +7797,8 @@ class SeasonsSK extends Table {
 
             self::notifyAllPlayers('discardFromTableau', '', array(
                 'card_id' => $card_id,
-                'player_id' => $player_id
+                'player_id' =>
+                $player_id, "counters" => $this->argCounters()
             ));
         }
 
@@ -7828,7 +7838,8 @@ class SeasonsSK extends Table {
 
             self::notifyAllPlayers('discardFromTableau', '', array(
                 'card_id' => $card_id,
-                'player_id' => $player_id
+                'player_id' =>
+                $player_id, "counters" => $this->argCounters()
             ));
         }
 
@@ -7837,7 +7848,7 @@ class SeasonsSK extends Table {
 
         self::notifyUpdateCardCount();
         self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} draw a power card'), $notifArgs);
-        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card));
+        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
         self::incStat(1, 'cards_drawn', $player_id);
 
         self::setGameStateValue('lastCardDrawn', $card['id']);
@@ -7865,7 +7876,8 @@ class SeasonsSK extends Table {
 
             self::notifyAllPlayers('discardFromTableau', '', array(
                 'card_id' => $card_id,
-                'player_id' => $player_id
+                'player_id' =>
+                $player_id, "counters" => $this->argCounters()
             ));
         }
 
@@ -7950,12 +7962,12 @@ class SeasonsSK extends Table {
         self::incStat(1, 'cards_drawn', $player_id);
         self::notifyUpdateCardCount();
 
-        $notifArgs = self::getStandardArgs();
-        self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} choosed a power card'), $notifArgs);
-        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => true));
-
         // Discard all choice
         $this->cards->moveAllCardsInLocation('choice', 'discard', $player_id, self::incGameStateValue('discardPos', 1));
+
+        $notifArgs = self::getStandardArgs();
+        self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} choosed a power card'), $notifArgs);
+        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => true, "counters" => $this->argCounters()));
 
         $this->gamestate->nextState("chooseCard");
     }
@@ -7993,7 +8005,8 @@ class SeasonsSK extends Table {
 
             self::notifyAllPlayers('discardFromTableau', '', array(
                 'card_id' => $card_id,
-                'player_id' => $player_id
+                'player_id' =>
+                $player_id, "counters" => $this->argCounters()
             ));
         }
 
@@ -8012,12 +8025,12 @@ class SeasonsSK extends Table {
         self::incStat(1, 'cards_drawn', $player_id);
         self::notifyUpdateCardCount();
 
-        $notifArgs = self::getStandardArgs();
-        self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} choosed a power card'), $notifArgs);
-        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => true));
-
         // Discard all choice on -1 location (bottom of the discard pile)
         $this->cards->moveAllCardsInLocation('choice', 'discard', $player_id, -1);
+
+        $notifArgs = self::getStandardArgs();
+        self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} choosed a power card'), $notifArgs);
+        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => true, "counters" => $this->argCounters()));
 
         $this->gamestate->nextState('chooseCard');
     }
@@ -8459,7 +8472,7 @@ class SeasonsSK extends Table {
             $this->gamestate->nextState('familiarAddToHand');
         } else {
             // Discard the card
-            $this->cards->moveCard($card_id, 'discad');
+            $this->cards->moveCard($card_id, 'discard');
 
             // Get the next familiar (see "familiar_catcher_play" above)
             for ($i = 1; $i < 200; $i++)  // To avoid infinite loop
@@ -8476,7 +8489,7 @@ class SeasonsSK extends Table {
                     self::incStat(1, 'cards_drawn', $player_id);
                     self::notifyUpdateCardCount();
 
-                    self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => false));
+                    self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "fromChoice" => false, "counters" => $this->argCounters()));
 
                     $notifArgs['i18n'][] = 'card_name2';
                     $notifArgs['card_name2'] = $card_types[self::ot($card['type'])]['name'];
@@ -8760,7 +8773,7 @@ class SeasonsSK extends Table {
 
         self::notifyUpdateCardCount();
         self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} draw a power card'), $notifArgs);
-        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card));
+        self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
         self::incStat(1, 'cards_drawn', $player_id);
 
         self::setGameStateValue('lastCardDrawn', $card['id']);
@@ -8818,7 +8831,7 @@ class SeasonsSK extends Table {
                 'card_id' => $card_id,
                 'player_id' => $player_id,
                 'player_name' => self::getActivePlayerName(),
-                'sacrified' => $this->card_types['39']['name']
+                'sacrified' => $this->card_types['39']['name'], "counters" => $this->argCounters()
             ));
         }
     }
@@ -8907,7 +8920,7 @@ class SeasonsSK extends Table {
                     'card_id' => $card_id,
                     'player_id' => $player_id,
                     'player_name' => self::getActivePlayerName(),
-                    'discarded' => $this->card_types[$card_summoned['effect_card_type']]['name']
+                    'discarded' => $this->card_types[$card_summoned['effect_card_type']]['name'], "counters" => $this->argCounters()
                 ));
 
                 // Remove its effects
@@ -8969,7 +8982,7 @@ class SeasonsSK extends Table {
             $notifArgs['draw_card_name'] = $this->card_types[self::ot($card['type'])]['name'];
             $notifArgs['points'] = $tokengain;
             self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} draw a power card (${draw_card_name}) and gets ${points} energy tokens'), $notifArgs);
-            self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card));
+            self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
             self::notifyUpdateCardCount();
             self::incStat(1, 'cards_drawn', $player_id);
 
@@ -9350,7 +9363,7 @@ class SeasonsSK extends Table {
 
         $card_id = APP_DbObject::DbGetLastId();
         $card = $this->cards->getCard($card_id);
-        $this->notifyPlayer(self::getActivePlayerId(), 'pickPowerCard', '', array('card' => $card));
+        $this->notifyPlayer(self::getActivePlayerId(), 'pickPowerCard', '', array('card' => $card, "counters" => $this->argCounters()));
     }
     function ae($resource_id) {
         self::applyResourceDelta(self::getActivePlayerId(), array($resource_id => 1));
