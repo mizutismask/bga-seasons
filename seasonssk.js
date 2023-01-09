@@ -1955,6 +1955,7 @@ define([
                     case 'draftTwist':
                     case 'token18Effect':
                     case 'token12Effect':
+                    case 'escapedChoice': 
                         if (stateName === 'token18Effect' && this.isCurrentPlayerActive()) {
                             notif = { "args": [] };
                             notif.args.cards = args.args._private.cards;
@@ -2056,6 +2057,7 @@ define([
                     case 'draftTwist':
                     case 'token18Effect':
                     case 'token12Effect':
+                    case 'escapedChoice': 
                         dojo.style('choiceCards', 'display', 'none');
                         if (stateName == 'token12Effect') {
                             this.cardChoice.setSelectionMode(1);

@@ -2191,6 +2191,8 @@ class SeasonsSK extends Table {
                                           order by effect_id desc limit 0,1");
         self::setGameStateValue(CURRENT_EFFECT, $effect_id);
         self::dump('*******************stEscapedChoiceSelectOwner current effect', $effect_id);
+        $lastCard = $this->cards->getCard(self::getGameStateValue('lastCardDrawn'));
+        self::notifyPlayer($playerId, 'newCardChoice', '', array('cards' => array($lastCard)));
         $this->gamestate->nextState('escapedChoice');
     }
 
