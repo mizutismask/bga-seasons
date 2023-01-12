@@ -429,15 +429,16 @@ h3 {
 	position: absolute;
 	left: 42px;
 	bottom: 12px;
-	background-image: url("img/icons.png");
-	background-position: -150px 0px;
+	background-image: url(img/icons2022.png);
+	background-position: 88.4021% 7.8553%;
+	background-size: 1896.3%;
 	width: 40px;
 	height: 40px;
-	box-shadow: 0px 0px 2px 2px rgb(186 86 209 / 93%);
 }
 .tableau .activated .cardactivation {
-	display: none;
-	box-shadow: none;
+	background-image: url("img/icons.png");
+	background-position: -150px 0px;
+	background-size: auto;
 }
 
 .tableau .activated {
