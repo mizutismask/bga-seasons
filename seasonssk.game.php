@@ -874,7 +874,6 @@ class SeasonsSK extends Table {
 
     function getCurrentEffectCardName() {
         $currentEffect = self::getGameStateValue('currentEffect');
-        self::dump('**************getCurrentEffectCardName*****currentEffect', $currentEffect);
         $card_type_id = self::getUniqueValueFromDB("SELECT effect_card_type
                                           FROM effect
                                           WHERE effect_id='$currentEffect'");
@@ -890,6 +889,14 @@ class SeasonsSK extends Table {
                                           FROM effect
                                           INNER JOIN card ON card_id=effect_card
                                           WHERE effect_id='$currentEffect'");
+    }
+
+    function getPreviousEffectCard() {
+        $currentEffect = self::getGameStateValue('currentEffect');
+        return self::getObjectFromDB("SELECT card_id, card_type
+                                          FROM effect
+                                          INNER JOIN card ON card_id=effect_card
+                                          WHERE effect_id='$currentEffect'-1");
     }
 
     function getCurrentEffectCardId() {
@@ -2123,6 +2130,7 @@ class SeasonsSK extends Table {
 
     function doDrawPowerCard() {
         $player_id = self::getActivePlayerId();
+        self::dump('*******************doDrawPowerCard player_id', $player_id);
 
         $card = $this->cards->pickCard('deck', $player_id);
         //$this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);//todo merger
@@ -2137,35 +2145,65 @@ class SeasonsSK extends Table {
         self::setGameStateValue('mustDrawPowerCard', 0);
         $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
-        $escaped = self::getAllCardsOfTypeInTableau(array((301)), null, true); //if someone has speedwall
-        if (isset($escaped[301])) {
-            $escaped = $escaped[301];
-            $owner1 = 0;
-            $owner2 = 0;
-            unset($escaped[$player_id]); //only opponents are useful
-            if (count($escaped) == 2) { //2 differents owners
-                $owners = array_keys($escaped);
-                $owner1 =
-                    array_pop($owners);
-                $owner2 =
-                    array_pop($owners);
-                self::dump('*******************speedwall owner1', $owner1);
-                self::dump('*******************speedwall owner2', $owner2);
-            } else { //only 1 owner
-                $owners = array_keys($escaped);
-                $owner1 = array_pop($owners);
-                if (count($escaped[$owner1]) == 2) {
-                    $owner2 = $owner1;
-                }
-            }
+        $opponents = self::findOpponentsOwnersOfCardTypeInTableau(301, $player_id); //if someone has speedwall
+        self::dump('****************opponents of player_id***', $opponents);
+        self::dump('*********if*******opponents***', $opponents ? "true" : "false");
+        if ($opponents) {
             self::setGameStateValue(DRAWING_PLAYER, $player_id);
             self::setGameStateValue(AFTER_EFFECT_PLAYER, $player_id); //drawing player
-            self::setGameStateValue(SPEEDWALL_OWNER_1, $owner1);
-            self::setGameStateValue(SPEEDWALL_OWNER_2, $owner2);
+            self::setGameStateValue(SPEEDWALL_OWNER_1, array_pop($opponents) ?? 0);
+            self::setGameStateValue(SPEEDWALL_OWNER_2, array_pop($opponents) ?? 0);
             $this->gamestate->nextState('escapedChoiceSelectOwner');
         } else {
             $this->gamestate->nextState('draw');
         }
+    }
+
+    /**
+     * Finds opponents who have a card of a certain type in their tableau. Return the opponents in player order.
+     * @arg cardType
+     * @arg playerId player we are looking opponents for
+     * @return playerIds in turn order
+     */
+    function findOpponentsOwnersOfCardTypeInTableau($cardType, $playerId) {
+        self::dump('*****************opponents of ', $playerId);
+        $escaped = self::getAllCardsOfTypeInTableau(array(($cardType)), null, true); //if someone has speedwall
+        if (isset($escaped[$cardType])) {
+            $escaped = $escaped[$cardType];
+            unset($escaped[$playerId]); //only opponents are useful
+            self::dump('*****************escaped', $escaped);
+            //self::dump('*****************isset($escaped[301]', isset($escaped[301]));
+            $owner1 = 0;
+            $owner2 = 0;
+            $owners = array_keys($escaped);
+            self::dump('************owners', $owners);
+            if ($escaped) {
+                if (count($escaped) == 2) { //2 differents owners
+                    $owner1 = array_pop($owners);
+                    $owner2 = array_pop($owners);
+                    self::dump('*******************speedwall owner1', $owner1);
+                    self::dump('*******************speedwall owner2', $owner2);
+                } else { //only 1 owner
+                    $owner1 = array_pop($owners);
+                    self::dump('************only 1*******speedwall owner1', $owner1);
+                    if (count($escaped[$owner1]) == 2) {
+                        $owner2 = $owner1;
+                        self::dump('************but has the 2 speedwalls', $owner1);
+                    } else {
+                        $owner2 = 0;
+                    }
+                }
+            }
+        }
+        $opponents = [];
+        if ($owner1) {
+            $opponents[] = $owner1;
+        }
+        if ($owner2) {
+            $opponents[] = $owner2;
+        }
+        //todo sort
+        return $opponents;
     }
 
     /**Need to be in game state to changeActivePlayer */
@@ -2200,7 +2238,14 @@ class SeasonsSK extends Table {
     function stEscapedChoiceReturnToDrawer() {
         $this->gamestate->changeActivePlayer(self::getGameStateValue(DRAWING_PLAYER));
         self::dump('*******************stEscapedChoiceReturnToDrawer', self::getGameStateValue(DRAWING_PLAYER));
-        $this->gamestate->nextState('continue');
+        //$this->gamestate->nextState('draw');
+
+        /*$effect_card = $this->getPreviousEffectCard();
+        if (self::ct($effect_card["card_type"]) == 216) { //ragfield servant
+            $this->gamestate->nextState('ragfieldServantNext');
+        } else{
+            $this->gamestate->nextState('continue');
+        }*/
     }
 
     function getPossibleCards() {
@@ -3458,9 +3503,17 @@ class SeasonsSK extends Table {
 
         $state = $this->gamestate->state();
 
-        $this->gamestate->nextState('keepOrDiscard');
 
-        if ($state['name'] != 'keepOrDiscard') {
+        $effect_card = $this->getCurrentEffectCard();
+        self::dump('***********keepOrDiscard********effect_card', $effect_card);
+        $ragfieldServantInPlay = self::ct($effect_card["card_type"]) == 216;
+        if ($ragfieldServantInPlay) { //ragfield servant
+            $this->gamestate->nextState('ragfieldServantNext');
+        } else {
+            $this->gamestate->nextState('keepOrDiscard');
+        }
+
+        if ($state['name'] != 'keepOrDiscard' || $ragfieldServantInPlay) {
             // An effect is in progress (probably servant of ragfield), so applyCardsEffect will be called anyway
         } else {
             self::applyCardsEffect('playerTurn', $player_id);
@@ -4425,7 +4478,6 @@ class SeasonsSK extends Table {
                                           LIMIT 0,1");
 
         self::dump('*******************effect', $effect);
-        self::dump('*************stCardEffect******changeActivePlayer to ', self::getGameStateValue(AFTER_EFFECT_PLAYER));
         if ($effect === null) {
             // No more effect ! Get back to initial state or end token effect.   
             $tokenEffect = self::getGameStateValue('currentTokenEffect');
@@ -4434,6 +4486,7 @@ class SeasonsSK extends Table {
                 $this->gamestate->nextState('endTokenEffect');
                 return;
             }
+            self::dump('*************stCardEffect******changeActivePlayer to ', self::getGameStateValue(AFTER_EFFECT_PLAYER));
             $this->gamestate->changeActivePlayer(self::getGameStateValue(AFTER_EFFECT_PLAYER));
             switch (self::getGameStateValue('afterEffectState')) {
                 case 1:
@@ -8429,34 +8482,42 @@ class SeasonsSK extends Table {
         $players = self::loadPlayersBasicInfos();
 
         $player_id = $servant_owner;
+       // self::setGameStateValue(AFTER_EFFECT_PLAYER, $player_id); 
 
-        while ($bContinue) {
-            if (self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id='$player_id'") >= 10) {
-                // Can draw some card
-                self::doDrawPowerCard();
+        // while ($bContinue) {
+        if (self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id='$player_id'") >= 10) {
+            // Can draw some card
+            self::doDrawPowerCard();
 
-                // +1 summoning gauge
-                self::increaseSummoningGauge($player_id, $card_name, 1);
+            // +1 summoning gauge
+            self::increaseSummoningGauge($player_id, $card_name, 1);
 
-                return 'do_not_nextState';
-            }
-
-            $player_id = self::activeNextPlayer();
-
-            if ($player_id == $servant_owner) {
-                // No one can apply the effect => no effect
-                return;
-            }
+            // self::dump('*******************return do_not_nextState', $player_id);
+            return 'do_not_nextState';
         }
+        //$this->gamestate->nextState('ragfieldServantNext');
+        //return "ragfieldServantNext";
+
+        //$player_id = self::activeNextPlayer();
+        //self::dump('*************servant_of_ragfield_play******activeNextPlayer', $player_id);
+
+        //if ($player_id == $servant_owner) {
+        // No one can apply the effect => no effect
+        //     return;
+        // }
+        //   }
     }
 
     function stServantNext() {
         $servant_owner = self::getCurrentEffectCardOwner();
+        self::dump('************stServantNext*******servant_owner', $servant_owner);
 
         $player_id = self::activeNextPlayer();
-
+        self::dump('************stServantNext*******activate', $player_id);
         if ($player_id == $servant_owner) {
             // Back to servant owner
+            //$this->stEscapedChoiceReturnToDrawer();
+            self::setGameStateValue(AFTER_EFFECT_PLAYER, $player_id); 
             $this->gamestate->nextState('end');
             return;
         }
@@ -8477,7 +8538,8 @@ class SeasonsSK extends Table {
             $transition = 'draw';
         }
 
-        $this->gamestate->nextState($transition);
+        //self::dump('************stServantNext*******transition', $transition);
+        //$this->gamestate->nextState($transition);
     }
 
     function scroll_of_ishtar_play() {
@@ -8619,24 +8681,30 @@ class SeasonsSK extends Table {
     function speedwall_the_escaped_dualChoice($choice) {
         $player_id = self::getActivePlayerId();
         $notifArgs = self::getStandardArgs();
+        $card_to_steal_id = self::getGameStateValue('lastCardDrawn');
+        $card = $this->cards->getCard($card_to_steal_id);
+        self::dump('*******************card_to_steal', $card);
+        $notifArgs['player_name2'] = self::getPlayerName($card['location_arg']);
 
         if ($choice == 0) {
             // Do not activate
+            self::notifyAllPlayers('msg', clienttranslate('${player_name} does not to steal the card just picked by ${player_name2}.'), $notifArgs);
+
             //if someone else has speedwall, give him the chance to take the card too
             $next = self::getGameStateValue(SPEEDWALL_OWNER_2);
             if ($next) {
                 $this->gamestate->nextState("escapedChoiceSelectOwner");
             } else {
+                //$effect_card = $this->getPreviousEffectCard();
+                self::dump('********speedwall_the_escaped_dualChoice***********escapedChoiceReturnToDrawer + draw', $choice);
                 $this->gamestate->nextState('escapedChoiceReturnToDrawer');
+                $this->gamestate->nextState('draw');
+                /*if (self::ct($effect_card["card_type"]) == 216) { //ragfield servant
+                    $this->gamestate->nextState('ragfieldServantNext');
+                }*/
             }
         } else {
             // Take the card from the hand of the other player
-
-            $card_to_steal_id = self::getGameStateValue('lastCardDrawn');
-
-            $card = $this->cards->getCard($card_to_steal_id);
-            self::dump('*******************card_to_steal', $card);
-
             if ($card['location'] != 'hand')
                 throw new feException(self::_("The card to steal is no more in the opponent hand, so you cannot steal it."), true);
 
@@ -8669,11 +8737,17 @@ class SeasonsSK extends Table {
             self::notifyPlayer($card['location_arg'], "pickPowerCard", '', array("card" => $escaped_card, "fromChoice" => false));
 
             // Then notify
-            self::notifyAllPlayers('simpleNote', clienttranslate('${player_name} uses ${card_name} to steal the card just picked.'), $notifArgs);
+            self::notifyAllPlayers('simpleNote', clienttranslate('${player_name} uses ${card_name} to steal the card just picked by ${player_name2}.'), $notifArgs);
 
             // Remove all remaining escaped effects as we took this game
             self::setGameStateValue('lastCardDrawn', 0);
+
+            $effect_card = $this->getPreviousEffectCard();
+            // $this->gamestate->nextState('escapedChoiceReturnToDrawer');
             $this->gamestate->nextState('escapedChoiceReturnToDrawer');
+            /*if (self::ct($effect_card["card_type"]) == 216) { //ragfield servant
+                $this->gamestate->nextState('ragfieldServantNext');
+            } */
         }
         $effect_id = self::getGameStateValue('currentEffect');
         self::dump('*******************effect_id deleted', $effect_id);

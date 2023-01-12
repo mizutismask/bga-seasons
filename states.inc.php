@@ -237,7 +237,7 @@ $machinestates = array(
         "type" => "activeplayer",
         "args" => "argKeepOfDiscard",
         "possibleactions" => array("keepOrDiscard"),
-        "transitions" => array("keepOrDiscard" => 30, "zombieTurn" => 30)
+        "transitions" => array("keepOrDiscard" => 30, "zombieTurn" => 30, "ragfieldServantNext"=>182)
     ),
 
     35 => array(
@@ -319,9 +319,10 @@ $machinestates = array(
             "discardEolis" => 173, "dragonSoulCardChoice" => 174, "dialColofDualChoice" => 175,
             "staffWinterDiscard" => 176, "chronoRingChoice" => 178, "urmianChoice" => 179,
             "draw" => 181, // Note: Servant of Ragfield
+            "ragfieldServantNext" => 182, // Note: Servant of Ragfield
             "craftyChoice" => 183, "discardMinion" => 185, "chaliceEternity" => 186, "chaliceEternityChoice" => 187,
             "carnivoraChoice" => 188, "igramulChoice" => 189,  "escaped_choice" =>
-            193,  "endTokenEffect" => 299
+            193,  "endTokenEffect" => 299, "escapedChoiceSelectOwner" => 1931
         )
     ),
 
@@ -962,7 +963,7 @@ $machinestates = array(
         "name" => "servantNext",
         "type" => "game",
         "action" => "stServantNext",
-        "transitions" => array("continue" => 181, "end" => 51, "next" => 182, "draw" => 181)
+        "transitions" => array("continue" => 181, "end" => 51, "next" => 182, "draw" => 32, "escapedChoiceSelectOwner" => 1931)
     ),
     183 => array(
         "name" => "craftyChooseOpponent",
@@ -1064,13 +1065,13 @@ $machinestates = array(
         "type" => "activeplayer",
         "args" => "argCurrentEffectCard",
         "possibleactions" => array("dualChoice"),
-        "transitions" => array("dualChoice" => 51, "escapedChoiceSelectOwner"=> 1931, "escapedChoiceReturnToDrawer" => 1932)
+        "transitions" => array("dualChoice" => 51, "escapedChoiceSelectOwner"=> 1931, "escapedChoiceReturnToDrawer" => 1932, "ragfieldServantNext" => 182)
     ),
     1932 => array(
         "name" => "escapedChoiceReturnToDrawer",
         "type" => "game",
         "action" => "stEscapedChoiceReturnToDrawer",
-        "transitions" => array("continue" => 51)
+        "transitions" => array("continue" => 51, "ragfieldServantNext" => 182,"draw" => 32)
     ),
     194 => array( // Same as 52 but specific for Potion of Ancients
         "name" => "checkEnergy",
