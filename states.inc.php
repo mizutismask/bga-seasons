@@ -216,7 +216,7 @@ $machinestates = array(
         "possibleactions" => array("incSummon", "draw", "transmute", "summon", "active", "useBonus", 'endTurn', 'playToken', "undoBonusAction"),
         "transitions" => array(
             "endOfTurn" => 25, "cardEffect" => 50, "summonVariableCost" => 35, "draw" => 32, "useBonus" => 30,
-            "bonusDraw" => 36, "bonusExchange" => 37, "resetPlayerTurn" => 30, "playerTurn" => 30, "tokenEffect" => 200, "escapedChoiceSelectOwner" => 1931
+            "bonusDraw" => 36, "bonusExchange" => 37, "resetPlayerTurn" => 30, "playerTurn" => 30, "tokenEffect" => 200,
         )
     ),
     31 => array(
@@ -237,7 +237,7 @@ $machinestates = array(
         "type" => "activeplayer",
         "args" => "argKeepOfDiscard",
         "possibleactions" => array("keepOrDiscard"),
-        "transitions" => array("keepOrDiscard" => 30, "zombieTurn" => 30, "ragfieldServantNext"=>182)
+        "transitions" => array("keepOrDiscard" => 30, "zombieTurn" => 30)
     ),
 
     35 => array(
@@ -319,10 +319,9 @@ $machinestates = array(
             "discardEolis" => 173, "dragonSoulCardChoice" => 174, "dialColofDualChoice" => 175,
             "staffWinterDiscard" => 176, "chronoRingChoice" => 178, "urmianChoice" => 179,
             "draw" => 181, // Note: Servant of Ragfield
-            "ragfieldServantNext" => 182, // Note: Servant of Ragfield
             "craftyChoice" => 183, "discardMinion" => 185, "chaliceEternity" => 186, "chaliceEternityChoice" => 187,
             "carnivoraChoice" => 188, "igramulChoice" => 189,  "escaped_choice" =>
-            193,  "endTokenEffect" => 299, "escapedChoiceSelectOwner" => 1931
+            193,  "endTokenEffect" => 299
         )
     ),
 
@@ -963,7 +962,7 @@ $machinestates = array(
         "name" => "servantNext",
         "type" => "game",
         "action" => "stServantNext",
-        "transitions" => array("continue" => 181, "end" => 51, "next" => 182, "draw" => 32, "escapedChoiceSelectOwner" => 1931)
+        "transitions" => array("continue" => 181, "end" => 51, "next" => 182, "draw" => 181)
     ),
     183 => array(
         "name" => "craftyChooseOpponent",
@@ -1052,12 +1051,6 @@ $machinestates = array(
         "possibleactions" => array("chooseOpponentCard", "doNotUse", "dualChoice"),
         "transitions" => array("chooseOpponentCard" => 51, "doNotUse" => 51)
     ),
-    1931 => array(
-        "name" => "escapedChoiceSelectOwner",
-        "type" => "game",
-        "action" => "stEscapedChoiceSelectOwner",
-        "transitions" => array("escapedChoice" => 193)
-    ),
     193 => array(
         "name" => "escapedChoice",
         "description" => clienttranslate('${actplayer} may activate ${card_name} to get the last card drawn.'),
@@ -1065,13 +1058,7 @@ $machinestates = array(
         "type" => "activeplayer",
         "args" => "argCurrentEffectCard",
         "possibleactions" => array("dualChoice"),
-        "transitions" => array("dualChoice" => 51, "escapedChoiceSelectOwner"=> 1931, "escapedChoiceReturnToDrawer" => 1932, "ragfieldServantNext" => 182)
-    ),
-    1932 => array(
-        "name" => "escapedChoiceReturnToDrawer",
-        "type" => "game",
-        "action" => "stEscapedChoiceReturnToDrawer",
-        "transitions" => array("continue" => 51, "ragfieldServantNext" => 182,"draw" => 32)
+        "transitions" => array("dualChoice" => 51)
     ),
     194 => array( // Same as 52 but specific for Potion of Ancients
         "name" => "checkEnergy",
