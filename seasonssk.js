@@ -576,6 +576,10 @@ define([
             addUndoButton() {
                 this.addSecondaryActionButton('undo', _('Undo'), 'onClickUndo');
             },
+
+            addUndoButtonBonusAction() {
+                this.addSecondaryActionButton('undo', _('Undo bonus action'), 'onClickUndo');
+            },
             addResetButton() {
                 this.addSecondaryActionButton('resetPlayerTurn', _('Reset turn'), 'onClickReset');
             },
@@ -2188,9 +2192,7 @@ define([
                         case 'playerTurn':
                             this.updateCountersSafe(args);
                             this.addTransmutationButton(args);
-                            if (args.undoBonusActionPossible) {
-                                this.addUndoButton();
-                            }
+                            
                             //highlight cards that can be played
                             if (args.possibleCards) {
                                 args.possibleCards.forEach(c => dojo.query("#card-" + c).addClass("possibleCard"));
@@ -2201,6 +2203,9 @@ define([
                             }
                             else {
                                 this.addActionButton('endTurn', _('End my turn'), 'onEndTurn');
+                            }
+                            if (args.undoBonusActionPossible) {
+                                this.addUndoButtonBonusAction();
                             }
                             if (args.resetPossible) {
                                 this.addResetButton();
