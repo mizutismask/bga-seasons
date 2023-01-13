@@ -213,10 +213,10 @@ $machinestates = array(
         "type" => "activeplayer",
         "args" => "argPlayerTurn",
         "action" => "stPlayerTurn",
-        "possibleactions" => array("incSummon", "draw", "transmute", "summon", "active", "useBonus", 'endTurn', 'playToken', "undoBonusAction"),
+        "possibleactions" => array("incSummon", "draw", "transmute", "summon", "active", "useBonus", 'endTurn', 'playToken', "undoBonusAction", "bonusExchange"),
         "transitions" => array(
             "endOfTurn" => 25, "cardEffect" => 50, "summonVariableCost" => 35, "draw" => 32, "useBonus" => 30,
-            "bonusDraw" => 36, "bonusExchange" => 37, "resetPlayerTurn" => 30, "playerTurn" => 30, "tokenEffect" => 200,
+            "bonusDraw" => 36, "bonusExchange" => 31, "resetPlayerTurn" => 30, "playerTurn" => 30, "tokenEffect" => 200,
         )
     ),
     31 => array(
@@ -259,23 +259,6 @@ $machinestates = array(
         "args" => "argBonusDrawChoice",
         "possibleactions" => array("chooseCard"),
         "transitions" => array("chooseCard" => 30, "zombieTurn" => 30)
-    ),
-    37 => array(
-        "name" => "bonusExchangeDiscard",
-        "description" => clienttranslate('Bonus: ${actplayer} must discard 2 energy tokens'),
-        "descriptionmyturn" => clienttranslate('Bonus: ${you} must discard 2 energy tokens'),
-        "type" => "activeplayer",
-        "possibleactions" => array("discardEnergyBonus"),
-        "transitions" => array("discardEnergy" => 38, "zombieTurn" => 30)
-    ),
-    38 => array(
-        "name" => "bonusGainEnergy",
-        "description" => clienttranslate('${card_name}: ${actplayer} must choose which energy to get (x${nbr})'),
-        "descriptionmyturn" => clienttranslate('${card_name}: ${you} must choose which energy to get (x${nbr})'),
-        "type" => "activeplayer",
-        "args" => "argBonusGainEnergy",
-        "possibleactions" => array("gainEnergy"),
-        "transitions" => array("next" => 38, "end" => 31, "zombieTurn" => 30)
     ),
 
     39 => array(

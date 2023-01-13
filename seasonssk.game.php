@@ -1725,7 +1725,7 @@ class SeasonsSK extends Table {
         }
     }
 
-    function useBonus($bonusId) {
+    function useBonus($bonusId, $energiesOut = null, $energiesIn = null) {
         self::checkAction('useBonus');
         $player_id = self::getActivePlayerId();
 
@@ -1759,9 +1759,20 @@ class SeasonsSK extends Table {
             if (self::countPlayerEnergies(self::getActivePlayerId(), true) < 2)
                 throw new feException(self::_("You don't have enough energies"), true);
 
+            if (
+                count($energiesOut) == 0
+                || count($energiesOut) > 2
+                || count($energiesOut) != count($energiesIn)
+            ) {
+                throw new feException(self::_("You must select between 1 and 2 energies out from your stock and as many energies in"), true);
+            }
             self::setGameStateValue(BONUS_JUST_PLAYED, $bonusId);
             $this->saveAllResourcesState($player_id);
-            $this->gamestate->nextState('bonusExchange');
+
+            $this->discardEnergy($energiesOut, false, true);
+            foreach ($energiesIn as $energy) {
+                $this->gainEnergy($energy, true);
+            }
         } else if ($bonusId == 2) {
             // Transmute with bonus
             $current = self::getGameStateValue('transmutationPossible');
@@ -2153,7 +2164,7 @@ class SeasonsSK extends Table {
         if ($bDuetoEffect)
             self::checkAction('discardEnergyEffect');
         else if ($bDueToBonus)
-            self::checkAction('discardEnergyBonus');
+            self::checkAction('bonusExchange');
         else
             self::checkAction('discardEnergy');
 
@@ -2199,7 +2210,7 @@ class SeasonsSK extends Table {
         self::applyResourceDelta($player_id, $cost, true);
 
         if ($bDueToBonus) {
-            $this->gamestate->nextState("discardEnergy");
+            $this->gamestate->nextState("bonusExchange");
         } else if ($bDuetoEffect) {
             $paid = array();
             foreach ($originalEnergies as $energy) {
@@ -2594,8 +2605,12 @@ class SeasonsSK extends Table {
     }
 
     // Choose an energy to gain
-    function gainEnergy($energy_id) {
-        self::checkAction('gainEnergy');
+    function gainEnergy($energy_id, $dueToBonus = false) {
+        if ($dueToBonus) {
+            self::checkAction('bonusExchange');
+        } else {
+            self::checkAction('gainEnergy');
+        }
         $fromToken3 = false;
 
         if ($energy_id >= 1 && $energy_id <= 4) {
@@ -2643,15 +2658,17 @@ class SeasonsSK extends Table {
             }
 
             $to_gain = self::incGameStateValue('energyNbr', -1);
-
-            if ($to_gain <= 0) {
+            if ($dueToBonus) {
+                //no next state, it's an internal call, all the energies are gained in a for loop
+            } else if ($to_gain <= 0) {
                 if ($effect_card !== null && self::ct($effect_card['card_type']) == 115)  // Amulet of time: we have to do something afterwards
                     $this->gamestate->nextState('endAmuletOfTime');
                 else {
                     $this->gamestate->nextState('end');
                 }
-            } else
+            } else {
                 $this->gamestate->nextState('next');
+            }
         } else if ($energy_id == 0) {
             if (self::checkAction("statueOfEolisChoice", false)) {
                 // Statue of Eolis: +2 crystals + look at the top card
@@ -3737,13 +3754,6 @@ class SeasonsSK extends Table {
         return array(
             'i18n' => array('card_name'),
             'card_name' => clienttranslate('bonus')
-        );
-    }
-    function argBonusGainEnergy() {
-        return array(
-            'i18n' => array('card_name'),
-            'card_name' => clienttranslate('bonus'),
-            'nbr' => self::getGameStateValue('energyNbr')
         );
     }
 
@@ -9247,10 +9257,6 @@ class SeasonsSK extends Table {
         } else if ($state['name'] == 'summonVariableCost') {
             $this->gamestate->nextState("chooseCost");
         } else if ($state['name'] == 'bonusDrawChoice') {
-            $this->gamestate->nextState("zombieTurn");
-        } else if ($state['name'] == 'bonusExchangeDiscard') {
-            $this->gamestate->nextState("zombieTurn");
-        } else if ($state['name'] == 'bonusGainEnergy') {
             $this->gamestate->nextState("zombieTurn");
         } else if ($state['name'] == 'gainEnergy') {
             $this->gamestate->nextState("end");

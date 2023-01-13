@@ -119,23 +119,7 @@ class action_seasonssk extends APP_GameAction {
         $this->game->discardEnergy($energy, true);
         self::ajaxResponse();
     }
-    public function discardEnergyBonus() {
-        self::setAjaxMode();
-
-        $energy_raw = self::getArg("energies", AT_numberlist, true);
-
-        // Removing last ';' if exists
-        if (substr($energy_raw, -1) == ';')
-            $energy_raw = substr($energy_raw, 0, -1);
-        if ($energy_raw == '')
-            $energy = array();
-        else
-            $energy = explode(';', $energy_raw);
-
-        $this->game->discardEnergy($energy, false, true);
-        self::ajaxResponse();
-    }
-
+   
     public function summon() {
         self::setAjaxMode();
         $card_id = self::getArg("id", AT_posint, true);
@@ -366,7 +350,9 @@ class action_seasonssk extends APP_GameAction {
     public function useBonus() {
         self::setAjaxMode();
         $bonusId = self::getArg("id", AT_posint, true);
-        $this->game->useBonus($bonusId);
+        $energiesOut= $this->getArrayFromArg(self::getArg("out", AT_numberlist, false)); //only for bonus1 (exchange)
+        $energiesIn = $this->getArrayFromArg(self::getArg("in", AT_numberlist, false));//only for bonus1 (exchange)
+        $this->game->useBonus($bonusId, $energiesOut, $energiesIn);
         self::ajaxResponse();
     }
     public function drawPowerCard() {

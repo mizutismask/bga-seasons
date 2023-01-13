@@ -329,6 +329,9 @@ var jstpl_opponent_hand='\
         <div id="opponent_hand_${playerId}">\
         </div>\
     </div>'
+var jstpl_bonus_action_exchange_bar='\
+    <div id="bonus_action_exchange_wrapper" class="generalactionscontent">\
+    </div>'
 </script>  
 
 {OVERALL_GAME_FOOTER}

@@ -442,8 +442,33 @@ define([
                 this.nextPlayer = nextId;
             },
 
+            /** When in client state bonusActionExchange, generates a stock to choose energies */
+            generateExchangeEnergiesStock(destination) {
+                this.bonusExchangeStock = new ebg.stock();
+                this.bonusExchangeStock.create(this, destination, 25, 25);
+                this.bonusExchangeStock.autowidth = true;
+                for (var ress_id = 1; ress_id <= 4; ress_id++) {
+                    this.bonusExchangeStock.addItemType(ress_id, ress_id, g_gamethemeurl + 'img/icons.png', ress_id - 1);
+                }
+                this.bonusExchangeStock.addItemType(0, 0, g_gamethemeurl + 'img/icons.png', 4);
+                this.bonusExchangeStock.setSelectionMode(2);
+                for (let j = 1; j < 5; j++) {
+                    for (let i = 0; i < 2; i++) {
+                        this.bonusExchangeStock.addToStock(j);
+                    }
+                }
+            },
+
             ///////////////////////////////////////////////////
             //// Utilities
+            convertStockSelectedItemsIntoString(items) {
+                var id_string = '';
+                for (var i in items) {
+                    id_string += items[i].type + ';';
+                }
+                return id_string;
+            },
+
             updateCountersSafe: function (notif) {
                 if (notif.hasOwnProperty("counters") && notif.counters) {
                     this.updateCounters(notif.counters);
@@ -1300,11 +1325,6 @@ define([
                         this.energies[this.player_id].unselectAll();
                     });
                 }
-                else if (this.checkAction('discardEnergyBonus', true)) {
-                    this.ajaxcall("/seasonssk/seasonssk/discardEnergyBonus.html", { energies: id_string, lock: true }, this, function (result) {
-                        this.energies[this.player_id].unselectAll();
-                    });
-                }
 
             },
 
@@ -1339,6 +1359,24 @@ define([
                         this.energies[this.player_id].unselectAll();
                     });
                 }
+            },
+
+            onBonusExchangeConfirm: function () {
+                if (this.bonusExchangeStock.getSelectedItems().length == 0
+                    || this.bonusExchangeStock.getSelectedItems().length > 2
+                    || this.energies[this.player_id].getSelectedItems().length != this.bonusExchangeStock.getSelectedItems().length) {
+                    this.showMessage(_("You must select between 1 and 2 energies out from your stock and as many energies in"), 'error');
+                } else {
+                    this.takeAction("useBonus", {
+                        id: 1,
+                        out: this.convertStockSelectedItemsIntoString(this.energies[this.player_id].getSelectedItems()),
+                        in: this.convertStockSelectedItemsIntoString(this.bonusExchangeStock.getSelectedItems())
+                    },);
+                }
+            },
+            onBonusExchangeCancel: function () {
+                this.restoreServerGameState();
+                this.energies[this.player_id].unselectAll();
             },
 
             onDualChoice: function (evt) {
@@ -1854,9 +1892,16 @@ define([
                     var bonus_id = evt.currentTarget.id.split("_")[0].substr(5);
                     var remaining = [].slice.call(document.getElementById("bonusUsedCube_" + this.player_id).classList).filter(c => c.match(/bonusUsed\d+/)).shift().slice(-1);
                     remaining = 3 - parseInt(remaining);
-                    this.confirmationDialog(_('Are you sure to use this bonus? You will get penalty points at the end of the game.  <br/>(' + remaining + " remaining use/s)"), dojo.hitch(this, function () {
-                        this.ajaxcall('/seasonssk/seasonssk/useBonus.html', { id: bonus_id, lock: true }, this, function (result) { });
-                    }));
+                    if (bonus_id != 1) {
+                        this.confirmationDialog(_('Are you sure to use this bonus? You will get penalty points at the end of the game.  <br/>(' + remaining + " remaining use/s)"), dojo.hitch(this, function () {
+                            this.ajaxcall('/seasonssk/seasonssk/useBonus.html', { id: bonus_id, lock: true }, this, function (result) { });
+
+                        }));
+                    } else {
+                        this.setClientState("clientStateBonusExchangeEnergies", {
+                            descriptionmyturn: _('Select until 2 energies out from your stock and as many in: '),
+                        });
+                    }
                 }
             },
 
@@ -2168,7 +2213,6 @@ define([
                             this.addActionButton('dualChoice0', _('Discard'), 'onKeepOrDiscard');
                             break;
                         case 'checkEnergy':
-                        case 'bonusExchangeDiscard':
                             this.addActionButton('discardEnergy', _('Discard selected'), 'onDiscardEnergy');
                             break;
 
@@ -2180,14 +2224,19 @@ define([
 
                         case 'gainEnergy':
                         case 'mirrorChoose':
-                        case 'bonusGainEnergy':
                         case 'scrollIshtarChoice':
                             this.addActionButton('energy1', '<div class="sicon energy1"></div>', 'onGainEnergy', false, null, 'gray');
                             this.addActionButton('energy2', '<div class="sicon energy2"></div>', 'onGainEnergy', false, null, 'gray');
                             this.addActionButton('energy3', '<div class="sicon energy3"></div>', 'onGainEnergy', false, null, 'gray');
                             this.addActionButton('energy4', '<div class="sicon energy4"></div>', 'onGainEnergy', false, null, 'gray');
                             break;
-
+                        case 'clientStateBonusExchangeEnergies':
+                            let destination = $('generalactions');
+                            dojo.place(this.format_block('jstpl_bonus_action_exchange_bar', {}), destination, "last");
+                            this.generateExchangeEnergiesStock($("bonus_action_exchange_wrapper"));
+                            this.addActionButton('bonusExchangeConfirm', _('Confirm'), 'onBonusExchangeConfirm');
+                            this.addActionButton('bonusExchangeCancel', _('Cancel'), 'onBonusExchangeCancel');
+                            break;
                         case 'elementalChoice':
                             for (var i = 1; i <= 4; i++) {
                                 if (args.available[i] == 1) {

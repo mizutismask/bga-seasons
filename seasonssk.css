@@ -724,6 +724,11 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	background-image: url(img/backward.png);
 }
 
+.generalactionscontent {
+	display: inline-block;
+	vertical-align: bottom;
+}
+
 .playerOrderHelp {
 	display: inline-block;
 	padding-right: 3px;
@@ -928,7 +933,7 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	border-radius: 8px;
 }
 
-.cardenergies .stockitem {
+.cardenergies .stockitem, #bonus_action_exchange_wrapper .stockitem, .energies .stockitem{
 	border-radius: 14px;
 }
 
@@ -1050,7 +1055,7 @@ a.choose_player {
 	background-color: #bdc7b1;
 }
 
-#piles_counters{ 
+#piles_counters {
 	display: flex;
 	gap: 3px;
 }
