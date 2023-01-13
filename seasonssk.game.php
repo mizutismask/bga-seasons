@@ -1645,7 +1645,7 @@ class SeasonsSK extends Table {
         $this->gamestate->nextState('chooseDie');
     }
 
-    /* Undo all the player turn actions. */
+    /** Undo all the player turn actions. */
     function resetPlayerTurn() {
         //self::checkAction('resetPlayerTurn');
         $player_id = self::getCurrentPlayerId();
@@ -1654,7 +1654,7 @@ class SeasonsSK extends Table {
             throw new BgaUserException("Undo is not available, you probably have done undoable actions (draw, reroll…)");
         }
         $this->undoRestorePoint();
-        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
+        //$this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         $this->gamestate->nextState('playerTurn');
     }
     function endTurn() {
@@ -2689,6 +2689,7 @@ class SeasonsSK extends Table {
 
                 // See first card on the drawpile
                 $card = $this->cards->pickCardForLocation('deck', 'choice', $player_id);
+                $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
                 self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => array($card)));
 
 
@@ -3046,6 +3047,7 @@ class SeasonsSK extends Table {
                         'player_name' => self::getCurrentPlayerName()
                     ));
                     self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
+                    $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
                 } else {
                     throw new BgaUserException("The discard pile is empty. Use your token later.");
                 }
@@ -5218,6 +5220,7 @@ class SeasonsSK extends Table {
         // Draw 4 cards to the choice pool
         $player_id = self::getActivePlayerId();
         $cards = $this->cards->pickCardsForLocation(4, 'deck', 'choice', $player_id);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => $cards));
         return 'amuletFireChoice';
     }
@@ -5303,6 +5306,7 @@ class SeasonsSK extends Table {
         for ($i = 0; $i < $cards_number; $i++) {
             $cards_for_player[] = $this->cards->pickCard('deck', $player_id);
         }
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
         self::notifyUpdateCardCount();
         self::notifyPlayer($player_id, "pickPowerCards", '', array("cards" => $cards_for_player, "counters" => $this->argCounters()));
@@ -5339,6 +5343,7 @@ class SeasonsSK extends Table {
 
         // Draw 3 cards to the choice pool (N=number of player)
         $cards = $this->cards->pickCardsForLocation(3, 'deck', 'choice', $player_id);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => $cards));
 
         return "telescopeChoice";
@@ -5763,6 +5768,7 @@ class SeasonsSK extends Table {
         // Draw 4 cards to the choice pool
         $player_id = self::getActivePlayerId();
         $cards = $this->cards->pickCardsForLocation(4, 'deck', 'choice', $player_id);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => $cards));
 
         // Trigger effect
@@ -5810,6 +5816,7 @@ class SeasonsSK extends Table {
         self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
 
         self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} draw 2 power cards'), $notifArgs);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         self::notifyUpdateCardCount();
         self::incStat(2, 'cards_drawn', $player_id);
 
@@ -5856,6 +5863,7 @@ class SeasonsSK extends Table {
         // See first card on the drawpile
         $player_id = self::getActivePlayerId();
         $card = $this->cards->pickCardForLocation('deck', 'choice', $player_id);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => array($card)));
         return "carnivoraChoice";
     }
@@ -5876,6 +5884,7 @@ class SeasonsSK extends Table {
         if ($choice == 0) {
             // See first card on the drawpile
             $card = $this->cards->pickCardForLocation('deck', 'choice', $player_id);
+            $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
             self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => array($card)));
             $this->gamestate->nextState('seeNextCard');
         } else {
@@ -5890,6 +5899,7 @@ class SeasonsSK extends Table {
 
             self::notifyAllPlayers('discardFirstCard', clienttranslate('${card_name}: the first card of the draw pile is discarded'), $notifArgs);
             $this->cards->pickCardForLocation('deck', 'discard', self::incGameStateValue('discardPos', 1));
+            $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
             self::notifyUpdateCardCount();
 
             $this->gamestate->nextState('discardNextCard');
@@ -6189,6 +6199,7 @@ class SeasonsSK extends Table {
                 $lastCardDrawnOpp = $opponent_id;
             }
         }
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
         if (count($players) == 2) {
             // Can apply Speedwall the Escaped
@@ -6277,6 +6288,7 @@ class SeasonsSK extends Table {
         // Draw 4 cards to the choice pool
         $player_id = self::getActivePlayerId();
         $cards = $this->cards->pickCardsForLocation(4, 'deck', 'choice', $player_id);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => $cards));
         return 'divineChoice';
     }
@@ -6481,7 +6493,7 @@ class SeasonsSK extends Table {
         } else if ($energy_id == 3) {
             // Fire: draw a power card
             $card = $this->cards->pickCard('deck', $player_id);
-
+            $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
             self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} draw a power card'), $notifArgs);
             self::notifyUpdateCardCount();
             self::incStat(1, 'cards_drawn', $player_id);
@@ -6769,6 +6781,7 @@ class SeasonsSK extends Table {
         for ($i = 1; $i < 200; $i++)  // To avoid infinite loop
         {
             $card = $this->cards->pickCardForLocation('deck', 'choice', $player_id);
+            $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
             if ($this->card_types[self::ot($card['type'])]['category'] == 'f') {
                 // We found our familiar !
                 self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => array($card)));
@@ -6809,6 +6822,7 @@ class SeasonsSK extends Table {
         } else {
             // Discard the card
             $this->cards->moveCard($card_id, 'discard');
+            $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
             // Get the next familiar (see "familiar_catcher_play" above)
             for ($i = 1; $i < 200; $i++)  // To avoid infinite loop
@@ -7547,6 +7561,7 @@ class SeasonsSK extends Table {
         $players = self::loadPlayersBasicInfos();
         $player_id = self::getActivePlayerId();
         $cards = $this->cards->pickCardsForLocation(count($players), 'deck', 'choice', $player_id);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => $cards));
 
         // First target = current player
@@ -7651,6 +7666,7 @@ class SeasonsSK extends Table {
         $players = self::loadPlayersBasicInfos();
         $player_id = self::getActivePlayerId();
         $cards = $this->cards->pickCardsForLocation(count($players), 'deck', 'otus');
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         $notifArgs['cards'] = $cards;
         $notifArgs['nbr'] = count($players);
         self::notifyAllPlayers('newOtusChoice', clienttranslate('${card_name}: ${nbr} cards are placed on the center of game area'), $notifArgs);
@@ -7855,6 +7871,7 @@ class SeasonsSK extends Table {
 
         // Draw
         $card = $this->cards->pickCard('deck', $player_id);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
         self::notifyUpdateCardCount();
         self::notifyAllPlayers("playerPickPowerCard", clienttranslate('${card_name}: ${player_name} draw a power card'), $notifArgs);
@@ -7952,6 +7969,7 @@ class SeasonsSK extends Table {
             // Draw 2 cards to the choice pool
             $player_id = self::getActivePlayerId();
             $cards = $this->cards->pickCardsForLocation(2, 'deck', 'choice', $player_id);
+            $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
             self::notifyPlayer($player_id, 'newCardChoice', '', array('cards' => $cards));
             $nextState = 'potionOfAncientCardChoice';
         } else if ($choice_id == 3) {
@@ -8429,6 +8447,7 @@ class SeasonsSK extends Table {
         self::setGameStateValue('elementalAmulet1', $energy_id);  // Hack: we use elementalAmulet1 to store energy type
 
         $card_types = self::getCardTypes();
+$this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
         // See first card on the drawpile
         for ($i = 1; $i < 200; $i++)  // To avoid infinite loop
@@ -8483,6 +8502,7 @@ class SeasonsSK extends Table {
         } else {
             // Discard the card
             $this->cards->moveCard($card_id, 'discard');
+$this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
             // Get the next familiar (see "familiar_catcher_play" above)
             for ($i = 1; $i < 200; $i++)  // To avoid infinite loop
@@ -8778,6 +8798,7 @@ class SeasonsSK extends Table {
 
         // Draw
         $card = $this->cards->pickCard('deck', $player_id);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
         $notifArgs = self::getStandardArgs();
 
@@ -8986,6 +9007,7 @@ class SeasonsSK extends Table {
         if ($choice_id == 0) {
             // Draw
             $card = $this->cards->pickCard('deck', $player_id);
+            $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
             $tokengain = max(0, $this->card_types[self::ot($card['type'])]['points']);
 
             $notifArgs['i18n'][] = 'draw_card_name';
