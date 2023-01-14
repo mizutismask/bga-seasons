@@ -413,9 +413,9 @@ define([
                 this.addTooltip('current_month', _('Season token: indicate current time and season.'), '');
                 this.addTooltip('current_year', _('Year indicator (game end after the third year)'), '');
 
-                this.addTooltip('convertFor3', '', _('Transmute one token of this energy into 3 cristals'));
-                this.addTooltip('convertFor2', '', _('Transmute one token of this energy into 2 cristals'));
-                this.addTooltip('convertFor1', '', _('Transmute one of these energies into 1 cristal'));
+                this.addTooltip('convertFor3', _('Transmute one token of this energy into 3 cristals'), '');
+                this.addTooltip('convertFor2', _('Transmute one token of this energy into 2 cristals'), '');
+                this.addTooltip('convertFor1', _('Transmute one of these energies into 1 cristal'), '');
 
                 this.ensureSpecificImageLoading(['../common/point.png']);
 
@@ -581,10 +581,15 @@ define([
                 this.addSecondaryActionButton('undo', _('Undo bonus action'), 'onClickUndo');
             },
             addResetButton() {
-                this.addSecondaryActionButton('resetPlayerTurn', _('Reset turn'), 'onClickReset');
+                this.addDangerActionButton('resetPlayerTurn', _('Reset turn'), 'onClickReset');
+                this.addTooltip('resetPlayerTurn', _('Reset your entire round. Available only if you did not see any secret information, like drawing a card from the deck, for exemple'), '');
             },
             addSecondaryActionButton(id, text, callback) {
                 if (!$(id)) this.addActionButton(id, text, callback, null, false, 'gray');
+            },
+            addDangerActionButton(id, text, callback) {
+                if (!$(id))
+                    this.addActionButton(id, text, callback, null, false, 'red');
             },
 
             /*
