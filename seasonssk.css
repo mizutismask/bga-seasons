@@ -21,6 +21,9 @@ html.season_4 {
 h3 {
 	color: white;
 }
+.cardtooltip h3 {
+	color: unset;
+}
 
 /* player_hand scrollbar */
 /* Hide scrollbar for Chrome, Safari and Opera */
