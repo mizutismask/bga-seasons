@@ -2659,7 +2659,7 @@ define([
                 this.playerHand.removeAll();
                 for (var i in notif.args.cards) {
                     var card = notif.args.cards[i];
-                    this.playerHand.addToStockWithId(card.type, card.id);
+                    this.addCardToPlayerHand(card);
                 }
             },
 
