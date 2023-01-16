@@ -260,7 +260,6 @@ var jstpl_player_board = '<div class="clear">\
                 </a>\
             </div>\
         </div>\
-        <div><a href="#" id="choose_player_${player.id}"  class="choose_player button ${player.choose_opponent}"><span>{LB_CHOOSE_THIS_PLAYER}</span></a></div>\
     </div>';
 
 var jstpl_token_tooltip = '<div class="tokentooltip">\
@@ -332,6 +331,8 @@ var jstpl_opponent_hand='\
 var jstpl_bonus_action_exchange_bar='\
     <div id="bonus_action_exchange_wrapper" class="generalactionscontent">\
     </div>'
+
+var jstpl_choose_player='<a href="#" id="choose_player_${player.id}"  class="choose_player button ${player.choose_opponent}"><span>{LB_CHOOSE_THIS_PLAYER}</span></a>';
 </script>  
 
 {OVERALL_GAME_FOOTER}

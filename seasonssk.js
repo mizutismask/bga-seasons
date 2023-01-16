@@ -77,12 +77,10 @@ define([
                 this.discardPileCounter.create('discard_pile_counter');
                 this.addTooltipToClass("discard-pile", _("Discard pile"), "");
 
+                //player boards
                 for (var player_id in gamedatas.players) {
                     var player = gamedatas.players[player_id];
                     var player_board_div = $('player_board_' + player_id);
-
-                    if (player_id != this.player_id) { player.choose_opponent = 'choose_opponent'; }
-                    else { player.choose_opponent = ''; }
 
                     dojo.place(this.format_block('jstpl_player_board', {
                         player: player,
@@ -96,8 +94,16 @@ define([
                     var nameDiv = "boardblock_additional_info_" + player_id;
                     dojo.style(nameDiv, "border-color", '#' + player['color']);
                     if (!$("player_board_avatar_" + player_id)) {
-                        dojo.create('img', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit' }, nameDiv, 'last');
-                        dojo.attr("player_board_avatar_" + player_id, "src", this.getPlayerAvatarWithSize(player_id, 184));
+                        dojo.create('div', { id: "player_board_avatar_wrapper_" + player_id, class: 'ssn-avatar-wrapper', style: 'border-color:inherit' }, nameDiv, 'last');
+                        dojo.create('div', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit' }, "player_board_avatar_wrapper_" + player_id, 'last');
+                        dojo.style("player_board_avatar_" + player_id, "background-image", 'url(' + this.getPlayerAvatarWithSize(player_id, 184) + ')');
+                        
+                        if (player_id != this.player_id) { player.choose_opponent = 'choose_opponent'; }
+                        else { player.choose_opponent = ''; }
+                        dojo.place(this.format_block('jstpl_choose_player', {
+                            player: player,
+                        }), "player_board_avatar_" + player_id);
+                        
                     }
 
                     $('invocation_level_' + player_id).innerHTML = player.invocation;
