@@ -97,13 +97,13 @@ define([
                         dojo.create('div', { id: "player_board_avatar_wrapper_" + player_id, class: 'ssn-avatar-wrapper', style: 'border-color:inherit' }, nameDiv, 'last');
                         dojo.create('div', { id: "player_board_avatar_" + player_id, class: 'ssn-avatar avatarBorder', style: 'border-color:inherit' }, "player_board_avatar_wrapper_" + player_id, 'last');
                         dojo.style("player_board_avatar_" + player_id, "background-image", 'url(' + this.getPlayerAvatarWithSize(player_id, 184) + ')');
-                        
+
                         if (player_id != this.player_id) { player.choose_opponent = 'choose_opponent'; }
                         else { player.choose_opponent = ''; }
                         dojo.place(this.format_block('jstpl_choose_player', {
                             player: player,
                         }), "player_board_avatar_" + player_id);
-                        
+
                     }
 
                     $('invocation_level_' + player_id).innerHTML = player.invocation;
@@ -547,7 +547,7 @@ define([
 
             changeTransmutationButtonText(args) {
                 msg = this.getDefaultTransmutationButtonText(args);
-                separator = " => ";
+                separator = " -> ";
                 if (msg.indexOf(separator) != -1) {
                     msg = msg.replace(separator, separator + args.simulationPoints);
                 }
@@ -1535,6 +1535,7 @@ define([
                     if (tokens.length == 1) {
                         var token = tokens[0];
                         this.ajaxcall("/seasonssk/seasonssk/chooseToken.html", { tokenId: token.id, lock: true }, this, function (result) {
+                            this.tokensStock[this.player_id].setSelectionMode(0);
                         });
                     }
                     else {
@@ -1973,6 +1974,10 @@ define([
                     case 'buildLibraryNew':
                         this.takeAction('undoChooseLibrarynew', {}, false, true);
                         break;
+                    case 'chooseToken':
+                        this.takeAction('undoChooseToken', {}, false, true);
+                        this.tokensStock[this.player_id].setSelectionMode(1);
+                        break;
                     case 'playerTurn':
                         this.takeAction('undoBonusAction', {}, true, true);
                         break;
@@ -2203,7 +2208,7 @@ define([
                         case 'playerTurn':
                             this.updateCountersSafe(args);
                             this.addTransmutationButton(args);
-                            
+
                             //highlight cards that can be played
                             if (args.possibleCards) {
                                 args.possibleCards.forEach(c => dojo.query("#card-" + c).addClass("possibleCard"));
@@ -2448,6 +2453,7 @@ define([
                     switch (stateName) {
                         case 'draftChoice':
                         case 'buildLibraryNew':
+                        case 'chooseToken':
                             this.addUndoButton();
                             break;
                     }
@@ -2539,6 +2545,7 @@ define([
                 dojo.subscribe('removeEnergiesOnCard', this, "notif_removeEnergiesOnCard");
                 dojo.subscribe('removeEnergyOnCard', this, "notif_removeEnergyOnCard");
                 dojo.subscribe('newCardChoice', this, "notif_newCardChoice");
+                dojo.subscribe('newTokenChoice', this, "notif_newTokenChoice");
                 dojo.subscribe('newOtusChoice', this, "notif_newOtusChoice");
 
                 dojo.subscribe('removeFromChoice', this, "notif_removeFromChoice");
@@ -2560,6 +2567,7 @@ define([
                 dojo.subscribe('updateScores', this, "notif_updateScores");
                 dojo.subscribe('potionOfLifeWarning', this, "notif_potionOfLifeWarning");
                 dojo.subscribe('tokenUsed', this, "notif_tokenUsed");
+                dojo.subscribe('tokenChosen', this, "notif_tokenChosen");
                 dojo.subscribe('transmutationPossible', this, "notif_transmutationPossible");
                 dojo.subscribe('undoChooseLibraryNew', this, "notif_undoChooseLibraryNew");
                 dojo.subscribe('updateAllResources', this, "notif_updateAllResources");
@@ -2761,7 +2769,8 @@ define([
             },
 
             notif_tokenChosen: function (notif) {
-                console.log("notif_tokenChosen", dojo.query("#tokens_" + playerId).length);
+
+                console.log("notif_tokenChosen", notif);
                 var playerId = notif.args.player_id;
                 var tokenId = notif.args.token_id
 
@@ -2851,6 +2860,14 @@ define([
                     this.cardChoice.addToStockWithId(card.type, card.id, from);
                 }
             },
+            notif_newTokenChoice: function (notif) {
+                console.log("notif_newTokenChoice", notif);
+                this.tokensStock[notif.args.player_id].removeAll();
+                for (const [tokenId, token] of Object.entries(notif.args.tokens)) {
+                    this.tokensStock[notif.args.player_id].addToStockWithId(token.type, tokenId);
+                }
+            },
+
             notif_newOtusChoice: function (notif) {
                 dojo.style('otus_wrap', 'display', 'block');
                 for (var i in notif.args.cards) {

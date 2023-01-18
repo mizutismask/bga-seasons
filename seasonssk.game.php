@@ -337,18 +337,23 @@ class SeasonsSK extends Table {
         $result['counters'] = $this->argCounters();
 
         if ($this->isPathOfDestiny() || $this->isEnchantedKingdom()) {
-            $result['tokens'] = [];
-            foreach ($players as $player_id => $player) {
-                $token  = $this->tokensDeck->getCardsInLocation('hand', $player_id);
-                if (!$token) {
-                    $token  = $this->tokensDeck->getCardsInLocation('used', $player_id);
-                }
-                $result['tokens'][$player_id] = $token;
-            }
+            $result['tokens'] = $this->getTokens();
         }
         return $result;
     }
 
+    function getTokens() {
+        $result = [];
+        $players = self::loadPlayersBasicInfos();
+        foreach ($players as $player_id => $player) {
+            $token  = $this->tokensDeck->getCardsInLocation('hand', $player_id);
+            if (!$token) {
+                $token  = $this->tokensDeck->getCardsInLocation('used', $player_id);
+            }
+            $result[$player_id] = $token;
+        }
+        return $result;
+    }
 
     function getGameProgression() {
         // Game progression: get player maximum score
@@ -2927,16 +2932,26 @@ class SeasonsSK extends Table {
         self::checkAction('chooseToken');
         $player_id = self::getCurrentPlayerId();
         $token = $this->checkTokenBelongsToPlayer($tokenId, $player_id);
-
-        $this->tokensDeck->moveAllCardsInLocation('hand', 'discard', $player_id); //other tokens are discarded
-        $this->tokensDeck->moveCard($tokenId, 'hand',  $player_id);
+        self::DbQuery("UPDATE ability_token SET card_type_arg='1' WHERE card_id='$tokenId'"); //mark as chosen for later
         $this->gamestate->setPlayerNonMultiactive($player_id, 'startYear');
-
-        self::notifyAllPlayers('tokenChosen', '', array(
-            'token' => $token,
-            'player_id' => $player_id,
-        ));
+        self::notifyPlayer($player_id, 'msg', clienttranslate('You chose token ${token_type}'), array("token_type" => $token["type"]));
+        /*self::notifyPlayer($player_id, 'tokenChosen', '', array(
+            'token_id' =>  $token["id"],
+            'player_id' =>  $player_id,
+        ));*/
     }
+
+    function undoChooseToken() {
+        $this->gamestate->checkPossibleAction('undoChooseToken');
+        $player_id = self::getCurrentPlayerId();
+        $this->gamestate->setPlayersMultiactive([$player_id], "startYear");
+        self::DbQuery("UPDATE ability_token SET card_type_arg='0' WHERE card_location_arg='$player_id'"); //unmark
+        /* self::notifyPlayer($player_id, 'newTokenChoice', '', array(
+            'tokens' => $this->tokensDeck->getCardsInLocation('hand', $player_id),
+            'player_id' => $player_id,
+        ));*/
+    }
+
 
     /**Some token need to specify a card to be played. card_id parameter is used is that scenario. */
     function playToken($card_id) {
@@ -4100,12 +4115,28 @@ class SeasonsSK extends Table {
 
     function stStartYear() {
         $year = self::getGameStateValue('year');
+
+        //notifies token choice once everyone's choice is final
+        if ($year == 1 && $this->isPathOfDestiny() || $this->isEnchantedKingdom()) {
+            $players = self::loadPlayersBasicInfos();
+            foreach ($players as $player_id => $player) {
+
+                //$this->tokensDeck->moveAllCardsInLocation('hand', 'discard', $player_id, $player_id); //other tokens are discarded
+                //$this->tokensDeck->moveCard($tokenId, 'hand',  $player_id);
+                self::DbQuery("UPDATE ability_token SET card_location='discard' WHERE card_type_arg=0 and card_location_arg='$player_id'"); //discard marked as not chosen
+
+                $chosen = $this->tokensDeck->getCardsInLocation('hand', $player_id);
+                $token = array_pop($chosen);
+                self::notifyAllPlayers('tokenChosen', '', array(
+                    'token_id' =>  $token["id"],
+                    'player_id' =>  $player_id,
+                ));
+            }
+        }
         if ($year >= 4) {
             $this->gamestate->nextState('endGame');
             return;
         }
-
-
         $this->gamestate->nextState('newyear');
     }
 
@@ -8447,7 +8478,7 @@ class SeasonsSK extends Table {
         self::setGameStateValue('elementalAmulet1', $energy_id);  // Hack: we use elementalAmulet1 to store energy type
 
         $card_types = self::getCardTypes();
-$this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
+        $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
         // See first card on the drawpile
         for ($i = 1; $i < 200; $i++)  // To avoid infinite loop
@@ -8502,7 +8533,7 @@ $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         } else {
             // Discard the card
             $this->cards->moveCard($card_id, 'discard');
-$this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
+            $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
 
             // Get the next familiar (see "familiar_catcher_play" above)
             for ($i = 1; $i < 200; $i++)  // To avoid infinite loop

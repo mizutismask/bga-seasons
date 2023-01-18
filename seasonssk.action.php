@@ -513,4 +513,9 @@ class action_seasonssk extends APP_GameAction {
         $this->game->undoBonusAction();
         self::ajaxResponse();
     }
+    public function undoChooseToken() {
+        self::setAjaxMode();
+        $this->game->undoChooseToken();
+        self::ajaxResponse();
+    }
 }

@@ -99,7 +99,7 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} must choose one ability token'),
         "type" => "multipleactiveplayer",
         "action" => "stMakeEveryoneActive",
-        "possibleactions" => array("chooseToken"),
+        "possibleactions" => array("chooseToken", "undoChooseToken"),
         "transitions" => array("startYear" => 20)
     ),
 
