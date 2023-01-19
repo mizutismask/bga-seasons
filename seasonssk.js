@@ -41,6 +41,8 @@ define([
 
                 this.energies = {};
                 this.energies_reserve = {};
+                this.energies_reminder = {};
+                this.energies_reserve_reminder = {};
                 this.energies_on_card = {};
                 this.amulet_of_water_ingame = {};
                 this.library = {};
@@ -110,31 +112,21 @@ define([
                     if (gamedatas.handcount[player_id]) { $('handcount_' + player_id).innerHTML = gamedatas.handcount[player_id]; }
                     else { $('handcount_' + player_id).innerHTML = 0; }
 
-                    this.energies[player_id] = new ebg.stock();
-                    this.energies[player_id].create(this, $('energies_' + player_id), 25, 25);
-                    if (player_id != this.player_id) {
-                        this.energies[player_id].setSelectionMode(0);
-                    }
-                    for (var ress_id = 1; ress_id <= 4; ress_id++) {
-                        this.energies[player_id].addItemType(ress_id, ress_id, g_gamethemeurl + 'img/icons.png', ress_id - 1);
-                    }
-
                     dojo.place("bonusused_" + player_id, "icon_point_" + player_id, "after");
                     if (toint(player.nb_bonus) == 0) { dojo.addClass("bonusused_" + player_id, "invisible"); }
 
-                    this.energies_reserve[player_id] = new ebg.stock();
-                    this.energies_reserve[player_id].create(this, $('energy_reserve_' + player_id), 25, 25);
-                    this.energies_reserve[player_id].addItemType(0, 0, g_gamethemeurl + 'img/icons.png', 4);
-                    this.energies_reserve[player_id].setSelectionMode(0);
+                    this.createEnergyStockForPlayer(player_id, this.energies, 'energies_', this.energies_reserve, 'energy_reserve_');
+                    this.createEnergyStockForPlayer(player_id, this.energies_reminder, 'energies_reminder_', this.energies_reserve_reminder, 'energy_reserve_reminder_');
 
-                    this.updateResources(this.gamedatas.resource[player_id], player_id);
                     if (player_id != this.player_id) {
                         this.energies[player_id].setSelectionMode(0);
                     } else {
                         dojo.connect(this.energies[player_id], 'onChangeSelection', this, 'onEnergySelectionChange');
                     }
+                    this.energies_reminder[player_id].setSelectionMode(0);
+                    this.energies_reserve_reminder[player_id].setSelectionMode(0);
 
-                    // Void items (reserve size)
+                    this.updateResources(this.gamedatas.resource[player_id], player_id);
                     this.setReserveSize(player_id, player.reserve_size);
 
                     //cards stocks
@@ -430,6 +422,27 @@ define([
                 this.setupNotifications();
             },
 
+            createEnergyStockForPlayer(player_id, nrjStocks, stockDivPrefix, reserveStocks, reserveDivPrefix) {
+                nrjStocks[player_id] = new ebg.stock();
+                nrjStocks[player_id].create(this, $(stockDivPrefix + player_id), 25, 25);
+                if (player_id != this.player_id) {
+                    nrjStocks[player_id].setSelectionMode(0);
+                }
+                for (var ress_id = 1; ress_id <= 4; ress_id++) {
+                    nrjStocks[player_id].addItemType(ress_id, ress_id, g_gamethemeurl + 'img/icons.png', ress_id - 1);
+                }
+
+                reserveStocks[player_id] = new ebg.stock();
+                reserveStocks[player_id].create(this, $(reserveDivPrefix + player_id), 25, 25);
+                reserveStocks[player_id].addItemType(0, 0, g_gamethemeurl + 'img/icons.png', 4);
+                reserveStocks[player_id].setSelectionMode(0);
+
+                if (player_id != this.player_id) {
+                    nrjStocks[player_id].setSelectionMode(0);
+                } else {
+                    dojo.connect(nrjStocks[player_id], 'onChangeSelection', this, 'onEnergySelectionChange');
+                }
+            },
             /** adds previous and next player color and name in a tooltip */
             setupPlayerOrderHints(playerId, gamedatas) {
                 var nameDiv = this.queryFirst('#player_name_' + playerId + ' a');
@@ -486,11 +499,13 @@ define([
 
             updateResources: function (resources, player_id) {
                 this.energies[player_id].removeAll();
+                this.energies_reminder[player_id].removeAll();
                 if (resources) {
                     for (var ress_id in resources) {
                         var qt = resources[ress_id];
                         for (var i = 0; i < qt; i++) {
                             this.energies[player_id].addToStock(ress_id);
+                            this.energies_reminder[player_id].addToStock(ress_id);
                         }
                     }
                 }
@@ -1185,16 +1200,19 @@ define([
 
             addEnergyToPlayerStock: function (player_id, energy_id) {
                 this.energies[player_id].addToStock(energy_id);
+                this.energies_reminder[player_id].addToStock(energy_id);
             },
             removeEnergyToPlayerStock: function (player_id, energy_id) {
                 this.energies[player_id].removeFromStock(energy_id);
+                this.energies_reminder[player_id].removeFromStock(energy_id);
             },
 
             setReserveSize: function (player_id, reserve_size) {
                 this.energies_reserve[player_id].removeAll();
-
+                this.energies_reserve_reminder[player_id].removeAll();
                 for (var i = 0; i < reserve_size; i++) {
                     this.energies_reserve[player_id].addToStock(0);
+                    this.energies_reserve_reminder[player_id].addToStock(0);
                 }
             },
 

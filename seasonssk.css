@@ -759,7 +759,7 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	border-width: 6px;
 }
 
-.player_board_content *:not(.ssn-avatar-wrapper){
+.player_board_content *:not(.ssn-avatar-wrapper) {
 	z-index: 1;
 }
 
@@ -769,24 +769,24 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 
 .player-board .ssn-avatar {
 	width: 184px;
-    height: 184px;
-    background-color: #f3f1f1;
-    border-style: solid;
-    border-radius: 50%;
-    right: -30px;
-    position: absolute;
-    bottom: -84px;
+	height: 184px;
+	background-color: #f3f1f1;
+	border-style: solid;
+	border-radius: 50%;
+	right: -30px;
+	position: absolute;
+	bottom: -84px;
 	display: flex;
 	align-items: center;
 	justify-content: left;
 }
 
-.ssn-avatar-wrapper{
-	    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    z-index: 0;
-    background: #f3f1f1;
+.ssn-avatar-wrapper {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	z-index: 0;
+	background: #f3f1f1;
 }
 
 #new-year {
@@ -960,17 +960,31 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 
 /* player reserve */
 
-.energywrapper {
+.player-board .energywrapper {
 	position: relative;
 	width: 170px;
 	min-height: 55px;
 }
-.energy_reserve {
+.player-board .energy_reserve {
 	position: absolute;
 	top: 0px;
 	left: 0px;
 	height: 55px;
 	width: 170px;
+}
+
+.leftPlayerBoard .energywrapper {
+	position: relative;
+	width: 120px;
+	min-height: 96px;
+	margin-top: 13px;
+}
+.leftPlayerBoard .energy_reserve {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 96px;
+	width: 120px;
 }
 
 /* cards drawn */

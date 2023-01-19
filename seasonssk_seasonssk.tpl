@@ -145,10 +145,16 @@
                 <div id="cards_points_counter_{CURRENT_PLAYER_ID}" class="prestige counter"></div>
             </div>
             <img id="left_avatar_{CURRENT_PLAYER_ID}" alt="" class="ssn-avatar" />
+            <h3>{CURRENT_PLAYER_NAME}</h3>
             <div class="playerdie_wrap" id="playerdie_wrap_left_{CURRENT_PLAYER_ID}">
                 <div class="playerdie" id="playerdie_left_{CURRENT_PLAYER_ID}"></div>
             </div>
-            <h3>{CURRENT_PLAYER_NAME}</h3>
+            <div>
+                <div class="energywrapper">
+                    <div id="energy_reserve_reminder_{CURRENT_PLAYER_ID}" class="energy_reserve"></div>
+                    <div id="energies_reminder_{CURRENT_PLAYER_ID}" class="energies"></div>
+                </div>
+            </div>
             <div class="bonus-progress">
                 <div id="bonusUsedCube_{CURRENT_PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
                 <div class="bonus_actions_used">
@@ -184,10 +190,16 @@
                 <div id="cards_points_counter_{PLAYER_ID}" class="prestige counter"></div>
             </div>
             <img id="left_avatar_{PLAYER_ID}" alt="" class="ssn-avatar" />
+            <h3>{PLAYER_NAME}</h3>
             <div class="playerdie_wrap" id="playerdie_wrap_left_{PLAYER_ID}">
                 <div class="playerdie" id="playerdie_left_{PLAYER_ID}"></div>
             </div>
-            <h3>{PLAYER_NAME}</h3>
+            <div>
+                <div class="energywrapper">
+                    <div id="energy_reserve_reminder_{PLAYER_ID}" class="energy_reserve"></div>
+                    <div id="energies_reminder_{PLAYER_ID}" class="energies"></div>
+                </div>
+            </div>
             <div class="bonus-progress">
                 <div id="bonusUsedCube_{PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
                 <div class="bonus_actions_used">
