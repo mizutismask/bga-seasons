@@ -363,12 +363,12 @@ h3 {
 	left: 19px;
 }
 
-.seasons_compact_player_board  .prestige,
+.seasons_compact_player_board .prestige,
 .seasons_compact_player_board .icon_cristal {
 	/*width: 30px;
 	height: 30px;*/
 }
-.seasons_compact_player_board .counter{
+.seasons_compact_player_board .counter {
 	font-size: small;
 }
 .conversion_reminder .counter {
@@ -1362,8 +1362,10 @@ a.choose_player {
 	height: 36px;
 }
 
+.mobileOnlyPlayerName {
+	display: none;
+}
 /******* Mobile version ****************/
-
 @media only screen and (max-width: 970px) {
 	#board {
 		float: none;
@@ -1376,6 +1378,77 @@ a.choose_player {
 	}
 	.seasons_rightpanel {
 		margin-left: 0px;
+	}
+
+	.mobileOnlyPlayerName {
+		display: inline;
+	}
+	.desktopOnlyPlayerName {
+		display: none;
+	}
+	.leftPlayerBoard {
+		width: 100%;
+		grid-column: 1/2;
+		display: grid;
+		grid-template-columns: repeat(5, min-content);
+		grid-template-rows: min-content min-content;
+		justify-content: space-evenly;
+		grid-gap: 0px;
+	}
+	.leftPlayerBoard .energywrapper {
+		margin-top: 7px;
+	}
+	.leftPlayerBoard .ssn-avatar {
+		margin-left: -13px;
+	}
+	.stock-wrapper {
+		grid-row: 2;
+	}
+	.playerNameWrapper {
+		display: flex;
+		justify-content: center;
+		position: absolute;
+		width: 100%;
+		bottom: -5px;
+	}
+	.bonus-progress {
+		width: 47px;
+	}
+	.bonus {
+		width: 31px;
+		height: 44px;
+	}
+
+	.bonus_actions_used {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.bonusUsedCube.bonusUsed0 {
+		top: 5%;
+		margin-left: 18px;
+		position: absolute;
+	}
+	.bonusUsedCube.bonusUsed1 {
+		top: 23%;
+		margin-left: 18px;
+		position: absolute;
+	}
+	.bonusUsedCube.bonusUsed2 {
+		top: 44%;
+		margin-left: 18px;
+		position: absolute;
+	}
+	.bonusUsedCube.bonusUsed3 {
+		top: 66%;
+		margin-left: 18px;
+		position: absolute;
+	}
+
+	.tableau {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 	}
 }
 

@@ -140,12 +140,17 @@
     <a id="anchor_player_{CURRENT_PLAYER_ID}"></a>
     <div class="tableau" id="currentPlayerTablea">
         <div id="leftPlayerBoard_{CURRENT_PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{CURRENT_PLAYER_COLOR}">
+            <div class="playerNameWrapper"> 
+                <h3 class="mobileOnlyPlayerName">{CURRENT_PLAYER_NAME}</h3>
+            </div>
             <div id="board_counters">
                 <div id="cristals_counter_{CURRENT_PLAYER_ID}" class="sicon icon_cristal counter"></div>
                 <div id="cards_points_counter_{CURRENT_PLAYER_ID}" class="prestige counter"></div>
             </div>
             <img id="left_avatar_{CURRENT_PLAYER_ID}" alt="" class="ssn-avatar" />
-            <h3>{CURRENT_PLAYER_NAME}</h3>
+            
+            <h3 class="desktopOnlyPlayerName">{CURRENT_PLAYER_NAME}</h3>
+            
             <div class="playerdie_wrap" id="playerdie_wrap_left_{CURRENT_PLAYER_ID}">
                 <div class="playerdie" id="playerdie_left_{CURRENT_PLAYER_ID}"></div>
             </div>
@@ -185,12 +190,15 @@
     <a id="anchor_player_{PLAYER_ID}"></a>
     <div class="tableau">
         <div id="leftPlayerBoard_{PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{PLAYER_COLOR}">
+            <div class="playerNameWrapper"> 
+                <h3 class="mobileOnlyPlayerName">{PLAYER_NAME}</h3>
+            </div>
             <div id="board_counters">
                 <div id="cristals_counter_{PLAYER_ID}" class="sicon icon_cristal counter"></div>
                 <div id="cards_points_counter_{PLAYER_ID}" class="prestige counter"></div>
             </div>
             <img id="left_avatar_{PLAYER_ID}" alt="" class="ssn-avatar" />
-            <h3>{PLAYER_NAME}</h3>
+            <h3 class="desktopOnlyPlayerName">{PLAYER_NAME}</h3>
             <div class="playerdie_wrap" id="playerdie_wrap_left_{PLAYER_ID}">
                 <div class="playerdie" id="playerdie_left_{PLAYER_ID}"></div>
             </div>
