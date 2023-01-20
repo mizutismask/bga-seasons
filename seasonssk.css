@@ -194,8 +194,8 @@ h3 {
 
 .bonus_actions {
 	display: grid;
-	grid-template-columns: 40px 40px;
-	grid-template-rows: 56px 56px;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
 	grid-column-gap: 5px;
 	grid-row-gap: 5px;
 }
@@ -204,26 +204,27 @@ h3 {
 	cursor: pointer;
 	background-image: url("img/bonuses.png");
 	border-radius: 6px;
-}
-.bonus1 {
+	max-width: 100%;
+	background-size: 100%;
 	width: 39px;
 	height: 55px;
-	background-position: -47px -3px;
+}
+
+.bonus1 {
+	background-position: 0 0%;
+	background-size: 100%;
 }
 .bonus2 {
-	width: 39px;
-	height: 55px;
-	background-position: -92px -3px;
-}
-.bonus4 {
-	width: 38px;
-	height: 55px;
-	background-position: -3px -3px;
+	background-position: 0 33.333333%;
+	background-size: 100%;
 }
 .bonus3 {
-	width: 39px;
-	height: 55px;
-	background-position: -137px -3px;
+	background-position: 0 66.666667%;
+	background-size: 100%;
+}
+.bonus4 {
+	background-position: 0 100%;
+	background-size: 102.631579%;
 }
 
 .ssn-info {
@@ -277,7 +278,7 @@ h3 {
 /*Player board on the left*/
 .leftPlayerBoard {
 	border: 2px solid #9d7e7e;
-	border-radius: 60px;
+	border-radius: 70px;
 	display: inline-flex;
 	flex-direction: column;
 	align-items: center;
@@ -334,6 +335,42 @@ h3 {
 	align-items: center;
 }
 
+/* Compact mode */
+.seasons_compact_player_board .leftPlayerBoard .bonus-progress,
+.seasons_compact_player_board .leftPlayerBoard .playerdie_wrap,
+.seasons_compact_player_board .leftPlayerBoard .energywrapper {
+	display: none;
+}
+.seasons_compact_player_board .leftPlayerBoard .ssn-avatar {
+	width: 45px;
+	height: 45px;
+}
+.seasons_compact_player_board .leftPlayerBoard .bonus1,
+.seasons_compact_player_board .leftPlayerBoard .bonus2,
+.seasons_compact_player_board .leftPlayerBoard .bonus3,
+.seasons_compact_player_board .leftPlayerBoard .bonus4,
+.seasons_compact_player_board .leftPlayerBoard .age {
+	width: 28px;
+	height: 40px;
+}
+
+.seasons_compact_player_board .age {
+	width: 35px;
+	height: 35px;
+}
+
+.seasons_compact_player_board .ages {
+	left: 19px;
+}
+
+.seasons_compact_player_board  .prestige,
+.seasons_compact_player_board .icon_cristal {
+	/*width: 30px;
+	height: 30px;*/
+}
+.seasons_compact_player_board .counter{
+	font-size: small;
+}
 .conversion_reminder .counter {
 	color: black;
 	-webkit-text-stroke: 1px #fff;

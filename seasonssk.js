@@ -132,20 +132,22 @@ define([
                     //cards stocks
                     var itemMargin = 25;//16min
                     var itemsPerRow = 10;
-                    //underlayer for empty slots
-                    this.underlayerPlayerTableau[player_id] = new ebg.stock();
-                    this.underlayerPlayerTableau[player_id].item_margin = itemMargin;
-                    this.underlayerPlayerTableau[player_id].create(this, $('underlayer_player_tableau_' + player_id), this.cardwidth, this.cardHeight);
-                    this.underlayerPlayerTableau[player_id].image_items_per_row = itemsPerRow;
-                    this.underlayerPlayerTableau[player_id].extraClasses = 'thickness empty-slot';
-                    this.underlayerPlayerTableau[player_id].setSelectionMode = 0;
-                    this.underlayerPlayerTableau[player_id].addItemType(0, 9999, g_gamethemeurl + 'img/voidcards.png', 0);
-                    for (let i = 0; i < 15; i++) {//insert empty slots
-                        this.underlayerPlayerTableau[player_id].addToStockWithId(0, this.nextInvocCardId);
-                        this.nextInvocCardId--;
-                    }
-                    this.underlayerPlayerTableau[player_id].extraClasses = 'thickness ssn-loc-available ';
 
+                    if (!this.isCompactMode()) {
+                        //underlayer for empty slots
+                        this.underlayerPlayerTableau[player_id] = new ebg.stock();
+                        this.underlayerPlayerTableau[player_id].item_margin = itemMargin;
+                        this.underlayerPlayerTableau[player_id].create(this, $('underlayer_player_tableau_' + player_id), this.cardwidth, this.cardHeight);
+                        this.underlayerPlayerTableau[player_id].image_items_per_row = itemsPerRow;
+                        this.underlayerPlayerTableau[player_id].extraClasses = 'thickness empty-slot';
+                        this.underlayerPlayerTableau[player_id].setSelectionMode = 0;
+                        this.underlayerPlayerTableau[player_id].addItemType(0, 9999, g_gamethemeurl + 'img/voidcards.png', 0);
+                        for (let i = 0; i < 15; i++) {//insert empty slots
+                            this.underlayerPlayerTableau[player_id].addToStockWithId(0, this.nextInvocCardId);
+                            this.nextInvocCardId--;
+                        }
+                        this.underlayerPlayerTableau[player_id].extraClasses = 'thickness ssn-loc-available ';
+                    }
 
                     this.playerTableau[player_id] = new ebg.stock();
                     this.playerTableau[player_id].item_margin = itemMargin;
@@ -480,6 +482,10 @@ define([
 
             ///////////////////////////////////////////////////
             //// Utilities
+            /** Tells if compact player board is active in user prefs. */
+            isCompactMode() {
+                return this.prefs[2].value == 1;
+            },
             convertStockSelectedItemsIntoString(items) {
                 var id_string = '';
                 for (var i in items) {
