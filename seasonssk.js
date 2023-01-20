@@ -13,7 +13,7 @@
  */
 const CURRENT_SEASON_OPACITY = 0.0;
 const OTHER_SEASON_OPACITY = 0.4;
-const SVG_SIZE = 400;
+const SVG_SIZE = 340;
 
 define([
     "dojo", "dojo/_base/declare",
