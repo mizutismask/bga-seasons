@@ -335,41 +335,43 @@ h3 {
 	align-items: center;
 }
 
-/* Compact mode */
-.seasons_compact_player_board .leftPlayerBoard .bonus-progress,
-.seasons_compact_player_board .leftPlayerBoard .playerdie_wrap,
-.seasons_compact_player_board .leftPlayerBoard .energywrapper {
-	display: none;
-}
-.seasons_compact_player_board .leftPlayerBoard .ssn-avatar {
-	width: 45px;
-	height: 45px;
-}
-.seasons_compact_player_board .leftPlayerBoard .bonus1,
-.seasons_compact_player_board .leftPlayerBoard .bonus2,
-.seasons_compact_player_board .leftPlayerBoard .bonus3,
-.seasons_compact_player_board .leftPlayerBoard .bonus4,
-.seasons_compact_player_board .leftPlayerBoard .age {
-	width: 28px;
-	height: 40px;
-}
+/* Compact mode only in desktop */
+@media only screen and (min-width: 970px) {
+	.seasons_compact_player_board .leftPlayerBoard .bonus-progress,
+	.seasons_compact_player_board .leftPlayerBoard .playerdie_wrap,
+	.seasons_compact_player_board .leftPlayerBoard .energywrapper {
+		display: none;
+	}
+	.seasons_compact_player_board .leftPlayerBoard .ssn-avatar {
+		width: 45px;
+		height: 45px;
+	}
+	.seasons_compact_player_board .leftPlayerBoard .bonus1,
+	.seasons_compact_player_board .leftPlayerBoard .bonus2,
+	.seasons_compact_player_board .leftPlayerBoard .bonus3,
+	.seasons_compact_player_board .leftPlayerBoard .bonus4,
+	.seasons_compact_player_board .leftPlayerBoard .age {
+		width: 28px;
+		height: 40px;
+	}
 
-.seasons_compact_player_board .age {
-	width: 35px;
-	height: 35px;
-}
+	.seasons_compact_player_board .age {
+		width: 35px;
+		height: 35px;
+	}
 
-.seasons_compact_player_board .ages {
-	left: 19px;
-}
+	.seasons_compact_player_board .ages {
+		left: 19px;
+	}
 
-.seasons_compact_player_board .prestige,
-.seasons_compact_player_board .icon_cristal {
-	/*width: 30px;
+	.seasons_compact_player_board .prestige,
+	.seasons_compact_player_board .icon_cristal {
+		/*width: 30px;
 	height: 30px;*/
-}
-.seasons_compact_player_board .counter {
-	font-size: small;
+	}
+	.seasons_compact_player_board .counter {
+		font-size: small;
+	}
 }
 .conversion_reminder .counter {
 	color: black;
