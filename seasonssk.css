@@ -1376,6 +1376,12 @@ a.choose_player {
 	margin-left: 5px;
 }
 
+.reset_button{
+	display: inline;
+	margin-left: 5px;
+	cursor: pointer;
+}
+
 .mobileOnlyPlayerName {
 	display: none;
 }

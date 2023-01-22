@@ -265,6 +265,8 @@ define([
                     this.addVoidCardsToLibraryBuilds(l);
                     dojo.connect(this.libraryBuild[l], 'onChangeSelection', this, 'onLibraryBuildchange');
                 }
+                this.addTooltipToClass('reset_button', _('Moves the cards from this year back to your hand.'), '');
+                dojo.query('.reset_button').connect('onclick', this, 'onResetYearRepartition');
 
                 // Init seasondices
                 this.seasonDices = new ebg.stock();
@@ -1932,6 +1934,29 @@ define([
                     // monthplace_<id>
                     var month = evt.currentTarget.id.substr(11);
                     this.ajaxcall("/seasonssk/seasonssk/moveSeason.html", { month: month, lock: true }, this, function (result) { });
+                }
+            },
+            onResetYearRepartition: function (evt) {
+                dojo.stopEvent(evt);
+                var year = evt.target.dataset.year;
+                var cards = this.libraryBuild[year].getAllItems();
+                var change = false;
+                for (var i in cards) {
+                    var card = cards[i];
+                    if (card.type != 0) {
+                        change = true;
+                        this.libraryBuild[year].removeFromStockById(card.id, "player_hand");// 
+                        this.addCardToPlayerHand(card);
+                    }
+                }
+                if (change) {
+                    this.libraryBuild[year].removeAll();
+                    this.addVoidCardsToLibraryBuilds(year);
+                    var hand = this.queryFirst("#player_hand .scrollable-stock-inner");
+                    hand.scroll({
+                        left: hand.scrollWidth,
+                        behavior: 'smooth'
+                    });
                 }
             },
             onUseBonus: function (evt) {
