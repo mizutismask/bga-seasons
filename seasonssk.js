@@ -480,6 +480,15 @@ define([
                 }
             },
 
+            addArrowToActivePlayer(state) {
+                if (state.type != "multipleactiveplayer" && state.active_player != this.player_id) {
+                    if (!dojo.byId("goToCurrentPlayer")) {
+                        dojo.place(this.format_block('jstpl_down_arrow', {
+                            player_id: state.active_player,
+                        }), "generalactions", "last");
+                    }
+                }
+            },
             ///////////////////////////////////////////////////
             //// Utilities
             /** Tells if compact player board is active in user prefs. */
@@ -2121,6 +2130,7 @@ define([
                         this.tokensStock[this.player_id].setSelectionMode(1);
                         break;
                 }
+                this.addArrowToActivePlayer(args);
             },
             onLeavingState: function (stateName) {
                 console.log('Leaving state: ' + stateName);
