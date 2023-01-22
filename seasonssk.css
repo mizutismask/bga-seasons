@@ -1378,12 +1378,26 @@ a.choose_player {
 		float: none;
 		margin: auto;
 	}
+
+	.gamestate_draftChoice #board,
+	.gamestate_continueDraftChoice #board,
+	.gamestate_draftTwist #board,
+	.gamestate_chooseToken #board,
+	.gamestate_buildLibraryNew #board,
+	.gamestate_buildLibrary3 #board,
+	.gamestate_buildLibrary2 #board {
+		display: none;
+	}
+
 	#season_library_choice {
 		float: none;
 		margin: auto;
 		top: 0px;
 	}
 	.seasons_rightpanel {
+		margin-left: 0px;
+	}
+	.gamestate_buildLibraryNew .seasons_rightpanel {
 		margin-left: 0px;
 	}
 
