@@ -103,6 +103,19 @@
         </div>
     </div>
 
+    <div id="choiceCards" class="seasonsblock seasons_rightpanel">
+        <h3>{LB_CARDS_DRAWN}</h3>
+        <div class="block-inside-wrapper">
+            <div id="choiceCardsStock"></div>
+        </div>
+    </div>
+
+    <div id="myhand" class="seasons_rightpanel seasonsblock">
+        <h3>{LB_MY_HAND}</h3>
+        <div id="player_hand">
+        </div>
+    </div>
+
     <div id="abilityTokens" class="seasons_rightpanel">
         <div id="tokensStocks">
             <div class="token-stock seasonsblock">
@@ -119,19 +132,6 @@
                 </div>
             </div>
             <!-- END tokens -->
-        </div>
-    </div>
-
-    <div id="choiceCards" class="seasonsblock seasons_rightpanel">
-        <h3>{LB_CARDS_DRAWN}</h3>
-        <div class="block-inside-wrapper">
-            <div id="choiceCardsStock"></div>
-        </div>
-    </div>
-
-    <div id="myhand" class="seasons_rightpanel seasonsblock">
-        <h3>{LB_MY_HAND}</h3>
-        <div id="player_hand">
         </div>
     </div>
 
