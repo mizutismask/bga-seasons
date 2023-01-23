@@ -31,6 +31,7 @@ if (!defined('EVT_ON_SUMMON')) {
     define("PLAYER_FIELD_RESET_POSSIBLE", "player_reset_possible");
     define("BONUS_JUST_PLAYED", "bonusJustPlayed");
     define("LAST_TRANSMUTATION_POSSIBLE", 'lastTransmutationPossible');
+    define("CARDS_REMOVED_FROM_DECK", 'cardsRemovedFromDeck');
 }
 
 class SeasonsSK extends Table {
@@ -45,7 +46,7 @@ class SeasonsSK extends Table {
             "elementalAmulet1" => 21, "elementalAmulet2" => 22, "elementalAmulet3" => 23, "elementalAmulet4" => 24,
             "opponentTarget" => 25, "mustDrawPowerCard" => 26, "elementalAmuletFree" => 27,
             "lastCardDrawn" => 28, "firstActivation" => 29, "steadfast_die_mode" => 30,
-            "discardPos" => 31, "useOtus" => 32, "lastCardPicked" => 33, "currentTokenEffect" => 34, BONUS_JUST_PLAYED => 35, LAST_TRANSMUTATION_POSSIBLE => 36,
+            "discardPos" => 31, "useOtus" => 32, "lastCardPicked" => 33, "currentTokenEffect" => 34, BONUS_JUST_PLAYED => 35, LAST_TRANSMUTATION_POSSIBLE => 36, CARDS_REMOVED_FROM_DECK => 37
         ));
 
         $this->cards = self::getNew("module.common.deck");
@@ -139,6 +140,7 @@ class SeasonsSK extends Table {
         self::setGameStateInitialValue('lastCardPicked', 0);
         self::setGameStateInitialValue('currentTokenEffect', 0);
         self::setGameStateInitialValue(BONUS_JUST_PLAYED, 0);
+        self::setGameStateInitialValue(CARDS_REMOVED_FROM_DECK, 0);
 
         self::initStat('table', 'turn_number', 0);
 
@@ -255,12 +257,26 @@ class SeasonsSK extends Table {
         } else if ($draftMode == 8) {
             // All cards
         } else if ($draftMode == 9) {
-            // Official 2022 tournament cards
-            if (!in_array($type_id, array(
-                1, 4, 6, 8, 9, 38, 12, 19, 21, 23, 18, 17, 25, 26, 27, 28, 31, 33, 36, 35, 39, 32, 42, 45, 102, 105, 110, 112, 106, 107, 103, 113, 115, 116, 118, 119, 120, 202, 204, 207, 212, 213, 214, 215, 216, 217, 218, 303, 302, 301
-            ))) {
-                $deck_card_set[$type_id]['nbr'] = 0;
+            // Official 2022 tournament cards (50 unique cards in theory, 49 in reality, so 98 instead of 100 )
+            foreach ($this->card_types as $type_id => $card_type) {
+                if (!in_array($type_id, array(
+                    1, 4, 6, 8, 9, 38, 12, 19, 21, 23, 18, 17, 25, 26, 27, 28, 31, 33, 36, 35, 39, 32, 42, 45, 102, 105, 110, 112, 106, 107, 103, 113, 115, 116, 118, 119, 120, 202, 204, 207, 212, 213, 214, 215, 216, 217, 218, 303, 302, 301
+                ))) {
+                    $deck_card_set[$type_id]['nbr'] = 0;
+                }
             }
+        }
+
+        //does not allow Servant of Ragfield and Speedwall the escape to be played together, we use one or the other
+        if ($deck_card_set[216]['nbr'] != 0 && $deck_card_set[301]['nbr'] != 0) {
+            $random = bga_rand(0, 50);
+            $qty = $deck_card_set[216]['nbr'];
+            if ($random % 2 == 0) {
+                $deck_card_set[216]['nbr'] = 0;
+            } else {
+                $deck_card_set[301]['nbr'] = 0;
+            }
+            self::setGameStateValue(CARDS_REMOVED_FROM_DECK, $qty);
         }
 
         $this->cards->createCards($deck_card_set);
@@ -537,7 +553,7 @@ class SeasonsSK extends Table {
         }
         $counters['draw_pile_counter'] = array(
             'counter_name' => 'draw_pile_counter',
-            'counter_value' => $this->cards->countCardInLocation('deck')
+            'counter_value' => $this->cards->countCardInLocation('deck') + self::getGameStateValue(CARDS_REMOVED_FROM_DECK) //we cheat here, so that no one can see we removed buggy cards
         );
         $counters['discard_pile_counter'] = array(
             'counter_name' => 'discard_pile_counter',

@@ -483,7 +483,7 @@ define([
             },
 
             addArrowToActivePlayer(state) {
-                if (state.type != "multipleactiveplayer" && state.active_player != this.player_id) {
+                if (state.type != "multipleactiveplayer" && state.active_player != this.player_id) {//todo not on diceChoice
                     if (!dojo.byId("goToCurrentPlayer")) {
                         dojo.place(this.format_block('jstpl_down_arrow', {
                             player_id: state.active_player,
