@@ -232,6 +232,8 @@ define([
                     this.library[i].setSelectionMode(0);
                     this.library[i].autowidth = true;
                 }
+                this.addTooltipToClass('age2', _('Click to see your cards for age 2'), '');
+                this.addTooltipToClass('age3', _('Click to see your cards for age 3'), '');
 
                 for (var card_id in this.gamedatas.card_types) {
                     var card = this.gamedatas.card_types[card_id];
@@ -859,6 +861,8 @@ define([
 
                 if (toint(year) > 1) { dojo.style('library_2_wrap', 'display', 'none'); }
                 if (toint(year) > 2) { dojo.style('library_3_wrap', 'display', 'none'); }
+                if (toint(year) > 1) { dojo.query(".ages .age2").style('visibility', 'hidden'); }
+                if (toint(year) > 2) { dojo.query(".ages .age3").style('visibility', 'hidden'); }
 
             },
 
