@@ -2747,10 +2747,11 @@ define([
                 this.showSeasonDices(notif.args.dices, true);
             },
             notif_score: function (notif) {
-                console.log(notif);
+                console.log("notif_score",notif);
+                console.log("leftPlayerBoardsCristalCounters", this.leftPlayerBoardsCristalCounters);
+                console.log(this.leftPlayerBoardsCristalCounters[notif.args.player_id].getValue(),"+",notif.args.points);
                 this.scoreCtrl[notif.args.player_id].incValue(notif.args.points);
-                console.log(this.leftPlayerBoardsCristalCounters);
-                this.leftPlayerBoardsCristalCounters[notif.args.player_id].toValue(notif.args.points);
+                this.leftPlayerBoardsCristalCounters[notif.args.player_id].incValue(notif.args.points);
             },
             notif_updateCardsPoints: function (notif) {
                 this.leftPlayerBoardsPointsCounters[notif.args.player_id].toValue(notif.args.points);
@@ -2813,6 +2814,7 @@ define([
                 for (var player_id in notif.args.scores) {
                     this.scoreCtrl[player_id].toValue(notif.args.scores[player_id]);
                     this.leftPlayerBoardsCristalCounters[player_id].toValue(notif.args.scores[player_id]);
+                    console.log("notif_updateScores leftPlayerBoardsCristalCounters toValue", notif.args.scores[player_id]);
                 }
             },
 
