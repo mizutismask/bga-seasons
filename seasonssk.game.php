@@ -413,6 +413,26 @@ class SeasonsSK extends Table {
     //////////////////////////////////////////////////////////////////////////////
     //////////// Utility functions    (functions used everywhere)
     ////////////  
+    function getPlayersInOrder() {
+        $result = array();
+
+        $players = self::loadPlayersBasicInfos();
+        $next_player = self::getNextPlayerTable();
+        $player_id = self::getCurrentPlayerId();
+
+        // Check for spectator
+        if (!key_exists($player_id, $players)) {
+            $player_id = $next_player[0];
+        }
+
+        // Build array starting with current player
+        for ($i = 0; $i < count($players); $i++) {
+            $result[$player_id] = $players[$player_id];
+            $player_id = $next_player[$player_id];
+        }
+        return $result;
+    }
+
     function saveAllResourcesState($playerId) {
         self::DbQuery("delete from resource_undo");
         self::DbQuery("delete from resource_on_card_undo");

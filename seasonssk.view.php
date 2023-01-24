@@ -36,11 +36,10 @@ class view_seasonssk_seasonssk extends game_view {
         $this->tpl['LB_CARDS_DRAWN'] = self::_("Cards drawn");
         $this->tpl['LB_MY_HAND'] = self::_("My hand");
         $this->tpl['LB_CHOOSE_THIS_PLAYER'] = self::_("Choisir ce joueur");
-        
-        // Get players
-        $players = $this->game->loadPlayersBasicInfos();
-        self::watch("players", $players);
 
+        // Get players
+        $players = $this->game->getPlayersInOrder();
+        self::dump("players", $players);
         $player_nbr = count($players);    // Note: number of players = number of rows
 
         $this->page->begin_block("seasonssk_seasonssk", "player");
@@ -72,7 +71,5 @@ class view_seasonssk_seasonssk extends game_view {
                 ));
             }
         }
-
-        
     }
 }
