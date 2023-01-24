@@ -2220,8 +2220,8 @@ class SeasonsSK extends Table {
         $energies = self::filterAmuletOfWaterEnergies($energies);
 
         if ($bDueToBonus) {
-            if (count($originalEnergies) != 2)
-                throw new feException(self::_("You must discard 2 energies"), true);
+            if (count($originalEnergies) > 2)
+                throw new feException(self::_("You must discard 2 energies max"), true);
         }
 
         if (!$bDueToBonus && !$bDuetoEffect) {
@@ -9448,9 +9448,11 @@ class SeasonsSK extends Table {
     }
 
     //////////////////////////////////////////////////////////////////////////////
-    //////////// Debugging tool
+    //////////// Debugging tools
     ////////////   
-
+    /**
+     * Puts a card of given type in current player hand.
+     */
     function ac($card_id) {
         $sql = "INSERT INTO `card` (`card_type` ,`card_type_arg` ,`card_location` ,`card_location_arg`) ";
         $sql .= "VALUES ( '$card_id', '0', 'hand', '" . self::getActivePlayerId() . "') ";
@@ -9460,8 +9462,19 @@ class SeasonsSK extends Table {
         $card = $this->cards->getCard($card_id);
         $this->notifyPlayer(self::getActivePlayerId(), 'pickPowerCard', '', array('card' => $card, "counters" => $this->argCounters()));
     }
+
+    /**
+     * Gives an energy of given type to current player.
+     */
     function ae($resource_id) {
         self::applyResourceDelta(self::getActivePlayerId(), array($resource_id => 1));
+    }
+
+    /**
+     * Adds crystal points to current player score.
+     */
+    function ap($score) {
+        $this->incPlayerScore(self::getActivePlayerId(), $score);
     }
 
     function end() {
