@@ -1814,6 +1814,7 @@ class SeasonsSK extends Table {
             foreach ($energiesIn as $energy) {
                 $this->gainEnergy($energy, true);
             }
+            $this->gamestate->nextState("bonusExchange");
         } else if ($bonusId == 2) {
             // Transmute with bonus
             $current = self::getGameStateValue('transmutationPossible');
@@ -2251,7 +2252,7 @@ class SeasonsSK extends Table {
         self::applyResourceDelta($player_id, $cost, true);
 
         if ($bDueToBonus) {
-            $this->gamestate->nextState("bonusExchange");
+            //no next state here, it's an internal call
         } else if ($bDuetoEffect) {
             $paid = array();
             foreach ($originalEnergies as $energy) {
