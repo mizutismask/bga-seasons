@@ -2274,6 +2274,7 @@ define([
                             this.addTransmutationButton(args);
 
                             //highlight cards that can be played
+                            dojo.query(".possibleCard").removeClass("possibleCard");
                             if (args.possibleCards) {
                                 args.possibleCards.forEach(c => dojo.query("#card-" + c).addClass("possibleCard"));
                             }
@@ -2752,9 +2753,9 @@ define([
                 this.showSeasonDices(notif.args.dices, true);
             },
             notif_score: function (notif) {
-                console.log("notif_score",notif);
+                console.log("notif_score", notif);
                 console.log("leftPlayerBoardsCristalCounters", this.leftPlayerBoardsCristalCounters);
-                console.log(this.leftPlayerBoardsCristalCounters[notif.args.player_id].getValue(),"+",notif.args.points);
+                console.log(this.leftPlayerBoardsCristalCounters[notif.args.player_id].getValue(), "+", notif.args.points);
                 this.scoreCtrl[notif.args.player_id].incValue(notif.args.points);
                 this.leftPlayerBoardsCristalCounters[notif.args.player_id].incValue(notif.args.points);
             },
