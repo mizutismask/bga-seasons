@@ -263,7 +263,7 @@ define([
                         var card = this.gamedatas.card_types[card_id];
                         this.libraryBuild[l].addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
                     }
-                    this.libraryBuild[l].addItemType(0, 9999, g_gamethemeurl + 'img/voidcard.png', 0);
+                    this.libraryBuild[l].addItemType(0, 9999, g_gamethemeurl + 'img/voidcards.png', 1);
                     this.addVoidCardsToLibraryBuilds(l);
                     dojo.connect(this.libraryBuild[l], 'onChangeSelection', this, 'onLibraryBuildchange');
                 }
