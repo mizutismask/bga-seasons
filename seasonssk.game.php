@@ -1488,7 +1488,7 @@ class SeasonsSK extends Table {
         $player_id = self::getCurrentPlayerId();
         $card_id = $this->getPlayerFieldValue($player_id, PLAYER_FIELD_LAST_DRAFT_CARD);
         if (!$card_id) {
-            throw new BgaUserException("Your last choice was not saved, undo is not available for you now");
+            throw new BgaUserException(self::_("Your last choice was not saved, undo is not available for you now"));
         }
         $this->gamestate->setPlayersMultiactive([$player_id], "ignored");
         $this->cards->moveCard($card_id, 'choice', $player_id);
@@ -1644,9 +1644,7 @@ class SeasonsSK extends Table {
 
         // This player => no more active
         $state = $this->isEnchantedKingdom() ? "chooseToken" : 'chooseLibrarynew';
-        self::dump("*************************************************setPlayerNonMultiactive", $state);
         $this->gamestate->setPlayerNonMultiactive($player_id, $state);
-        self::dump("*************************************************end chooseLibrarynew", $player_id);
     }
 
     function undoChooseLibraryNew() {
@@ -1692,7 +1690,7 @@ class SeasonsSK extends Table {
         $player_id = self::getCurrentPlayerId();
         $possible = $this->getPlayerFieldValue($player_id, PLAYER_FIELD_RESET_POSSIBLE);
         if (!$possible) {
-            throw new BgaUserException("Undo is not available, you probably have done undoable actions (draw, reroll…)");
+            throw new BgaUserException(self::_("Undo is not available, you probably have done undoable actions (draw, reroll…)"));
         }
         $this->undoRestorePoint();
         //$this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
@@ -1854,7 +1852,7 @@ class SeasonsSK extends Table {
     function undoBonusAction() {
         self::checkAction('undoBonusAction');
         if (!$this->isBonusActionUndoPossible()) {
-            throw new BgaUserException("Undo this bonus action is not possible");
+            throw new BgaUserException(self::_("Undo this bonus action is not possible"));
         }
         $player_id = self::getActivePlayerId();
         $bonusId = self::getGameStateValue(BONUS_JUST_PLAYED);
@@ -2997,7 +2995,7 @@ class SeasonsSK extends Table {
         $player_id = self::getCurrentPlayerId();
         $tokens = $this->tokensDeck->getCardsInLocation('hand', $player_id);
         if (count($tokens) != 1) {
-            throw new BgaUserException("No token can be played at this point");
+            throw new BgaUserException(self::_("No token can be played at this point"));
         }
         $token = array_pop($tokens);
         $notifArgs = $this->getStandardArgs(false);
@@ -3015,10 +3013,10 @@ class SeasonsSK extends Table {
                 $cardsNb = $handCardsNb;
                 $cardsNb += $this->cards->countCardInLocation('tableau', $player_id);
                 if ($cardsNb == 0) {
-                    throw new BgaUserException("You do not have a power card to sacrifice or discard");
+                    throw new BgaUserException(self::_("You do not have a power card to sacrifice or discard"));
                 }
                 if ($handCardsNb == 0 && !self::checkPlayerCanSacrificeCard($player_id)) {
-                    throw new BgaUserException("You do not have enough crystal to pay Crystal Titan");
+                    throw new BgaUserException(self::_("You do not have enough crystal to pay Crystal Titan"));
                 }
                 $immediateUse = false;
                 $this->gamestate->nextState('tokenEffect'); //need to choose the card
@@ -3032,11 +3030,11 @@ class SeasonsSK extends Table {
                 //-1 on summoning gauge
                 $summoning_gauge = self::getUniqueValueFromDB("SELECT player_invocation FROM player WHERE player_id='$player_id'");
                 if (!$summoning_gauge) {
-                    throw new BgaUserException("Your summoning gauge is at 0 and thus can not be reduced");
+                    throw new BgaUserException(self::_("Your summoning gauge is at 0 and thus can not be reduced"));
                 }
                 $total_cards = $this->cards->countCardsInLocation('tableau', $player_id);
                 if (intval($summoning_gauge) <= intval($total_cards)) {
-                    throw new BgaUserException("You can not reduce you summoning gauge if all the slots already contain a summoned card");
+                    throw new BgaUserException(self::_("You can not reduce you summoning gauge if all the slots already contain a summoned card"));
                 }
                 $this->decreaseSummoningGauge($player_id, clienttranslate('Ability token'));
                 break;
@@ -3064,7 +3062,7 @@ class SeasonsSK extends Table {
                 $delta = [2 => -4];
                 $stock = self::getResourceStock($player_id);
                 if (!self::checkCostAgainstStock($cost, $stock)) {
-                    throw new BgaUserException("You don't have 4 water energies in your reserve");
+                    throw new BgaUserException(self::_("You don't have 4 water energies in your reserve"));
                 }
                 $this->notifyAbilityTokenInUse();
                 $this->applyResourceDelta($player_id, $delta, false);
@@ -3101,7 +3099,7 @@ class SeasonsSK extends Table {
                     self::notifyPlayer($player_id, "pickPowerCard", '', array("card" => $card, "counters" => $this->argCounters()));
                     $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
                 } else {
-                    throw new BgaUserException("The discard pile is empty. Use your token later.");
+                    throw new BgaUserException(self::_("The discard pile is empty. Use your token later."));
                 }
                 break;
             case 14:
@@ -3111,7 +3109,7 @@ class SeasonsSK extends Table {
                     $this->notifyAbilityTokenInUse();
                     $this->decreaseBonusUsage($player_id, $nb_used, $notifArgs);
                 } else {
-                    throw new BgaUserException("You can not use this token now since you've never used a bonus action");
+                    throw new BgaUserException(self::_("You can not use this token now since you've never used a bonus action"));
                 }
                 breagetResourceStockk;
             case 17:
@@ -3132,7 +3130,7 @@ class SeasonsSK extends Table {
                 $delta = [3 => -5];
                 $stock = self::getResourceStock($player_id);
                 if (!self::checkCostAgainstStock($cost, $stock)) {
-                    throw new BgaUserException("You don't have 5 fire energies in your reserve");
+                    throw new BgaUserException(self::_("You don't have 5 fire energies in your reserve"));
                 }
                 $this->notifyAbilityTokenInUse();
                 $this->applyResourceDelta($player_id, $delta, false);
@@ -3142,7 +3140,7 @@ class SeasonsSK extends Table {
                 //move a card in year 2 or 3 to your hand
                 $year = self::getGameStateValue('year');
                 if ($year > 2) {
-                    throw new BgaUserException("This ability token can not be played during year III");
+                    throw new BgaUserException(self::_("This ability token can not be played during year III"));
                 }
                 if (!$card_id) {
                     $immediateUse = false;
