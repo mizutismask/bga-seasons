@@ -4270,7 +4270,6 @@ class SeasonsSK extends Table {
         $player_id = self::getActivePlayerId();
 
         //makes a savepoint to allow undo
-        self::dump("***********************Point de sauvegarde", $player_id);
         $this->updatePlayersExceptOne($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, true);
         $this->undoSavepoint();
@@ -4449,8 +4448,8 @@ class SeasonsSK extends Table {
                                           ORDER BY effect_id ASC
                                           LIMIT 0,1");
 
-        self::dump('*******************effect', $effect);
-        self::dump('*******************changeActivePlayer to ', self::getGameStateValue('afterEffectPlayer'));
+        //self::dump('*******************effect', $effect);
+        //self::dump('*******************changeActivePlayer to ', self::getGameStateValue('afterEffectPlayer'));
         if ($effect === null) {
             // No more effect ! Get back to initial state or end token effect.   
             $tokenEffect = self::getGameStateValue('currentTokenEffect');
