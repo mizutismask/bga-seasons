@@ -603,7 +603,7 @@ class SeasonsSK extends Table {
             $points = 0;
             $cards = $this->cards->getCardsInLocation('tableau', $player_id);
             foreach ($cards as $card_id => $card) {
-                $points += $this->card_types[$card["type"]]['points'];
+                $points += $this->card_types[$this->ot($card["type"])]['points'];
             }
             $pointsByPlayer[$player_id] = $points;
         }
@@ -3509,7 +3509,20 @@ class SeasonsSK extends Table {
         self::setGameStateValue('afterEffectPlayer', $player_id);
         $this->gamestate->nextState('chooseCost');
 
-        self::summon(self::getGameStateValue('toSummon'), $cost, false, $amuletEnergies);
+        $currentEffect = $this->getCurrentEffectCard();
+        if ($this->isStaffWinterActive() && $currentEffect["card_type"] == 118) { //raven
+            $card_to_summon_id = self::getGameStateValue('toSummon');
+            $card_to_summon = $this->cards->getCard($card_to_summon_id);
+            $card_to_summon_type = self::ot($card_to_summon['type']);
+
+            foreach ($cost as $ress_id => $ress_qt) {
+                $cost[$ress_id] = -$ress_qt;
+            }
+            $this->payCost($player_id, $cost, $amuletEnergies, $card_to_summon_type);
+            $this->finalizeRavenMimic($currentEffect["card_id"], $card_to_summon_id, $card_to_summon_type, $cost);
+        } else {
+            self::summon(self::getGameStateValue('toSummon'), $cost, false, $amuletEnergies);
+        }
     }
 
     function chooseCostCancel() {
@@ -3904,6 +3917,9 @@ class SeasonsSK extends Table {
         );
     }
 
+    /**
+     * @return possible costs for the card to summon
+     */
     function argSummonVariableCost() {
         $player_id = self::getActivePlayerId();
         $card_to_summon_id = self::getGameStateValue('toSummon');
@@ -8207,31 +8223,44 @@ class SeasonsSK extends Table {
         if ($card_type['category'] != 'mi')
             throw new feException(self::_("You must choose a magical item"), true);
 
-        // Consume invocation cost (see 'playcard')
-        $cost = array();
         $point_cost = 0;
-        $total_ress = 0;
-        foreach ($card_type['cost'] as $ress_id => $ress_qt) {
-            if ($ress_id != 0) {
-                $cost[$ress_id] = -$ress_qt;
-                $total_ress += $ress_qt;
+        // There is at least a staff of Winter => player should choose the cost in energies to pay
+        if ($this->isStaffWinterActive()) {
+            foreach ($card_type['cost'] as $ress_id => $ress_qt) {
+                if ($ress_id == 0)
+                    $point_cost += $ress_qt;
             }
-        }
-        foreach ($card_type['cost'] as $ress_id => $ress_qt) {
-            if ($ress_id == 0)
-                $point_cost += $ress_qt;
-        }
 
-        $cost_displayed = '';
-        foreach ($cost as $ress_id => $ress_qt) {
-            for ($i = 0; $i > $ress_qt; $i--) {
-                $cost_displayed .= '<div class="sicon energy' . $ress_id . '"></div>';
+            //if player has enough crystals, he can choose energies
+            $player_score = self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id='$player_id' ");
+            if ($point_cost > 0) {
+                if ($player_score < $point_cost) {
+                    throw new feException(self::_("You don't have enough crystals to summon this card"), true);
+                }
             }
-        }
 
-        if ($point_cost > 0) {
-            $cost_displayed .= '<div class="sicon energy0"></div>x' . $point_cost;
+            self::setGameStateValue('toSummon', $card_id);
+            $this->gamestate->nextState('summonVariableCost');
+        } else {
+
+            // Consume invocation cost (see 'playcard')
+            $cost = array();
+            $total_ress = 0;
+            foreach ($card_type['cost'] as $ress_id => $ress_qt) {
+                if ($ress_id != 0) {
+                    $cost[$ress_id] = -$ress_qt;
+                    $total_ress += $ress_qt;
+                }
+            }
+
+
+            $this->payCost($player_id, $cost, $amuletEnergies, $card_type_id);
+            $this->finalizeRavenMimic($raven_id, $card_id, $card_type_id, $cost);
         }
+    }
+    function payCost($player_id, $cost, $amuletEnergies, $card_type_id) {
+        $card_types = self::getCardTypes();
+        $card_type = $card_types[$card_type_id];
 
         if ($amuletEnergies !== null) {
             // Force the use of some energies from Amulet of Water
@@ -8252,23 +8281,53 @@ class SeasonsSK extends Table {
         self::applyResourceDelta($player_id, $cost);
 
         // Cost in points
+        $point_cost = 0;
+        foreach ($card_type['cost'] as $ress_id => $ress_qt) {
+            if ($ress_id == 0)
+                $point_cost += $ress_qt;
+        }
+
         $player_score = self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id='$player_id' ");
         if ($point_cost > 0) {
-            if ($player_score < $point_cost)
+            if ($player_score < $point_cost) {
                 throw new feException(self::_("You don't have enough crystals to summon this card"), true);
+            }
 
             self::DbQuery("UPDATE player SET player_score=GREATEST( 0, player_score-$point_cost ) WHERE player_id='$player_id'");
             $player_score -= $point_cost;
             self::notifyAllPlayers('winPoints', '', array('player_id' => $player_id, 'points' => -$point_cost));
             self::notifyUpdateScores();
         }
+    }
+
+    function finalizeRavenMimic($raven_id, $card_id, $card_type_id, $cost) {
+        $card_types = self::getCardTypes();
+        $card_type = $card_types[$card_type_id];
+        $player_id = self::getActivePlayerId();
 
         // Link between raven and the item
         self::DbQuery("INSERT INTO raven (raven_id,raven_original_item) VALUES ('$raven_id','$card_id') ");
 
-
         // Change the type of Raven into the new card type
         self::DbQuery("UPDATE card SET card_type='118;$card_type_id' WHERE card_id='$raven_id' ");
+
+        self::setGameStateValue('toSummon', 0);
+
+        $cost_displayed = '';
+        foreach ($cost as $ress_id => $ress_qt) {
+            for ($i = 0; $i > $ress_qt; $i--) {
+                $cost_displayed .= '<div class="sicon energy' . $ress_id . '"></div>';
+            }
+        }
+        $point_cost = 0;
+        foreach ($card_type['cost'] as $ress_id => $ress_qt) {
+            if ($ress_id == 0)
+                $point_cost += $ress_qt;
+        }
+        if ($point_cost > 0) {
+            $cost_displayed .= '<div class="sicon energy0"></div>x' . $point_cost;
+        }
+
 
         $notifArgs = self::getStandardArgs();
 

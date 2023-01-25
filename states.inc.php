@@ -781,7 +781,7 @@ $machinestates = array(
         "type" => "activeplayer",
         "args" => "argCurrentEffectCard",
         "possibleactions" => array("chooseOpponentCard", "doNotUse"),
-        "transitions" => array("chooseOpponentCard" => 51, "doNotUse" => 51)
+        "transitions" => array("summonVariableCost" => 35, "chooseOpponentCard" => 51, "doNotUse" => 51 , "ravenChoice" => 163)
     ),
 
     165 => array(
