@@ -5151,6 +5151,7 @@ class SeasonsSK extends Table {
         foreach ($finalSituation as $player_id => $player) {
             self::setStat($player['player_score'], 'points_crystals', $player_id);
             self::setStat($player['player_invocation'], 'final_summoning', $player_id);
+            $this->updatePlayer($player_id, "player_score_cristals", $player['player_score']);
             $this->notifyAllPlayers('cristalsScore', '', [
                 'playerId' => $player_id,
                 'points' => $player['player_score'],
@@ -5186,10 +5187,10 @@ class SeasonsSK extends Table {
             ]);
         }
 
-        /*  if ($this->getBgaEnvironment() == 'studio')
+        if ($this->getBgaEnvironment() == 'studio')
             $this->gamestate->nextState('debugEnd'); // debug end
-        else*/
-        $this->gamestate->nextState('realEnd'); // real end
+        else
+            $this->gamestate->nextState('realEnd'); // real end
     }
 
 
