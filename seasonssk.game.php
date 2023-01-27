@@ -636,28 +636,24 @@ class SeasonsSK extends Table {
     function giveLibaryCardsToPlayers($year) {
         $cards = $this->cards->getCardsInLocation('library' . $year);
         if (count($cards) > 0) {
+            $cards_for_player = array();
+            foreach ($cards as $card) {
+                if(!isset($cards_for_player[$card['location_arg']]))
+                    $cards_for_player[$card['location_arg']]=[];
+                $cards_for_player[$card['location_arg']][] = $card;
+            }
             // There are some cards to distribute
             $players = self::loadPlayersBasicInfos();
             foreach ($players as $player_id => $player) {
-                foreach ($cards as $card) {
-                    $cards_for_player = array();
-                    if ($card['location_arg'] == $player_id) {
-                        // A card for this player
-                        $cards_for_player[] = $card;
-                    }
+                // Give these card to this player
+                $this->cards->moveAllCardsInLocation('library' . $year, 'hand', $player_id, $player_id);
 
-                    // Give these card to this player
-                    $this->cards->moveAllCardsInLocation('library' . $year, 'hand', $player_id, $player_id);
-
-                    // Notify
-                    self::notifyPlayer($player_id, "pickPowerCards", '', array("cards" => $cards_for_player, "fromLibrary" => true));
-                }
+                // Notify
+                self::notifyPlayer($player_id, "pickPowerCards", '', array("cards" => $cards_for_player[$player_id], "fromLibrary" => true));
             }
-
             self::notifyAllPlayers('pickLibraryCards', clienttranslate("Everyone draw cards from his library"), array());
+            self::notifyUpdateCardCount();
         }
-
-        self::notifyUpdateCardCount();
     }
 
     // Check resources
