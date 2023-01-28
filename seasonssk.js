@@ -847,16 +847,16 @@ define([
                 switch (currentSeason) {
                     //red1 blue2 yellow3 green4
                     case 1:
-                        this.updateConversionReminder(["energy4", "energy3", "energy2", "energy1"]);
+                        this.updateConversionReminder(["conversionenergy4", "conversionenergy3", "conversionenergy2", "conversionenergy1"]);
                         break;
                     case 2:
-                        this.updateConversionReminder(["energy3", "energy1", "energy4", "energy2"]);
+                        this.updateConversionReminder(["conversionenergy3", "conversionenergy1", "conversionenergy4", "conversionenergy2"]);
                         break;
                     case 3:
-                        this.updateConversionReminder(["energy1", "energy2", "energy3", "energy4"]);
+                        this.updateConversionReminder(["conversionenergy1", "conversionenergy2", "conversionenergy3", "conversionenergy4"]);
                         break;
                     case 4:
-                        this.updateConversionReminder(["energy2", "energy4", "energy1", "energy3"]);
+                        this.updateConversionReminder(["conversionenergy2", "conversionenergy4", "conversionenergy1", "conversionenergy3"]);
                         break;
                 }
 
@@ -868,10 +868,11 @@ define([
             },
 
             updateConversionReminder: function (energies) {
-                dojo.query("#convertFor3 .sicon:first-child").removeClass("energy4 energy1 energy2 energy3").addClass(energies[0]);
-                dojo.query("#convertFor2 .sicon:first-child").removeClass("energy4 energy1 energy2 energy3").addClass(energies[1]);
-                dojo.query("#convertFor1 #energyType1").removeClass("energy4 energy1 energy2 energy3").addClass(energies[2]);
-                dojo.query("#convertFor1 #energyType2").removeClass("energy4 energy1 energy2 energy3").addClass(energies[3]);
+                const classes = "conversionenergy1 conversionenergy2 conversionenergy3 conversionenergy4";
+                dojo.query("#convertFor3 .energy:first-child").removeClass(classes).addClass(energies[0]);
+                dojo.query("#convertFor2 .energy:first-child").removeClass(classes).addClass(energies[1]);
+                dojo.query("#convertFor1 #energyType1").removeClass(classes).addClass(energies[2]);
+                dojo.query("#convertFor1 #energyType2").removeClass(classes).addClass(energies[3]);
             },
 
             getSeasonFromMonth: function (month) {

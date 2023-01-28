@@ -84,27 +84,29 @@
             <h3>{LB_TRANSMUTATION_RATE}</h3>
             <div class="conversion_reminder">
                 <div id="convertFor3" class="reminder">
-                    <div class="sicon"></div>
-                    <div class="sicon icon_cristal counter">3</div>
+                    <div class="energy"></div>
+                    <div class="conversion3"></div>
                 </div>
                 <div class="sicon icon_separator"></div>
                 <div id="convertFor2" class="reminder">
-                    <div class="sicon"></div>
-                    <div class="sicon icon_cristal counter">2</div>
+                    <div class="energy"></div>
+                    <div class="conversion2"></div>
                 </div>
                 <div class="sicon icon_separator"></div>
                 <div id="convertFor1" class="reminder">
                     <div id="energyType1" class="sicon energy"></div>
                     <div id="energyType2" class="sicon energy"></div>
-                    <div class="sicon icon_cristal counter">1</div>
+                    <div class="conversion1"></div>
                 </div>
             </div>
         </div>
         <div>
             <h3>{LB_CARDS_NUMBER}</h3>
             <div id="piles_counters">
-                <div id="draw_pile_counter" class="card-pile draw-pile counter"></div>
-                <div id="discard_pile_counter" class="card-pile discard-pile counter"></div>
+                <div  class="card-pile drawpile"></div>
+                <span id="draw_pile_counter" class="counter"></span>
+                <div class="card-pile discardpile"></div>
+                <span id="discard_pile_counter" class="counter"></span>
             </div>
         </div>
     </div>
@@ -150,7 +152,7 @@
                 <h3 class="mobileOnlyPlayerName">{CURRENT_PLAYER_NAME}</h3>
             </div>
             <div id="board_counters">
-                <div id="cristals_counter_{CURRENT_PLAYER_ID}" class="sicon icon_cristal counter"></div>
+                <div id="cristals_counter_{CURRENT_PLAYER_ID}" class="icon_cristal counter"></div>
                 <div id="cards_points_counter_{CURRENT_PLAYER_ID}" class="prestige counter"></div>
             </div>
             <img id="left_avatar_{CURRENT_PLAYER_ID}" alt="" class="ssn-avatar" />
@@ -215,7 +217,7 @@
                 <h3 class="mobileOnlyPlayerName">{PLAYER_NAME}</h3>
             </div>
             <div id="board_counters">
-                <div id="cristals_counter_{PLAYER_ID}" class="sicon icon_cristal counter"></div>
+                <div id="cristals_counter_{PLAYER_ID}" class="icon_cristal counter"></div>
                 <div id="cards_points_counter_{PLAYER_ID}" class="prestige counter"></div>
             </div>
             <img id="left_avatar_{PLAYER_ID}" alt="" class="ssn-avatar" />
@@ -291,7 +293,7 @@ var jstpl_player_board = '<div class="clear">\
         </div>\
         <div id="boardblock_additional_info_${player.id}" class="boardblock_additional_info">\
             <div><div id="tinvocationlevel_${player.id}" class="sicon invocation_level imgtext tinvocationlevel" ></div><span id="invocation_level_${player.id}" class="tinvocationlevel">0</span><span class="ssn-info">${maxInfo}</span></div>\
-            <div><div id="handcounticon_${player.id}" class="icon16 icon16_hand tthand"></div><span id="handcount_${player.id}" class="tthand">0</span></div>\
+            <div><div id="handcounticon_${player.id}" class="hand imgtext"></div><span id="handcount_${player.id}" class="tthand">0</span></div>\
             <div id="bonusused_${player.id}" class="sicon bonusused bonusused${player.nb_bonus} imgtext ttbonusused"></div>\
             <div id="firstplayer_${player.id}" class="firstplayerplace"></div>\
             <div class="show-player-tableau"><a href="#anchor_player_${player.id}">\

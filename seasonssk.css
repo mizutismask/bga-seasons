@@ -476,7 +476,7 @@ h3 {
 	position: absolute;
 	left: 42px;
 	bottom: 12px;
-	background-image: url(img/icons2022.png);
+	background-image: url("img/icons2022.png");
 	background-position: 88.4021% 7.8553%;
 	background-size: 1896.3%;
 	width: 40px;
@@ -629,108 +629,143 @@ h3 {
 	height: 30px;
 	background-position: -0px -25px;
 }
-
-/*
-Responsive CSS Sprite created using: https://responsive-css.us/
-*/
-
-.availableLocation,
-.backward,
-.icon_cristal,
-#firstplayer,
-.forward,
-.icon_active,
-.parchment,
-.parchmentLeft,
-.parchmentRight,
-.prestige,
-.unavailableLocation,
 .age2,
-.age3 {
+.age3,
+.icon-active,
+.prestige,
+.icon_cristal,
+.firstplayer,
+.conversionenergy1,
+.conversionenergy2,
+.conversionenergy3,
+.conversionenergy4,
+.head,
+.conversion1,
+.conversion2,
+.conversion3,
+.discardpile,
+.drawpile,
+.backward,
+.forward,
+.hand,
+.icon_separator ,.scrollable-stock .left ,.scrollable-stock .right {
+	max-width: 100%;
+	background-size: 100%;
+	background-image: url("img/icons2022.png");
 	display: inline-block;
 	overflow: hidden;
 	background-repeat: no-repeat;
-	background-image: url(img/icons2022.png);
 }
 
-.availableLocation {
-	width: 284px;
-	height: 380px;
-	background-position: 66.5533% 0.059952%;
-	background-size: 721.127%;
+.year2 {
+	background-position: 0 0%;
+	background-size: 100%;
 }
-.backward {
-	width: 20px;
-	height: 20px;
-	background-position: 99.4576% 1.08481%;
-	background-size: 10240%;
+.year3 {
+	background-position: 0 12.306438%;
+	background-size: 100%;
+}
+.icon-active {
+
+	width: 12px;
+	height: 12px;
+	background-position: 0 23.892405%;
+	background-size: 138.888889%;
+}
+.prestige {
+
+	width: 40px;
+	height: 35px;
+	background-position: 0 31.950845%;
+	background-size: 172.413793%;
 }
 .icon_cristal {
 	width: 33px;
 	height: 37px;
-	background-position: 92.8244% 7.77892%;
-	background-size: 2467.47%;
-}
-
-.player_board_content .icon_cristal {
-	width: 22px;
-	height: 28px;
+	background-position: 0 38.347623%;
+	background-size: 180.722892%;
 }
 #firstplayer {
+
 	width: 40px;
 	height: 40px;
-	background-position: 86.7037% 13.4547%;
-	background-size: 2925.71%;
+	background-position: 0 44.946401%;
+	background-size: 214.285714%;
 }
-.forward {
+.conversionenergy1 {
+	background-position: 0 49.773414%;
+	background-size: 277.777778%;
+}
+.conversionenergy2 {
+	background-position: 0 53.892668%;
+	background-size: 277.777778%;
+}
+.conversionenergy3 {
+	background-position: 0 58.006042%;
+	background-size: 277.777778%;
+}
+.conversionenergy4 {
+	background-position: 0 62.084592%;
+	background-size: 277.777778%;
+}
+.head {
+	background-position: 0 67.540478%;
+	background-size: 312.5%;
+}
+.conversion1 {
+	background-position: 0 72.335601%;
+	background-size: 319.148936%;
+	width: 47px;
+	height: 54px;
+}
+.conversion2 {
+	background-position: 0 76.492819%;
+	background-size: 319.148936%;
+	width: 47px;
+	height: 54px;
+}
+.conversion3 {
+	background-position: 0 80.650038%;
+	background-size: 319.148936%;
+	width: 47px;
+	height: 54px;
+}
+.discardpile {
+	background-position: 0 84.743202%;
+	background-size: 375%;
+}
+.drawpile {
+	background-position: 0 88.754717%;
+	background-size: 375%;
+}
+.backward, .scrollable-stock .left  {
+	background-position: 0 92.059925%;
+	background-size: 428.571429%;
+}
+.forward, .scrollable-stock .right  {
+	background-position: 0 95.567243%;
+	background-size: 428.571429%;
+}
+.hand {
+	background-position: 0 97.994056%;
+	background-size: 600%;
 	width: 20px;
-	height: 20px;
-	background-position: 99.4576% 0.0493097%;
-	background-size: 10240%;
+	height: 25px;
+	margin-right: 2px;
 }
-.icon_active {
-	width: 12px;
-	height: 12px;
-	background-position: 88.4021% 7.8553%;
-	background-size: 1896.3%;
+.icon_separator {
+	background-position: 0 100%;
+	background-size: 600%;
+	width: 13px;
+	height: 13px;
 }
-.parchment {
-	width: 888px;
-	height: 962px;
-	background-position: 24.569% 0.092081%;
-	background-size: 230.631%;
+.player_board_content .icon_cristal {
+	width: 22px;
+	height: 26px;
 }
-.parchmentLeft {
-	width: 141px;
-	height: 1085px;
-	background-position: 7.49869% 0.103842%;
-	background-size: 1452.48%;
-}
-.parchmentRight {
-	width: 141px;
-	height: 1085px;
-	background-position: 0.0524384% 0.103842%;
-	background-size: 1452.48%;
-}
-.prestige {
-	width: 40px;
-	height: 35px;
-	background-position: 97.2973% 7.704%;
-	background-size: 2354.02%;
-}
-.unavailableLocation {
-	width: 255px;
-	height: 350px;
-	background-position: 81.372% 0.0588928%;
-	background-size: 803.137%;
-}
-.age2 {
-	background-position: 90.3583% 0.052687%;
-	background-size: 1365.33%;
-}
-.age3 {
-	background-position: 98.314% 0.052687%;
-	background-size: 1365.33%;
+.energy{
+	width: 54px;
+	height: 54px;
 }
 
 .bonusUsedCube.bonusUsed0 {
@@ -755,8 +790,8 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 }
 
 .scrollable-stock button {
-	width: 36px;
-	height: 23px;
+	width: 35px;
+	height: 30px;
 	background-color: transparent;
 	align-self: center;
 	background-position: center;
@@ -764,14 +799,6 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	overflow: hidden;
 	background-repeat: no-repeat;
 	cursor: pointer;
-}
-
-.scrollable-stock .right {
-	background-image: url(img/forward.png);
-}
-
-.scrollable-stock .left {
-	background-image: url(img/backward.png);
 }
 
 .generalactionscontent {
@@ -865,12 +892,6 @@ Responsive CSS Sprite created using: https://responsive-css.us/
 	}
 }
 
-/*todo trouver l'icone*/
-.icon_separator {
-	width: 12px;
-	height: 12px;
-	background-position: -130px 0px;
-}
 .energy0,
 .energy1,
 .energy2,
@@ -1119,18 +1140,9 @@ a.choose_player {
 .card-pile {
 	width: 25px;
 	height: 33px;
-	border-radius: 5px;
 	display: inline-block;
-	border: 1px solid black;
 }
 
-.draw-pile {
-	background-color: rgb(19, 90, 81);
-}
-
-.discard-pile {
-	background-color: #bdc7b1;
-}
 
 #piles_counters {
 	display: flex;
@@ -1369,14 +1381,14 @@ a.choose_player {
 	height: 36px;
 }
 
-#generalactions .show-player-tableau{
+#generalactions .show-player-tableau {
 	height: 18px;
 	width: 11px;
 	display: inline-block;
 	margin-left: 5px;
 }
 
-.reset_button{
+.reset_button {
 	display: inline;
 	margin-left: 5px;
 	cursor: pointer;
