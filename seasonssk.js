@@ -74,10 +74,10 @@ define([
                 //counters
                 this.drawPileCounter = new ebg.counter();
                 this.drawPileCounter.create('draw_pile_counter');
-                this.addTooltipToClass("draw-pile", _("Draw pile"), "");
+                this.addTooltipToClass("drawpile", _("Draw pile"), "");
                 this.discardPileCounter = new ebg.counter();
                 this.discardPileCounter.create('discard_pile_counter');
-                this.addTooltipToClass("discard-pile", _("Discard pile"), "");
+                this.addTooltipToClass("discardpile", _("Discard pile"), "");
 
                 //player boards
                 for (var player_id in gamedatas.players) {
