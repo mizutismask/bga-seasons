@@ -250,7 +250,7 @@ h3 {
 	width: calc(100% - 48px);
 }
 
-.transmutation_bar{
+.transmutation_bar {
 	display: flex;
 	align-items: center;
 }
@@ -258,14 +258,14 @@ h3 {
 	background-image: url("img/head.png");
 	width: 48px;
 	height: 80px;
-	margin-right:-24px;
+	margin-right: -24px;
 	z-index: 1;
 }
 .transmutation_bar .head:last-child {
 	background-image: url("img/head.png");
 	width: 48px;
 	height: 80px;
-	margin-left:-24px;
+	margin-left: -24px;
 	z-index: 1;
 }
 
@@ -649,6 +649,7 @@ h3 {
 	height: 30px;
 	background-position: -0px -25px;
 }
+
 .age2,
 .age3,
 .icon-active,
@@ -667,7 +668,7 @@ h3 {
 .backward,
 .forward,
 .hand,
-.icon_separator ,.scrollable-stock .left ,.scrollable-stock .right {
+.icon_separator{
 	max-width: 100%;
 	background-size: 100%;
 	background-image: url("img/icons2022.png");
@@ -685,14 +686,12 @@ h3 {
 	background-size: 100%;
 }
 .icon-active {
-
 	width: 12px;
 	height: 12px;
 	background-position: 0 23.892405%;
 	background-size: 138.888889%;
 }
 .prestige {
-
 	width: 40px;
 	height: 35px;
 	background-position: 0 31.950845%;
@@ -705,7 +704,6 @@ h3 {
 	background-size: 180.722892%;
 }
 #firstplayer {
-
 	width: 40px;
 	height: 40px;
 	background-position: 0 44.946401%;
@@ -753,16 +751,6 @@ h3 {
 	background-position: 0 88.754717%;
 	background-size: 375%;
 }
-.backward, .scrollable-stock .left  {
-	background-position: 0 92.059925%;
-	background-size: 428.571429%;
-	/*margin-left:-23px;*/
-}
-.forward, .scrollable-stock .right  {
-	background-position: 0 95.567243%;
-	background-size: 428.571429%;
-	/*margin-right:-23px;*/
-}
 .hand {
 	background-position: 0 97.994056%;
 	background-size: 600%;
@@ -780,7 +768,7 @@ h3 {
 	width: 22px;
 	height: 26px;
 }
-.energy{
+.energy {
 	width: 54px;
 	height: 54px;
 }
@@ -806,9 +794,19 @@ h3 {
 	vertical-align: text-bottom;
 }
 
+.scrollable-stock .left  {
+	background-image: url("img/backward.png");
+	margin-left:-23px;
+}
+.scrollable-stock .right  {
+	background-image: url("img/forward.png");
+	margin-right:-23px;
+	z-index: 1;
+}
+
 .scrollable-stock button {
-	width: 35px;
-	height: 33px;
+	width: 42px;
+	height: 46px;
 	background-color: transparent;
 	align-self: center;
 	background-position: center;
@@ -1159,7 +1157,6 @@ a.choose_player {
 	height: 33px;
 	display: inline-block;
 }
-
 
 #piles_counters {
 	display: flex;
@@ -1514,7 +1511,7 @@ a.choose_player {
 		gap: 8px;
 	}
 
-	.conversion_reminder_wrapper{
+	.conversion_reminder_wrapper {
 		order: 3;
 	}
 }
