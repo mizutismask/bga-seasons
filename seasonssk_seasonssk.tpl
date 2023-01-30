@@ -50,7 +50,7 @@
     <div id="season_library_choice" style="display:none">
         <div class="seasonsblock">
             <h3>{YEAR_I}
-                <div id="reset_button_1" class="reset_button" data-year="1">X</div>
+                <div id="reset_button_1" class="reset_button" data-year="1">x</div>
             </h3>
             <div class="library_build_wrap">
                 <div id="library_build_1"></div>
@@ -58,7 +58,7 @@
         </div>
         <div class="seasonsblock">
             <h3>{CARDS_FOR_YEAR_2}
-                <div id="reset_button_2" class="reset_button" data-year="2">X</div>
+                <div id="reset_button_2" class="reset_button" data-year="2">x</div>
             </h3>
             <div class="library_build_wrap">
                 <div id="library_build_2"></div>
@@ -66,7 +66,7 @@
         </div>
         <div class="seasonsblock">
             <h3>{CARDS_FOR_YEAR_3}
-                <div id="reset_button_3" class="reset_button" data-year="3">X</div>
+                <div id="reset_button_3" class="reset_button" data-year="3">x</div>
             </h3>
             <div class="library_build_wrap">
                 <div id="library_build_3"></div>

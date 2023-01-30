@@ -1406,6 +1406,10 @@ a.choose_player {
 	display: inline;
 	margin-left: 5px;
 	cursor: pointer;
+	background: darkred;
+    border-radius: 5px;
+    padding: 0px 5px;
+    color: black;
 }
 
 .mobileOnlyPlayerName {
