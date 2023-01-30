@@ -74,41 +74,44 @@
         </div>
     </div>
 
-
-    <div id="season_dices_wrap" class="seasons_rightpanel seasonsclearblock">
-        <div>
-            <h3>{LB_SEASONS_DICES}</h3>
-            <div id="seasons_dices"></div>
-        </div>
-        <div>
-            <h3>{LB_TRANSMUTATION_RATE}</h3>
-            <div class="conversion_reminder">
-                <div id="convertFor3" class="reminder">
-                    <div class="energy"></div>
-                    <div class="conversion3"></div>
+    <div class="transmutation_bar seasons_rightpanel">
+        <div class="head"></div>
+        <div id="season_dices_wrap">
+            <div>
+                <h3>{LB_SEASONS_DICES}</h3>
+                <div id="seasons_dices"></div>
+            </div>
+            <div>
+                <h3>{LB_TRANSMUTATION_RATE}</h3>
+                <div class="conversion_reminder">
+                    <div id="convertFor3" class="reminder">
+                        <div class="energy"></div>
+                        <div class="conversion3"></div>
+                    </div>
+                    <div class="sicon icon_separator"></div>
+                    <div id="convertFor2" class="reminder">
+                        <div class="energy"></div>
+                        <div class="conversion2"></div>
+                    </div>
+                    <div class="sicon icon_separator"></div>
+                    <div id="convertFor1" class="reminder">
+                        <div id="energyType1" class="sicon energy"></div>
+                        <div id="energyType2" class="sicon energy"></div>
+                        <div class="conversion1"></div>
+                    </div>
                 </div>
-                <div class="sicon icon_separator"></div>
-                <div id="convertFor2" class="reminder">
-                    <div class="energy"></div>
-                    <div class="conversion2"></div>
-                </div>
-                <div class="sicon icon_separator"></div>
-                <div id="convertFor1" class="reminder">
-                    <div id="energyType1" class="sicon energy"></div>
-                    <div id="energyType2" class="sicon energy"></div>
-                    <div class="conversion1"></div>
+            </div>
+            <div>
+                <h3>{LB_CARDS_NUMBER}</h3>
+                <div id="piles_counters">
+                    <div  class="card-pile drawpile"></div>
+                    <span id="draw_pile_counter" class="counter"></span>
+                    <div class="card-pile discardpile"></div>
+                    <span id="discard_pile_counter" class="counter"></span>
                 </div>
             </div>
         </div>
-        <div>
-            <h3>{LB_CARDS_NUMBER}</h3>
-            <div id="piles_counters">
-                <div  class="card-pile drawpile"></div>
-                <span id="draw_pile_counter" class="counter"></span>
-                <div class="card-pile discardpile"></div>
-                <span id="discard_pile_counter" class="counter"></span>
-            </div>
-        </div>
+        <div class="head"></div>
     </div>
 
     <div id="choiceCards" class="seasonsblock seasons_rightpanel">

@@ -246,7 +246,27 @@ h3 {
 	justify-content: space-between;
 	align-items: center;
 	gap: 5px;
-	padding: 10px 5px 18px 5px;
+	padding: 10px 29px 18px 29px;
+	width: calc(100% - 48px);
+}
+
+.transmutation_bar{
+	display: flex;
+	align-items: center;
+}
+.transmutation_bar .head:first-child {
+	background-image: url("img/head.png");
+	width: 48px;
+	height: 80px;
+	margin-right:-24px;
+	z-index: 1;
+}
+.transmutation_bar .head:last-child {
+	background-image: url("img/head.png");
+	width: 48px;
+	height: 80px;
+	margin-left:-24px;
+	z-index: 1;
 }
 
 /* don't need border since the die moves immediatly somewhere else.*/
@@ -254,13 +274,13 @@ h3 {
 	border: none !important;
 }
 
-.gamestate_draftChoice #season_dices_wrap,
-.gamestate_continueDraftChoice #season_dices_wrap,
-.gamestate_draftTwist #season_dices_wrap,
-.gamestate_chooseToken #season_dices_wrap,
-.gamestate_buildLibraryNew #season_dices_wrap,
-.gamestate_buildLibrary3 #season_dices_wrap,
-.gamestate_buildLibrary2 #season_dices_wrap {
+.gamestate_draftChoice .transmutation_bar,
+.gamestate_continueDraftChoice .transmutation_bar,
+.gamestate_draftTwist .transmutation_bar,
+.gamestate_chooseToken .transmutation_bar,
+.gamestate_buildLibraryNew .transmutation_bar,
+.gamestate_buildLibrary3 .transmutation_bar,
+.gamestate_buildLibrary2 .transmutation_bar {
 	display: none;
 }
 
@@ -639,7 +659,6 @@ h3 {
 .conversionenergy2,
 .conversionenergy3,
 .conversionenergy4,
-.head,
 .conversion1,
 .conversion2,
 .conversion3,
@@ -707,10 +726,6 @@ h3 {
 .conversionenergy4 {
 	background-position: 0 62.084592%;
 	background-size: 277.777778%;
-}
-.head {
-	background-position: 0 67.540478%;
-	background-size: 312.5%;
 }
 .conversion1 {
 	background-position: 0 72.335601%;
