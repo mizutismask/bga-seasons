@@ -606,6 +606,10 @@ define([
 
             addCardToPlayerHand(card) {
                 this.playerHand.addCard(card);
+                //during draft, last selected card goes first
+                if (["draftChoice", "continueDraftChoice", "endDraftChoice", "draftTwist"].includes(this.currentState)) {
+                    this.reorderMyHand(card);
+                }
                 this.updateScrollButtonsVisibility();
             },
 
@@ -613,6 +617,14 @@ define([
                 this.playerHand.removeCard(card);
                 this.updateScrollButtonsVisibility();
             },
+
+            /** Puts the last selected card first. Only during draft */
+            reorderMyHand(firstCard) {
+                const div = this.handManager.getId(firstCard);
+                let minValue = this.playerHand.getCards().length * -1;
+                dojo.style(div, "order", minValue);
+            },
+
             addVoidCardsToLibraryBuilds(year) {
                 for (var i = 1; i <= 3; i++) {
                     this.libraryBuild[year].addToStockWithId(0, this.nextInvocCardId);
