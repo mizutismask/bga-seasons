@@ -4167,9 +4167,6 @@ class SeasonsSK extends Table {
         if ($year == 1 && $this->isPathOfDestiny() || $this->isEnchantedKingdom()) {
             $players = self::loadPlayersBasicInfos();
             foreach ($players as $player_id => $player) {
-
-                //$this->tokensDeck->moveAllCardsInLocation('hand', 'discard', $player_id, $player_id); //other tokens are discarded
-                //$this->tokensDeck->moveCard($tokenId, 'hand',  $player_id);
                 self::DbQuery("UPDATE ability_token SET card_location='discard' WHERE card_type_arg=0 and card_location_arg='$player_id'"); //discard marked as not chosen
 
                 $chosen = $this->tokensDeck->getCardsInLocation('hand', $player_id);
