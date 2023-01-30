@@ -209,6 +209,12 @@ define([
                             notif.args.player_id = player_id;
                             notif.args.token_id = Object.keys(gamedatas.tokens[player_id])[0];
                             this.notif_tokenChosen(notif);
+
+                            const token = Object.values(gamedatas.tokens[player_id])[0];
+                            if (token.location === "used") {
+                                let card_div = this.tokensStock[player_id].getItemDivId(notif.args.token_id);
+                                dojo.addClass(card_div, "tokenUsed");
+                            }
                         }
                     } else {
                         $(abilityTokens).style.display = "none";
@@ -2975,6 +2981,8 @@ define([
             notif_tokenUsed: function (notif) {
                 this.tokensStock[notif.args.player_id].removeFromStockById(notif.args.token_id);
                 this.tokensStock[notif.args.player_id].addToStockWithId(notif.args.token_type + "2", notif.args.token_id);
+                card_div = this.tokensStock[notif.args.player_id].getItemDivId(notif.args.token_id);
+                dojo.addClass(card_div, "tokenUsed");
             },
 
             notif_transmutationPossible: function (notif) {

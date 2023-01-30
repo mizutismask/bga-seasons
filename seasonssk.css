@@ -342,6 +342,10 @@ h3 {
 	right: -20px;
 }
 
+.leftPlayerBoard .stockitem_unselectable:not(.tokenUsed){
+	cursor: pointer !important;
+}
+
 #board_counters {
 	display: flex;
 	flex-direction: row;
