@@ -756,10 +756,12 @@ h3 {
 .backward, .scrollable-stock .left  {
 	background-position: 0 92.059925%;
 	background-size: 428.571429%;
+	/*margin-left:-23px;*/
 }
 .forward, .scrollable-stock .right  {
 	background-position: 0 95.567243%;
 	background-size: 428.571429%;
+	/*margin-right:-23px;*/
 }
 .hand {
 	background-position: 0 97.994056%;
@@ -806,7 +808,7 @@ h3 {
 
 .scrollable-stock button {
 	width: 35px;
-	height: 30px;
+	height: 33px;
 	background-color: transparent;
 	align-self: center;
 	background-position: center;
@@ -1510,6 +1512,10 @@ a.choose_player {
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
+	}
+
+	.conversion_reminder_wrapper{
+		order: 3;
 	}
 }
 
