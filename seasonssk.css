@@ -342,7 +342,7 @@ h3 {
 	right: -20px;
 }
 
-.leftPlayerBoard .stockitem_unselectable:not(.tokenUsed){
+.leftPlayerBoard .stockitem_unselectable:not(.tokenUsed) {
 	cursor: pointer !important;
 }
 
@@ -672,7 +672,7 @@ h3 {
 .backward,
 .forward,
 .hand,
-.icon_separator{
+.icon_separator {
 	max-width: 100%;
 	background-size: 100%;
 	background-image: url("img/icons2022.png");
@@ -798,13 +798,13 @@ h3 {
 	vertical-align: text-bottom;
 }
 
-.scrollable-stock .left  {
+.scrollable-stock .left {
 	background-image: url("img/backward.png");
-	margin-left:-23px;
+	margin-left: -23px;
 }
-.scrollable-stock .right  {
+.scrollable-stock .right {
 	background-image: url("img/forward.png");
-	margin-right:-23px;
+	margin-right: -23px;
 	z-index: 1;
 }
 
@@ -1078,7 +1078,31 @@ h3 {
 a.choose_player {
 	display: none;
 }
-
+.ssn-avatar-wrapper a.button {
+	background: #786d5f;
+	color: white;
+	font-weight: bold;
+	font-size: medium;
+	z-index: 11;
+	border-radius: 6px;
+	margin: 0px;
+	height: auto;
+	padding: 0px;
+}
+.ssn-avatar-wrapper a.button span {
+	background: none;
+	color: inherit;
+	font-weight: inherit;
+	padding: 3px;
+	max-width: 130px;
+}
+.ssn-avatar-wrapper a.button:hover {
+	transform: none;
+	color: #dbcfc6;
+}
+.ssn-avatar-wrapper a.button:hover span {
+	padding: 3px;
+}
 .bonusused {
 	width: 25px;
 	height: 25px;
@@ -1411,9 +1435,9 @@ a.choose_player {
 	margin-left: 5px;
 	cursor: pointer;
 	background: darkred;
-    border-radius: 5px;
-    padding: 0px 5px;
-    color: black;
+	border-radius: 5px;
+	padding: 0px 5px;
+	color: black;
 }
 
 .mobileOnlyPlayerName {
