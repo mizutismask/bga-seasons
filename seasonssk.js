@@ -54,6 +54,7 @@ define([
                 this.log = this.isDebug ? console.log.bind(window.console) : function () { };
                 //this.animationDuration = 500;
                 this.scoreAnimationDuration = 1500;
+                this.synchronizationPending = false;
 
                 dojo.connect(window, "onresize", this, dojo.hitch(this, "updateScrollButtonsVisibility"));
             },
@@ -117,14 +118,6 @@ define([
 
                     this.createEnergyStockForPlayer(player_id, this.energies, 'energies_', this.energies_reserve, 'energy_reserve_');
                     this.createEnergyStockForPlayer(player_id, this.energies_reminder, 'energies_reminder_', this.energies_reserve_reminder, 'energy_reserve_reminder_');
-
-                    if (player_id != this.player_id) {
-                        this.energies[player_id].setSelectionMode(0);
-                    } else {
-                        dojo.connect(this.energies[player_id], 'onChangeSelection', this, 'onEnergySelectionChange');
-                    }
-                    this.energies_reminder[player_id].setSelectionMode(0);
-                    this.energies_reserve_reminder[player_id].setSelectionMode(0);
 
                     this.updateResources(this.gamedatas.resource[player_id], player_id);
                     this.setReserveSize(player_id, player.reserve_size);
@@ -437,9 +430,7 @@ define([
             createEnergyStockForPlayer(player_id, nrjStocks, stockDivPrefix, reserveStocks, reserveDivPrefix) {
                 nrjStocks[player_id] = new ebg.stock();
                 nrjStocks[player_id].create(this, $(stockDivPrefix + player_id), 25, 25);
-                if (player_id != this.player_id) {
-                    nrjStocks[player_id].setSelectionMode(0);
-                }
+
                 for (var ress_id = 1; ress_id <= 4; ress_id++) {
                     nrjStocks[player_id].addItemType(ress_id, ress_id, g_gamethemeurl + 'img/icons.png', ress_id - 1);
                 }
@@ -451,8 +442,10 @@ define([
 
                 if (player_id != this.player_id) {
                     nrjStocks[player_id].setSelectionMode(0);
+                    reserveStocks[player_id].setSelectionMode(0);
                 } else {
                     dojo.connect(nrjStocks[player_id], 'onChangeSelection', this, 'onEnergySelectionChange');
+                    dojo.connect(reserveStocks[player_id], 'onChangeSelection', this, 'onEnergySelectionChange');
                 }
             },
             /** adds previous and next player color and name in a tooltip */
@@ -1941,10 +1934,38 @@ define([
                 }
             },
 
-            onEnergySelectionChange: function (src_card_div_id, item_type) {
-                if (dojo.byId("transmute")) {
-                    var id_string = this.getAllSelectedEnergies(false);
-                    this.takeAction("transmute", { energies: id_string, simulation: true });
+            onEnergySelectionChange: function (stockDiv, item_type) {
+                if (!this.synchronizationPending) {
+                    //first synchronize the 2 energy stocks
+                    this.synchronizationPending = true;
+                    let src, dest;
+                    if (stockDiv === "energies_" + this.player_id) {
+                        src = this.energies[this.player_id];
+                        dest = this.energies_reminder[this.player_id];
+                    } else if (stockDiv === "energy_reserve_" + this.player_id) {
+                        src = this.energies_reserve[this.player_id];
+                        dest = this.energies_reserve_reminder[this.player_id];
+                    } else if (stockDiv === "energies_reminder_" + this.player_id) {
+                        src = this.energies_reminder[this.player_id];
+                        dest = this.energies[this.player_id];
+                    } else if (stockDiv === "energy_reserve_reminder_" + this.player_id) {
+                        src = this.energies_reserve_reminder[this.player_id];
+                        dest = this.energies_reserve_[this.player_id];
+                    }
+                    //console.log("synch", stockDiv, "->", dest.container_div.id);
+                    if (dest) {
+                        dest.unselectAll();
+                        src.getSelectedItems().forEach(element => {
+                            dest.selectItem(element.id);
+                        });
+                    }
+
+                    //then try transmute simulation if necessary
+                    if (dojo.byId("transmute")) {
+                        var id_string = this.getAllSelectedEnergies(false);
+                        this.takeAction("transmute", { energies: id_string, simulation: true });
+                    }
+                    this.synchronizationPending = false;
                 }
             },
 
