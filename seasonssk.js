@@ -1730,6 +1730,7 @@ define([
             },
 
             updateScrollButtonsVisibility: function () {
+                //if scrolling is available, show buttons, otherwise do not
                 var hand = this.queryFirst("#player_hand .scrollable-stock-inner");
                 if (hand.scrollWidth <= hand.clientWidth) {
                     dojo.query("#myhand button").style("display", "none");
