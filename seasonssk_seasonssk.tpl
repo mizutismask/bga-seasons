@@ -219,7 +219,7 @@
     <div class="tableau">
         <div id="leftPlayerBoard_{PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{PLAYER_COLOR}">
             <div class="playerNameWrapper"> 
-                <h3 class=".mobileOnly">{PLAYER_NAME}</h3>
+                <h3 class="mobileOnly">{PLAYER_NAME}</h3>
             </div>
             <div id="board_counters">
                 <div id="cristals_counter_{PLAYER_ID}" class="icon_cristal counter"></div>
