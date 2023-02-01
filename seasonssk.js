@@ -1732,9 +1732,9 @@ define([
             updateScrollButtonsVisibility: function () {
                 var hand = this.queryFirst("#player_hand .scrollable-stock-inner");
                 if (hand.scrollWidth <= hand.clientWidth) {
-                    dojo.query("#player_hand button").style("display", "none");
+                    dojo.query("#myhand button").style("display", "none");
                 } else {
-                    dojo.query("#player_hand button").style("display", "inline-block");
+                    dojo.query("#myhand button").style("display", "inline-block");
                 }
             },
 
