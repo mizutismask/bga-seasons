@@ -638,8 +638,8 @@ class SeasonsSK extends Table {
         if (count($cards) > 0) {
             $cards_for_player = array();
             foreach ($cards as $card) {
-                if(!isset($cards_for_player[$card['location_arg']]))
-                    $cards_for_player[$card['location_arg']]=[];
+                if (!isset($cards_for_player[$card['location_arg']]))
+                    $cards_for_player[$card['location_arg']] = [];
                 $cards_for_player[$card['location_arg']][] = $card;
             }
             // There are some cards to distribute
@@ -9496,6 +9496,61 @@ class SeasonsSK extends Table {
             self::DbQuery("ALTER TABLE  `zz_replay3_effect` CHANGE  `effect_type`  `effect_type` ENUM(  'play',  'active',  'permanent',  'onSummon',  'onSeasonChange',  'onEndTurn',  'onDrawOne' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL");
             self::DbQuery("ALTER TABLE  `zz_savepoint_effect` CHANGE  `effect_type`  `effect_type` ENUM(  'play',  'active',  'permanent',  'onSummon',  'onSeasonChange',  'onEndTurn',  'onDrawOne' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL");
         }
+
+        $changes = [
+            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_cristals` int(10) NOT NULL DEFAULT '0'"],
+            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_raw_cards` int(10) NOT NULL DEFAULT '0'"],
+            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_eog_cards` int(10) NOT NULL DEFAULT '0'"],
+            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_bonus_actions` int(10) NOT NULL DEFAULT '0'"],
+            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_remaining_cards` int(10) NOT NULL DEFAULT '0'"],
+            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_token` int(10) NOT NULL DEFAULT '0'"],
+            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_last_draft_card` int(10)"],
+            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_reset_possible` TINYINT(1) UNSIGNED NOT NULL DEFAULT  '0'"],
+            [2301301636, "CREATE TABLE IF NOT EXISTS DBPREFIX_ability_token (
+                `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                `card_type` varchar(16) NOT NULL,
+                `card_type_arg` int(11) NOT NULL,
+                `card_location` varchar(16) NOT NULL,
+                `card_location_arg` int(11) NOT NULL,
+                PRIMARY KEY (`card_id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"],
+            [2301301636, "CREATE TABLE IF NOT EXISTS DBPREFIX_resource_undo (
+                `resource_player` int(10) unsigned NOT NULL,
+                `resource_id` mediumint(8) unsigned NOT NULL,
+                `resource_qt` mediumint(8) unsigned NOT NULL,
+                PRIMARY KEY (`resource_player`,`resource_id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8"],
+            [2301301636, "CREATE TABLE IF NOT EXISTS DBPREFIX_resource_on_card_undo (
+                `roc_card` int(10) unsigned NOT NULL,
+                `roc_id` mediumint(8) unsigned NOT NULL,
+                `roc_qt` mediumint(8) unsigned NOT NULL,
+                `roc_player` int(10) unsigned NOT NULL,
+                PRIMARY KEY (`roc_card`,`roc_id`),
+                KEY `roc_player` (`roc_player`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8"],
+            [2301301636, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (34, 0)"],
+            [2301301636, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (35, 0)"],
+            [2301301636, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (36, 0)"],
+            [2301301636, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (37, 0)"],
+        ];
+
+        foreach ($changes as [$version, $sql]) {
+            if ($from_version <= $version) {
+                try {
+                    self::warn("upgradeTableDb apply 1: from_version=$from_version, change=[ $version, $sql ]");
+                    self::applyDbUpgradeToAllDB($sql);
+                } catch (Exception $e) {
+                    // See https://studio.boardgamearena.com/bug?id=64
+                    // BGA framework can produce invalid SQL with non-existant tables when using DBPREFIX_.
+                    // The workaround is to retry the query on the base table only.
+                    self::error("upgradeTableDb apply 1 failed: from_version=$from_version, change=[ $version, $sql ]");
+                    $sql = str_replace("DBPREFIX_", "", $sql);
+                    self::warn("upgradeTableDb apply 2: from_version=$from_version, change=[ $version, $sql ]");
+                    self::applyDbUpgradeToAllDB($sql);
+                }
+            }
+        }
+        self::warn("upgradeTableDb complete: from_version=$from_version");
     }
 
     //////////////////////////////////////////////////////////////////////////////
