@@ -594,6 +594,7 @@ h3 {
 
 #myhand {
 	text-align: center;
+	margin-right: 10px; /*because of the right scrolling button*/
 }
 
 .ssn-loc-available:before {
@@ -1545,6 +1546,10 @@ a.choose_player {
 
 	.conversion_reminder_wrapper {
 		order: 3;
+	}
+
+	#myhand {
+		margin-right: 0px;
 	}
 
 	#myhand button {
