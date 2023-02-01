@@ -9461,12 +9461,14 @@ class SeasonsSK extends Table {
             self::DbQuery($sql);
 
             $this->gamestate->updateMultiactiveOrNextState('chooseLibrarynew');
+        } else if ($state['name'] == 'chooseToken') {
+            $tokens = $this->tokensDeck->getCardsInLocation('hand', $player_id);
+            $token  = array_pop($tokens);
+            $this->chooseToken($token["id"]);
         } else {
             $this->gamestate->nextState("zombieTurn");
         }
     }
-
-
 
     ///////////////////////////////////////////////////////////////////////////////////:
     ////////// DB upgrade
