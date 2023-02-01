@@ -337,7 +337,7 @@ define([
                     },
                 });
                 var handSettings = {
-                    "width": "300px", "height": "300px", "shift": "2px", "center": false, "scrollbarVisible": false, "scrollStep": 130, "buttonGap": "5px", "gap": "10px", "leftButton": { "classes": "scroll-button" }, "rightButton": { "classes": "scroll-button" }
+                    "width": "300px", "height": "300px", "shift": "2px", "center": false, "scrollbarVisible": false, "scrollStep": 130, "buttonGap": "5px", "gap": "10px", "leftButton": { "classes": "" }, "rightButton": { "classes": "" }
                 }
                 this.playerHand = new ScrollableStock(this.handManager, document.getElementById(`player_hand`), handSettings);
                 this.playerHand.setSelectionMode("single");
@@ -346,7 +346,11 @@ define([
                     var card = this.gamedatas.hand[i];
                     this.addCardToPlayerHand(card);
                 }
-
+                dojo.query(".scrollable-stock .left").addClass("desktopOnly");
+                dojo.query(".scrollable-stock .right").addClass("desktopOnly");
+                dojo.query(".left.mobileOnly").connect('onclick', this,  function () { return this.playerHand.scroll("left"); });
+                dojo.query(".right.mobileOnly").connect('onclick', this, function () { return this.playerHand.scroll("right"); });
+                
                 // Init card choice
                 this.cardChoice = new ebg.stock();
                 this.cardChoice.create(this, $('choiceCardsStock'), 124, 173);
@@ -408,9 +412,7 @@ define([
 
                 // Player choice
                 dojo.query('.choose_player').connect('onclick', this, 'onChoosePlayer');
-
                 dojo.query('.monthplace').connect('onclick', this, 'onMoveSeason');
-
                 dojo.query('.bonus').connect('onclick', this, 'onUseBonus');
 
                 this.addTooltip('current_month', _('Season token: indicate current time and season.'), '');

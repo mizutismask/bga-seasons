@@ -669,8 +669,6 @@ h3 {
 .conversion3,
 .discardpile,
 .drawpile,
-.backward,
-.forward,
 .hand,
 .icon_separator {
 	max-width: 100%;
@@ -798,11 +796,13 @@ h3 {
 	vertical-align: text-bottom;
 }
 
-.scrollable-stock .left {
+.scrollable-stock .left,
+.backward {
 	background-image: url("img/backward.png");
 	margin-left: -23px;
 }
-.scrollable-stock .right {
+.scrollable-stock .right,
+.forward {
 	background-image: url("img/forward.png");
 	margin-right: -23px;
 	z-index: 1;
@@ -1440,7 +1440,7 @@ a.choose_player {
 	color: black;
 }
 
-.mobileOnlyPlayerName {
+.mobileOnly {
 	display: none;
 }
 /******* Mobile version ****************/
@@ -1472,10 +1472,10 @@ a.choose_player {
 		margin-left: 0px;
 	}
 
-	.mobileOnlyPlayerName {
+	.mobileOnly {
 		display: inline;
 	}
-	.desktopOnlyPlayerName {
+	.desktopOnly {
 		display: none;
 	}
 	.leftPlayerBoard {
@@ -1545,6 +1545,21 @@ a.choose_player {
 
 	.conversion_reminder_wrapper {
 		order: 3;
+	}
+
+	#myhand button {
+		width: 21px;
+		height: 23px;
+		background-color: transparent;
+		background-size: contain;
+		background-position: center;
+		overflow: hidden;
+		cursor: pointer;
+		vertical-align: text-bottom;
+	}
+	.scrollable-stock .left,
+	.scrollable-stock .right {
+		display: none !important;
 	}
 }
 
