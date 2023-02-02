@@ -3104,7 +3104,7 @@ class SeasonsSK extends Table {
                 } else {
                     throw new BgaUserException(self::_("You can not use this token now since you've never used a bonus action"));
                 }
-                breagetResourceStockk;
+                break;
             case 17:
                 //reroll
                 /* 
