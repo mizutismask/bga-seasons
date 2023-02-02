@@ -1064,7 +1064,6 @@ class SeasonsSK extends Table {
         }
         foreach ($cardWithPoints as $card_type_id => $theseplayers) {
             foreach ($theseplayers as $player_id => $cards) {
-                $totalPerPlayer = 0;
                 foreach ($cards as $i => $card_id) {
                     $card_count = count($cards);
 
@@ -1075,7 +1074,7 @@ class SeasonsSK extends Table {
                         if (count($players_with_maximum) == 1) {
                             if (reset($players_with_maximum) == $player_id) {
                                 $points = self::checkMinion(20, $player_id);
-                                $totalPerPlayer += $points;
+                                $scores[$player_id] += $points;
                                 // => the owner of Ragfield’s Helm has more power cards in play => 20 pts
                                 self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ");
 
@@ -1094,7 +1093,7 @@ class SeasonsSK extends Table {
 
                         $energyNbr = self::countPlayerEnergies($player_id);
                         $points = self::checkMinion(3 * $energyNbr, $player_id);
-                        $totalPerPlayer += $points;
+                        $scores[$player_id] += $points;
                         self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ");
 
                         self::notifyAllPlayers('winPoints', clienttranslate('${card_name}: ${player_name} gains ${points} point(s)'), array(
@@ -1112,7 +1111,7 @@ class SeasonsSK extends Table {
 
                         if ($familiar_item_nbr == 0) {
                             $points = self::checkMinion(20, $player_id);
-                            $totalPerPlayer += $points;
+                            $scores[$player_id] += $points;
                             self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ");
 
                             self::notifyAllPlayers('winPoints', clienttranslate('${card_name}: ${player_name} gains ${points} point(s)'), array(
@@ -1134,7 +1133,7 @@ class SeasonsSK extends Table {
 
                         if ($total_energy >= 3) {
                             $points = self::checkMinion(35, $player_id);
-                            $totalPerPlayer += $points;
+                            $scores[$player_id] += $points;
                             self::DbQuery("UPDATE player SET player_score=player_score+$points WHERE player_id='$player_id' ");
 
                             self::notifyAllPlayers('winPoints', clienttranslate('${card_name}: ${player_name} gains ${points} point(s)'), array(
@@ -1147,7 +1146,7 @@ class SeasonsSK extends Table {
                             self::notifyUpdateScores();
                         } else {
                             $loose = 10;
-                            $totalPerPlayer -= $loose;
+                            $scores[$player_id] -= $loose;
                             self::DbQuery("UPDATE player SET player_score=GREATEST( 0,player_score-$loose ) WHERE player_id='$player_id'");
                             self::notifyAllPlayers('winPoints', clienttranslate('${card_name}: ${player_name} looses ${points_disp} crystals'), array(
                                 'i18n' => array('card_name'),
@@ -1161,10 +1160,8 @@ class SeasonsSK extends Table {
                         }
                     }
                 }
-                //check total
-                $this->updatePlayer($player_id, "player_score_eog_cards", $totalPerPlayer);
-                $scores[$player_id] = $totalPerPlayer;
-                self::incStat($totalPerPlayer, 'points_eog_cards', $player_id);
+                $this->updatePlayer($player_id, "player_score_eog_cards", $scores[$player_id]);
+                self::incStat($scores[$player_id], 'points_eog_cards', $player_id);
             }
         }
         foreach ($players as $player_id => $player) {
