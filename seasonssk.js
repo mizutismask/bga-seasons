@@ -295,9 +295,6 @@ define([
                 this.setSeasonDate(this.gamedatas.year, this.gamedatas.month);
 
                 // Init scrollable player hand
-                //todo
-                //this.playerHand.apparenceBorderWidth = '2px';
-                //this.playerHand.onItemCreate = dojo.hitch(this, 'setupNewCard');
                 // create the card manager
                 this.handManager = new CardManager(this, {
                     getId: (card) => `card-${card.id}`,
@@ -2202,6 +2199,9 @@ define([
                     case 'chooseToken':
                         this.tokensStock[this.player_id].setSelectionMode(1);
                         break;
+                    case 'amuletOfTime':
+                        this.playerHand.setSelectionMode("multiple");
+                        break;
                 }
                 this.addArrowToActivePlayer(args);
             },
@@ -2265,6 +2265,9 @@ define([
                     case 'token11Effect':
                         dojo.query('.opponent-hand').forEach(elm => dojo.destroy(elm));
                         this.opponentsStocks = undefined;
+                        break;
+                    case 'amuletOfTime':
+                        this.playerHand.setSelectionMode("single");
                         break;
                 }
             },
