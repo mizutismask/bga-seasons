@@ -1164,7 +1164,7 @@ class SeasonsSK extends Table {
                 //check total
                 $this->updatePlayer($player_id, "player_score_eog_cards", $totalPerPlayer);
                 $scores[$player_id] = $totalPerPlayer;
-                self::incStat($points, 'points_eog_cards', $player_id);
+                self::incStat($totalPerPlayer, 'points_eog_cards', $player_id);
             }
         }
         foreach ($players as $player_id => $player) {
