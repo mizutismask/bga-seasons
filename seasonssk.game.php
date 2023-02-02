@@ -4161,7 +4161,7 @@ class SeasonsSK extends Table {
         $year = self::getGameStateValue('year');
 
         //notifies token choice once everyone's choice is final
-        if ($year == 1 && $this->isPathOfDestiny() || $this->isEnchantedKingdom()) {
+        if ($year == 1 && ($this->isPathOfDestiny() || $this->isEnchantedKingdom())) {
             $players = self::loadPlayersBasicInfos();
             foreach ($players as $player_id => $player) {
                 self::DbQuery("UPDATE ability_token SET card_location='discard' WHERE card_type_arg=0 and card_location_arg='$player_id'"); //discard marked as not chosen
