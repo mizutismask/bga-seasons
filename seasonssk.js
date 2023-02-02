@@ -345,9 +345,9 @@ define([
                 }
                 dojo.query(".scrollable-stock .left").addClass("desktopOnly");
                 dojo.query(".scrollable-stock .right").addClass("desktopOnly");
-                dojo.query(".left.mobileOnly").connect('onclick', this,  function () { return this.playerHand.scroll("left"); });
+                dojo.query(".left.mobileOnly").connect('onclick', this, function () { return this.playerHand.scroll("left"); });
                 dojo.query(".right.mobileOnly").connect('onclick', this, function () { return this.playerHand.scroll("right"); });
-                
+
                 // Init card choice
                 this.cardChoice = new ebg.stock();
                 this.cardChoice.create(this, $('choiceCardsStock'), 124, 173);
@@ -2561,12 +2561,14 @@ define([
                         this.addActionButton('cancel', _('Cancel'), 'onCancel');
                     }
                 } else {
-                    switch (stateName) {
-                        case 'draftChoice':
-                        case 'buildLibraryNew':
-                        case 'chooseToken':
-                            this.addUndoButton();
-                            break;
+                    if (!this.isSpectator) {
+                        switch (stateName) {
+                            case 'draftChoice':
+                            case 'buildLibraryNew':
+                            case 'chooseToken':
+                                this.addUndoButton();
+                                break;
+                        }
                     }
                 }
 
