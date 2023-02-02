@@ -9497,15 +9497,15 @@ class SeasonsSK extends Table {
         }
 
         $changes = [
-            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_cristals` int(10) NOT NULL DEFAULT '0'"],
-            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_raw_cards` int(10) NOT NULL DEFAULT '0'"],
-            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_eog_cards` int(10) NOT NULL DEFAULT '0'"],
-            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_bonus_actions` int(10) NOT NULL DEFAULT '0'"],
-            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_remaining_cards` int(10) NOT NULL DEFAULT '0'"],
-            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_score_token` int(10) NOT NULL DEFAULT '0'"],
-            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_last_draft_card` int(10)"],
-            [2301301636, "ALTER TABLE DBPREFIX_player ADD `player_reset_possible` TINYINT(1) UNSIGNED NOT NULL DEFAULT  '0'"],
-            [2301301636, "CREATE TABLE IF NOT EXISTS DBPREFIX_ability_token (
+            [2302011806, "ALTER TABLE DBPREFIX_player ADD `player_score_cristals` int(10) NOT NULL DEFAULT '0'"],
+            [2302011806, "ALTER TABLE DBPREFIX_player ADD `player_score_raw_cards` int(10) NOT NULL DEFAULT '0'"],
+            [2302011806, "ALTER TABLE DBPREFIX_player ADD `player_score_eog_cards` int(10) NOT NULL DEFAULT '0'"],
+            [2302011806, "ALTER TABLE DBPREFIX_player ADD `player_score_bonus_actions` int(10) NOT NULL DEFAULT '0'"],
+            [2302011806, "ALTER TABLE DBPREFIX_player ADD `player_score_remaining_cards` int(10) NOT NULL DEFAULT '0'"],
+            [2302011806, "ALTER TABLE DBPREFIX_player ADD `player_score_token` int(10) NOT NULL DEFAULT '0'"],
+            [2302011806, "ALTER TABLE DBPREFIX_player ADD `player_last_draft_card` int(10)"],
+            [2302011806, "ALTER TABLE DBPREFIX_player ADD `player_reset_possible` TINYINT(1) UNSIGNED NOT NULL DEFAULT  '0'"],
+            [2302011806, "CREATE TABLE IF NOT EXISTS DBPREFIX_ability_token (
                 `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
                 `card_type` varchar(16) NOT NULL,
                 `card_type_arg` int(11) NOT NULL,
@@ -9513,13 +9513,13 @@ class SeasonsSK extends Table {
                 `card_location_arg` int(11) NOT NULL,
                 PRIMARY KEY (`card_id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"],
-            [2301301636, "CREATE TABLE IF NOT EXISTS DBPREFIX_resource_undo (
+            [2302011806, "CREATE TABLE IF NOT EXISTS DBPREFIX_resource_undo (
                 `resource_player` int(10) unsigned NOT NULL,
                 `resource_id` mediumint(8) unsigned NOT NULL,
                 `resource_qt` mediumint(8) unsigned NOT NULL,
                 PRIMARY KEY (`resource_player`,`resource_id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8"],
-            [2301301636, "CREATE TABLE IF NOT EXISTS DBPREFIX_resource_on_card_undo (
+            [2302011806, "CREATE TABLE IF NOT EXISTS DBPREFIX_resource_on_card_undo (
                 `roc_card` int(10) unsigned NOT NULL,
                 `roc_id` mediumint(8) unsigned NOT NULL,
                 `roc_qt` mediumint(8) unsigned NOT NULL,
@@ -9527,10 +9527,10 @@ class SeasonsSK extends Table {
                 PRIMARY KEY (`roc_card`,`roc_id`),
                 KEY `roc_player` (`roc_player`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8"],
-            [2301301636, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (34, 0)"],
-            [2301301636, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (35, 0)"],
-            [2301301636, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (36, 0)"],
-            [2301301636, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (37, 0)"],
+            [2302011806, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (34, 0)"],
+            [2302011806, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (35, 0)"],
+            [2302011806, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (36, 0)"],
+            [2302011806, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (37, 0)"],
         ];
 
         foreach ($changes as [$version, $sql]) {
