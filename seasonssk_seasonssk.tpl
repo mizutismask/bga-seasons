@@ -131,7 +131,7 @@
 
     <div id="abilityTokens" class="seasons_rightpanel">
         <div id="tokensStocks">
-            <div class="token-stock seasonsblock">
+            <div id="currentPlayerTokenStock" class="token-stock seasonsblock">
                 <h3>{LB_ABILITY_TOKENS} {CURRENT_PLAYER_NAME}</h3>
                 <div class="block-inside-wrapper">
                     <div id="tokens_{CURRENT_PLAYER_ID}"></div>

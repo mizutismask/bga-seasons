@@ -633,7 +633,7 @@ h3 {
 	box-shadow: inset 1px 1px 4px 2px #5c4223;
 }
 
-.spectatorMode #myhand, .spectatorMode #currentPlayerTablea  {
+.spectatorMode #myhand, .spectatorMode #currentPlayerTablea, .spectatorMode #currentPlayerTokenStock  {
   display: none;
 }
 
