@@ -362,6 +362,7 @@ h3 {
 	display: flex !important;
 	justify-content: center;
 	align-items: center;
+	font-size: small;
 }
 
 /* Compact mode only in desktop */
@@ -628,6 +629,10 @@ h3 {
 .empty-slot {
 	/*,.ssn-loc-full:before */
 	box-shadow: inset 1px 1px 4px 2px #5c4223;
+}
+
+.spectatorMode #myhand, .spectatorMode #currentPlayerTablea  {
+  display: none;
 }
 
 /* icons */
