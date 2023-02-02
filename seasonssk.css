@@ -497,6 +497,7 @@ h3 {
 	display: inline-block;
 }
 
+/* Activation possible */
 .tableau .cardactivation {
 	position: absolute;
 	left: 42px;
@@ -507,6 +508,7 @@ h3 {
 	width: 40px;
 	height: 40px;
 }
+/* Activated */
 .tableau .activated .cardactivation {
 	background-image: url("img/icons.png");
 	background-position: -150px 0px;
