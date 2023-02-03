@@ -5022,8 +5022,8 @@ class SeasonsSK extends Table {
         foreach ($nbrRemaining as $player_id => $nbrCards) {
             $cardValue = -5;
             $wins = false;
-            $tokens = $this->tokensDeck->getCardsOfType('05');
-            if ($tokens && array_pop($tokens)["location_arg"] == $player_id) {
+            $tokens = $this->tokensDeck->getCardsOfTypeInLocation('05', null, "hand", $player_id);
+            if ($tokens) {
                 $cardValue = 3;
                 $wins = true;
             }

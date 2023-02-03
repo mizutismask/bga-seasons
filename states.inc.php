@@ -216,7 +216,7 @@ $machinestates = array(
         "possibleactions" => array("incSummon", "draw", "transmute", "summon", "active", "useBonus", 'endTurn', 'playToken', "undoBonusAction", "bonusExchange"),
         "transitions" => array(
             "endOfTurn" => 25, "cardEffect" => 50, "summonVariableCost" => 35, "draw" => 32, "useBonus" => 30,
-            "bonusDraw" => 36, "bonusExchange" => 31, "resetPlayerTurn" => 30, "playerTurn" => 30, "tokenEffect" => 200,
+            "bonusDraw" => 36, "bonusExchange" => 31, "resetPlayerTurn" => 30, "playerTurn" => 30, "tokenEffect" => 200,// "finalScoring" => 98, to debug score
         )
     ),
     31 => array(
