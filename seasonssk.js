@@ -14,6 +14,7 @@
 const CURRENT_SEASON_OPACITY = 0.0;
 const OTHER_SEASON_OPACITY = 0.4;
 const SVG_SIZE = 340;
+const CARDS_FILE = 'img/cards.jpg';
 
 define([
     "dojo", "dojo/_base/declare",
@@ -150,7 +151,7 @@ define([
                     this.playerTableau[player_id].extraClasses = 'thickness ssn-loc-full';
 
                     for (var card_id in this.gamedatas.card_types) {
-                        this.playerTableau[player_id].addItemType(card_id, 0, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
+                        this.playerTableau[player_id].addItemType(card_id, 0, g_gamethemeurl + CARDS_FILE, this.getCardImageIndex(card_id));
                     }
 
                     this.playerTableau[player_id].onItemCreate = dojo.hitch(this, 'setupNewCard');
@@ -236,8 +237,8 @@ define([
 
                 for (var card_id in this.gamedatas.card_types) {
                     var card = this.gamedatas.card_types[card_id];
-                    this.library[2].addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
-                    this.library[3].addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
+                    this.library[2].addItemType(card_id, card_id, g_gamethemeurl + CARDS_FILE, this.getCardImageIndex(card_id));
+                    this.library[3].addItemType(card_id, card_id, g_gamethemeurl + CARDS_FILE, this.getCardImageIndex(card_id));
                 }
 
                 for (var i in this.gamedatas.libraries[2]) {
@@ -260,7 +261,7 @@ define([
 
                     for (var card_id in this.gamedatas.card_types) {
                         var card = this.gamedatas.card_types[card_id];
-                        this.libraryBuild[l].addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
+                        this.libraryBuild[l].addItemType(card_id, card_id, g_gamethemeurl + CARDS_FILE, this.getCardImageIndex(card_id));
                     }
                     this.libraryBuild[l].addItemType(0, 9999, g_gamethemeurl + 'img/voidcards.png', 1);
                     this.addVoidCardsToLibraryBuilds(l);
@@ -306,7 +307,7 @@ define([
                     },
                     setupFrontDiv: (card, div) => {
                         //calculates background data to see the correct picture, like in the old stock component
-                        div.style.backgroundImage = "url(" + g_gamethemeurl + 'img/cards.jpg' + ")"
+                        div.style.backgroundImage = "url(" + g_gamethemeurl + CARDS_FILE + ")"
                         const imageItemsPerRow = 10;
                         var imagePosition = this.getCardImageIndex(card.type);
                         var row = Math.floor(imagePosition / imageItemsPerRow);
@@ -357,7 +358,7 @@ define([
                 for (var card_id in this.gamedatas.card_types) {
                     var card = this.gamedatas.card_types[card_id];
 
-                    this.cardChoice.addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
+                    this.cardChoice.addItemType(card_id, card_id, g_gamethemeurl + CARDS_FILE, this.getCardImageIndex(card_id));
                 }
 
                 this.otusChoice = new ebg.stock();
@@ -368,7 +369,7 @@ define([
                 for (var card_id in this.gamedatas.card_types) {
                     var card = this.gamedatas.card_types[card_id];
 
-                    this.otusChoice.addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
+                    this.otusChoice.addItemType(card_id, card_id, g_gamethemeurl + CARDS_FILE, this.getCardImageIndex(card_id));
                 }
 
                 // Initial cards in card choice
@@ -1225,7 +1226,7 @@ define([
                     hand.extraClasses = 'thickness';
                     hand.setSelectionMode(0);
                     for (var card_id in this.gamedatas.card_types) {
-                        hand.addItemType(card_id, card_id, g_gamethemeurl + 'img/cards.jpg', this.getCardImageIndex(card_id));
+                        hand.addItemType(card_id, card_id, g_gamethemeurl + CARDS_FILE, this.getCardImageIndex(card_id));
                     }
                     opponentsCards[playerId].forEach(card => hand.addToStockWithId(card.type, card.id));
                 }
