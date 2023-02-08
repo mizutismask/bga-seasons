@@ -650,6 +650,12 @@ h3 {
 	background-image: url("img/icons.png");
 }
 
+.icon_active {
+	width: 12px;
+	height: 12px;
+	background-position: -130px -20px;
+}
+
 .icon_play {
 	width: 12px;
 	height: 12px;
