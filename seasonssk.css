@@ -1042,6 +1042,7 @@ h3 {
 #choiceCards .stockitem,
 .tableau .stockitem {
 	border-radius: 8px;
+	background-size: 1000%;
 }
 
 .cardenergies .stockitem,
