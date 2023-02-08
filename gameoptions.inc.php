@@ -47,4 +47,13 @@ $game_preferences = array(
         ),
         'default' => 2,
     ),
+    '3' => array(
+        'name' => totranslate('With seasons sounds'),
+        'needReload' => true,
+        'values' => array(
+            1 => array('name' => totranslate('Yes')),
+            2 => array('name' => totranslate('No'))
+        ),
+        'default' => 1,
+    ),
 );

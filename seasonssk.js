@@ -499,6 +499,10 @@ define([
             isCompactMode() {
                 return this.prefs[2].value == 1;
             },
+            /** Tells if seasons custom sounds are active in user prefs. */
+            isSeasonsSoundsOn() {
+                return this.prefs[3].value == 1;
+            },
             convertStockSelectedItemsIntoString(items) {
                 var id_string = '';
                 for (var i in items) {
@@ -707,8 +711,10 @@ define([
             */
             playSound(sound, playNextMoveSound = true) {
                 if (soundManager.bMuteSound == false) {
-                    playSound(sound);
-                    playNextMoveSound && this.disableNextMoveSound();
+                    if (this.isSeasonsSoundsOn()) {
+                        playSound(sound);
+                        playNextMoveSound && this.disableNextMoveSound();
+                    }
                 }
             },
 
