@@ -121,6 +121,13 @@
         </div>
     </div>
 
+    <div class="seasons_rightpanel seasonsblock" id="otus_wrap">
+        <h3>{OTUS_TITLE}</h3>
+        <div class="block-inside-wrapper">
+            <div id="otus"></div>
+        </div>
+    </div>
+
     <div id="myhand" class="seasons_rightpanel seasonsblock">
         <button type="button" class="left mobileOnly backward"></button>
         <h3>{LB_MY_HAND}</h3>
@@ -274,14 +281,6 @@
     </div>
     <!-- END player -->
 
-    <div class="seasonsblock" id="otus_wrap">
-        <h3>{OTUS_TITLE}:</h3>
-        <div class="block-inside-wrapper">
-            <div id="otus"></div>
-        </div>
-    </div>
-    
-    
 </div>
 <script type="text/javascript">
 
