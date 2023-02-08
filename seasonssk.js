@@ -483,11 +483,16 @@ define([
                 }
             },
 
-            addArrowToActivePlayer(state) {
+            addArrowsToActivePlayer(state) {
                 const notUsefulStates = ["diceChoice"];
                 if (state.type == "activeplayer" && state.active_player != this.player_id && !notUsefulStates.includes(state.name)) {
                     if (!dojo.byId("goToCurrentPlayer")) {
                         dojo.place(this.format_block('jstpl_down_arrow', {
+                            player_id: state.active_player,
+                        }), "generalactions", "last");
+                    }
+                    if (!dojo.byId("goBackUp")) {
+                        dojo.place(this.format_block('jstpl_up_arrow', {
                             player_id: state.active_player,
                         }), "generalactions", "last");
                     }
@@ -2210,7 +2215,7 @@ define([
                         this.playerHand.setSelectionMode("multiple");
                         break;
                 }
-                this.addArrowToActivePlayer(args);
+                this.addArrowsToActivePlayer(args);
             },
             onLeavingState: function (stateName) {
                 console.log('Leaving state: ' + stateName);
