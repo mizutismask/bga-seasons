@@ -1052,6 +1052,7 @@ h3 {
 #library_build_2 .stockitem,
 #library_build_3 .stockitem,
 #choiceCards .stockitem,
+#otus_wrap .stockitem,
 .tableau .stockitem {
 	border-radius: 8px;
 	background-size: 1000%;
