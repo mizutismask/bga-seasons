@@ -332,7 +332,11 @@ var jstpl_card_tooltip = '<div class="cardtooltip">\
                             <br/><br/>\
                             ${points} <img src="{THEMEURL}img/common/point.png" alt="points"/> &bull; \
                             ${categoryd}\
-                            <div class="cardartwrap"><div class="cardart" style="background-position: -${artx}px -${arty}px;"></div></div>\
+                            <div class="cardartwrap">\
+                                <div class="cardart" style="background-position: -${artx}px -${arty}px; position:relative;">\
+                                    <span class="cardtitle">${named}</span>\
+                                </div>\
+                            </div>\
                           </div>';
 
 var jstpl_die_tooltip = '<div class="dietooltip"><ul>\

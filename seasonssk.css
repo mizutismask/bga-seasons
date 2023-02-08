@@ -460,12 +460,17 @@ h3 {
 
 .cardtitle {
 	position: absolute;
-	top: 5px;
+	top: 6px;
 	left: 23px;
 	font-weight: bold;
 	font-size: 50%;
 	width: 80px;
 	text-align: center;
+}
+.cardtooltip .cardtitle{
+	font-size: 100%;
+	width: 82%;
+	top: 4.2%;
 }
 
 .cardtooltip {
@@ -558,10 +563,11 @@ h3 {
 }
 .cardart {
 	display: inline-block;
-	background-image: url("img/bigcards.jpg");
+	background-image: url("img/cards.jpg");
 	width: 248px;
 	height: 346px;
 	margin: 10px;
+	background-size: 1000%;
 }
 
 .seasonsclearblock {
