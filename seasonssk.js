@@ -127,20 +127,19 @@ define([
                     var itemMargin = 25;//16min
                     var itemsPerRow = 10;
 
+                    //underlayer for empty slots
+                    this.underlayerPlayerTableau[player_id] = new ebg.stock();
+                    this.underlayerPlayerTableau[player_id].item_margin = itemMargin;
+                    this.underlayerPlayerTableau[player_id].create(this, $('underlayer_player_tableau_' + player_id), this.cardwidth, this.cardHeight);
+                    this.underlayerPlayerTableau[player_id].image_items_per_row = itemsPerRow;
+                    this.underlayerPlayerTableau[player_id].extraClasses = 'thickness empty-slot underlayer ssn-loc-available';
+                    this.underlayerPlayerTableau[player_id].setSelectionMode = 0;
+                    this.underlayerPlayerTableau[player_id].addItemType(0, 9999, g_gamethemeurl + 'img/voidcards.png', 0);
                     if (this.isShowAllSlots()) {
-                        //underlayer for empty slots
-                        this.underlayerPlayerTableau[player_id] = new ebg.stock();
-                        this.underlayerPlayerTableau[player_id].item_margin = itemMargin;
-                        this.underlayerPlayerTableau[player_id].create(this, $('underlayer_player_tableau_' + player_id), this.cardwidth, this.cardHeight);
-                        this.underlayerPlayerTableau[player_id].image_items_per_row = itemsPerRow;
-                        this.underlayerPlayerTableau[player_id].extraClasses = 'thickness empty-slot underlayer';
-                        this.underlayerPlayerTableau[player_id].setSelectionMode = 0;
-                        this.underlayerPlayerTableau[player_id].addItemType(0, 9999, g_gamethemeurl + 'img/voidcards.png', 0);
                         for (let i = 0; i < 15; i++) {//insert empty slots
                             this.underlayerPlayerTableau[player_id].addToStockWithId(0, this.nextInvocCardId);
                             this.nextInvocCardId--;
                         }
-                        this.underlayerPlayerTableau[player_id].extraClasses = 'thickness ssn-loc-available ';
                     }
 
                     this.playerTableau[player_id] = new ebg.stock();
@@ -501,6 +500,8 @@ define([
             },
             ///////////////////////////////////////////////////
             //// Utilities
+            ///////////////////////////////////////////////////
+
             /** Tells if show all slots is active in user prefs. */
             isShowAllSlots() {
                 return this.prefs[4].value == 1;
@@ -1049,7 +1050,6 @@ define([
                 }
             },
 
-
             setupNewCard: function (card_div, card_type_id, card_id) {
                 if (card_type_id != 0) {
                     var card = this.gamedatas.card_types[card_type_id];
@@ -1120,7 +1120,7 @@ define([
             },
 
             deleteCardOnMyTableau: function (card_div, card_type_id, card_id) {
-                console.log("this.energies_on_card_handlers[card_id]", this.energies_on_card_handlers[card_id]);
+                //console.log("this.energies_on_card_handlers[card_id]", this.energies_on_card_handlers[card_id]);
                 if (this.energies_on_card_handlers[card_id]) {
                     console.log(card_id, "disconnected");
                     dojo.disconnect(this.energies_on_card_handlers[card_id]);
@@ -1277,7 +1277,20 @@ define([
 
             /** Shows available slots on a player tableau. */
             updateInvocationLevelOnSlots: function (player_id) {
-                var invoc_level = toint($('invocation_level_' + player_id).innerHTML) + 1;
+                var invoc_level = toint($('invocation_level_' + player_id).innerHTML);
+                if (!this.isShowAllSlots()) {
+                    for (let i = this.underlayerPlayerTableau[player_id].count(); i < invoc_level; i++) {
+                        this.underlayerPlayerTableau[player_id].addToStockWithId(0, this.nextInvocCardId);
+                        this.nextInvocCardId--;
+                    }
+                    var stock = this.underlayerPlayerTableau[player_id];
+                    var last;
+                    for (let i = this.underlayerPlayerTableau[player_id].count(); i > invoc_level; i--) {
+                        last = stock.getAllItems().pop();
+                        stock.removeFromStockById(last.id);
+                    }
+                }
+                invoc_level = invoc_level + 1;
                 dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:nth-child(1n+${invoc_level})`).removeClass("ssn-loc-available");
                 dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:not(:nth-child(1n+${invoc_level}))`).addClass("ssn-loc-available");
                 this.updateInvocationAvailabilityOnSlots(player_id);
