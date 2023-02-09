@@ -1047,6 +1047,10 @@ h3 {
 .card .card-sides .card-side,
 :not(.token).stockitem {
 	border-radius: 8px;
+}
+
+.card .card-sides .card-side,
+:not(.token):not(.underlayer).stockitem {
 	background-size: 1000%;
 }
 

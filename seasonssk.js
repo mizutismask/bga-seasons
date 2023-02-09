@@ -133,7 +133,7 @@ define([
                         this.underlayerPlayerTableau[player_id].item_margin = itemMargin;
                         this.underlayerPlayerTableau[player_id].create(this, $('underlayer_player_tableau_' + player_id), this.cardwidth, this.cardHeight);
                         this.underlayerPlayerTableau[player_id].image_items_per_row = itemsPerRow;
-                        this.underlayerPlayerTableau[player_id].extraClasses = 'thickness empty-slot';
+                        this.underlayerPlayerTableau[player_id].extraClasses = 'thickness empty-slot underlayer';
                         this.underlayerPlayerTableau[player_id].setSelectionMode = 0;
                         this.underlayerPlayerTableau[player_id].addItemType(0, 9999, g_gamethemeurl + 'img/voidcards.png', 0);
                         for (let i = 0; i < 15; i++) {//insert empty slots
