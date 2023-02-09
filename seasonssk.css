@@ -1044,16 +1044,8 @@ h3 {
 	grid-column: 2;
 }
 
-#player_hand .stockitem,
 .card .card-sides .card-side,
-#library_2 .stockitem,
-#library_3 .stockitem,
-#library_build_1 .stockitem,
-#library_build_2 .stockitem,
-#library_build_3 .stockitem,
-#choiceCards .stockitem,
-#otus_wrap .stockitem,
-.tableau .stockitem {
+:not(.token).stockitem {
 	border-radius: 8px;
 	background-size: 1000%;
 }

@@ -184,6 +184,7 @@ define([
                     this.tokensStock[player_id].setSelectionMode(0);
                     this.tokensStock[player_id].image_items_per_row = 6;
                     this.tokensStock[player_id].autowidth = true;
+                    this.tokensStock[player_id].extraClasses = 'token';
                     //this.tokensStock[player_id].centerItems = true;
                     this.tokensStock[player_id].onItemCreate = dojo.hitch(this, 'setupNewToken');
 
