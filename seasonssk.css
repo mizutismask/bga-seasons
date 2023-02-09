@@ -28,13 +28,35 @@ h3 {
 /* player_hand scrollbar */
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollable-stock-inner::-webkit-scrollbar {
-	display: none;
+	/*display: none;*/
 }
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollable-stock-inner {
-	-ms-overflow-style: none; /* IE and Edge */
+	/*-ms-overflow-style: none;/* /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
 }
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+ /* .scrollable-stock-inner * {
+    scrollbar-width: auto;
+    scrollbar-color: #807a73 #fde5b5;
+  }*/
+
+  /* Chrome, Edge, and Safari */
+  .scrollable-stock-inner::-webkit-scrollbar {
+    height: 10px;
+  }
+
+  .scrollable-stock-inner::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollable-stock-inner::-webkit-scrollbar-thumb {
+    background-color: #fde5b5;
+    border-radius: 10px;
+    border: 3px solid #807a73;
+  }
 
 /* main board */
 
@@ -1057,7 +1079,7 @@ h3 {
 .cardenergies .stockitem,
 #bonus_action_exchange_wrapper .stockitem,
 .energies .stockitem {
-	border-radius: 14px;
+	border-radius: 14px !important;
 }
 
 /* player reserve */
