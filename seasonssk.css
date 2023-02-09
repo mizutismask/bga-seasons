@@ -1045,12 +1045,12 @@ h3 {
 }
 
 .card .card-sides .card-side,
-:not(.token).stockitem {
+:not(.token):not(.die).stockitem {
 	border-radius: 8px;
 }
 
 .card .card-sides .card-side,
-:not(.token):not(.underlayer).stockitem {
+:not(.token):not(.underlayer):not(.die).stockitem {
 	background-size: 1000%;
 }
 
