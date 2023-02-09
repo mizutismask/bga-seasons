@@ -30,22 +30,23 @@ $game_options = array(
 );
 
 $game_preferences = array(
-    '1' => array(
-        'name' => totranslate('Show cards art in tooltips'),
-        'needReload' => true,
-        'values' => array(
-            1 => array('name' => totranslate('Yes')),
-            2 => array('name' => totranslate('No'), 'cssPref' => 'seasons_no_art_cards')
-        )
-    ),
     '2' => array(
-        'name' => totranslate('Compact player board'),
+        'name' => totranslate('Compact player board (Desktop only)'),
         'needReload' => true,
         'values' => array(
             1 => array('name' => totranslate('Yes'), 'cssPref' => 'seasons_compact_player_board'),
             2 => array('name' => totranslate('No'))
         ),
         'default' => 2,
+    ),
+    '4' => array(
+        'name' => totranslate('Show the 15 available slots'),
+        'needReload' => true,
+        'values' => array(
+            1 => array('name' => totranslate('Yes'), 'cssPref' => 'seasons_show_all_slots'),
+            2 => array('name' => totranslate('No'))
+        ),
+        'default' => 1,
     ),
     '3' => array(
         'name' => totranslate('With seasons sounds'),
@@ -56,4 +57,13 @@ $game_preferences = array(
         ),
         'default' => 1,
     ),
+    '1' => array(
+        'name' => totranslate('Show cards art in tooltips'),
+        'needReload' => true,
+        'values' => array(
+            1 => array('name' => totranslate('Yes')),
+            2 => array('name' => totranslate('No'), 'cssPref' => 'seasons_no_art_cards')
+        )
+    ),
+
 );

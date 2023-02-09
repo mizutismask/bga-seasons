@@ -127,7 +127,7 @@ define([
                     var itemMargin = 25;//16min
                     var itemsPerRow = 10;
 
-                    if (!this.isCompactMode()) {
+                    if (this.isShowAllSlots()) {
                         //underlayer for empty slots
                         this.underlayerPlayerTableau[player_id] = new ebg.stock();
                         this.underlayerPlayerTableau[player_id].item_margin = itemMargin;
@@ -501,6 +501,10 @@ define([
             },
             ///////////////////////////////////////////////////
             //// Utilities
+            /** Tells if show all slots is active in user prefs. */
+            isShowAllSlots() {
+                return this.prefs[4].value == 1;
+            },
             /** Tells if compact player board is active in user prefs. */
             isCompactMode() {
                 return this.prefs[2].value == 1;
