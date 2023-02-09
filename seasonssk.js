@@ -2603,7 +2603,7 @@ define([
                     <th id="th-cristals-score" class="cristals-score">${_("Score at the end of year III")}</th>
                     <th id="th-raw-cards-score" class="raw-cards-score">${_("Cards : raw score")}</th>
                     <th id="th-eog-cards-score" class="eog-cards-score">${_("Cards : end of game effects")}</th>
-                    <th id="th-bonus-actions-score" class="bonus-actions-score">${_("Additional actions")}</th>
+                    <th id="th-bonus-actions-score" class="bonus-actions-score">${_("Bonus actions")}</th>
                     <th id="th-remaining-cards-score" class="remaining-cards-score">${_("Cards in hand")}</th>
                     <th id="th-token-score" class="token-score">${_("Ability token")}</th>
                     <th id="th-after-end-score" class="after-end-score">${_("Final score")}</th>
@@ -2631,7 +2631,7 @@ define([
                 this.addTooltipHtmlToClass('cristals-score', _("Score before the final count."));
                 this.addTooltipHtmlToClass('raw-cards-score', _("Total number of cristals visible on the left corner of the cards in play."));
                 this.addTooltipHtmlToClass('eog-cards-score', _("Number of cristals awarded by end of game effects on cards in play."));
-                this.addTooltipHtmlToClass('bonus-actions-score', _("Total number of malus for additional actions used"));
+                this.addTooltipHtmlToClass('bonus-actions-score', _("Total number of malus for bonus actions used"));
                 this.addTooltipHtmlToClass('remaining-cards-score', _("-5 cristals per card in hand."));
                 this.addTooltipHtmlToClass('token-score', _("Effect of the ability token if used."));
 
