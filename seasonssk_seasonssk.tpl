@@ -74,44 +74,46 @@
         </div>
     </div>
 
-    <div class="transmutation_bar seasons_rightpanel">
-        <div class="head"></div>
-        <div id="season_dices_wrap">
-            <div>
-                <h3>{LB_SEASONS_DICES}</h3>
-                <div id="seasons_dices"></div>
-            </div>
-            <div class="conversion_reminder_wrapper">
-                <h3>{LB_TRANSMUTATION_RATE}</h3>
-                <div class="conversion_reminder">
-                    <div id="convertFor3" class="reminder">
-                        <div class="energy"></div>
-                        <div class="conversion3"></div>
+    <div class="seasons_rightpanel">
+        <div class="transmutation_bar">
+            <div class="head"></div>
+            <div id="season_dices_wrap">
+                <div>
+                    <h3>{LB_SEASONS_DICES}</h3>
+                    <div id="seasons_dices"></div>
+                </div>
+                <div class="conversion_reminder_wrapper">
+                    <h3>{LB_TRANSMUTATION_RATE}</h3>
+                    <div class="conversion_reminder">
+                        <div id="convertFor3" class="reminder">
+                            <div class="energy"></div>
+                            <div class="conversion3"></div>
+                        </div>
+                        <div class="sicon icon_separator"></div>
+                        <div id="convertFor2" class="reminder">
+                            <div class="energy"></div>
+                            <div class="conversion2"></div>
+                        </div>
+                        <div class="sicon icon_separator"></div>
+                        <div id="convertFor1" class="reminder">
+                            <div id="energyType1" class="sicon energy"></div>
+                            <div id="energyType2" class="sicon energy"></div>
+                            <div class="conversion1"></div>
+                        </div>
                     </div>
-                    <div class="sicon icon_separator"></div>
-                    <div id="convertFor2" class="reminder">
-                        <div class="energy"></div>
-                        <div class="conversion2"></div>
-                    </div>
-                    <div class="sicon icon_separator"></div>
-                    <div id="convertFor1" class="reminder">
-                        <div id="energyType1" class="sicon energy"></div>
-                        <div id="energyType2" class="sicon energy"></div>
-                        <div class="conversion1"></div>
+                </div>
+                <div>
+                    <h3>{LB_CARDS_NUMBER}</h3>
+                    <div id="piles_counters">
+                        <div  class="card-pile drawpile"></div>
+                        <span id="draw_pile_counter" class="counter"></span>
+                        <div class="card-pile discardpile"></div>
+                        <span id="discard_pile_counter" class="counter"></span>
                     </div>
                 </div>
             </div>
-            <div>
-                <h3>{LB_CARDS_NUMBER}</h3>
-                <div id="piles_counters">
-                    <div  class="card-pile drawpile"></div>
-                    <span id="draw_pile_counter" class="counter"></span>
-                    <div class="card-pile discardpile"></div>
-                    <span id="discard_pile_counter" class="counter"></span>
-                </div>
-            </div>
+            <div class="head"></div>
         </div>
-        <div class="head"></div>
     </div>
 
     <div id="choiceCards" class="seasonsblock seasons_rightpanel">
@@ -159,41 +161,43 @@
     
     <a id="anchor_player_{CURRENT_PLAYER_ID}"></a>
     <div class="tableau" id="currentPlayerTablea">
-        <div id="leftPlayerBoard_{CURRENT_PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{CURRENT_PLAYER_COLOR}">
-            <div class="playerNameWrapper"> 
-                <h3 class="mobileOnly">{CURRENT_PLAYER_NAME}</h3>
-            </div>
-            <div id="board_counters">
-                <div id="cristals_counter_{CURRENT_PLAYER_ID}" class="icon_cristal counter"></div>
-                <div id="cards_points_counter_{CURRENT_PLAYER_ID}" class="prestige counter"></div>
-            </div>
-            <img id="left_avatar_{CURRENT_PLAYER_ID}" alt="" class="ssn-avatar" />
-            
-            <h3 class="desktopOnly">{CURRENT_PLAYER_NAME}</h3>
-            
-            <div class="playerdie_wrap" id="playerdie_wrap_left_{CURRENT_PLAYER_ID}">
-                <div class="playerdie" id="playerdie_left_{CURRENT_PLAYER_ID}"></div>
-            </div>
-            <div>
-                <div class="energywrapper">
-                    <div id="energy_reserve_reminder_{CURRENT_PLAYER_ID}" class="energy_reserve"></div>
-                    <div id="energies_reminder_{CURRENT_PLAYER_ID}" class="energies"></div>
+        <div id="leftPlayerBoard_{CURRENT_PLAYER_ID}" class="leftPlayerBoardWrapper" style="background-color:#{CURRENT_PLAYER_COLOR}">
+            <div class="leftPlayerBoard"> 
+                <div class="playerNameWrapper"> 
+                    <h3 class="mobileOnly">{CURRENT_PLAYER_NAME}</h3>
                 </div>
-            </div>
-            <div class="bonus-progress">
-                <div id="bonusUsedCube_{CURRENT_PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
-                <div class="bonus_actions_used">
-                    <div id="bonusUsed1_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused0 ttbonusused"></div>
-                    <div id="bonusUsed2_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused1 ttbonusused"></div>
-                    <div id="bonusUsed3_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused2 ttbonusused"></div>
-                    <div id="bonusUsed4_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused3 ttbonusused"></div>
+                <div id="board_counters">
+                    <div id="cristals_counter_{CURRENT_PLAYER_ID}" class="icon_cristal counter"></div>
+                    <div id="cards_points_counter_{CURRENT_PLAYER_ID}" class="prestige counter"></div>
                 </div>
-            </div>
-            <div class="bonus_actions">
-                <div id="bonus1_{CURRENT_PLAYER_ID}" class="bonus bonus1"></div>
-                <div id="bonus2_{CURRENT_PLAYER_ID}" class="bonus bonus2"></div>
-                <div id="bonus3_{CURRENT_PLAYER_ID}" class="bonus bonus3"></div>
-                <div id="bonus4_{CURRENT_PLAYER_ID}" class="bonus bonus4"></div>
+                <img id="left_avatar_{CURRENT_PLAYER_ID}" alt="" class="ssn-avatar" />
+                
+                <h3 class="desktopOnly">{CURRENT_PLAYER_NAME}</h3>
+                
+                <div class="playerdie_wrap" id="playerdie_wrap_left_{CURRENT_PLAYER_ID}">
+                    <div class="playerdie" id="playerdie_left_{CURRENT_PLAYER_ID}"></div>
+                </div>
+                <div>
+                    <div class="energywrapper">
+                        <div id="energy_reserve_reminder_{CURRENT_PLAYER_ID}" class="energy_reserve"></div>
+                        <div id="energies_reminder_{CURRENT_PLAYER_ID}" class="energies"></div>
+                    </div>
+                </div>
+                <div class="bonus-progress">
+                    <div id="bonusUsedCube_{CURRENT_PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
+                    <div class="bonus_actions_used">
+                        <div id="bonusUsed1_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused0 ttbonusused"></div>
+                        <div id="bonusUsed2_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused1 ttbonusused"></div>
+                        <div id="bonusUsed3_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused2 ttbonusused"></div>
+                        <div id="bonusUsed4_{CURRENT_PLAYER_ID}" class="sicon bonusused bonusused3 ttbonusused"></div>
+                    </div>
+                </div>
+                <div class="bonus_actions">
+                    <div id="bonus1_{CURRENT_PLAYER_ID}" class="bonus bonus1"></div>
+                    <div id="bonus2_{CURRENT_PLAYER_ID}" class="bonus bonus2"></div>
+                    <div id="bonus3_{CURRENT_PLAYER_ID}" class="bonus bonus3"></div>
+                    <div id="bonus4_{CURRENT_PLAYER_ID}" class="bonus bonus4"></div>
+                </div>
             </div>
         </div>
         <div class="stock-wrapper">
@@ -224,39 +228,41 @@
     <!-- BEGIN player -->
     <a id="anchor_player_{PLAYER_ID}"></a>
     <div class="tableau">
-        <div id="leftPlayerBoard_{PLAYER_ID}" class="leftPlayerBoard" style="background-color:#{PLAYER_COLOR}">
-            <div class="playerNameWrapper"> 
-                <h3 class="mobileOnly">{PLAYER_NAME}</h3>
-            </div>
-            <div id="board_counters">
-                <div id="cristals_counter_{PLAYER_ID}" class="icon_cristal counter"></div>
-                <div id="cards_points_counter_{PLAYER_ID}" class="prestige counter"></div>
-            </div>
-            <img id="left_avatar_{PLAYER_ID}" alt="" class="ssn-avatar" />
-            <h3 class="desktopOnly">{PLAYER_NAME}</h3>
-            <div class="playerdie_wrap" id="playerdie_wrap_left_{PLAYER_ID}">
-                <div class="playerdie" id="playerdie_left_{PLAYER_ID}"></div>
-            </div>
-            <div>
-                <div class="energywrapper">
-                    <div id="energy_reserve_reminder_{PLAYER_ID}" class="energy_reserve"></div>
-                    <div id="energies_reminder_{PLAYER_ID}" class="energies"></div>
+        <div id="leftPlayerBoard_{PLAYER_ID}" class="leftPlayerBoardWrapper" style="background-color:#{PLAYER_COLOR}">
+            <div class="leftPlayerBoard" > 
+                <div class="playerNameWrapper"> 
+                    <h3 class="mobileOnly">{PLAYER_NAME}</h3>
                 </div>
-            </div>
-            <div class="bonus-progress">
-                <div id="bonusUsedCube_{PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
-                <div class="bonus_actions_used">
-                    <div id="bonusUsed1_{PLAYER_ID}" class="sicon bonusused bonusused0 ttbonusused"></div>
-                    <div id="bonusUsed2_{PLAYER_ID}" class="sicon bonusused bonusused1 ttbonusused"></div>
-                    <div id="bonusUsed3_{PLAYER_ID}" class="sicon bonusused bonusused2 ttbonusused"></div>
-                    <div id="bonusUsed4_{PLAYER_ID}" class="sicon bonusused bonusused3 ttbonusused"></div>
+                <div id="board_counters">
+                    <div id="cristals_counter_{PLAYER_ID}" class="icon_cristal counter"></div>
+                    <div id="cards_points_counter_{PLAYER_ID}" class="prestige counter"></div>
                 </div>
-            </div>
-            <div class="bonus_actions">
-                <div id="bonus1_{PLAYER_ID}" class="bonus bonus1"></div>
-                <div id="bonus2_{PLAYER_ID}" class="bonus bonus2"></div>
-                <div id="bonus3_{PLAYER_ID}" class="bonus bonus3"></div>
-                <div id="bonus4_{PLAYER_ID}" class="bonus bonus4"></div>
+                <img id="left_avatar_{PLAYER_ID}" alt="" class="ssn-avatar" />
+                <h3 class="desktopOnly">{PLAYER_NAME}</h3>
+                <div class="playerdie_wrap" id="playerdie_wrap_left_{PLAYER_ID}">
+                    <div class="playerdie" id="playerdie_left_{PLAYER_ID}"></div>
+                </div>
+                <div>
+                    <div class="energywrapper">
+                        <div id="energy_reserve_reminder_{PLAYER_ID}" class="energy_reserve"></div>
+                        <div id="energies_reminder_{PLAYER_ID}" class="energies"></div>
+                    </div>
+                </div>
+                <div class="bonus-progress">
+                    <div id="bonusUsedCube_{PLAYER_ID}" class="sicon icon_black_cube bonusUsedCube"></div>
+                    <div class="bonus_actions_used">
+                        <div id="bonusUsed1_{PLAYER_ID}" class="sicon bonusused bonusused0 ttbonusused"></div>
+                        <div id="bonusUsed2_{PLAYER_ID}" class="sicon bonusused bonusused1 ttbonusused"></div>
+                        <div id="bonusUsed3_{PLAYER_ID}" class="sicon bonusused bonusused2 ttbonusused"></div>
+                        <div id="bonusUsed4_{PLAYER_ID}" class="sicon bonusused bonusused3 ttbonusused"></div>
+                    </div>
+                </div>
+                <div class="bonus_actions">
+                    <div id="bonus1_{PLAYER_ID}" class="bonus bonus1"></div>
+                    <div id="bonus2_{PLAYER_ID}" class="bonus bonus2"></div>
+                    <div id="bonus3_{PLAYER_ID}" class="bonus bonus3"></div>
+                    <div id="bonus4_{PLAYER_ID}" class="bonus bonus4"></div>
+                </div>
             </div>
         </div>
         <div class="stock-wrapper">

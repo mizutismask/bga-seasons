@@ -3086,12 +3086,6 @@ define([
                     this.addTooltip('bonus3_' + player_id, '', _('Bonus: Increase your summoning gauge by one'));
                     this.addTooltip('bonus4_' + player_id, '', _('Bonus: Instead of drawing 1 card this turn, draw 2 cards and keep one.'));
                 }
-
-                /* console.log("+++++", dojo.query("#leftPlayerBoard_" + player_id + " .bonus1").);
-                 this.addTooltip(this.queryFirst("#leftPlayerBoard_" + player_id + " .bonus1"), '', _("You've already used your 3 possible bonus actions"));
-                 this.addTooltip('bonus2', '', _("You've already used your 3 possible bonus actions"));
-                 this.addTooltip('bonus3', '', _("You've already used your 3 possible bonus actions"));
-                 this.addTooltip('bonus4', '', _("You've already used your 3 possible bonus actions"));*/
             },
             notif_bonusBack: function (notif) {
                 console.log('notif_bonusBack');

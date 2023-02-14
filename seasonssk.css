@@ -37,26 +37,26 @@ h3 {
 }
 
 /* ===== Scrollbar CSS ===== */
-  /* Firefox */
- /* .scrollable-stock-inner * {
+/* Firefox */
+/* .scrollable-stock-inner * {
     scrollbar-width: auto;
     scrollbar-color: #807a73 #fde5b5;
   }*/
 
-  /* Chrome, Edge, and Safari */
-  .scrollable-stock-inner::-webkit-scrollbar {
-    height: 10px;
-  }
+/* Chrome, Edge, and Safari */
+.scrollable-stock-inner::-webkit-scrollbar {
+	height: 10px;
+}
 
-  .scrollable-stock-inner::-webkit-scrollbar-track {
-    background: transparent;
-  }
+.scrollable-stock-inner::-webkit-scrollbar-track {
+	background: transparent;
+}
 
-  .scrollable-stock-inner::-webkit-scrollbar-thumb {
-    background-color: #fde5b5;
-    border-radius: 10px;
-    border: 3px solid #807a73;
-  }
+.scrollable-stock-inner::-webkit-scrollbar-thumb {
+	background-color: #fde5b5;
+	border-radius: 10px;
+	border: 3px solid #807a73;
+}
 
 /* main board */
 
@@ -101,19 +101,19 @@ h3 {
 	display: block;
 }
 
-.season_1 #season_dices_wrap {
+.season_1 .transmutation_bar {
 	background: url("img/convertSeason1.png");
 	background-size: auto 100%;
 }
-.season_2 #season_dices_wrap {
+.season_2 .transmutation_bar {
 	background: url("img/convertSeason2.png");
 	background-size: auto 100%;
 }
-.season_3 #season_dices_wrap {
+.season_3 .transmutation_bar {
 	background: url("img/convertSeason3.png");
 	background-size: auto 100%;
 }
-.season_4 #season_dices_wrap {
+.season_4 .transmutation_bar {
 	background: url("img/convertSeason4.png");
 	background-size: auto 100%;
 }
@@ -225,6 +225,7 @@ h3 {
 	grid-template-rows: 1fr 1fr;
 	grid-column-gap: 5px;
 	grid-row-gap: 5px;
+	margin-bottom: 10px;
 }
 
 .bonus {
@@ -235,6 +236,10 @@ h3 {
 	background-size: 100%;
 	width: 39px;
 	height: 55px;
+}
+
+.bonus:not(.enabled) {
+	cursor: default;
 }
 
 .bonus1 {
@@ -275,12 +280,15 @@ h3 {
 .transmutation_bar {
 	display: flex;
 	align-items: center;
+	margin: 0px 22px;
 }
+
 .transmutation_bar .head:first-child {
 	background-image: url("img/head.png");
 	width: 48px;
 	height: 80px;
 	margin-right: -24px;
+	margin-left: -24px;
 	z-index: 1;
 }
 .transmutation_bar .head:last-child {
@@ -288,6 +296,7 @@ h3 {
 	width: 48px;
 	height: 80px;
 	margin-left: -24px;
+	margin-right: -24px;
 	z-index: 1;
 }
 
@@ -311,6 +320,7 @@ h3 {
 	grid-column: 2;
 	align-items: center;
 	gap: 12px;
+	flex-wrap: wrap;
 }
 
 .reminder {
@@ -323,9 +333,14 @@ h3 {
 }
 
 /*Player board on the left*/
-.leftPlayerBoard {
+
+.leftPlayerBoardWrapper {
 	border: 2px solid #9d7e7e;
-	border-radius: 70px;
+	border-radius: 74px;
+	align-self: flex-start;
+}
+
+.leftPlayerBoard {
 	display: inline-flex;
 	flex-direction: column;
 	align-items: center;
@@ -334,12 +349,13 @@ h3 {
 	position: relative;
 	gap: 3px;
 }
+
 .leftPlayerBoard .ssn-avatar {
 	width: 92px;
 	height: 92px;
 	border: 2px solid;
 	border-radius: 50px;
-	border-color: inherit;
+	border-color: #9d7e7e;
 	/*position: absolute;
 	top: 10px;*/
 }
@@ -416,11 +432,6 @@ h3 {
 		left: 19px;
 	}
 
-	.seasons_compact_player_board .prestige,
-	.seasons_compact_player_board .icon_cristal {
-		/*width: 30px;
-	height: 30px;*/
-	}
 	.seasons_compact_player_board .counter {
 		font-size: small;
 	}
@@ -429,14 +440,6 @@ h3 {
 	color: black;
 	-webkit-text-stroke: 1px #fff;
 	font-size: x-large;
-}
-
-.conversion_reminder .energy1,
-.conversion_reminder .energy2,
-.conversion_reminder .energy3,
-.conversion_reminder .energy4 {
-	/*width: 33px;
-	height: 33px;todo big energies here*/
 }
 
 .ages {
@@ -489,7 +492,7 @@ h3 {
 	width: 80px;
 	text-align: center;
 }
-.cardtooltip .cardtitle{
+.cardtooltip .cardtitle {
 	font-size: 100%;
 	width: 82%;
 	top: 4.2%;
@@ -661,8 +664,10 @@ h3 {
 	box-shadow: inset 1px 1px 4px 2px #5c4223;
 }
 
-.spectatorMode #myhand, .spectatorMode #currentPlayerTablea, .spectatorMode #currentPlayerTokenStock  {
-  display: none;
+.spectatorMode #myhand,
+.spectatorMode #currentPlayerTablea,
+.spectatorMode #currentPlayerTokenStock {
+	display: none;
 }
 
 /* icons */
@@ -1484,6 +1489,56 @@ a.choose_player {
 	display: none;
 }
 /******* Mobile version ****************/
+
+/******* Mobile Firefox version ****************/
+@supports (-moz-appearance: none) and (max-width: 360px) {
+	@media only screen {
+		.counter {
+			font-size: small;
+		}
+
+		.leftPlayerBoard {
+			scale: 65%;
+		}
+
+		.leftPlayerBoard .ssn-avatar {
+			margin-left: -37px !important;
+		}
+
+		.leftPlayerBoard .prestige {
+			position: relative;
+			top: -25px;
+			right: -77px !important;
+		}
+
+		.leftPlayerBoard .icon_cristal {
+			position: relative;
+			top: -25px;
+			left: -87px;
+		}
+
+		.head {
+			display: none;
+		}
+
+		#season_dices_wrap {
+			scale: 68%;
+			padding: 0px 0px;
+			width: 100%;
+		}
+
+		.transmutation_bar {
+			margin: 0px;
+		}
+
+		.bonus_actions {
+			margin-bottom: 0px !important;
+			margin-right: 0px !important;
+		}
+	}
+}
+
+/******* Mobile other browsers version ****************/
 @media only screen and (max-width: 970px) {
 	#board {
 		float: none;
@@ -1532,6 +1587,9 @@ a.choose_player {
 	}
 	.leftPlayerBoard .ssn-avatar {
 		margin-left: -13px;
+	}
+	.leftPlayerBoard .prestige {
+		right: -13px;
 	}
 	.stock-wrapper {
 		grid-row: 2;
@@ -1604,6 +1662,14 @@ a.choose_player {
 	.scrollable-stock .left,
 	.scrollable-stock .right {
 		display: none !important;
+	}
+
+	.leftPlayerBoardWrapper {
+		align-self: auto;
+	}
+	.bonus_actions {
+		margin-bottom: 0px;
+		margin-right: 20px;
 	}
 }
 
