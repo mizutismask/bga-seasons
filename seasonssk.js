@@ -15,6 +15,7 @@ const CURRENT_SEASON_OPACITY = 0.0;
 const OTHER_SEASON_OPACITY = 0.4;
 const SVG_SIZE = 340;
 const CARDS_FILE = 'img/cards.jpg';
+const TOOLTIP_DELAY = 200;
 
 define([
     "dojo", "dojo/_base/declare",
@@ -336,7 +337,7 @@ define([
                         }), div.id);
 
                         var html = this.getCardTooltip(card.type, false);
-                        this.addTooltipHtml(div.id, html);
+                        this.customAddTooltipHtml(div.id, html);
                     },
                     setupBackDiv: (card, div) => {
                         //no back in seasons
@@ -514,6 +515,15 @@ define([
             ///////////////////////////////////////////////////
             //// Utilities
             ///////////////////////////////////////////////////
+
+            customAddTooltipHtml(id, html) {
+                new dijit.Tooltip({
+                    connectId: [id],
+                    label: html,
+                    position: this.defaultTooltipPosition,
+                    showDelay: TOOLTIP_DELAY,
+                });
+            },
 
             /** Tells if show all slots is active in user prefs. */
             isShowAllSlots() {
@@ -1059,7 +1069,7 @@ define([
             setupNewToken: function (card_div, card_type_id, card_id) {
                 if (card_type_id != 0) {
                     var html = this.getTokenTooltip(card_div, card_id, card_type_id);
-                    this.addTooltipHtml(card_div.id, html, 100);
+                    this.customAddTooltipHtml(card_div.id, html);
                 }
             },
 
@@ -1068,7 +1078,7 @@ define([
                     var card = this.gamedatas.card_types[card_type_id];
                     var html = this.getCardTooltip(card_type_id, false);
 
-                    this.addTooltipHtml(card_div.id, html, 100);
+                    this.customAddTooltipHtml(card_div.id, html);
 
                     dojo.place(this.format_block('jstpl_card_content', {
                         id: card_id,
@@ -1107,7 +1117,7 @@ define([
 
                 if (toint(original_card_type_id) == 118 && original_card_type_id != card_type_id) {
                     var html = this.getCardTooltip(card_type_id, true);
-                    this.addTooltipHtml('player_tableau_' + player_id + '_item_' + tcard_id, html, 0);
+                    this.customAddTooltipHtml('player_tableau_' + player_id + '_item_' + tcard_id, html, 0);
                 }
 
                 if (toint(card_type_id) == 217 && original_card_type_id != card_type_id) {
