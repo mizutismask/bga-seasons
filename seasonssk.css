@@ -1492,8 +1492,8 @@ a.choose_player {
 /******* Mobile version ****************/
 
 /******* Mobile Firefox version ****************/
-@supports (-moz-appearance: none) and (max-width: 360px) {
-	@media only screen {
+@supports (-moz-appearance: none) {
+	@media only screen and (max-width: 360px) {
 		.counter {
 			font-size: small;
 		}
