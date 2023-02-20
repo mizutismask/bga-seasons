@@ -624,7 +624,7 @@ $this->card_types = array(
         ),
         'imageindex' =>
         52,
-        'activation' => true,
+        'activation' => false,
     ),
     102 => array(
         'name' => clienttranslate("Horn of Plenty"),
