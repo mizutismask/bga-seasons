@@ -1486,6 +1486,10 @@ a.choose_player {
 	color: black;
 }
 
+.dijitTooltip {
+	width: auto !important;
+}
+
 .mobileOnly {
 	display: none;
 }
