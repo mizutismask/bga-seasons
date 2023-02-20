@@ -1838,3 +1838,91 @@ body > .card {
 .card:not(.possibleCard) .card-sides .card-side {
 	box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.5);
 }
+
+#player_config {
+	margin: 10px 0px;
+}
+#player_config #player_config_row {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+#player_config #player_info_row {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+#player_config #show-settings {
+	height: 40px;
+	width: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+#player_config #show-settings:hover {
+	color: grey;
+}
+#player_config #show-settings svg {
+	width: auto;
+	height: 40px;
+}
+#player_config #show-settings .fa-primary {
+	transform-origin: 216px 255px;
+	transition: transform 1s;
+}
+#player_config #show-settings:hover .fa-primary {
+	transform: rotate(180deg);
+}
+
+/*
+ * Controls in the top bar
+ */
+#settings-controls-container {
+	position: relative;
+	text-align: center;
+	border-top: 1px solid gray;
+	margin-top: 10px;
+}
+#settings-controls-container.settingsControlsHidden {
+	display: none;
+}
+#settings-controls-container .row-data {
+	border: none;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	border-bottom: 1px solid gray;
+}
+#settings-controls-container .row-data .row-label {
+	width: 100%;
+	float: none;
+	color: black;
+	padding-bottom: 0px;
+	text-overflow: initial;
+	white-space: normal;
+	padding: 2px 4px 0px;
+}
+#settings-controls-container .row-data .row-value {
+	width: 85%;
+	margin: 0;
+}
+#settings-controls-container .row-data #layout-control-card-animation {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#settings-controls-container .row-data #layout-control-card-animation svg {
+	height: 30px;
+	width: auto;
+}
+#settings-controls-container
+	.row-data
+	#layout-control-card-animation
+	#layout-control-card-animation-speed {
+	flex-grow: 1;
+	margin: 5px;
+}

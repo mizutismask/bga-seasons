@@ -57,12 +57,20 @@ define([
                 this.scoreAnimationDuration = 1500;
                 this.synchronizationPending = false;
 
+                this._settingsConfig = {
+                    compactMode: { type: 'pref', prefId: 2 },
+                    showAllSlots: { type: 'pref', prefId: 4 },
+                    customSounds: { type: 'pref', prefId: 3 },
+                    noArtOnTooltip: { type: 'pref', prefId: 1 },
+                };
+
                 dojo.connect(window, "onresize", this, dojo.hitch(this, "updateScrollButtonsVisibility"));
             },
 
             setup: function (gamedatas) {
 
                 this.setupSeasonHighlighter();
+                this.setupInfoPanel();
                 this.leftPlayerBoardsCristalCounters = [];
                 this.leftPlayerBoardsPointsCounters = [];
                 this.opponentsStocks = [];
@@ -425,6 +433,11 @@ define([
                 dojo.query(".fa-star").removeClass("fa fa-star").addClass("sicon icon_cristal").style("vertical-align", "middle");
 
                 this.setupNotifications();
+            },
+
+            setupInfoPanel() {
+                dojo.place(this.format_string(jstpl_configPlayerBoard, {}), 'player_boards', 'first');
+                this.setupSettings();
             },
 
             createEnergyStockForPlayer(player_id, nrjStocks, stockDivPrefix, reserveStocks, reserveDivPrefix) {
@@ -1302,6 +1315,43 @@ define([
                 dojo.query(`#underlayer_player_tableau_${player_id} .stockitem:not(:nth-child(1n+${nbCards}))`).removeClass("ssn-loc-available");
             },
 
+            /************************
+             ******* SETTINGS ********
+             ************************/
+            setupSettings() {
+                dojo.connect($('show-settings'), 'onclick', () => this.toggleSettings());
+                this.addTooltip('show-settings', '', _('Display some settings about the game.'));
+                let container = $('settings-controls-container');
+
+                this.settings = {};
+                Object.keys(this._settingsConfig).forEach((settingName) => {
+                    let config = this._settingsConfig[settingName];
+                    if (config.type == 'pref') {
+                        // Pref type => just move the user pref around
+                        dojo.place($('preference_control_' + config.prefId).parentNode.parentNode, container);
+                    }
+                });
+            },
+
+            updatePlayerOrdering() {
+                this.inherited(arguments);
+                dojo.place('player_board_config', 'player_boards', 'first');
+            },
+
+            toggleSettings() {
+                dojo.toggleClass('settings-controls-container', 'settingsControlsHidden');
+
+                // Hacking BGA framework
+                if (dojo.hasClass('ebd-body', 'mobile_version')) {
+                    dojo.query('.player-board').forEach((elt) => {
+                        if (elt.style.height != 'auto') {
+                            dojo.style(elt, 'min-height', elt.style.height);
+                            elt.style.height = 'auto';
+                        }
+                    });
+                }
+            },
+            
             ///////////////////////////////////////////////////
             //// UI actions
 
