@@ -820,7 +820,7 @@ $this->card_types = array(
     111 => array(
         'name' => clienttranslate("Potion of Resurrection"),
         'category' => 'mi', // mi = magic items / f = familiar
-        'text' => clienttranslate("**, sacrifice the Potion of Resurrection and look at the top five cards in the discard area: add one of the cards to your hand and return the others to the bottom of the discard pile."),
+        'text' => clienttranslate("**, sacrifice the Potion of Resurrection and look at the top five cards in the discard pile: add one of the cards to your hand and return the others to the bottom of the discard pile."),
         'points' => 0,
         'cost' => array(
             3 => 1,
