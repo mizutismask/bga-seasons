@@ -417,7 +417,7 @@ var jstpl_up_arrow='\
 
 
 var jstpl_configPlayerBoard = `
-<div class='player-board' id="player_board_config">
+<div class='upperrightmenu_item' id="player_board_config">
   <div id="player_config" class="player_board_content">
     <div id="player_config_row">
       <div id="show-settings">

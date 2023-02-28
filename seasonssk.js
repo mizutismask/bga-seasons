@@ -1345,7 +1345,7 @@ define([
 
             updatePlayerOrdering() {
                 this.inherited(arguments);
-                dojo.place('player_board_config', 'player_boards', 'first');
+                dojo.place('player_board_config', 'upperrightmenu', 'first');
             },
 
             toggleSettings() {

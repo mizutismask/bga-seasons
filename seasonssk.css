@@ -1852,19 +1852,19 @@ body > .card {
 }
 #player_config #player_config_row {
 	display: flex;
-	justify-content: space-around;
+	justify-content: right;
 	align-items: center;
 }
 #player_config #player_info_row {
 	display: flex;
-	justify-content: space-around;
+	justify-content: right;
 	align-items: center;
 	margin-bottom: 10px;
 }
 
 #player_config #show-settings {
 	height: 40px;
-	width: 50px;
+	/*width: 50px;*/
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -1874,8 +1874,10 @@ body > .card {
 	color: grey;
 }
 #player_config #show-settings svg {
-	width: auto;
-	height: 40px;
+	width: 20px;
+	height: 20px;
+	opacity: 0.5;
+	/*height: 40px;*/
 }
 #player_config #show-settings .fa-primary {
 	transform-origin: 216px 255px;
@@ -1891,8 +1893,12 @@ body > .card {
 #settings-controls-container {
 	position: relative;
 	text-align: center;
-	border-top: 1px solid gray;
 	margin-top: 10px;
+	background: linear-gradient(180deg, #f8f8f8, #e7e9e8);
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-top: none;
+	box-shadow: 0 3px 8px rgb(0 0 0 / 30%);
+	padding: 10px 20px;
 }
 #settings-controls-container.settingsControlsHidden {
 	display: none;
