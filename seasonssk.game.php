@@ -2648,20 +2648,25 @@ class SeasonsSK extends Table {
 
         if ($energy_id >= 1 && $energy_id <= 4) {
             $player_id = self::getActivePlayerId();
+            self::dump('*******************GameStateValue currentTokenEffect', self::getGameStateValue('currentTokenEffect'));
+            self::dump('*******************GameStateValue currentEffect', self::getGameStateValue('currentEffect'));
             if (self::getGameStateValue('currentEffect') != 0) {
+                self::error("*********currentEffect != 0");
                 $effect_card = self::getCurrentEffectCard();
                 $card_id = $effect_card['card_id'];
                 $notifArgs = self::getStandardArgs();
                 $notifArgs['card_id'] = $card_id;
             } else if (self::getGameStateValue('currentTokenEffect') == 3) {
+                self::error("*********currentTokenEffect == 3");
                 $effect_card = null;
                 $notifArgs = array(
                     'i18n' => array('card_name'),
                     'player_id' => $player_id,
                     'player_name' => self::getActivePlayerName(),
-                    'card_name' => clienttranslate('Ability token')
+                    'card_name' => _('Ability token')
                 );
             } else {
+                self::error("*********else bonus");
                 $effect_card = null;
                 $notifArgs = array(
                     'i18n' => array('card_name'),
@@ -2687,6 +2692,7 @@ class SeasonsSK extends Table {
             } else {
                 // This energy => player stock
                 self::applyResourceDelta($player_id, array($energy_id => 1));
+                self::dump('*******************notifArgs', $notifArgs);
                 self::notifyAllPlayers('gainEnergy', clienttranslate('${card_name}: ${player_name} gets a ${energy}'), $notifArgs);
             }
 
