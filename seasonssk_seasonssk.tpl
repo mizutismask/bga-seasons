@@ -418,7 +418,7 @@ var jstpl_up_arrow='\
 
 var jstpl_configPlayerBoard = `
 <div class='upperrightmenu_item' id="player_board_config">
-  <div id="player_config" class="player_board_content">
+  <div id="player_config">
     <div id="player_config_row">
       <div id="show-settings">
         <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
