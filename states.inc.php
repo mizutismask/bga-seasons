@@ -95,7 +95,7 @@ $machinestates = array(
 
     13 => array(
         "name" => "chooseToken",
-        "description" => clienttranslate('Everyone must choose his ability token'),
+        "description" => clienttranslate('Everyone must choose their ability token'),
         "descriptionmyturn" => clienttranslate('${you} must choose one ability token'),
         "type" => "multipleactiveplayer",
         "action" => "stMakeEveryoneActive",
