@@ -28,48 +28,12 @@ define([
         return declare("bgagame.seasonssk", ebg.core.gamegui, {
             constructor: function () {
                 console.log('seasonssk constructor');
-
-                this.seasonDices = null;
-                this.playerHand = null;
-                this.cardChoice = null;
-                this.otusChoice = null;
-                this.playerTableau = {};
-                this.underlayerPlayerTableau = {};
-                this.tokensStock = {};
-                this.energies_on_card_handlers = {};
-
-                this.cardwidth = 124;
-                this.cardHeight = 173;
-
-                this.energies = {};
-                this.energies_reserve = {};
-                this.energies_reminder = {};
-                this.energies_reserve_reminder = {};
-                this.energies_on_card = {};
-                this.amulet_of_water_ingame = {};
-                this.library = {};
-                this.libraryBuild = {};
-
-                this.nextInvocCardId = -1;
-
-                this.isDebug = window.location.host == 'studio.boardgamearena.com';
-                this.log = this.isDebug ? console.log.bind(window.console) : function () { };
-                //this.animationDuration = 500;
-                this.scoreAnimationDuration = 1500;
-                this.synchronizationPending = false;
-
-                this._settingsConfig = {
-                    compactMode: { type: 'pref', prefId: 2 },
-                    showAllSlots: { type: 'pref', prefId: 4 },
-                    customSounds: { type: 'pref', prefId: 3 },
-                    noArtOnTooltip: { type: 'pref', prefId: 1 },
-                };
-
                 dojo.connect(window, "onresize", this, dojo.hitch(this, "updateScrollButtonsVisibility"));
             },
 
             setup: function (gamedatas) {
 
+                this.declareMemberVariables();
                 this.setupSeasonHighlighter();
                 this.setupInfoPanel();
                 this.leftPlayerBoardsCristalCounters = [];
@@ -436,9 +400,49 @@ define([
                 this.setupNotifications();
             },
 
+            declareMemberVariables() {
+                this.seasonDices = null;
+                this.playerHand = null;
+                this.cardChoice = null;
+                this.otusChoice = null;
+                this.playerTableau = {};
+                this.underlayerPlayerTableau = {};
+                this.tokensStock = {};
+                this.energies_on_card_handlers = {};
+
+                this.cardwidth = 124;
+                this.cardHeight = 173;
+
+                this.energies = {};
+                this.energies_reserve = {};
+                this.energies_reminder = {};
+                this.energies_reserve_reminder = {};
+                this.energies_on_card = {};
+                this.amulet_of_water_ingame = {};
+                this.library = {};
+                this.libraryBuild = {};
+
+                this.nextInvocCardId = -1;
+
+                this.isDebug = window.location.host == 'studio.boardgamearena.com';
+                this.log = this.isDebug ? console.log.bind(window.console) : function () { };
+                //this.animationDuration = 500;
+                this.scoreAnimationDuration = 1500;
+                this.synchronizationPending = false;
+
+                this._settingsConfig = {
+                    compactMode: { type: 'pref', prefId: 2 },
+                    showAllSlots: { type: 'pref', prefId: 4 },
+                    customSounds: { type: 'pref', prefId: 3 },
+                    noArtOnTooltip: { type: 'pref', prefId: 1 },
+                };
+            },
+
             setupInfoPanel() {
-                dojo.place(this.format_string(jstpl_configPlayerBoard, {}), 'player_boards', 'first');
-                this.setupSettings();
+                if (!$("player_board_config")) {
+                    dojo.place(this.format_string(jstpl_configPlayerBoard, {}), 'upperrightmenu', 'first');
+                    this.setupSettings();
+                }
             },
 
             createEnergyStockForPlayer(player_id, nrjStocks, stockDivPrefix, reserveStocks, reserveDivPrefix) {
@@ -1343,11 +1347,6 @@ define([
                 });
             },
 
-            updatePlayerOrdering() {
-                this.inherited(arguments);
-                dojo.place('player_board_config', 'upperrightmenu', 'first');
-            },
-
             toggleSettings() {
                 dojo.toggleClass('settings-controls-container', 'settingsControlsHidden');
 
@@ -1361,7 +1360,7 @@ define([
                     });
                 }
             },
-            
+
             ///////////////////////////////////////////////////
             //// UI actions
 
