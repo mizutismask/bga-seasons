@@ -3788,6 +3788,7 @@ class SeasonsSK extends Table {
     function argStartYear() {
         return array(
             'currentYear' => self::getGameStateValue('year'),
+            'month' => self::getGameStateValue('month'),
         );
     }
 
@@ -4947,6 +4948,7 @@ class SeasonsSK extends Table {
             'month' => $month,
             'year' => $year,
             'seasonChanged' => $currentSeason != $newSeason,
+            'yearChanged' => $bNewYear
         ));
 
         //        => Move to stStartYear because effects at the end of seasons should be applied before game end        

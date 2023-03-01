@@ -2271,6 +2271,8 @@ define([
                             var div = document.getElementById("new-year");
                             div.addEventListener('animationend', function () { return dojo.destroy(div); });
                             div.classList.add('new-year-animation');
+
+                            this.setSeasonDate(args.args.currentYear, args.args.month);
                         }
                         break;
                     case 'rattyNightshade':
@@ -2916,7 +2918,9 @@ define([
                 if (toint(notif.args.year) == 4) {
                     notif.args.year = 3;    // Note: happened at the end of the game
                 }
-                this.setSeasonDate(notif.args.year, notif.args.month, notif.args.seasonChanged);
+                if (!notif.args.yearChanged) {//if year changed, all the sound and visual effects must be postponed at startYear in case an end of season effect must be resolved (hourglass of time for example)
+                    this.setSeasonDate(notif.args.year, notif.args.month, notif.args.seasonChanged);
+                }
             },
             notif_incInvocationLevel: function (notif) {
                 $('invocation_level_' + notif.args.player_id).innerHTML = Math.max(0, Math.min(15, toint($('invocation_level_' + notif.args.player_id).innerHTML) + toint(notif.args.nbr)));
