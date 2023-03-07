@@ -1199,9 +1199,21 @@ define([
                     if (index === 1) {   //animation only on left
                         let from = $('seasons_dices_item_' + dice) ? 'seasons_dices_item_' + dice : "generalactions";//either season die or from reroll button if the player die was already chosen
                         this.placeOnObject(loc, from);
-                        this.slideToObject(loc, 'playerdie_wrap_left_' + dice_player).play();
+                        let animation = this.slideToObject(loc, 'playerdie_wrap_left_' + dice_player);
+                        dojo.connect(animation, 'onEnd', dojo.hitch(this, 'resetPosition', loc));
+                        animation.play();
                     }
                 })
+            },
+
+            /**
+             * This method will top and left positions to 0.
+             */
+            resetPosition: function (token) {
+                var token = $(token);
+                //console.log(token + " STRIPPING");
+                token.style.setProperty("top", 0);
+                token.style.setProperty("left", 0);
             },
 
             setNewFace: function (dieId, addChangeDieRoll = false) {

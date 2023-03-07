@@ -1062,6 +1062,7 @@ h3 {
 	width: 54px;
 	height: 54px;
 	box-sizing: border-box;
+	position: relative;
 }
 
 .boardblock_seasons {
