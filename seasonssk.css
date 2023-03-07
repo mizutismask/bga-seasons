@@ -273,31 +273,34 @@ h3 {
 	justify-content: space-between;
 	align-items: center;
 	gap: 5px;
-	padding: 10px 29px 18px 29px;
-	width: calc(100% - 48px);
+	padding: 10px 10px 18px 10px;
+	width: 100%;
+	position: relative;
+}
+
+.transmutation_bar::before {
+	content: " ";
+	background: url("img/headLeft.png") no-repeat center;
+	width: 42px;
+	height: 100%;
+	background-size: contain;
+	margin-left: -100%;
+}
+
+.transmutation_bar::after {
+	content: " ";
+	background: url("img/headRight.png") no-repeat center;
+	width: 42px;
+	height: 100%;
+	background-size: contain;
+	margin-left: 8%;
 }
 
 .transmutation_bar {
-	display: flex;
+	display: grid;
+	grid-template-columns: 21px 1fr 21px;
 	align-items: center;
 	margin: 0px 22px;
-}
-
-.transmutation_bar .head:first-child {
-	background-image: url("img/head.png");
-	width: 48px;
-	height: 80px;
-	margin-right: -24px;
-	margin-left: -24px;
-	z-index: 1;
-}
-.transmutation_bar .head:last-child {
-	background-image: url("img/head.png");
-	width: 48px;
-	height: 80px;
-	margin-left: -24px;
-	margin-right: -24px;
-	z-index: 1;
 }
 
 /* don't need border since the die moves immediatly somewhere else.*/
@@ -1529,18 +1532,19 @@ a.choose_player {
 			left: -87px;
 		}
 
-		.head {
+		.transmutation_bar::before, .transmutation_bar::after {
 			display: none;
 		}
 
 		#season_dices_wrap {
-			scale: 68%;
+			scale: 91%;
 			padding: 0px 0px;
 			width: 100%;
 		}
 
 		.transmutation_bar {
 			margin: 0px;
+			display: flex;/*instead of grid since we dont show heads*/
 		}
 
 		.bonus_actions {

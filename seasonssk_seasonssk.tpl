@@ -76,7 +76,6 @@
 
     <div class="seasons_rightpanel">
         <div class="transmutation_bar">
-            <div class="head"></div>
             <div id="season_dices_wrap">
                 <div>
                     <h3>{LB_SEASONS_DICES}</h3>
@@ -112,7 +111,6 @@
                     </div>
                 </div>
             </div>
-            <div class="head"></div>
         </div>
     </div>
 
