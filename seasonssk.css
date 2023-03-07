@@ -392,6 +392,9 @@ h3 {
 	width: 100%;
 	position: absolute;
 	top: 0px;
+}
+
+#board_counters div {
 	z-index: 1;
 }
 
