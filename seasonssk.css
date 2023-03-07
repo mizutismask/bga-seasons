@@ -104,6 +104,7 @@ h3 {
 .season_1 .transmutation_bar {
 	background: url("img/convertSeason1.png");
 	background-size: auto 100%;
+	background-color: lightblue;
 }
 .season_2 .transmutation_bar {
 	background: url("img/convertSeason2.png");
