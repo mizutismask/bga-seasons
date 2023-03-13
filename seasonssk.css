@@ -3,9 +3,9 @@
 @import url(../../../css/csslayer.css);
 
 :root {
-	--scoreColor: #2373a1;
-	--scoreSecondaryColor: #325590;
-	--scoreShadowColor: white;
+	--scoreColor: #5e2f2f;
+	--scoreSecondaryColor: #8c24247a; /*Score lignes*/
+	--scoreShadowColor: #2f2d2d;
 }
 
 html.season_1,
@@ -1193,11 +1193,16 @@ a.choose_player {
 #score {
 	display: none;
 	justify-content: center;
+	padding: 5px;
 }
 #score #tabble-wrapper {
-	padding: 40px;
-	/*background: url("img/score-background.png");*/
-	background-size: 100% 100%;
+	background-color: #ccae99;
+	background-clip: padding-box;
+	border: solid;
+	border-width: 64px 37px;
+	border-image-source: url(img/parchmentFrame.png);
+	border-image-slice: 150 80;
+	border-image-repeat: round;
 }
 #score #tabble-wrapper table tbody tr {
 	border-top: 1px solid var(--scoreSecondaryColor);
@@ -1212,8 +1217,6 @@ a.choose_player {
 #score #tabble-wrapper table tr th {
 	text-align: center;
 	color: var(--scoreColor);
-	text-shadow: 0px 0px 1px var(--scoreShadowColor),
-		0px 0px 2px var(--scoreShadowColor), 0px 0px 3px var(--scoreShadowColor);
 	padding: 8px;
 }
 #score #tabble-wrapper table tr td {
@@ -1223,8 +1226,6 @@ a.choose_player {
 #score #tabble-wrapper table tr td:not(:first-child) {
 	font-size: 150%;
 	color: var(--scoreColor);
-	text-shadow: 0px 0px 1px var(--scoreShadowColor),
-		0px 0px 2px var(--scoreShadowColor), 0px 0px 3px var(--scoreShadowColor);
 }
 #score #tabble-wrapper table tr td.player-name {
 	width: 181px;
@@ -1534,7 +1535,8 @@ a.choose_player {
 			left: -87px;
 		}
 
-		.transmutation_bar::before, .transmutation_bar::after {
+		.transmutation_bar::before,
+		.transmutation_bar::after {
 			display: none;
 		}
 
@@ -1546,12 +1548,34 @@ a.choose_player {
 
 		.transmutation_bar {
 			margin: 0px;
-			display: flex;/*instead of grid since we dont show heads*/
+			display: flex; /*instead of grid since we dont show heads*/
 		}
 
 		.bonus_actions {
 			margin-bottom: 0px !important;
 			margin-right: 0px !important;
+		}
+
+		#score #tabble-wrapper table tr td.player-name {
+			text-orientation: upright;
+			writing-mode: vertical-lr;
+		}
+
+		#score #tabble-wrapper {
+			border: none;
+			background-color: unset;
+		}
+
+		#score #tabble-wrapper table {
+			scale: 71%;
+		}
+
+		#score {
+			overflow: auto;
+		}
+
+		.tableau{
+			border-width: 64px 29px;
 		}
 	}
 }
