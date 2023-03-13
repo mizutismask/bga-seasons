@@ -1686,8 +1686,6 @@ class SeasonsSK extends Table {
             throw new BgaUserException(self::_("Undo is not available, you probably have done undoable actions (draw, reroll…)"));
         }
         $this->undoRestorePoint();
-        //$this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
-        $this->gamestate->nextState('playerTurn');
     }
     function endTurn() {
         self::checkAction('endTurn');
@@ -2156,7 +2154,6 @@ class SeasonsSK extends Table {
         $player_id = self::getActivePlayerId();
 
         $card = $this->cards->pickCard('deck', $player_id);
-        //$this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);//todo merger
         self::notifyUpdateCardCount();
 
         self::incStat(1, 'cards_drawn', $player_id);
@@ -3675,11 +3672,14 @@ class SeasonsSK extends Table {
             if (!$bReroll) {
                 // Mark die of malice as "active" anyway
                 self::DbQuery("UPDATE card SET card_type_arg='1' WHERE card_id='$card_id' ");
-
+                //savepoint remains as taken just before player turn, player can use it if he resets his turn
                 $this->gamestate->nextState('startTurn');
             } else {
                 // For coherence, we must "active" the Die Of Malice as if it was any activation
                 self::active($card_id, true);
+                // $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
+                //replaces previous savepoint from malice die state to not allow rerolling the dice after resetting turn if the die was rolled the first time
+                $this->makeSavepoint($player_id);
             }
         } else {
             if ($bReroll) {
@@ -4229,13 +4229,17 @@ class SeasonsSK extends Table {
 
     function stMaliceDie() {
         $player_id = self::getActivePlayerId();
-
-        // Looking for die of malice
-        $maliceDice = self::getAllCardsOfTypeInTableau(array(15), $player_id, true);
-        if (isset($maliceDice[15])) {
+        $this->makeSavepoint($player_id);
+        if ($this->activePlayerHasMaliceDie()) {
             // Player has some malice Die => stay at this state to make a choice
         } else
             $this->gamestate->nextState('startTurn');
+    }
+
+    function activePlayerHasMaliceDie() {
+        $player_id = self::getActivePlayerId();
+        $maliceDice = self::getAllCardsOfTypeInTableau(array(15), $player_id, true);
+        return isset($maliceDice[15]);
     }
 
     function stToken17Effect() {
@@ -4263,13 +4267,16 @@ class SeasonsSK extends Table {
             $this->gamestate->nextState('startTurn');
     }
 
-    function stStartPlayerTurn() {
-        $player_id = self::getActivePlayerId();
-
-        //makes a savepoint to allow undo
+    function makeSavepoint($player_id) {
+        //self::dump('*******************SAVEPOINT', $this->gamestate->state());
+        //self::notifyPlayer($player_id, 'makeSavepoint ${state}', 'makeSavepoint', array('state' => $this->gamestate->state()));
         $this->updatePlayersExceptOne($player_id, PLAYER_FIELD_RESET_POSSIBLE, false);
         $this->updatePlayer($player_id, PLAYER_FIELD_RESET_POSSIBLE, true);
         $this->undoSavepoint();
+    }
+
+    function stStartPlayerTurn() {
+        $player_id = self::getActivePlayerId();
 
         // Get current player dice
         $season = self::getCurrentDiceSeason();
@@ -4982,8 +4989,6 @@ class SeasonsSK extends Table {
             self::applyCardsEffect($bNewYear ? 'newYear' : 'newRound', self::getActivePlayerId());
             return;
         }
-
-
         if ($bNewYear)
             $this->gamestate->nextState('nextYear');
         else
