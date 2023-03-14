@@ -15,7 +15,7 @@ const CURRENT_SEASON_OPACITY = 0.0;
 const OTHER_SEASON_OPACITY = 0.4;
 const SVG_SIZE = 340;
 const CARDS_FILE = 'img/cards.jpg';
-const TOOLTIP_DELAY = 200;
+const TOOLTIP_DELAY = 400;
 
 define([
     "dojo", "dojo/_base/declare",
