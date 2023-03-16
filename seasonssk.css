@@ -109,14 +109,17 @@ h3 {
 .season_2 .transmutation_bar {
 	background: url("img/convertSeason2.png");
 	background-size: auto 100%;
+	background-color: #78c349;
 }
 .season_3 .transmutation_bar {
 	background: url("img/convertSeason3.png");
 	background-size: auto 100%;
+	background-color: #ebfb67;
 }
 .season_4 .transmutation_bar {
 	background: url("img/convertSeason4.png");
 	background-size: auto 100%;
+	background-color: #f5524a;
 }
 
 .seasons_rightpanel {
