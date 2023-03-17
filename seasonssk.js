@@ -27,7 +27,7 @@ define([
     function (dojo, declare, bgaCards) {
         return declare("bgagame.seasonssk", ebg.core.gamegui, {
             constructor: function () {
-                console.log('seasonssk constructor');
+                //console.log('seasonssk constructor');
                 dojo.connect(window, "onresize", this, dojo.hitch(this, "updateScrollButtonsVisibility"));
             },
 
@@ -40,7 +40,7 @@ define([
                 this.leftPlayerBoardsPointsCounters = [];
                 this.opponentsStocks = [];
 
-                console.log("gamedatas", gamedatas);
+                //console.log("gamedatas", gamedatas);
                 if (Number(gamedatas.gamestate.id) == 98 || Number(gamedatas.gamestate.id) == 99 || Number(gamedatas.gamestate.id) == 100) { // score or end
                     this.onEnteringShowScore(true);
 
@@ -1149,7 +1149,7 @@ define([
             deleteCardOnMyTableau: function (card_div, card_type_id, card_id) {
                 //console.log("this.energies_on_card_handlers[card_id]", this.energies_on_card_handlers[card_id]);
                 if (this.energies_on_card_handlers[card_id]) {
-                    console.log(card_id, "disconnected");
+                    //console.log(card_id, "disconnected");
                     dojo.disconnect(this.energies_on_card_handlers[card_id]);
                     this.energies_on_card_handlers[card_id] = undefined;
                 }
@@ -1220,7 +1220,7 @@ define([
                 const dieDiv = $(dieId);
 
                 if (dieDiv) {
-                    console.log("setNewFace", dieDiv);
+                    //console.log("setNewFace", dieDiv);
                     //dieDiv.dataset.dieValue = '' + die.value;
                     const currentFace = Number(dieDiv.dataset.dieFace);
                     if (currentFace != die.face) {
@@ -1382,8 +1382,8 @@ define([
             },
 
             onDiceSelectionChanged: function (evt) {
-                console.log('onDiceSelectionChanged');
-                console.log(evt);
+                //console.log('onDiceSelectionChanged');
+                //console.log(evt);
 
                 var selected = this.seasonDices.getSelectedItems();
                 if (selected.length == 1) {
@@ -1631,7 +1631,7 @@ define([
             },
 
             onPlayerHandSelectionChanged: function () {
-                console.log('onPlayerHandSelectionChanged');
+                //console.log('onPlayerHandSelectionChanged');
 
                 var selected = this.playerHand.getSelection();
                 if (this.checkAction('chooseLibrary', true)) {
@@ -1746,7 +1746,7 @@ define([
                 }
 
                 selected = this.playerHand.getSelection();
-                console.log("selection", selected);
+                //console.log("selection", selected);
                 if (selected.length > 1) {
                     bError = true;
                 }
@@ -1899,7 +1899,7 @@ define([
             },
 
             onChoiceCardsSelectionChanged: function () {
-                console.log('onChoiceCardsSelectionChanged');
+                //console.log('onChoiceCardsSelectionChanged');
 
                 var selected = this.cardChoice.getSelectedItems();
                 if (selected.length == 1) {
@@ -1929,7 +1929,7 @@ define([
             },
 
             onOtusChoiceCardsSelectionChanged: function () {
-                console.log('onOtusChoiceCardsSelectionChanged');
+                //console.log('onOtusChoiceCardsSelectionChanged');
 
                 var selected = this.otusChoice.getSelectedItems();
                 if (selected.length == 1) {
@@ -1956,7 +1956,7 @@ define([
 
 
             onPowerCardActivation: function () {
-                console.log('onPowerCardActivation');
+               // console.log('onPowerCardActivation');
 
                 var selected = this.playerTableau[this.player_id].getSelectedItems();
                 if (selected.length == 1) {
@@ -2127,19 +2127,19 @@ define([
 
             // Click on "choose this player" link
             onChoosePlayer: function (evt) {
-                console.log('onChoosePlayer');
+                //console.log('onChoosePlayer');
                 evt.preventDefault();
 
                 this.checkAction('choosePlayer');
 
                 // choose_player_<id>
-                console.log(evt);
+                //console.log(evt);
                 var player_id = evt.currentTarget.id.substr(14);
                 this.ajaxcall("/seasonssk/seasonssk/choosePlayer.html", { player: player_id, lock: true }, this, function (result) { });
             },
 
             onDoNotUse: function (evt) {
-                console.log('onDoNotUse');
+                //console.log('onDoNotUse');
                 evt.preventDefault();
 
                 this.checkAction('doNotUse');
@@ -2149,7 +2149,7 @@ define([
             },
 
             onFairyMonolithActive: function (evt) {
-                console.log('onFairyMonolithActive');
+                //console.log('onFairyMonolithActive');
                 evt.preventDefault();
 
                 this.checkAction('fairyMonolithActive');
@@ -2170,7 +2170,7 @@ define([
             },
 
             onClickUndo() {
-                console.log("this.gamedatas.gamestate", this.gamedatas.gamestate);
+                //console.log("this.gamedatas.gamestate", this.gamedatas.gamestate);
                 switch (this.gamedatas.gamestate.name) {
                     case 'draftChoice':
                         this.takeAction('undoDraftChooseCard', {}, false, true);
@@ -2198,7 +2198,7 @@ define([
             //// Game & client states
 
             onEnteringState: function (stateName, args) {
-                console.log('Entering state: ' + stateName, args);
+                //console.log('Entering state: ' + stateName, args);
                 this.currentState = stateName;
                 switch (stateName) {
                     case 'nextPlayerTurn':
@@ -2309,7 +2309,7 @@ define([
                 this.addArrowsToActivePlayer(args);
             },
             onLeavingState: function (stateName) {
-                console.log('Leaving state: ' + stateName);
+                //console.log('Leaving state: ' + stateName);
 
                 switch (stateName) {
                     case 'amuletFireChoice':
@@ -2376,7 +2376,7 @@ define([
             },
 
             onUpdateActionButtons: function (stateName, args) {
-                console.log('onUpdateActionButtons: ', stateName, args);
+                //console.log('onUpdateActionButtons: ', stateName, args);
 
                 if (this.isCurrentPlayerActive()) {
                     switch (stateName) {
@@ -2735,7 +2735,7 @@ define([
             //// Reaction to cometD notifications
 
             setupNotifications: function () {
-                console.log('notifications subscriptions setup');
+                //console.log('notifications subscriptions setup');
 
 
                 dojo.subscribe('chooseDie', this, "notif_chooseDie");
@@ -2856,7 +2856,7 @@ define([
                 }
             },
             notif_placeMyInLibrarynew: function (notif) {
-                console.log("notif_placeMyInLibrarynew", notif);
+                //console.log("notif_placeMyInLibrarynew", notif);
                 if (toint(notif.args.player_id) == this.player_id) {
                     var bFirstCard = true;
                     for (var i in notif.args.cards) {
@@ -2878,7 +2878,7 @@ define([
             },
 
             notif_undoChooseLibraryNew: function (notif) {
-                console.log("notif_undoChooseLibraryNew", notif);
+                //console.log("notif_undoChooseLibraryNew", notif);
                 for (let i = 1; i <= 3; i++) {
                     this.libraryBuild[i].removeAll();
                     this.addVoidCardsToLibraryBuilds(i);
@@ -2894,19 +2894,19 @@ define([
             },
 
             notif_chooseDie: function (notif) {
-                console.log(notif);
+                //console.log(notif);
 
                 this.giveDiceToPlayer(notif.args.die_type, notif.args.player_id);
             },
             notif_newDices: function (notif) {
-                console.log(notif);
+                //console.log(notif);
                 //todo add animation
                 this.showSeasonDices(notif.args.dices, true);
             },
             notif_score: function (notif) {
-                console.log("notif_score", notif);
-                console.log("leftPlayerBoardsCristalCounters", this.leftPlayerBoardsCristalCounters);
-                console.log(this.leftPlayerBoardsCristalCounters[notif.args.player_id].getValue(), "+", notif.args.points);
+               // console.log("notif_score", notif);
+               // console.log("leftPlayerBoardsCristalCounters", this.leftPlayerBoardsCristalCounters);
+               // console.log(this.leftPlayerBoardsCristalCounters[notif.args.player_id].getValue(), "+", notif.args.points);
                 this.scoreCtrl[notif.args.player_id].incValue(notif.args.points);
                 this.leftPlayerBoardsCristalCounters[notif.args.player_id].incValue(notif.args.points);
             },
@@ -2925,7 +2925,7 @@ define([
                 }
             },
             notif_timeProgression: function (notif) {
-                console.log("notif_timeProgression", notif);
+                //console.log("notif_timeProgression", notif);
                 if (toint(notif.args.year) == 4) {
                     notif.args.year = 3;    // Note: happened at the end of the game
                 }
@@ -2973,13 +2973,12 @@ define([
                 for (var player_id in notif.args.scores) {
                     this.scoreCtrl[player_id].toValue(notif.args.scores[player_id]);
                     this.leftPlayerBoardsCristalCounters[player_id].toValue(notif.args.scores[player_id]);
-                    console.log("notif_updateScores leftPlayerBoardsCristalCounters toValue", notif.args.scores[player_id]);
+                    //console.log("notif_updateScores leftPlayerBoardsCristalCounters toValue", notif.args.scores[player_id]);
                 }
             },
 
             notif_updateAllResources: function (notif) {
-                console.log("notif_updateAllResources", notif
-                );
+                //console.log("notif_updateAllResources", notif);
                 this.updateResources(notif.args.resources, notif.args.player_id);
                 this.updateResourcesOnCards(notif.args.roc);
             },
@@ -2990,7 +2989,7 @@ define([
 
             notif_tokenChosen: function (notif) {
 
-                console.log("notif_tokenChosen", notif);
+                //console.log("notif_tokenChosen", notif);
                 var playerId = notif.args.player_id;
                 var tokenId = notif.args.token_id
 
@@ -3081,7 +3080,7 @@ define([
                 }
             },
             notif_newTokenChoice: function (notif) {
-                console.log("notif_newTokenChoice", notif);
+                //console.log("notif_newTokenChoice", notif);
                 this.tokensStock[notif.args.player_id].removeAll();
                 for (const [tokenId, token] of Object.entries(notif.args.tokens)) {
                     this.tokensStock[notif.args.player_id].addToStockWithId(token.type, tokenId);
@@ -3119,8 +3118,8 @@ define([
             },
 
             notif_firstPlayer: function (notif) {
-                console.log('notif_firstPlayer');
-                console.log(notif);
+               // console.log('notif_firstPlayer');
+                //console.log(notif);
                 this.setFirstPlayer(notif.args.player_id);
             },
 
@@ -3138,8 +3137,8 @@ define([
             },
 
             notif_bonusUsed: function (notif) {
-                console.log('notif_bonusUsed');
-                console.log(notif);
+                //console.log('notif_bonusUsed');
+                //console.log(notif);
                 var oldnbr = notif.args.bonus_used_old ? notif.args.bonus_used_old : toint(notif.args.bonus_used) - 1;
                 dojo.removeClass('bonusused_' + notif.args.player_id, 'bonusused' + oldnbr + " invisible");
                 dojo.addClass('bonusused_' + notif.args.player_id, 'bonusused' + notif.args.bonus_used);
@@ -3163,8 +3162,8 @@ define([
                 }
             },
             notif_bonusBack: function (notif) {
-                console.log('notif_bonusBack');
-                console.log(notif);
+                //console.log('notif_bonusBack');
+                //console.log(notif);
                 var oldnbr = toint(notif.args.bonus_used) + 1;
                 dojo.removeClass('bonusused_' + notif.args.player_id, 'bonusused' + oldnbr);
                 dojo.addClass('bonusused_' + notif.args.player_id, 'bonusused' + notif.args.bonus_used);
@@ -3172,8 +3171,8 @@ define([
                 this.disableBonusActions(notif.args.player_id, toint(notif.args.bonus_used) == 3);
             },
             notif_potionOfLifeWarning: function (notif) {
-                console.log('notif_potionOfLifeWarning');
-                console.log(notif);
+                //console.log('notif_potionOfLifeWarning');
+                //console.log(notif);
                 this.showMessage(_("Note: You cannot continue to transmute after having activated Potion of Life"), 'info');
             },
             notif_ravenCopy: function (notif) {

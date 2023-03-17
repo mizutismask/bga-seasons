@@ -1626,7 +1626,7 @@ class SeasonsSK extends Table {
                 // Place these cards in library
                 $this->cards->moveCards($card_ids, 'library' . $library, $player_id);
             }
-            self::dump("*************************************************notifyPlayer", $player_id);
+            //self::dump("*************************************************notifyPlayer", $player_id);
             self::notifyPlayer($player_id, 'placeMyInLibrarynew', '', array(
                 'player_id' => $player_id,
                 'cards' => $cards,
@@ -2645,8 +2645,8 @@ class SeasonsSK extends Table {
 
         if ($energy_id >= 1 && $energy_id <= 4) {
             $player_id = self::getActivePlayerId();
-            self::dump('*******************GameStateValue currentTokenEffect', self::getGameStateValue('currentTokenEffect'));
-            self::dump('*******************GameStateValue currentEffect', self::getGameStateValue('currentEffect'));
+            //self::dump('*******************GameStateValue currentTokenEffect', self::getGameStateValue('currentTokenEffect'));
+            //self::dump('*******************GameStateValue currentEffect', self::getGameStateValue('currentEffect'));
             if (self::getGameStateValue('currentEffect') != 0) {
                 self::error("*********currentEffect != 0");
                 $effect_card = self::getCurrentEffectCard();
@@ -4389,7 +4389,7 @@ class SeasonsSK extends Table {
     function stTokenEffect() {
         $player_id = self::getActivePlayerId();
         $tokens = $this->tokensDeck->getCardsInLocation('hand', $player_id);
-        self::dump('*******************tokens', count($tokens));
+        //self::dump('*******************tokens', count($tokens));
         if (count($tokens) == 1) {
             $token = array_pop($tokens);
             $this->notifyAbilityTokenInUse();
