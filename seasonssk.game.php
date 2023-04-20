@@ -9544,6 +9544,66 @@ class SeasonsSK extends Table {
             [2208182316, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (35, 0)"],
             [2208182316, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (36, 0)"],
             [2208182316, "INSERT INTO DBPREFIX_global (`global_id`, `global_value`) VALUES (37, 0)"],
+            
+            [2208182316, "CREATE TABLE `zz_savepoint_card` LIKE `card`"],
+            [2208182316, "CREATE TABLE `zz_replay1_card` LIKE `card`"],
+            [2208182316, "CREATE TABLE `zz_replay2_card` LIKE `card`"],
+            [2208182316, "CREATE TABLE `zz_replay3_card` LIKE `card`"],
+
+            [2208182316, "CREATE TABLE `zz_savepoint_resource` LIKE `resource`"],
+            [2208182316, "CREATE TABLE `zz_replay1_resource` LIKE `resource`"],
+            [2208182316, "CREATE TABLE `zz_replay2_resource` LIKE `resource`"],
+            [2208182316, "CREATE TABLE `zz_replay3_resource` LIKE `resource`"],
+
+            [2208182316, "CREATE TABLE `zz_savepoint_dice` LIKE `dice`"],
+            [2208182316, "CREATE TABLE `zz_replay1_dice` LIKE `dice`"],
+            [2208182316, "CREATE TABLE `zz_replay2_dice` LIKE `dice`"],
+            [2208182316, "CREATE TABLE `zz_replay3_dice` LIKE `dice`"],
+
+            [2208182316, "CREATE TABLE `zz_savepoint_effect` LIKE `effect`"],
+            [2208182316, "CREATE TABLE `zz_replay1_effect` LIKE `effect`"],
+            [2208182316, "CREATE TABLE `zz_replay2_effect` LIKE `effect`"],
+            [2208182316, "CREATE TABLE `zz_replay3_effect` LIKE `effect`"],
+
+            [2208182316, "CREATE TABLE `zz_savepoint_resource_on_card` LIKE `resource_on_card`"],
+            [2208182316, "CREATE TABLE `zz_replay1_resource_on_card` LIKE `resource_on_card`"],
+            [2208182316, "CREATE TABLE `zz_replay2_resource_on_card` LIKE `resource_on_card`"],
+            [2208182316, "CREATE TABLE `zz_replay3_resource_on_card` LIKE `resource_on_card`"],
+
+            [2208182316, "CREATE TABLE `zz_savepoint_raven` LIKE `raven`"],
+            [2208182316, "CREATE TABLE `zz_replay1_raven` LIKE `raven`"],
+            [2208182316, "CREATE TABLE `zz_replay2_raven` LIKE `raven`"],
+            [2208182316, "CREATE TABLE `zz_replay3_raven` LIKE `raven`"],
+
+            [2208182316, "CREATE TABLE `zz_savepoint_argosian` LIKE `argosian`"],
+            [2208182316, "CREATE TABLE `zz_replay1_argosian` LIKE `argosian`"],
+            [2208182316, "CREATE TABLE `zz_replay2_argosian` LIKE `argosian`"],
+            [2208182316, "CREATE TABLE `zz_replay3_argosian` LIKE `argosian`"],
+
+            [2208182316, "CREATE TABLE `zz_savepoint_gamelog` LIKE `gamelog`"],
+            [2208182316, "CREATE TABLE `zz_replay1_gamelog` LIKE `gamelog`"],
+            [2208182316, "CREATE TABLE `zz_replay2_gamelog` LIKE `gamelog`"],
+            [2208182316, "CREATE TABLE `zz_replay3_gamelog` LIKE `gamelog`"],
+
+            [2208182316, "CREATE TABLE `zz_savepoint_global` LIKE `global`"],
+            [2208182316, "CREATE TABLE `zz_replay1_global` LIKE `global`"],
+            [2208182316, "CREATE TABLE `zz_replay2_global` LIKE `global`"],
+            [2208182316, "CREATE TABLE `zz_replay3_global` LIKE `global`"],
+
+            [2208182316, "CREATE TABLE `zz_savepoint_player` LIKE `player`"],
+            [2208182316, "CREATE TABLE `zz_replay1_player` LIKE `player`"],
+            [2208182316, "CREATE TABLE `zz_replay2_player` LIKE `player`"],
+            [2208182316, "CREATE TABLE `zz_replay3_player` LIKE `player`"],
+
+            [2208182316, "CREATE TABLE `zz_savepoint_replaysavepoint` LIKE `replaysavepoint`"],
+            [2208182316, "CREATE TABLE `zz_replay1_replaysavepoint` LIKE `replaysavepoint`"],
+            [2208182316, "CREATE TABLE `zz_replay2_replaysavepoint` LIKE `replaysavepoint`"],
+            [2208182316, "CREATE TABLE `zz_replay3_replaysavepoint` LIKE `replaysavepoint`"],
+
+            [2208182316, "CREATE TABLE `zz_savepoint_stats` LIKE `stats`"],
+            [2208182316, "CREATE TABLE `zz_replay1_stats` LIKE `stats`"],
+            [2208182316, "CREATE TABLE `zz_replay2_stats` LIKE `stats`"],
+            [2208182316, "CREATE TABLE `zz_replay3_stats` LIKE `stats`"],
         ];
 
         foreach ($changes as [$version, $sql]) {
